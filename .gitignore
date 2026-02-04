@@ -1,0 +1,42 @@
+# OS / editor
+.DS_Store
+.vscode/
+
+# Build directories
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Compiler outputs
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+
+# Binaries in source tree (common for simple C++ practice)
+/20250204/main
+
+# Debugging / symbols
+*.dSYM/
+*.pdb
+*.idb
+
+# Code coverage
+*.gcno
+*.gcda
+*.gcov
+
+# Clangd / clang-tidy
+.compile_commands.json
+.cache/
+
+# Logs
+*.log
