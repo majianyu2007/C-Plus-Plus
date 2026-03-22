@@ -1,3 +1,6 @@
+/*
+1.  编写程序，判断两个数组是否相等，然后利用vector编写一段类似的程序。
+*/
 #include <iostream>
 #include <vector>
 

@@ -7,7 +7,6 @@
 (5) 合理的初始化，注意检测分母和除数为0的错误，默认分子为0，分母为1。  
 编写测试程序。
 */
-
 #include <iostream>
 #include <stdexcept>
 #include <cmath>

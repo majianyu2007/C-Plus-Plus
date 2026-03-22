@@ -1,3 +1,6 @@
+/*
+2.  编写程序，计算并显示半径为6.5的圆的面积和周长。
+*/
 #include <iostream>
 #include <cmath>
 

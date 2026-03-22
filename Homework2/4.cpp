@@ -1,3 +1,6 @@
+/*
+4.  提取字符串中的数值。如果字符串中的内容为“ab7c d234bk jalf 34 78k3j4 a 59jfd45”，那么提取的数值依次是7, 234, 34, 78, 3, 4, 59, 45。
+*/
 #include <iostream>
 #include <string>
 #include <vector>

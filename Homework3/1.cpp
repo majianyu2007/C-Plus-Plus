@@ -1,3 +1,6 @@
+/*
+1.  编写函数，将两个有序整型序列合并成一个新的有序序列。例如，merge([1, 3, 15], [2, 4, 8, 17])，合并结果为[1, 2, 3, 4, 8, 15, 17]。函数原型为void merge(int *list1, int size1, int *list2, int size2, int *&result, int &size3)。
+*/
 #include <algorithm>
 #include <iostream>
 

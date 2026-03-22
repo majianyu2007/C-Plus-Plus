@@ -1,3 +1,6 @@
+/*
+2.  编写函数，将整数转换成字符串。例如，itoa(-123)，转换结果为“-123”。函数原型为：string itoa(int)。
+*/
 #include <iostream>
 #include <string>
 

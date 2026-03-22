@@ -1,3 +1,6 @@
+/*
+2.  编写程序比较两个string类型的字符串，然后编写另一个程序比较两个C风格字符串。
+*/
 #include <iostream>
 #include <string>
 #include <cstring>
