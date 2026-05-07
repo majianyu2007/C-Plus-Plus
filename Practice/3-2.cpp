@@ -102,7 +102,7 @@ int main(void) {
             } else {
                 cout << "Queue is empty!" << endl;
             }
-        } else if (op == "Exit" || op == "exit") {
+        } else if (op == "Exit") {
             stack.Print();
             queue.Print();
             break;

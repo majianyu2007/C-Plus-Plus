@@ -17,7 +17,7 @@ class CAnimal {
 
     virtual void Talk() {}
 
-    virtual ~CAnimal() { cout << "Animal destructor " << endl; }
+    virtual ~CAnimal() { cout << "Animal destructor" << endl; }
 };
 
 class CHorse : virtual public CAnimal {
