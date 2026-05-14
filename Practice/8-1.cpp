@@ -7,33 +7,41 @@
 
 using namespace std;
 
-int main() {
+bool isPunc(char c)
+{
+    return c == ',' || c == '.' || c == ';' || c == '!' ||
+           c == '?' || c == '"' || c == '\'';
+}
+
+int main()
+{
     map<string, int> freq;
     string line;
 
-    while (getline(cin, line)) {
-        if (line == "exit") {
+    while (getline(cin, line))
+    {
+        if (line == "exit")
             break;
-        }
 
-        for (char &ch : line) {
-            if (isalpha(static_cast<unsigned char>(ch))) {
-                ch = static_cast<char>(tolower(static_cast<unsigned char>(ch)));
-            } else {
-                // Replace punctuation and other separators with spaces for tokenization.
-                ch = ' ';
-            }
-        }
+        line.erase(remove_if(line.begin(), line.end(), isPunc), line.end());
+
+        transform(line.begin(), line.end(), line.begin(),
+                  [](unsigned char c) {
+                      return static_cast<char>(tolower(c));
+                  });
 
         stringstream ss(line);
         string word;
-        while (ss >> word) {
-            ++freq[word];
+
+        while (ss >> word)
+        {
+            freq[word]++;
         }
     }
 
-    for (const auto &entry : freq) {
-        cout << entry.first << ' ' << entry.second << '\n';
+    for (const auto &p : freq)
+    {
+        cout << p.first << " " << p.second << endl;
     }
 
     return 0;
