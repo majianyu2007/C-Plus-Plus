@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="C++ 面向对象程序设计复习工具：题库练习、知识讲义、错题标记与进度记录。">
   <title>C++ OOP 复习工具</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%236366f1'/%3E%3Ctext x='32' y='41' font-size='28' text-anchor='middle' fill='white' font-family='Arial'%3EC%2B%2B%3C/text%3E%3C/svg%3E">
@@ -17,7 +17,7 @@
           <div class="logo-icon">C++</div>
           <div class="logo-text">C++ OOP 复习<span> · 题库与讲义</span></div>
         </a>
-        <nav class="nav-tabs">
+        <nav class="nav-tabs" aria-label="主导航">
           <button class="nav-tab active" data-page="quiz" id="nav-quiz">题库训练</button>
           <button class="nav-tab" data-page="knowledge" id="nav-knowledge">知识讲义</button>
           <button class="nav-tab" data-page="progress" id="nav-progress">进度概览</button>
@@ -53,7 +53,7 @@
           <span>程序题</span>
           <span class="stat-value" id="stat-programming">0</span>
         </div>
-        <div class="stat-item" style="margin-left: auto;">
+        <div class="stat-item stat-item-spacer">
           <span class="stat-dot mastered"></span>
           <span>已掌握</span>
           <span class="stat-value" id="stat-mastered">0</span>
@@ -116,7 +116,7 @@
             <button class="filter-btn" data-status="wrong">错题</button>
             <button class="filter-btn" id="favorites-only" title="只显示已收藏的题目">★ 收藏</button>
           </div>
-          <div class="filter-group" id="mode-filters" style="margin-left: auto;">
+          <div class="filter-group mode-filter-group" id="mode-filters">
             <button class="filter-btn active" data-mode="list">📋 列表</button>
             <button class="filter-btn" data-mode="focus">🎯 单题</button>
             <button class="filter-btn" id="today-review" title="进入待复习/错题队列的单题模式">🗓️ 待复习</button>
