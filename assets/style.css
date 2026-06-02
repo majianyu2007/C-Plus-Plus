@@ -1812,3 +1812,86 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* 细节优化：更克制的层次、系统主题和跳转反馈 */
+body.light-theme { color-scheme: light; }
+body.dark-theme { color-scheme: dark; }
+
+body {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.10), transparent 28rem),
+    radial-gradient(circle at 100% 0%, rgba(14, 165, 233, 0.08), transparent 24rem),
+    var(--bg-primary);
+}
+
+body.light-theme {
+  --bg-primary: #f6f7fb;
+  --bg-secondary: rgba(255, 255, 255, 0.82);
+  --bg-card: rgba(255, 255, 255, 0.78);
+  --bg-card-hover: rgba(255, 255, 255, 0.96);
+  --border-color: rgba(30, 41, 59, 0.10);
+  --text-muted: #64748b;
+  --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 18px 55px rgba(15, 23, 42, 0.12);
+}
+
+.app-header,
+.stats-bar {
+  background: var(--bg-secondary);
+  background: color-mix(in srgb, var(--bg-secondary) 88%, transparent);
+}
+
+.toolbar {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  background: color-mix(in srgb, var(--bg-card) 82%, transparent);
+  box-shadow: var(--shadow-sm);
+}
+
+.question-card,
+.knowledge-section,
+.kp-index-card,
+.insight-card {
+  backdrop-filter: blur(14px);
+}
+
+.filter-btn,
+.chapter-select,
+.search-box input,
+.show-answer-btn,
+.header-btn {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+}
+
+.kp-chip {
+  background: rgba(99, 102, 241, 0.08);
+  background: color-mix(in srgb, var(--accent-primary) 10%, var(--bg-card));
+}
+
+.kp-chip .kp-action {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--accent-primary-glow);
+  background: color-mix(in srgb, var(--accent-primary) 13%, transparent);
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.jump-highlight {
+  border-color: var(--accent-warning) !important;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.24), var(--shadow-md) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-warning) 24%, transparent), var(--shadow-md) !important;
+}
+
+.quiz-hero {
+  background:
+    radial-gradient(circle at 12% 12%, rgba(99, 102, 241, 0.18), transparent 30%),
+    radial-gradient(circle at 88% 10%, rgba(14, 165, 233, 0.14), transparent 28%),
+    linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+  background:
+    radial-gradient(circle at 12% 12%, color-mix(in srgb, var(--accent-primary) 18%, transparent), transparent 30%),
+    radial-gradient(circle at 88% 10%, color-mix(in srgb, var(--accent-secondary) 14%, transparent), transparent 28%),
+    linear-gradient(135deg, color-mix(in srgb, var(--bg-card) 92%, transparent), var(--bg-secondary));
+}

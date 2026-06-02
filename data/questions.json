@@ -460,11 +460,11 @@
     "options": [
       "A. 若存储字符，则存储格式为ASCII码",
       "B. 若存储为二进制文件，则节省空间且保密性较好",
-      "C. 使用fstream时，若打开文件时使用ios::in作为参数，则等同于使用ofstream",
+      "C. 使用fstream时，若打开文件时使用ios::in作为参数，则可用于输入操作",
       "D. 二进制文件的输入输出可以利用operator>>和operator<<实现"
     ],
-    "answer": "错",
-    "explanation": "二进制文件的输入输出不应当利用格式化流运算符 operator>> 和 operator<< 实现，因为这些运算符是针对文本格式设计的，会进行文本转换（如空格和换行过滤）。二进制读写应该使用 read() 和 write() 成员函数。",
+    "answer": "D",
+    "explanation": "二进制文件的输入输出不应依赖格式化流运算符 operator>> 和 operator<<，因为这些运算符按文本格式处理数据；二进制读写应使用 read() 和 write() 成员函数。",
     "knowledgePoints": [
       "二进制文件",
       "文件读写",
