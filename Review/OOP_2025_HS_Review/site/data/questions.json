@@ -1,0 +1,5581 @@
+[
+  {
+    "id": 1,
+    "type": "choice",
+    "chapter": "绪论",
+    "stem": "以下不属于面向对象程序设计特征的是（ ）。",
+    "options": [
+      "A. 数据抽象",
+      "B. 封闭性",
+      "C. 继承性",
+      "D. 多态性"
+    ],
+    "answer": "B",
+    "explanation": "面向对象程序设计的四大特征是抽象性、封装性、继承性、多态性。\"封闭性\"不是正确术语，应为\"封装性\"。",
+    "knowledgePoints": [
+      "面向对象四大特征",
+      "封装性"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "面向对象四大特征"
+    ]
+  },
+  {
+    "id": 2,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "有名称空间定义如下，则下列选项中可以正确调用到该名称空间中变量Num的语句是（ ）\nnamespace Student{\n    int Num;\n}",
+    "options": [
+      "A. Student::Num;",
+      "B. using namespace Num;",
+      "C. Num;",
+      "D. Student.Num"
+    ],
+    "answer": "A",
+    "explanation": "访问命名空间成员使用作用域解析运算符::，格式为命名空间名::成员名。",
+    "knowledgePoints": [
+      "命名空间",
+      "作用域解析运算符"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "命名空间",
+      "作用域解析运算符"
+    ]
+  },
+  {
+    "id": 3,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "下列关于C++中结构体和类的说法错误的是（ ）。",
+    "options": [
+      "A. 结构体的默认访问类型为public",
+      "B. 类的默认访问类型为private",
+      "C. 构造函数在对象被建立时被调用",
+      "D. 析构函数可以被重载"
+    ],
+    "answer": "D",
+    "explanation": "析构函数不可被重载，每个类只能有一个析构函数，且无参数、无返回值。",
+    "knowledgePoints": [
+      "析构函数",
+      "struct与class区别",
+      "默认访问权限"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "struct与class区别",
+      "默认访问权限",
+      "析构函数"
+    ]
+  },
+  {
+    "id": 4,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "下列关于析构函数调用时间的说法正确的是（ ）。",
+    "options": [
+      "A. 析构函数可以通过\"类名.~析构函数名（）\"的形式被调用",
+      "B. 在某个函数内建立的对象在整个程序运行结束时调用析构函数",
+      "C. 对于已动态分配内存的对象指针，使用delete释放内存时会调用析构函数",
+      "D. 在主函数内建立的对象，如果不手动销毁则不会调用析构函数"
+    ],
+    "answer": "C",
+    "explanation": "通过new创建的对象，执行delete时会调用析构函数。局部对象在离开作用域时自动调用析构函数，主函数中的对象在程序结束时也会调用析构函数。",
+    "knowledgePoints": [
+      "析构函数调用时机",
+      "动态内存管理",
+      "delete"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "析构函数调用时机"
+    ]
+  },
+  {
+    "id": 5,
+    "type": "choice",
+    "chapter": "this/const/static成员",
+    "stem": "下列关于类的成员的说法正确的是（ ）。",
+    "options": [
+      "A. 常成员要使用初始化列表初始化",
+      "B. 静态成员的值一旦被初始化，则无法改变",
+      "C. 友元类具有相互性",
+      "D. 友元类具有传递性"
+    ],
+    "answer": "A",
+    "explanation": "const数据成员必须在构造函数的初始化列表中初始化。静态成员可以被修改（除非是const static），友元关系不具有对称性和传递性。",
+    "knowledgePoints": [
+      "const数据成员",
+      "初始化列表",
+      "友元关系"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "const成员函数",
+      "初始化列表",
+      "static成员"
+    ]
+  },
+  {
+    "id": 6,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "当类发生继承时，可能的继承方式不包括（ ）。",
+    "options": [
+      "A. public",
+      "B. private",
+      "C. protected",
+      "D. static"
+    ],
+    "answer": "D",
+    "explanation": "C++中继承方式只有三种：public、private、protected。static不是继承方式。",
+    "knowledgePoints": [
+      "继承方式",
+      "public继承",
+      "private继承",
+      "protected继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承方式"
+    ]
+  },
+  {
+    "id": 7,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "继承与派生中，有关构造函数和析构函数的调用顺序说法不正确的是（ ）。",
+    "options": [
+      "A. 先调用基类的析构函数，再调用子类的析构函数",
+      "B. 先调用基类成员的构造函数，再调用基类的构造函数",
+      "C. 构造函数与析构函数的调用顺序相反",
+      "D. 最后调用派生类的构造函数"
+    ],
+    "answer": "A",
+    "explanation": "析构顺序与构造顺序相反：先调用派生类的析构函数，再调用基类的析构函数。选项A说法恰好相反，是错误的。",
+    "knowledgePoints": [
+      "构造函数调用顺序",
+      "析构函数调用顺序",
+      "继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数调用顺序",
+      "析构函数调用顺序"
+    ]
+  },
+  {
+    "id": 8,
+    "type": "choice",
+    "chapter": "多继承与虚基类",
+    "stem": "下列关于二义性问题和虚基类的说法中正确的是（ ）。",
+    "options": [
+      "A. 间接二义性问题只能使用成员重定义的方法解决",
+      "B. 虚基类的构造函数只被调用一次",
+      "C. 若产生二义性问题，则只能通过虚基类来解决",
+      "D. 私有派生时若产生二义性问题，可通过类型兼容来解决"
+    ],
+    "answer": "B",
+    "explanation": "虚基类的构造函数在整个继承体系中只会被最派生类调用一次。A错，二义性还可用作用域限定符解决；C错，并非只能通过虚基类解决；D错，私有派生不满足类型兼容规则。",
+    "knowledgePoints": [
+      "虚基类",
+      "二义性问题",
+      "虚继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "二义性问题",
+      "虚基类"
+    ]
+  },
+  {
+    "id": 9,
+    "type": "choice",
+    "chapter": "运算符重载",
+    "stem": "下列可以重载为友元函数的运算符是（ ）。",
+    "options": [
+      "A. =",
+      "B. []",
+      "C. ()",
+      "D. <<"
+    ],
+    "answer": "D",
+    "explanation": "=、[]、()只能重载为成员函数。<<运算符通常重载为友元函数，因为其左操作数为ostream对象，不是类自身的对象。",
+    "knowledgePoints": [
+      "运算符重载",
+      "友元函数",
+      "<<运算符"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "运算符重载",
+      "友元运算符重载",
+      "输入输出运算符重载"
+    ]
+  },
+  {
+    "id": 10,
+    "type": "choice",
+    "chapter": "运算符重载",
+    "stem": "若将+运算符重载为成员函数，则需要（ ）个参数。",
+    "options": [
+      "A. 1",
+      "B. 2",
+      "C. 3",
+      "D. 4"
+    ],
+    "answer": "A",
+    "explanation": "二元运算符重载为成员函数时，有一个隐含的this指针作为左操作数，因此只需要一个显式参数（右操作数）。",
+    "knowledgePoints": [
+      "运算符重载",
+      "成员函数",
+      "this指针"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "运算符重载",
+      "成员运算符重载"
+    ]
+  },
+  {
+    "id": 11,
+    "type": "choice",
+    "chapter": "运算符重载",
+    "stem": "下列关于运算符重载中的参数和返回类型说法正确的是（ ）。",
+    "options": [
+      "A. 若参数为只读参数，则使用静态类型来传递",
+      "B. 若参数为只读参数，则使用函数对象来传递",
+      "C. 若运算符的结果产生一个新值，则可以使用非引用的类类型常量返回",
+      "D. 若函数返回的是原有对象，则通常以常量方式返回"
+    ],
+    "answer": "C",
+    "explanation": "当运算结果是一个新值时，需要产生一个新对象，通过传值方式返回，通常由const限定。若返回的是原有对象，则以引用方式返回。",
+    "knowledgePoints": [
+      "运算符重载返回类型",
+      "const返回值",
+      "引用返回"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "运算符重载",
+      "成员运算符重载"
+    ]
+  },
+  {
+    "id": 12,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "下列关于虚函数的说法中正确的是（ ）。",
+    "options": [
+      "A. 使用虚函数可以减少代码冗余",
+      "B. 使用类型兼容时，即使不使用虚函数，基类对象也可以调用派生类的成员函数",
+      "C. 类的所有函数均可声明为虚函数",
+      "D. 析构函数不能是虚函数"
+    ],
+    "answer": "A",
+    "explanation": "虚函数通过多态机制可以减少代码冗余。构造函数不能是虚函数，所以C错误。析构函数可以是虚函数，所以D错误。不使用虚函数时，基类指针只能调用基类的函数，所以B错误。",
+    "knowledgePoints": [
+      "虚函数",
+      "多态",
+      "代码复用"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚函数",
+      "多态"
+    ]
+  },
+  {
+    "id": 13,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "包含至少一个纯虚函数的类称为（ ）。",
+    "options": [
+      "A. 虚基类",
+      "B. 抽象类",
+      "C. 派生类",
+      "D. 类模板"
+    ],
+    "answer": "B",
+    "explanation": "包含至少一个纯虚函数的类称为抽象类。虚基类是用于解决多继承中二义性问题的概念，与纯虚函数无关。",
+    "knowledgePoints": [
+      "抽象类",
+      "纯虚函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "纯虚函数",
+      "抽象类"
+    ]
+  },
+  {
+    "id": 14,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "下列属于动态联编类型的是（ ）。",
+    "options": [
+      "A. 重载函数",
+      "B. 函数模板",
+      "C. 运算符重载",
+      "D. 虚函数"
+    ],
+    "answer": "D",
+    "explanation": "虚函数使用动态联编（运行时多态），重载函数、函数模板、运算符重载都属于静态联编（编译时确定）。",
+    "knowledgePoints": [
+      "动态联编",
+      "静态联编",
+      "虚函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "动态联编",
+      "虚函数"
+    ]
+  },
+  {
+    "id": 15,
+    "type": "choice",
+    "chapter": "模板",
+    "stem": "若定义类模板如下，则以此类模板建立对象语法正确的是（ ）。\ntemplate<class T=int>\nclass A{\n    T a;\npublic:\n    A(T a):a(a){}\n};",
+    "options": [
+      "A. A a;",
+      "B. A a(5);",
+      "C. A<> a(5);",
+      "D. A<int> a;"
+    ],
+    "answer": "C",
+    "explanation": "类模板有默认模板参数T=int，使用默认参数时需要写A<>（空尖括号）。A<int> a缺少构造参数，A a省略了尖括号（C++17前不允许）。",
+    "knowledgePoints": [
+      "类模板",
+      "默认模板参数",
+      "模板实例化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "类模板",
+      "默认模板参数",
+      "模板实例化"
+    ]
+  },
+  {
+    "id": 16,
+    "type": "choice",
+    "chapter": "模板",
+    "stem": "类模板实例化为对象的过程分为（ ）步。",
+    "options": [
+      "A. 1",
+      "B. 2",
+      "C. 3",
+      "D. 4"
+    ],
+    "answer": "B",
+    "explanation": "类模板实例化为具体对象的过程分2步：第一步，编译器将类模板实例化为模板类（即具体的类定义）；第二步，利用模板类实例化为具体对象。",
+    "knowledgePoints": [
+      "类模板实例化",
+      "模板类"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "类模板",
+      "模板实例化"
+    ]
+  },
+  {
+    "id": 17,
+    "type": "choice",
+    "chapter": "STL",
+    "stem": "以下不属于STL组成部分的是（ ）。",
+    "options": [
+      "A. 容器",
+      "B. 迭代器",
+      "C. 算法",
+      "D. 数列"
+    ],
+    "answer": "D",
+    "explanation": "STL的三大组成部分是容器、迭代器和算法。数列不属于STL的组成部分。",
+    "knowledgePoints": [
+      "STL组成",
+      "容器",
+      "迭代器",
+      "算法"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "STL组成"
+    ]
+  },
+  {
+    "id": 18,
+    "type": "choice",
+    "chapter": "STL",
+    "stem": "标准模板库STL可以提高程序开发的效率，其实现主要是基于（ ）。",
+    "options": [
+      "A. 函数模板和类模板",
+      "B. 对象指针和对象数组",
+      "C. 链表、堆栈和队列",
+      "D. 容器和迭代器"
+    ],
+    "answer": "A",
+    "explanation": "STL的实现基础是函数模板和类模板，通过模板实现泛型编程。容器和迭代器是STL的组成部分，但它们本身是用模板实现的。",
+    "knowledgePoints": [
+      "STL实现基础",
+      "函数模板",
+      "类模板"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数模板",
+      "类模板"
+    ]
+  },
+  {
+    "id": 19,
+    "type": "choice",
+    "chapter": "文件IO",
+    "stem": "文件操作时，不属于C++常用函数的是（ ）。",
+    "options": [
+      "A. read",
+      "B. get",
+      "C. load",
+      "D. operator>>"
+    ],
+    "answer": "C",
+    "explanation": "C++文件操作中常用函数有read、get、operator>>等，load不是C++标准的文件操作函数。",
+    "knowledgePoints": [
+      "文件操作函数",
+      "read",
+      "get"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "文件操作"
+    ]
+  },
+  {
+    "id": 20,
+    "type": "choice",
+    "chapter": "文件IO",
+    "stem": "下列关于文件操作的说法错误的是（ ）。",
+    "options": [
+      "A. 若存储字符，则存储格式为ASCII码",
+      "B. 若存储为二进制文件，则节省空间且保密性较好",
+      "C. 使用fstream时，若打开文件时使用ios::in作为参数，则等同于使用ofstream",
+      "D. 二进制文件的输入输出可以利用operator>>和operator<<实现"
+    ],
+    "answer": "错",
+    "explanation": "二进制文件的输入输出不应当利用格式化流运算符 operator>> 和 operator<< 实现，因为这些运算符是针对文本格式设计的，会进行文本转换（如空格和换行过滤）。二进制读写应该使用 read() 和 write() 成员函数。",
+    "knowledgePoints": [
+      "二进制文件",
+      "文件读写",
+      "read/write"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "二进制文件读写"
+    ]
+  },
+  {
+    "id": 21,
+    "type": "fillin",
+    "chapter": "类与对象",
+    "stem": "在面向对象的程序设计中，________是现实世界在计算机中的反映，它将数据和对这些数据的操作封装在一起。",
+    "options": null,
+    "answer": "对象",
+    "explanation": "对象是类的实例，是现实世界实体在计算机中的抽象表示，封装了数据和操作。",
+    "knowledgePoints": [
+      "对象",
+      "封装"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "封装"
+    ]
+  },
+  {
+    "id": 22,
+    "type": "fillin",
+    "chapter": "C++对C的扩充",
+    "stem": "内联函数的展开、重载函数的绑定、类模板的实例化与绑定均在____________阶段进行。",
+    "options": null,
+    "answer": "编译",
+    "explanation": "内联函数展开、重载函数绑定和类模板实例化都是在编译阶段完成的静态联编过程。",
+    "knowledgePoints": [
+      "编译阶段",
+      "内联函数",
+      "重载",
+      "模板实例化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "内联函数",
+      "函数重载",
+      "类模板"
+    ]
+  },
+  {
+    "id": 23,
+    "type": "fillin",
+    "chapter": "C++对C的扩充",
+    "stem": "已知 int *data = new int [10]; 若销毁此语句申请的空间，需要执行的语句是：____________。",
+    "options": null,
+    "answer": "delete[] data",
+    "explanation": "使用new[]分配的数组，必须使用delete[]来释放，否则会导致内存泄漏。",
+    "knowledgePoints": [
+      "动态内存管理",
+      "new/delete",
+      "数组释放"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "new/delete数组"
+    ]
+  },
+  {
+    "id": 24,
+    "type": "fillin",
+    "chapter": "构造函数与析构函数",
+    "stem": "类在实例化的时候，首先会调用它的构造函数进行初始化，在对象生命周期结束的时候会调用__________进行资源销毁处理。",
+    "options": null,
+    "answer": "析构函数",
+    "explanation": "析构函数在对象生命周期结束时被自动调用，用于释放对象占用的资源。",
+    "knowledgePoints": [
+      "析构函数",
+      "对象生命周期"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "析构函数"
+    ]
+  },
+  {
+    "id": 25,
+    "type": "fillin",
+    "chapter": "构造函数与析构函数",
+    "stem": "已知复数类Complex，则自定义的拷贝构造函数可在类内声明为：____________。",
+    "options": null,
+    "answer": "Complex(const Complex&)",
+    "explanation": "拷贝构造函数的参数是本类对象的const引用。",
+    "knowledgePoints": [
+      "拷贝构造函数",
+      "const引用"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "拷贝构造函数"
+    ]
+  },
+  {
+    "id": 26,
+    "type": "fillin",
+    "chapter": "类与对象",
+    "stem": "对象可以直接通过\".\"运算符来访问类的公有成员，对象指针可以通过____________来访问类的公有成员。",
+    "options": null,
+    "answer": "->运算符",
+    "explanation": "对象使用.运算符访问成员，对象指针使用->运算符访问成员。",
+    "knowledgePoints": [
+      "成员访问运算符",
+      "指针",
+      "->运算符"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "封装"
+    ]
+  },
+  {
+    "id": 27,
+    "type": "fillin",
+    "chapter": "多态与虚函数",
+    "stem": "在C++中，一个类包含一个或多个纯虚函数，则该类被称为____________。",
+    "options": null,
+    "answer": "抽象类",
+    "explanation": "包含纯虚函数的类称为抽象类，不能直接实例化。",
+    "knowledgePoints": [
+      "抽象类",
+      "纯虚函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "抽象类",
+      "纯虚函数"
+    ]
+  },
+  {
+    "id": 28,
+    "type": "fillin",
+    "chapter": "模板",
+    "stem": "类模板是指在程序设计时，将数据类型____、____、____，编写具有通用性和可重用的程序。",
+    "options": null,
+    "answer": "参数化、模板化、通用化",
+    "explanation": "类模板通过将数据类型参数化、模板化、通用化来实现泛型编程。",
+    "knowledgePoints": [
+      "类模板",
+      "泛型编程"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "类模板"
+    ]
+  },
+  {
+    "id": 29,
+    "type": "fillin",
+    "chapter": "STL",
+    "stem": "STL中常见的顺序容器有：向量容器、____________、双端队列容器。",
+    "options": null,
+    "answer": "列表容器(list)",
+    "explanation": "STL的三种常见顺序容器：vector（向量）、list（列表）、deque（双端队列）。",
+    "knowledgePoints": [
+      "顺序容器",
+      "list"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "顺序容器"
+    ]
+  },
+  {
+    "id": 30,
+    "type": "fillin",
+    "chapter": "文件IO",
+    "stem": "C++程序中，使用cin、cout、endl需要在程序中包含____________头文件。",
+    "options": null,
+    "answer": "iostream",
+    "explanation": "cin、cout、endl定义在<iostream>头文件中。",
+    "knowledgePoints": [
+      "iostream",
+      "标准输入输出"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "输入输出运算符重载"
+    ]
+  },
+  {
+    "id": 31,
+    "type": "truefalse",
+    "chapter": "运算符重载",
+    "stem": "所有C++运算符都可以重载。",
+    "options": null,
+    "answer": "错",
+    "explanation": "::（作用域解析）、?:（条件）、.（成员访问）、sizeof、.*等运算符不能被重载。",
+    "knowledgePoints": [
+      "运算符重载限制",
+      "不可重载运算符"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "不可重载运算符"
+    ]
+  },
+  {
+    "id": 32,
+    "type": "truefalse",
+    "chapter": "C++对C的扩充",
+    "stem": "C++程序采用分段编译方式，以源文件为单位进行编译。",
+    "options": null,
+    "answer": "对",
+    "explanation": "C++采用分段编译，每个源文件(.cpp)独立编译为目标文件(.obj)，最后由链接器链接。",
+    "knowledgePoints": [
+      "分段编译",
+      "编译单元"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "命名空间"
+    ]
+  },
+  {
+    "id": 33,
+    "type": "truefalse",
+    "chapter": "类与对象",
+    "stem": "类的接口由对外公开的属性和操作构成。",
+    "options": null,
+    "answer": "对",
+    "explanation": "类的接口是其public部分，包括公有的数据成员（属性）和成员函数（操作）。",
+    "knowledgePoints": [
+      "类的接口",
+      "public成员"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "封装"
+    ]
+  },
+  {
+    "id": 34,
+    "type": "truefalse",
+    "chapter": "C++对C的扩充",
+    "stem": "C++无需在函数定义开头就声明所需的全部变量。",
+    "options": null,
+    "answer": "对",
+    "explanation": "与C89不同，C++允许在代码块的任何位置声明变量，不必在函数开头集中声明。",
+    "knowledgePoints": [
+      "变量声明",
+      "C++与C区别"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "作用域解析运算符"
+    ]
+  },
+  {
+    "id": 35,
+    "type": "truefalse",
+    "chapter": "C++对C的扩充",
+    "stem": "使用内联函数的主要目的是提高程序的执行效率。",
+    "options": null,
+    "answer": "对",
+    "explanation": "内联函数在编译时将函数体插入调用处，避免了函数调用的开销，提高执行效率。",
+    "knowledgePoints": [
+      "内联函数",
+      "执行效率"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "内联函数"
+    ]
+  },
+  {
+    "id": 36,
+    "type": "truefalse",
+    "chapter": "类与对象",
+    "stem": "没有数据成员的对象的内存大小为0。",
+    "options": null,
+    "answer": "错",
+    "explanation": "C++标准规定，没有数据成员的类的对象大小至少为1字节，以保证每个对象都有唯一的地址。",
+    "knowledgePoints": [
+      "空类大小",
+      "对象内存布局"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "空类大小"
+    ]
+  },
+  {
+    "id": 37,
+    "type": "truefalse",
+    "chapter": "this/const/static成员",
+    "stem": "如果在类中声明了静态数据成员，必须声明静态成员函数。",
+    "options": null,
+    "answer": "错",
+    "explanation": "静态数据成员和静态成员函数是独立的，有静态数据成员不要求必须有静态成员函数，非静态成员函数也能访问静态数据成员。",
+    "knowledgePoints": [
+      "静态数据成员",
+      "静态成员函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "static成员",
+      "静态数据成员"
+    ]
+  },
+  {
+    "id": 38,
+    "type": "truefalse",
+    "chapter": "友元",
+    "stem": "友元函数属于类的成员函数，可以访问类中的其它成员。",
+    "options": null,
+    "answer": "错",
+    "explanation": "友元函数不是类的成员函数，它是在类外定义的普通函数或其他类的成员函数，通过friend声明获得访问私有成员的权限。",
+    "knowledgePoints": [
+      "友元函数",
+      "非成员函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "友元函数"
+    ]
+  },
+  {
+    "id": 39,
+    "type": "truefalse",
+    "chapter": "多态与虚函数",
+    "stem": "虚函数使用静态绑定的函数调用机制。",
+    "options": null,
+    "answer": "错",
+    "explanation": "虚函数使用动态绑定（动态联编），在运行时根据对象的实际类型确定调用哪个函数。",
+    "knowledgePoints": [
+      "虚函数",
+      "动态绑定"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚函数",
+      "动态联编"
+    ]
+  },
+  {
+    "id": 40,
+    "type": "truefalse",
+    "chapter": "STL",
+    "stem": "STL通过函数模板来实现通用算法。",
+    "options": null,
+    "answer": "对",
+    "explanation": "STL中的算法（如sort、find等）是通过函数模板实现的，可以作用于不同类型的容器。",
+    "knowledgePoints": [
+      "STL算法",
+      "函数模板"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数模板",
+      "算法"
+    ]
+  },
+  {
+    "id": 41,
+    "type": "fillin",
+    "chapter": "多态与虚函数",
+    "stem": "面向对象程序设计的四个基本特征是抽象性、封装性、继承性和______________。",
+    "options": null,
+    "answer": "多态性",
+    "explanation": "面向对象程序设计的四大特征是抽象性、封装性、继承性和多态性。",
+    "knowledgePoints": [
+      "面向对象四大特征",
+      "多态性"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "多态"
+    ]
+  },
+  {
+    "id": 42,
+    "type": "fillin",
+    "chapter": "STL",
+    "stem": "在STL中，容器是用于存放数据的类模板，____________的作用类似于指针，是存取容器所存放元素的工具。",
+    "options": null,
+    "answer": "迭代器",
+    "explanation": "迭代器是STL中连接容器与算法的桥梁，作用类似于指针，用于遍历和访问容器中的元素。",
+    "knowledgePoints": [
+      "迭代器",
+      "STL"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "迭代器"
+    ]
+  },
+  {
+    "id": 43,
+    "type": "fillin",
+    "chapter": "this/const/static成员",
+    "stem": "在类的数据成员声明前加关键字______________，就使该数据成员成为静态的。",
+    "options": null,
+    "answer": "static",
+    "explanation": "使用static关键字修饰数据成员，使其成为静态数据成员，被所有对象共享。",
+    "knowledgePoints": [
+      "static关键字",
+      "静态数据成员"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "静态数据成员"
+    ]
+  },
+  {
+    "id": 44,
+    "type": "fillin",
+    "chapter": "this/const/static成员",
+    "stem": "____________指针是一个系统预定义的特殊指针，指向当前对象，表示当前对象的地址。",
+    "options": null,
+    "answer": "this",
+    "explanation": "this指针是每个非静态成员函数的隐含参数，指向调用该函数的对象。",
+    "knowledgePoints": [
+      "this指针"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "this指针"
+    ]
+  },
+  {
+    "id": 45,
+    "type": "fillin",
+    "chapter": "模板",
+    "stem": "C++通过____________和类模板来支持泛型程序设计。",
+    "options": null,
+    "answer": "函数模板",
+    "explanation": "C++通过函数模板和类模板两种机制来支持泛型编程。",
+    "knowledgePoints": [
+      "函数模板",
+      "泛型编程"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数模板"
+    ]
+  },
+  {
+    "id": 46,
+    "type": "fillin",
+    "chapter": "C++对C的扩充",
+    "stem": "无返回值的函数add用来求两个整数x,y的和，并通过引用形参z将结果传回，则函数原型应定义为____________。",
+    "options": null,
+    "answer": "void add(int x, int y, int& z)",
+    "explanation": "函数无返回值用void，通过引用参数z将计算结果传回调用者。",
+    "knowledgePoints": [
+      "引用参数",
+      "函数原型"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "引用"
+    ]
+  },
+  {
+    "id": 47,
+    "type": "fillin",
+    "chapter": "多态与虚函数",
+    "stem": "____________类只能作为基类使用，而不能声明它的对象。",
+    "options": null,
+    "answer": "抽象",
+    "explanation": "抽象类包含纯虚函数，不能直接实例化，只能作为基类供派生类继承。",
+    "knowledgePoints": [
+      "抽象类",
+      "纯虚函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "抽象类"
+    ]
+  },
+  {
+    "id": 48,
+    "type": "fillin",
+    "chapter": "多继承与虚基类",
+    "stem": "C++允许一个派生类直接继承多个基类，这种继承关系称为________________。",
+    "options": null,
+    "answer": "多重继承/多继承",
+    "explanation": "一个派生类同时继承多个基类的方式称为多重继承（多继承）。",
+    "knowledgePoints": [
+      "多重继承",
+      "多继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "多继承"
+    ]
+  },
+  {
+    "id": 49,
+    "type": "fillin",
+    "chapter": "C++对C的扩充",
+    "stem": "定义重载函数时，应至少使重载函数的参数个数或者________________不同。",
+    "options": null,
+    "answer": "参数类型",
+    "explanation": "构成函数重载的条件是函数名相同，但参数个数或参数类型不同。仅返回值不同不构成重载。",
+    "knowledgePoints": [
+      "函数重载",
+      "参数类型"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数重载"
+    ]
+  },
+  {
+    "id": 50,
+    "type": "fillin",
+    "chapter": "类与对象",
+    "stem": "class和struct定义的类稍有区别，用struct定义类时，其数据成员和成员函数的默认访问控制类型为________________。",
+    "options": null,
+    "answer": "public",
+    "explanation": "struct的默认访问权限为public，class的默认访问权限为private。",
+    "knowledgePoints": [
+      "struct",
+      "默认访问权限"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "struct与class区别",
+      "默认访问权限"
+    ]
+  },
+  {
+    "id": 51,
+    "type": "truefalse",
+    "chapter": "构造函数与析构函数",
+    "stem": "即使定义了带参数的构造函数，系统也会提供无参数的构造函数。",
+    "options": null,
+    "answer": "错",
+    "explanation": "一旦用户定义了任何构造函数，编译器将不再自动提供默认的无参构造函数。",
+    "knowledgePoints": [
+      "默认构造函数",
+      "构造函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "默认构造函数"
+    ]
+  },
+  {
+    "id": 52,
+    "type": "truefalse",
+    "chapter": "STL",
+    "stem": "关联容器的成员函数begin()返回指向容器第一个元素的迭代器。",
+    "options": null,
+    "answer": "对",
+    "explanation": "begin()返回指向容器中第一个元素的迭代器，无论是顺序容器还是关联容器。",
+    "knowledgePoints": [
+      "begin()",
+      "迭代器",
+      "关联容器"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "关联容器",
+      "迭代器"
+    ]
+  },
+  {
+    "id": 53,
+    "type": "truefalse",
+    "chapter": "构造函数与析构函数",
+    "stem": "在堆上创建的多个对象的析构顺序与构造顺序相反。",
+    "options": null,
+    "answer": "错",
+    "explanation": "堆上创建的对象的析构顺序取决于delete的调用顺序，不一定与构造顺序相反。只有栈上的局部对象才保证析构顺序与构造顺序相反。",
+    "knowledgePoints": [
+      "堆对象析构",
+      "析构顺序"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "析构函数调用时机",
+      "动态内存管理"
+    ]
+  },
+  {
+    "id": 54,
+    "type": "truefalse",
+    "chapter": "类与对象",
+    "stem": "同一类的每个对象都具有自己的数据成员，所有对象共享成员函数的定义。",
+    "options": null,
+    "answer": "对",
+    "explanation": "每个对象拥有独立的非静态数据成员副本，但成员函数的代码只有一份，所有对象共享。",
+    "knowledgePoints": [
+      "对象",
+      "数据成员",
+      "成员函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "面向对象四大特征"
+    ]
+  },
+  {
+    "id": 55,
+    "type": "truefalse",
+    "chapter": "友元",
+    "stem": "友元关系不可传递也不可继承，基类的友元不会自动成为其派生类的友元。",
+    "options": null,
+    "answer": "对",
+    "explanation": "友元关系不具有传递性和继承性。类A是类B的友元，类B是类C的友元，不意味着类A是类C的友元。基类的友元也不会自动成为派生类的友元。",
+    "knowledgePoints": [
+      "友元关系",
+      "不可传递",
+      "不可继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "友元"
+    ]
+  },
+  {
+    "id": 56,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "下列对派生类的描述中错误的说法是（ ）",
+    "options": [
+      "A. 派生类至少有一个基类",
+      "B. 派生类可作为另一个派生类的基类",
+      "C. 派生类除了包含它直接定义的成员外，还包含其基类的成员",
+      "D. 派生类所继承的基类成员的访问权限保持不变"
+    ],
+    "answer": "D",
+    "explanation": "派生类继承基类成员时，访问权限会根据继承方式（public/protected/private）发生变化，不是保持不变的。",
+    "knowledgePoints": [
+      "派生类",
+      "继承",
+      "访问权限"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承",
+      "继承方式"
+    ]
+  },
+  {
+    "id": 57,
+    "type": "choice",
+    "chapter": "友元",
+    "stem": "不属于类的函数成员的是（ ）",
+    "options": [
+      "A. 静态成员函数",
+      "B. 友元函数",
+      "C. 构造函数",
+      "D. 析构函数"
+    ],
+    "answer": "B",
+    "explanation": "友元函数不是类的成员函数，它只是被授权访问类的私有成员的外部函数。",
+    "knowledgePoints": [
+      "友元函数",
+      "成员函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "友元函数"
+    ]
+  },
+  {
+    "id": 58,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "可以用P.a的形式访问派生类对象P的基类成员a，其中a是（ ）",
+    "options": [
+      "A. 公有继承的私有成员",
+      "B. 公有继承的保护成员",
+      "C. 公有继承的公有成员",
+      "D. 私有继承的私有成员"
+    ],
+    "answer": "C",
+    "explanation": "只有公有继承的公有成员才能通过对象直接访问（使用.运算符）。",
+    "knowledgePoints": [
+      "公有继承",
+      "成员访问"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "公有继承",
+      "继承方式"
+    ]
+  },
+  {
+    "id": 59,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "假定AB为一个类，则该类的拷贝构造函数的声明语句为（ ）",
+    "options": [
+      "A. AB(AB&);",
+      "B. AB&(AB x);",
+      "C. AB(AB x);",
+      "D. AB(AB*x);"
+    ],
+    "answer": "A",
+    "explanation": "拷贝构造函数的参数必须是本类对象的引用（通常为const引用），形式为AB(AB&)或AB(const AB&)。",
+    "knowledgePoints": [
+      "拷贝构造函数",
+      "引用参数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "拷贝构造函数"
+    ]
+  },
+  {
+    "id": 60,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "若类A公有派生出类B，当创建类B的一个对象b，下列描述中正确的是（ ）",
+    "options": [
+      "A. 先调用类A的构造函数，再调用类B的构造函数",
+      "B. 先调用类B的构造函数，再调用类A的构造函数",
+      "C. 先调用类B的无参构造函数，再调用类A的构造函数",
+      "D. 在释放对象b时，类A的析构函数先于类B的析构函数被调用"
+    ],
+    "answer": "A",
+    "explanation": "创建派生类对象时，先调用基类构造函数，再调用派生类构造函数。析构时顺序相反。",
+    "knowledgePoints": [
+      "构造顺序",
+      "继承",
+      "基类构造函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数调用顺序"
+    ]
+  },
+  {
+    "id": 61,
+    "type": "choice",
+    "chapter": "this/const/static成员",
+    "stem": "下列不能在构造函数的初始化列表中初始化的是（ ）",
+    "options": [
+      "A. 对象成员",
+      "B. 基类数据成员",
+      "C. const数据成员",
+      "D. static数据成员"
+    ],
+    "answer": "D",
+    "explanation": "static数据成员属于类而非对象，必须在类外进行初始化，不能在构造函数的初始化列表中初始化。",
+    "knowledgePoints": [
+      "初始化列表",
+      "static数据成员"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "静态数据成员"
+    ]
+  },
+  {
+    "id": 62,
+    "type": "choice",
+    "chapter": "友元",
+    "stem": "下列关于友元的描述中，正确的是（ ）",
+    "options": [
+      "A. 类B是类A的友元类，类C是类B的友元类，则类C一定是类A的友元函数",
+      "B. 类B是类A的友元类，则类A的成员函数可以访问类B的对象的数据成员",
+      "C. 类B是类A的友元类，则类A的成员函数可以访问类B的对象的任何成员",
+      "D. 类B是类A的友元类，则类B的成员函数均为类A的友元函数"
+    ],
+    "answer": "D",
+    "explanation": "类B是类A的友元类，意味着类B的所有成员函数都可以访问类A的私有成员，即类B的成员函数均为类A的友元函数。友元关系不可传递，A不能自动访问B的私有成员。",
+    "knowledgePoints": [
+      "友元类",
+      "友元关系"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "友元类",
+      "友元函数"
+    ]
+  },
+  {
+    "id": 63,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "下列关于构造函数和析构函数的描述正确的是（ ）",
+    "options": [
+      "A. 构造函数和析构函数的返回值是void",
+      "B. 构造函数和析构函数都可以被重载",
+      "C. 构造函数和析构函数都不能被继承",
+      "D. 析构函数可以是虚函数"
+    ],
+    "answer": "D",
+    "explanation": "析构函数可以且在多态时通常声明为虚函数，因此D正确。A错，构造和析构无返回值且不能声明为void；B错，析构函数不能重载；C错，析构函数可以被继承（虽然调用顺序是级联的，但概念上属于继承机制的一部分，且构造函数不能被继承是成立的，但CD均有正确性时，D是最明确正确的选项）。",
+    "knowledgePoints": [
+      "构造函数",
+      "析构函数",
+      "虚函数",
+      "继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数",
+      "析构函数",
+      "虚函数"
+    ]
+  },
+  {
+    "id": 64,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "抽象类应含有（ ）",
+    "options": [
+      "A. 至多一个纯虚函数",
+      "B. 至少一个纯虚函数",
+      "C. 至多一个虚函数",
+      "D. 至少一个虚函数"
+    ],
+    "answer": "B",
+    "explanation": "抽象类的定义是包含至少一个纯虚函数的类。",
+    "knowledgePoints": [
+      "抽象类",
+      "纯虚函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "抽象类",
+      "纯虚函数"
+    ]
+  },
+  {
+    "id": 65,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "在C++中，要实现动态联编，必须使用（ ）调用虚函数。",
+    "options": [
+      "A. 类名",
+      "B. 派生类指针",
+      "C. 对象名",
+      "D. 基类指针或引用"
+    ],
+    "answer": "D",
+    "explanation": "动态联编需要通过基类的指针或引用调用虚函数，才能在运行时根据实际对象类型确定调用的函数。",
+    "knowledgePoints": [
+      "动态联编",
+      "基类指针",
+      "基类引用"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "动态联编",
+      "虚函数"
+    ]
+  },
+  {
+    "id": 66,
+    "type": "choice",
+    "chapter": "运算符重载",
+    "stem": "关于运算符重载的正确描述是（ ）",
+    "options": [
+      "A. 运算符的操作数个数可以改变",
+      "B. 运算符的功能可以改变",
+      "C. 运算符的结合性可以改变",
+      "D. 运算符的优先级可以改变"
+    ],
+    "answer": "B",
+    "explanation": "运算符重载可以改变运算符的功能，但不能改变操作数个数、优先级和结合性。",
+    "knowledgePoints": [
+      "运算符重载规则",
+      "优先级",
+      "结合性"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "运算符重载"
+    ]
+  },
+  {
+    "id": 67,
+    "type": "choice",
+    "chapter": "文件IO",
+    "stem": "当用输入文件流对象调用open成员函数打开一个文件时，打开方式参数也可以省略，缺省按（ ）方式打开。",
+    "options": [
+      "A. ios_base::binary",
+      "B. ios_base::trunc",
+      "C. ios_base::in",
+      "D. ios_base::out"
+    ],
+    "answer": "C",
+    "explanation": "ifstream（输入文件流）的默认打开方式是ios_base::in（只读模式）。",
+    "knowledgePoints": [
+      "文件打开模式",
+      "ifstream",
+      "ios::in"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "文件打开模式"
+    ]
+  },
+  {
+    "id": 68,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "下列关于引用的用法中正确的是（ ）",
+    "options": [
+      "A. int x = 100; & refx = x;",
+      "B. const int &refx = 100;",
+      "C. int x = 100; int &refx = *x;",
+      "D. int x = 100; int &refx = &x;"
+    ],
+    "answer": "B",
+    "explanation": "const引用可以绑定到字面量（右值），编译器会创建临时对象。A语法错误，C对非指针解引用错误，D将地址赋给引用类型不匹配。",
+    "knowledgePoints": [
+      "引用",
+      "const引用",
+      "右值引用"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "引用",
+      "const引用"
+    ]
+  },
+  {
+    "id": 69,
+    "type": "choice",
+    "chapter": "类与对象",
+    "stem": "下面关于类和对象的说法中，错误的是（ ）",
+    "options": [
+      "A. 对象是类的一个实例",
+      "B. 任何一个对象只能属于一个具体类",
+      "C. 一个类只能有一个对象",
+      "D. 类与对象的关系同数据类型与变量的关系相似"
+    ],
+    "answer": "C",
+    "explanation": "一个类可以创建多个对象，不限于一个。类和对象的关系类似于类型和变量的关系。",
+    "knowledgePoints": [
+      "类与对象关系",
+      "实例化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "面向对象四大特征"
+    ]
+  },
+  {
+    "id": 70,
+    "type": "choice",
+    "chapter": "类与对象",
+    "stem": "在C++程序中，对象之间的相互通信通过（ ）",
+    "options": [
+      "A. 继承实现",
+      "B. 调用成员函数实现",
+      "C. 封装实现",
+      "D. 函数重载实现"
+    ],
+    "answer": "B",
+    "explanation": "对象之间通过消息传递（即调用成员函数）来实现相互通信。",
+    "knowledgePoints": [
+      "消息传递",
+      "成员函数调用"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "面向对象四大特征"
+    ]
+  },
+  {
+    "id": 71,
+    "type": "fillin",
+    "chapter": "this/const/static成员",
+    "stem": "每个成员函数都有一个隐含的参数，指向接受消息的对象，称为（ ）指针。",
+    "options": null,
+    "answer": "this",
+    "explanation": "this指针是每个非静态成员函数的隐含参数，指向调用该函数的当前对象。",
+    "knowledgePoints": [
+      "this指针"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "this指针"
+    ]
+  },
+  {
+    "id": 72,
+    "type": "fillin",
+    "chapter": "类与对象",
+    "stem": "class和struct定义的类稍有区别，用class定义类时，其数据成员和成员函数的默认访问控制类型为（ ）。",
+    "options": null,
+    "answer": "private",
+    "explanation": "class定义的类，默认访问权限为private；struct定义的类，默认访问权限为public。",
+    "knowledgePoints": [
+      "默认访问权限",
+      "class",
+      "private"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "默认访问权限",
+      "struct与class区别"
+    ]
+  },
+  {
+    "id": 73,
+    "type": "fillin",
+    "chapter": "this/const/static成员",
+    "stem": "C++程序中，一个类的对象可由关键字（ ）限定为常量对象。",
+    "options": null,
+    "answer": "const",
+    "explanation": "使用const关键字修饰对象，使其成为常量对象，不能修改其数据成员。",
+    "knowledgePoints": [
+      "const对象",
+      "常量对象"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "const对象"
+    ]
+  },
+  {
+    "id": 74,
+    "type": "fillin",
+    "chapter": "绪论",
+    "stem": "封装是面向对象程序设计的基本特性，将（ ）和操作捆绑在一起，并加上访问控制，称为封装。",
+    "options": null,
+    "answer": "数据",
+    "explanation": "封装是将数据和对数据的操作捆绑在一起，并通过访问控制（public/private/protected）来限制外部访问。",
+    "knowledgePoints": [
+      "封装",
+      "数据隐藏"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "封装",
+      "面向对象四大特征"
+    ]
+  },
+  {
+    "id": 75,
+    "type": "fillin",
+    "chapter": "多继承与虚基类",
+    "stem": "继承时可以将基类声明为虚基类，这种继承方式也被称为（ ）。",
+    "options": null,
+    "answer": "虚继承",
+    "explanation": "虚继承通过virtual关键字声明，使得在多继承时，最终派生类只保留一份虚基类的成员。",
+    "knowledgePoints": [
+      "虚继承",
+      "虚基类"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚基类",
+      "虚继承"
+    ]
+  },
+  {
+    "id": 76,
+    "type": "fillin",
+    "chapter": "多态与虚函数",
+    "stem": "派生类中可以重定义基类的虚函数，称为（ ）。",
+    "options": null,
+    "answer": "覆盖/重写",
+    "explanation": "派生类重新定义基类的虚函数称为覆盖（override）或重写，是实现多态的关键。",
+    "knowledgePoints": [
+      "覆盖",
+      "重写",
+      "override"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚函数",
+      "多态"
+    ]
+  },
+  {
+    "id": 77,
+    "type": "fillin",
+    "chapter": "C++对C的扩充",
+    "stem": "在堆上分配int数组并返回数组首地址用int*pa=new int[100]语句，则释放pa所指数组的语句为（ ）。",
+    "options": null,
+    "answer": "delete[] pa",
+    "explanation": "使用new[]分配的数组必须使用delete[]来释放。",
+    "knowledgePoints": [
+      "动态内存",
+      "delete[]"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "new/delete数组",
+      "动态内存管理"
+    ]
+  },
+  {
+    "id": 78,
+    "type": "fillin",
+    "chapter": "类与对象",
+    "stem": "C++中cin/cout是iostream类定义的（ ）。",
+    "options": null,
+    "answer": "对象",
+    "explanation": "cin是istream类的对象，cout是ostream类的对象，它们在iostream头文件中定义。",
+    "knowledgePoints": [
+      "cin",
+      "cout",
+      "iostream对象"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "命名空间"
+    ]
+  },
+  {
+    "id": 79,
+    "type": "fillin",
+    "chapter": "构造函数与析构函数",
+    "stem": "若希望用一个已有对象来构造另一个同类型的对象，可以使用（ ）函数来实现。",
+    "options": null,
+    "answer": "拷贝构造",
+    "explanation": "拷贝构造函数用于用一个已有对象来初始化创建一个同类型的新对象。",
+    "knowledgePoints": [
+      "拷贝构造函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "拷贝构造函数"
+    ]
+  },
+  {
+    "id": 80,
+    "type": "truefalse",
+    "chapter": "多态与虚函数",
+    "stem": "构造函数和析构函数均可以为虚函数。",
+    "options": null,
+    "answer": "错",
+    "explanation": "构造函数不能是虚函数，因为在构造对象时虚函数表尚未建立。析构函数可以是虚函数。",
+    "knowledgePoints": [
+      "虚函数",
+      "构造函数",
+      "析构函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚函数"
+    ]
+  },
+  {
+    "id": 81,
+    "type": "truefalse",
+    "chapter": "类与对象",
+    "stem": "若一个类只有成员函数而没有数据成员，则它的对象没有数据成员且大小为0。",
+    "options": null,
+    "answer": "错",
+    "explanation": "C++标准规定，即使类没有数据成员，其对象的大小也至少为1字节，以确保不同对象有不同的地址。",
+    "knowledgePoints": [
+      "空类大小",
+      "对象内存"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "空类大小"
+    ]
+  },
+  {
+    "id": 82,
+    "type": "truefalse",
+    "chapter": "STL",
+    "stem": "顺序容器的成员函数end()返回的是容器中最后一个元素的迭代器。",
+    "options": null,
+    "answer": "错",
+    "explanation": "end()返回的是尾后迭代器（past-the-end iterator），指向最后一个元素之后的位置，而不是最后一个元素。",
+    "knowledgePoints": [
+      "end()",
+      "尾后迭代器"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "迭代器"
+    ]
+  },
+  {
+    "id": 83,
+    "type": "truefalse",
+    "chapter": "继承与派生",
+    "stem": "派生类中成员的访问权限与从基类继承的方式有关。",
+    "options": null,
+    "answer": "对",
+    "explanation": "基类成员在派生类中的访问权限会根据继承方式（public/protected/private）而发生变化。",
+    "knowledgePoints": [
+      "继承方式",
+      "访问权限"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承方式"
+    ]
+  },
+  {
+    "id": 84,
+    "type": "truefalse",
+    "chapter": "多态与虚函数",
+    "stem": "当继承一个抽象类时，要在派生类中实现/覆盖所有的纯虚函数，否则派生类也被看作是一个抽象类。",
+    "options": null,
+    "answer": "对",
+    "explanation": "如果派生类没有实现基类的所有纯虚函数，则派生类仍然是抽象类，不能实例化。",
+    "knowledgePoints": [
+      "抽象类",
+      "纯虚函数实现"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "纯虚函数",
+      "抽象类"
+    ]
+  },
+  {
+    "id": 85,
+    "type": "fillin",
+    "chapter": "绪论",
+    "stem": "面向对象的程序设计有四大特征，它们是抽象、____________、继承、多态。",
+    "options": null,
+    "answer": "封装",
+    "explanation": "面向对象四大特征是抽象、封装、继承、多态。",
+    "knowledgePoints": [
+      "封装",
+      "四大特征"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "面向对象四大特征"
+    ]
+  },
+  {
+    "id": 86,
+    "type": "fillin",
+    "chapter": "绪论",
+    "stem": "封装是面向对象程序设计的基本特性，把数据和____________合成一个整体。",
+    "options": null,
+    "answer": "操作/函数",
+    "explanation": "封装将数据和对数据的操作（函数）合成一个整体，隐藏实现细节。",
+    "knowledgePoints": [
+      "封装",
+      "数据与操作"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "封装"
+    ]
+  },
+  {
+    "id": 87,
+    "type": "fillin",
+    "chapter": "构造函数与析构函数",
+    "stem": "拷贝构造函数用它所在类的____________作为参数。",
+    "options": null,
+    "answer": "对象的引用",
+    "explanation": "拷贝构造函数的参数是本类对象的引用（通常是const引用）。",
+    "knowledgePoints": [
+      "拷贝构造函数",
+      "引用参数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "拷贝构造函数"
+    ]
+  },
+  {
+    "id": 88,
+    "type": "fillin",
+    "chapter": "友元",
+    "stem": "重载\"=\"操作符时，应声明为____________函数。",
+    "options": null,
+    "answer": "成员",
+    "explanation": "C++标准规定，赋值运算符 operator= 必须重载为类的非静态成员函数，绝对不能重载为友元函数，以防止改变类的默认赋值行为导致歧义。",
+    "knowledgePoints": [
+      "赋值运算符重载",
+      "成员函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "成员运算符重载",
+      "赋值运算符重载"
+    ]
+  },
+  {
+    "id": 89,
+    "type": "fillin",
+    "chapter": "构造函数与析构函数",
+    "stem": "写出下面程序的输出结果：\n#include<iostream>\nusing namespace std;\nclass CSample {\n    int x;\npublic:\n    CSample() { cout << \"C1\"; }\n    CSample(int n) {\n        x = n;\n        cout << \"C2,x=\" << n; }\n};\nint main()\n{\n    CSample cs[2]={3};\n    return 0;\n}",
+    "options": null,
+    "answer": "C2,x=3C1",
+    "explanation": "CSample cs[2]={3}; 第一个元素用CSample(3)初始化输出C2,x=3，第二个元素用默认构造函数初始化输出C1。",
+    "knowledgePoints": [
+      "构造函数",
+      "对象数组初始化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数",
+      "默认构造函数",
+      "构造函数重载"
+    ]
+  },
+  {
+    "id": 90,
+    "type": "fillin",
+    "chapter": "运算符重载",
+    "stem": "重载运算符\"+\"的函数名为____________。",
+    "options": null,
+    "answer": "operator+",
+    "explanation": "C++中重载运算符的函数名格式为operator加上运算符，如operator+。",
+    "knowledgePoints": [
+      "运算符重载",
+      "函数命名"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "运算符重载"
+    ]
+  },
+  {
+    "id": 91,
+    "type": "fillin",
+    "chapter": "继承与派生",
+    "stem": "派生类的成员一般分为两部分，一部分是____________，另一部分是自己定义的新成员。",
+    "options": null,
+    "answer": "从基类继承来的成员",
+    "explanation": "派生类的成员由继承自基类的成员和派生类自己定义的新成员两部分组成。",
+    "knowledgePoints": [
+      "派生类成员组成",
+      "继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承"
+    ]
+  },
+  {
+    "id": 92,
+    "type": "fillin",
+    "chapter": "C++对C的扩充",
+    "stem": "一旦一个引用被初始化为指向一个对象，则它就______（能/不能）被改变为指向另一个对象的引用。",
+    "options": null,
+    "answer": "不能",
+    "explanation": "引用一旦初始化后就不能改变其绑定的对象，这是引用与指针的重要区别。",
+    "knowledgePoints": [
+      "引用",
+      "不可重新绑定"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "引用"
+    ]
+  },
+  {
+    "id": 93,
+    "type": "fillin",
+    "chapter": "多态与虚函数",
+    "stem": "在C++中，函数重载与虚函数帮助实现类的____________性。",
+    "options": null,
+    "answer": "多态",
+    "explanation": "函数重载实现编译时多态（静态多态），虚函数实现运行时多态（动态多态）。",
+    "knowledgePoints": [
+      "多态",
+      "函数重载",
+      "虚函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "多态",
+      "函数重载",
+      "虚函数"
+    ]
+  },
+  {
+    "id": 94,
+    "type": "fillin",
+    "chapter": "继承与派生",
+    "stem": "基类的公有成员在私有派生类中是私有成员，基类的保护成员在公有派生类中是____________成员。",
+    "options": null,
+    "answer": "保护(protected)",
+    "explanation": "公有继承时，基类的保护成员在派生类中仍是保护成员。",
+    "knowledgePoints": [
+      "公有继承",
+      "访问权限变化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "公有继承",
+      "保护继承",
+      "继承方式"
+    ]
+  },
+  {
+    "id": 95,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "派生类的对象对它的基类成员中（ ）是可以访问的。",
+    "options": [
+      "A. 公有继承的私有成员",
+      "B. 私有继承的公有成员",
+      "C. 公有继承的公有成员",
+      "D. 公有继承的保护成员"
+    ],
+    "answer": "C",
+    "explanation": "派生类对象只能访问公有继承的公有成员。私有成员和保护成员不能通过对象直接访问。",
+    "knowledgePoints": [
+      "公有继承",
+      "成员访问权限"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "公有继承",
+      "继承"
+    ]
+  },
+  {
+    "id": 96,
+    "type": "choice",
+    "chapter": "文件IO",
+    "stem": "cout是某个类的标准对象的引用，该类是（ ）。",
+    "options": [
+      "A. ostream",
+      "B. istream",
+      "C. stdout",
+      "D. stdin"
+    ],
+    "answer": "A",
+    "explanation": "cout是ostream类的对象，用于标准输出。cin是istream类的对象。stdout和stdin是C语言的概念。",
+    "knowledgePoints": [
+      "cout",
+      "ostream"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "输入输出运算符重载"
+    ]
+  },
+  {
+    "id": 97,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "对于通过new运算符生成的对象，以下说法正确的是（ ）。",
+    "options": [
+      "A. 在程序结束时自动析构",
+      "B. 执行delete操作时才能析构",
+      "C. 在包含该new语句的函数返回时自动析构",
+      "D. 在执行delete操作时会析构，如果没有执行delete操作，则在程序结束时自动析构"
+    ],
+    "answer": "B",
+    "explanation": "通过new创建的对象必须通过delete手动释放，否则会造成内存泄漏。程序结束时操作系统会回收内存但不会调用析构函数。",
+    "knowledgePoints": [
+      "new/delete",
+      "动态对象",
+      "内存泄漏"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "动态内存管理",
+      "析构函数调用时机"
+    ]
+  },
+  {
+    "id": 98,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "以下基类中的成员函数，哪个表示纯虚函数（ ）。",
+    "options": [
+      "A. void vf(int)=0",
+      "B. virtual void vf(int){}",
+      "C. virtual void vf(int)",
+      "D. virtual void vf()=0"
+    ],
+    "answer": "D",
+    "explanation": "纯虚函数的格式为virtual 返回类型 函数名(参数)=0; A缺少virtual关键字，B有函数体，C只是虚函数声明。",
+    "knowledgePoints": [
+      "纯虚函数",
+      "virtual关键字"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "纯虚函数"
+    ]
+  },
+  {
+    "id": 99,
+    "type": "choice",
+    "chapter": "绪论",
+    "stem": "基于面向对象程序设计的软件系统应该具有（ ）。",
+    "options": [
+      "A. 低内聚、高耦合的特征",
+      "B. 高内聚、高耦合的特征",
+      "C. 低内聚、低耦合的特征",
+      "D. 高内聚、低耦合的特征"
+    ],
+    "answer": "D",
+    "explanation": "良好的面向对象设计应当追求高内聚（模块内部功能紧密相关）和低耦合（模块之间依赖少）。",
+    "knowledgePoints": [
+      "高内聚低耦合",
+      "软件设计原则"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "面向对象设计原则"
+    ]
+  },
+  {
+    "id": 100,
+    "type": "choice",
+    "chapter": "运算符重载",
+    "stem": "如果要禁止对象之间的赋值运算，应该把operator=声明为（ ）成员。",
+    "options": [
+      "A. private",
+      "B. friend",
+      "C. public",
+      "D. protected"
+    ],
+    "answer": "A",
+    "explanation": "将operator=声明为private成员，外部代码无法调用赋值运算符，从而禁止对象间赋值。",
+    "knowledgePoints": [
+      "赋值运算符",
+      "访问控制",
+      "禁止赋值"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "赋值运算符重载",
+      "封装"
+    ]
+  },
+  {
+    "id": 101,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "以下正确的描述是（ ）。",
+    "options": [
+      "A. 设置参数的默认值时，应该设置右边的参数",
+      "B. 设置参数的默认值只能在定义函数时设置",
+      "C. 不允许设置参数的默认值",
+      "D. 设置参数的默认值时，应该全部参数都设置"
+    ],
+    "answer": "A",
+    "explanation": "默认参数必须从右向左连续设置，不能跳过中间的参数。",
+    "knowledgePoints": [
+      "默认参数",
+      "从右向左"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "默认参数"
+    ]
+  },
+  {
+    "id": 102,
+    "type": "choice",
+    "chapter": "this/const/static成员",
+    "stem": "const int *p说明不能修改（ ）。",
+    "options": [
+      "A. p指针",
+      "B. p指针指向的变量",
+      "C. p指针指向的数据类型",
+      "D. 上述A、B、C三者"
+    ],
+    "answer": "B",
+    "explanation": "const int *p中，const修饰的是int（即p指向的内容），所以不能通过p修改所指向的变量值，但可以改变p本身的指向。",
+    "knowledgePoints": [
+      "const指针",
+      "指向常量的指针"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "const指针"
+    ]
+  },
+  {
+    "id": 103,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "下列对派生类的描述中错误的说法是（ ）。",
+    "options": [
+      "A. 派生类至少有一个基类",
+      "B. 派生类可作为另一个派生类的基类",
+      "C. 派生类除了包含它直接定义的成员外，还包含其基类的成员",
+      "D. 派生类所继承的基类成员的访问权限保持不变"
+    ],
+    "answer": "D",
+    "explanation": "派生类继承基类成员时，访问权限会根据继承方式改变。",
+    "knowledgePoints": [
+      "继承",
+      "访问权限变化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承方式"
+    ]
+  },
+  {
+    "id": 104,
+    "type": "choice",
+    "chapter": "this/const/static成员",
+    "stem": "静态成员函数没有（ ）。",
+    "options": [
+      "A. 返回值",
+      "B. this指针",
+      "C. 指针参数",
+      "D. 返回类型"
+    ],
+    "answer": "B",
+    "explanation": "静态成员函数不属于某个具体对象，因此没有this指针，不能访问非静态成员。",
+    "knowledgePoints": [
+      "静态成员函数",
+      "this指针"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "静态成员函数",
+      "this指针"
+    ]
+  },
+  {
+    "id": 105,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "如果一个类至少有一个纯虚函数，那么该类称为（ ）。",
+    "options": [
+      "A. 抽象类",
+      "B. 虚基类",
+      "C. 派生类",
+      "D. 以上都不对"
+    ],
+    "answer": "A",
+    "explanation": "包含至少一个纯虚函数的类称为抽象类。",
+    "knowledgePoints": [
+      "抽象类",
+      "纯虚函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "纯虚函数",
+      "抽象类"
+    ]
+  },
+  {
+    "id": 106,
+    "type": "choice",
+    "chapter": "类与对象",
+    "stem": "如果class类中的所有成员在定义时都没有使用关键字public、private或protected，则所有成员缺省定义为（ ）。",
+    "options": [
+      "A. public",
+      "B. protected",
+      "C. private",
+      "D. static"
+    ],
+    "answer": "C",
+    "explanation": "class定义的类中，成员的默认访问权限为private。",
+    "knowledgePoints": [
+      "默认访问权限",
+      "private"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "默认访问权限"
+    ]
+  },
+  {
+    "id": 107,
+    "type": "choice",
+    "chapter": "多继承与虚基类",
+    "stem": "解决多重继承中二义性问题的方法有（ ）。",
+    "options": [
+      "A. 只能使用作用域分辨操作符",
+      "B. 使用作用域分辨操作符或赋值兼容规则",
+      "C. 使用作用域分辨操作符或虚基类",
+      "D. 使用虚基类或赋值兼容规则"
+    ],
+    "answer": "C",
+    "explanation": "解决多继承二义性的两种方法：使用作用域分辨符(::)明确指定成员，或使用虚基类消除重复继承。",
+    "knowledgePoints": [
+      "二义性解决",
+      "作用域分辨符",
+      "虚基类"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "二义性问题",
+      "虚基类",
+      "作用域解析运算符"
+    ]
+  },
+  {
+    "id": 108,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "下列描述中是关于抽象类的特性的是（ ）。",
+    "options": [
+      "A. 可以声明虚函数",
+      "B. 可以进行构造函数重载",
+      "C. 可以定义友元函数",
+      "D. 不能声明其对象"
+    ],
+    "answer": "D",
+    "explanation": "抽象类最重要的特性是不能直接创建对象。虽然A、B、C也适用于抽象类，但它们不是抽象类独有的特性。",
+    "knowledgePoints": [
+      "抽象类特性",
+      "不能实例化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "抽象类",
+      "纯虚函数"
+    ]
+  },
+  {
+    "id": 109,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "下面程序的输出为（ ）。\n#include <iostream>\nusing namespace std;\nclass B {\npublic:\n    B(){ cout << \"B_Con\" << endl; }\n    ~B() { cout << \"B_Des\" << endl; }\n};\nclass C:public B {\npublic:\n    C(){ cout << \"C_Con\" << endl; }\n    ~C() { cout << \"C_Des\" << endl; }\n};\nint main() {\n    return 0;\n}",
+    "options": [
+      "A. B_Con\\nC_Con",
+      "B. B_Con\\nC_Con\\nC_Des\\nB_Des",
+      "C. C_Con\\nB_Con",
+      "D. C_Con\\nB_Con\\nB_Des\\nC_Des"
+    ],
+    "answer": "A",
+    "explanation": "创建派生类C的对象时，先调用基类B的构造函数输出 B_Con，再调用派生类C的构造函数输出 C_Con。由于使用了new但没有显式delete，程序不会调用析构函数，因此不会输出析构信息。最终输出：B_Con C_Con。",
+    "knowledgePoints": [
+      "构造顺序",
+      "new",
+      "析构函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数调用顺序",
+      "析构函数调用顺序",
+      "继承"
+    ]
+  },
+  {
+    "id": 110,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "下列关于构造函数和析构函数的描述错误的是（ ）。",
+    "options": [
+      "A. 构造函数和析构函数都可以重载",
+      "B. 析构函数可以定义为虚函数",
+      "C. 构造函数和析构函数都没有返回值",
+      "D. 构造函数和析构函数都不能被继承"
+    ],
+    "answer": "A",
+    "explanation": "构造函数可以重载，但析构函数不可以重载（每个类只有一个析构函数）。因此A说法错误。",
+    "knowledgePoints": [
+      "构造函数重载",
+      "析构函数不可重载"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数重载",
+      "析构函数"
+    ]
+  },
+  {
+    "id": 111,
+    "type": "choice",
+    "chapter": "友元",
+    "stem": "一个类的友元函数或友元类可以访问该类的（ ）。",
+    "options": [
+      "A. 私有成员",
+      "B. 保护成员",
+      "C. 公有成员",
+      "D. 所有成员"
+    ],
+    "answer": "D",
+    "explanation": "友元函数或友元类可以访问该类的所有成员，包括public、protected和private成员。",
+    "knowledgePoints": [
+      "友元",
+      "访问权限"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "友元函数",
+      "友元类"
+    ]
+  },
+  {
+    "id": 112,
+    "type": "choice",
+    "chapter": "this/const/static成员",
+    "stem": "下面关于静态成员函数的叙述中错误的是（ ）。",
+    "options": [
+      "A. 静态成员函数可以有返回值",
+      "B. this指针可以指向静态成员函数",
+      "C. 静态成员函数可以具有指针参数",
+      "D. 静态成员函数可以具有返回值类型"
+    ],
+    "answer": "B",
+    "explanation": "静态成员函数没有this指针，因为它不与任何具体对象关联。this指针不能指向静态成员函数。",
+    "knowledgePoints": [
+      "静态成员函数",
+      "this指针"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "静态成员函数",
+      "this指针"
+    ]
+  },
+  {
+    "id": 113,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "在函数定义前加上关键字\"inline\"，表示该函数被定义为（ ）。",
+    "options": [
+      "A. 重载函数",
+      "B. 内联函数",
+      "C. 成员函数",
+      "D. 普通函数"
+    ],
+    "answer": "B",
+    "explanation": "inline关键字用于声明内联函数，编译时将函数体直接插入调用处。",
+    "knowledgePoints": [
+      "内联函数",
+      "inline"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "内联函数"
+    ]
+  },
+  {
+    "id": 114,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "下面关于重载函数的描述中，正确的是（ ）。",
+    "options": [
+      "A. 重载函数必须具有不同的返回值类型",
+      "B. 重载函数形参个数必须不同",
+      "C. 重载函数必须具有不同的形参表",
+      "D. 重载函数名可以不同"
+    ],
+    "answer": "C",
+    "explanation": "重载函数必须满足函数名相同，但形参列表不同（形参个数或形参类型不同）。返回值类型不同不能作为重载的依据，重载函数名必须完全相同。因此，C（重载函数一定具有不同的形参列表）是正确的。",
+    "knowledgePoints": [
+      "函数重载",
+      "形参表"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数重载"
+    ]
+  },
+  {
+    "id": 115,
+    "type": "truefalse",
+    "chapter": "this/const/static成员",
+    "stem": "常量成员函数的形参表中没有隐含的形参this指针。",
+    "options": null,
+    "answer": "错",
+    "explanation": "常量成员函数仍然有this指针，只是this指针的类型为指向const对象的指针（const ClassName*），不能通过它修改数据成员。",
+    "knowledgePoints": [
+      "const成员函数",
+      "this指针"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "const成员函数",
+      "this指针"
+    ]
+  },
+  {
+    "id": 116,
+    "type": "truefalse",
+    "chapter": "运算符重载",
+    "stem": "赋值运算符只能作为成员函数重载。",
+    "options": null,
+    "answer": "对",
+    "explanation": "operator=只能作为类的成员函数进行重载，不能重载为全局函数或友元函数。",
+    "knowledgePoints": [
+      "赋值运算符",
+      "成员函数重载"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "赋值运算符重载"
+    ]
+  },
+  {
+    "id": 117,
+    "type": "truefalse",
+    "chapter": "C++对C的扩充",
+    "stem": "引用和指针都可作函数参数。",
+    "options": null,
+    "answer": "对",
+    "explanation": "引用和指针都可以作为函数参数，用于实现按引用传递的效果。",
+    "knowledgePoints": [
+      "引用参数",
+      "指针参数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "引用"
+    ]
+  },
+  {
+    "id": 118,
+    "type": "truefalse",
+    "chapter": "多态与虚函数",
+    "stem": "抽象类可以用来直接创建对象。",
+    "options": null,
+    "answer": "错",
+    "explanation": "抽象类包含纯虚函数，不能直接实例化创建对象，只能通过派生类来使用。",
+    "knowledgePoints": [
+      "抽象类",
+      "不能实例化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "抽象类"
+    ]
+  },
+  {
+    "id": 119,
+    "type": "truefalse",
+    "chapter": "多态与虚函数",
+    "stem": "一个类中是否有虚函数，会影响它定义的对象的结构。",
+    "options": null,
+    "answer": "对",
+    "explanation": "含有虚函数的类，对象中会包含一个虚函数表指针（vptr），增加了对象的大小，改变了对象的内存结构。",
+    "knowledgePoints": [
+      "虚函数表",
+      "对象内存布局",
+      "vptr"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚函数表",
+      "虚函数"
+    ]
+  },
+  {
+    "id": 120,
+    "type": "truefalse",
+    "chapter": "多态与虚函数",
+    "stem": "虚函数是实现动态联编的充分必要条件。",
+    "options": null,
+    "answer": "错",
+    "explanation": "虚函数是实现动态联编的必要条件但不是充分条件。还需要通过基类的指针或引用来调用虚函数才能实现动态联编。",
+    "knowledgePoints": [
+      "动态联编条件",
+      "虚函数",
+      "基类指针"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "动态联编",
+      "虚函数"
+    ]
+  },
+  {
+    "id": 121,
+    "type": "truefalse",
+    "chapter": "this/const/static成员",
+    "stem": "this是类的指针类型，指向该类的对象地址。",
+    "options": null,
+    "answer": "对",
+    "explanation": "this是指向当前对象的指针，类型为ClassName* const（常量指针）。",
+    "knowledgePoints": [
+      "this指针"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "this指针"
+    ]
+  },
+  {
+    "id": 122,
+    "type": "truefalse",
+    "chapter": "类与对象",
+    "stem": "在用class声明一个类时，数据成员和成员函数默认的访问权限是public。",
+    "options": null,
+    "answer": "错",
+    "explanation": "class声明的类，默认访问权限为private。struct声明的类默认为public。",
+    "knowledgePoints": [
+      "默认访问权限",
+      "class vs struct"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "默认访问权限"
+    ]
+  },
+  {
+    "id": 123,
+    "type": "truefalse",
+    "chapter": "继承与派生",
+    "stem": "包含可以用来实现两个类之间的is-a关系。",
+    "options": null,
+    "answer": "错",
+    "explanation": "is-a关系通过继承实现，has-a关系通过包含（组合/聚合）实现。",
+    "knowledgePoints": [
+      "is-a关系",
+      "has-a关系",
+      "继承与包含"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "is-a关系"
+    ]
+  },
+  {
+    "id": 124,
+    "type": "truefalse",
+    "chapter": "C++对C的扩充",
+    "stem": "使用new运算符创建数组时，可以为该数组指定初始值。",
+    "options": null,
+    "answer": "错",
+    "explanation": "在C++11之前，new创建数组时不能直接指定初始值（只能调用默认构造函数）。C++11支持new int[3]{1,2,3}，但在传统考试语境中答案为错。",
+    "knowledgePoints": [
+      "new数组",
+      "数组初始化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "new/delete数组",
+      "动态内存管理"
+    ]
+  },
+  {
+    "id": 125,
+    "type": "choice",
+    "chapter": "类与对象",
+    "stem": "有如下类声明\"class A{int x;...};\"，则A类的成员x是（ ）",
+    "options": [
+      "A. 公有数据成员",
+      "B. 私有数据成员",
+      "C. 公有成员函数",
+      "D. 私有成员函数"
+    ],
+    "answer": "B",
+    "explanation": "class定义的类中，未指定访问限定符的成员默认为private。int x是数据成员，所以是私有数据成员。",
+    "knowledgePoints": [
+      "默认访问权限",
+      "private"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "默认访问权限"
+    ]
+  },
+  {
+    "id": 126,
+    "type": "choice",
+    "chapter": "this/const/static成员",
+    "stem": "已知print()函数是一个类的常成员函数且无返回值，则表示正确的是（ ）",
+    "options": [
+      "A. void print() const;",
+      "B. const void print()",
+      "C. void const print()",
+      "D. void print(const)"
+    ],
+    "answer": "A",
+    "explanation": "常成员函数的const关键字放在函数参数表之后、函数体之前。",
+    "knowledgePoints": [
+      "const成员函数",
+      "函数声明"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "const成员函数"
+    ]
+  },
+  {
+    "id": 127,
+    "type": "choice",
+    "chapter": "文件IO",
+    "stem": "要求打开文件\"d:\\\\file.dat\"，可写入数据，正确的是（ ）",
+    "options": [
+      "A. ifstream infile(\"d:\\\\file.dat\",ios::in);",
+      "B. ofstream infile(\"d:\\\\file.dat\",ios::in);",
+      "C. ofstream infile(\"d:\\\\file.dat\",ios::out);",
+      "D. fstream infile(\"d:\\\\file.dat\",ios::in|ios::out);"
+    ],
+    "answer": "C",
+    "explanation": "写文件应使用ofstream并以ios::out模式打开。ifstream是输入流不能写入，D虽然也可写但题目要求的是写入。",
+    "knowledgePoints": [
+      "文件打开",
+      "ofstream",
+      "ios::out"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "文件操作",
+      "文件打开模式"
+    ]
+  },
+  {
+    "id": 128,
+    "type": "choice",
+    "chapter": "运算符重载",
+    "stem": "在C++中不能被重载的一组运算符是（ ）",
+    "options": [
+      "A. :: ?: . sizeof",
+      "B. ?: . sizeof ++ --",
+      "C. :: ?: new delete",
+      "D. ++ -- ?: sizeof"
+    ],
+    "answer": "A",
+    "explanation": "::（作用域解析）、?:（条件运算符）、.（成员访问）、sizeof都不能被重载。new和delete、++和--可以被重载。",
+    "knowledgePoints": [
+      "不可重载运算符"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "不可重载运算符"
+    ]
+  },
+  {
+    "id": 129,
+    "type": "choice",
+    "chapter": "友元",
+    "stem": "如果类A被说明成类B的友元，则表达正确的是（ ）",
+    "options": [
+      "A. 类A的成员即是类B的成员",
+      "B. 类B的成员即是类A的成员",
+      "C. 类A的成员函数可以访问类B的所有成员",
+      "D. 类B的成员函数可以访问类A的所有成员"
+    ],
+    "answer": "C",
+    "explanation": "类A是类B的友元，意味着类A的成员函数可以访问类B的所有成员（包括私有成员），但反过来不行。",
+    "knowledgePoints": [
+      "友元类",
+      "单向性"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "友元"
+    ]
+  },
+  {
+    "id": 130,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "下列描述中，表达错误的是（ ）",
+    "options": [
+      "A. 公有继承时，基类中public成员在派生类中仍是public的",
+      "B. 公有继承时，基类中private成员在派生类中仍是private的",
+      "C. 公有继承时，基类中protected成员在派生类中仍是protected的",
+      "D. 私有继承时，基类中public成员在派生类中仍是private的"
+    ],
+    "answer": "B",
+    "explanation": "公有继承时，基类的private成员在派生类中是不可访问的（不可见），而不是仍然是private的。派生类不能直接访问基类的private成员。",
+    "knowledgePoints": [
+      "公有继承",
+      "访问权限",
+      "private成员继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承方式",
+      "私有继承",
+      "公有继承"
+    ]
+  },
+  {
+    "id": 131,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "下列描述中，正确的是（ ）",
+    "options": [
+      "A. 所有的运算符号都可以重载",
+      "B. 基类类型的指针可以指向子类，子类类型的指针也可以指向基类",
+      "C. 可以在类的构造函数中对静态数据成员进行初始化",
+      "D. 动态联编要满足两个条件，被调用的成员函数是虚函数，用指针或引用调用虚函数"
+    ],
+    "answer": "D",
+    "explanation": "动态联编需要两个条件：成员函数是虚函数，且通过基类指针或引用来调用。",
+    "knowledgePoints": [
+      "动态联编",
+      "虚函数条件"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "动态联编",
+      "虚函数"
+    ]
+  },
+  {
+    "id": 132,
+    "type": "choice",
+    "chapter": "文件IO",
+    "stem": "在C++中使用流进行输入输出，其中用于屏幕输出的对象是（ ）",
+    "options": [
+      "A. cerr",
+      "B. cin",
+      "C. cout",
+      "D. cfile"
+    ],
+    "answer": "C",
+    "explanation": "cout是标准输出对象，用于屏幕输出。cerr是标准错误输出，cin是标准输入。",
+    "knowledgePoints": [
+      "cout",
+      "标准输出"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "文件操作"
+    ]
+  },
+  {
+    "id": 133,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "关于浅复制和深复制，如下描述错误的是（ ）",
+    "options": [
+      "A. 调用类中默认的复制构造函数进行对象的初始化时，采用浅复制的方式",
+      "B. 深复制容易导致同一片储存空间被释放两次，导致内存错误",
+      "C. 当对象中还有关于其它资源的指针或引用时，对象之间的简单复制采用浅复制的形式，要实现深复制，需要对\"=\"进行重载，另外开辟一块空间",
+      "D. 当对象中含有关于其它资源的指针或引用时，用一个对象初始化另一个对象时，为了实现深复制，需要重写复制构造函数"
+    ],
+    "answer": "B",
+    "explanation": "应该是浅复制容易导致同一片存储空间被释放两次，而不是深复制。深复制恰恰是为了解决这个问题。",
+    "knowledgePoints": [
+      "浅复制",
+      "深复制",
+      "复制构造函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "拷贝构造函数",
+      "赋值运算符重载"
+    ]
+  },
+  {
+    "id": 134,
+    "type": "choice",
+    "chapter": "this/const/static成员",
+    "stem": "静态成员函数没有（ ）",
+    "options": [
+      "A. 指针参数",
+      "B. 返回值",
+      "C. 返回类型",
+      "D. this指针"
+    ],
+    "answer": "D",
+    "explanation": "静态成员函数不与任何对象关联，因此没有this指针。",
+    "knowledgePoints": [
+      "静态成员函数",
+      "this指针"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "静态成员函数",
+      "this指针"
+    ]
+  },
+  {
+    "id": 135,
+    "type": "choice",
+    "chapter": "多继承与虚基类",
+    "stem": "下列虚基类的声明中正确的是（ ）",
+    "options": [
+      "A. class virtual B:public A",
+      "B. class B: virtual public A",
+      "C. class B:public A virtual",
+      "D. virtual class B:public A"
+    ],
+    "answer": "B",
+    "explanation": "虚基类声明格式为class 派生类名: virtual 访问限定符 基类名，virtual放在访问限定符之前或之后均可。",
+    "knowledgePoints": [
+      "虚基类声明",
+      "virtual关键字"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚基类",
+      "虚继承"
+    ]
+  },
+  {
+    "id": 136,
+    "type": "choice",
+    "chapter": "模板",
+    "stem": "关于类模板的说法正确的是（ ）",
+    "options": [
+      "A. 类模板的主要作用是生成抽象类",
+      "B. 类模板实例化时，编译器将根据给出的模板实参生成一个类",
+      "C. 在类模板中的数据成员具有相同类型",
+      "D. 类模板中的数据成员没有返回值"
+    ],
+    "answer": "B",
+    "explanation": "类模板在实例化时，编译器根据提供的模板实参替换模板参数，生成一个具体的类。",
+    "knowledgePoints": [
+      "类模板实例化",
+      "模板参数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "类模板",
+      "模板实例化"
+    ]
+  },
+  {
+    "id": 137,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "实现运行时的多态性采用（ ）",
+    "options": [
+      "A. 重载函数",
+      "B. 构造函数",
+      "C. 析构函数",
+      "D. 虚函数"
+    ],
+    "answer": "D",
+    "explanation": "运行时多态（动态联编）通过虚函数实现。重载函数实现的是编译时多态。",
+    "knowledgePoints": [
+      "运行时多态",
+      "虚函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "多态",
+      "虚函数"
+    ]
+  },
+  {
+    "id": 138,
+    "type": "choice",
+    "chapter": "类与对象",
+    "stem": "关于类和对象不正确的说法是（ ）",
+    "options": [
+      "A. 类是一种类型，它封装了数据和操作",
+      "B. 对象是类的实例",
+      "C. 一个类的对象只有一个",
+      "D. 一个对象必须属于某个类"
+    ],
+    "answer": "C",
+    "explanation": "一个类可以创建多个对象，没有数量限制。",
+    "knowledgePoints": [
+      "类与对象",
+      "多对象"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "封装"
+    ]
+  },
+  {
+    "id": 139,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "一个类可包含构造函数的个数是（ ）",
+    "options": [
+      "A. 0个",
+      "B. 0或1个",
+      "C. 0个或多个",
+      "D. 1个或多个"
+    ],
+    "answer": "C",
+    "explanation": "一个类可以不定义构造函数（编译器提供默认的），也可以定义多个构造函数（通过重载）。",
+    "knowledgePoints": [
+      "构造函数个数",
+      "构造函数重载"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数",
+      "构造函数重载"
+    ]
+  },
+  {
+    "id": 140,
+    "type": "fillin",
+    "chapter": "继承与派生",
+    "stem": "程序中class B继承类A，类C公有继承类B。类A有protected成员x，为使C的Print()中可以访问x，请填写类B继承类A的方式。\nclass B: ______ A",
+    "options": null,
+    "answer": "public或protected",
+    "explanation": "B必须以public或protected方式继承A，才能使A的protected成员x在C中仍然可访问。如果B使用private继承，x在B中变为private，C无法访问。",
+    "knowledgePoints": [
+      "继承方式",
+      "访问权限"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承方式",
+      "保护继承"
+    ]
+  },
+  {
+    "id": 141,
+    "type": "fillin",
+    "chapter": "类与对象",
+    "stem": "程序中类A有数据成员x，为使main函数中a.x可正常访问，请填写x的访问权限。\nclass A {\n    ________int x;\npublic:\n    A() { x=0; }\n};",
+    "options": null,
+    "answer": "public",
+    "explanation": "要通过对象直接访问数据成员x，x必须声明为public。将public:标签放在x前面，或在已有的public区域中声明x。",
+    "knowledgePoints": [
+      "访问权限",
+      "public"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "封装",
+      "默认访问权限"
+    ]
+  },
+  {
+    "id": 142,
+    "type": "fillin",
+    "chapter": "多态与虚函数",
+    "stem": "在32位环境下，以下程序的输出结果为________。\nclass A {\n    int x;\npublic:\n    A() { x=0; }\n    virtual ~A() {}\n};\nint main() {\n    cout<<sizeof(A)<<endl;\n    return 0;\n}",
+    "options": null,
+    "answer": "8",
+    "explanation": "在32位环境下，int占4字节，虚函数表指针(vptr)占4字节，合计8字节。",
+    "knowledgePoints": [
+      "sizeof",
+      "虚函数表指针",
+      "对象大小"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚函数表",
+      "虚函数"
+    ]
+  },
+  {
+    "id": 143,
+    "type": "fillin",
+    "chapter": "运算符重载",
+    "stem": "Complex类中加法运算符重载函数形参表中的c代表加法运算符的左操作数还是右操作数？\nComplex operator+(const Complex &c)\n{\n    return Complex(real+c.real, image+c.image);\n}",
+    "options": null,
+    "answer": "右操作数",
+    "explanation": "成员函数重载二元运算符时，this指向左操作数，显式参数c是右操作数。",
+    "knowledgePoints": [
+      "运算符重载",
+      "成员函数",
+      "左右操作数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "运算符重载",
+      "成员运算符重载"
+    ]
+  },
+  {
+    "id": 144,
+    "type": "fillin",
+    "chapter": "运算符重载",
+    "stem": "请补全Complex类的前置++运算符重载函数代码。假定复数的++运算定义为使复数的实部和虚部分别加一。\nComplex& operator++() {\n    ________________\n}",
+    "options": null,
+    "answer": "real++; image++; return *this;",
+    "explanation": "前置++运算符需要先修改数据成员，然后返回修改后的对象引用。",
+    "knowledgePoints": [
+      "前置++重载",
+      "return *this"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "运算符重载",
+      "成员运算符重载"
+    ]
+  },
+  {
+    "id": 145,
+    "type": "fillin",
+    "chapter": "继承与派生",
+    "stem": "请写出以下代码的输出结果：\nclass A {\npublic:\n    A() { cout<<\"A\"<<\" \"; }\n};\nclass B:A {\npublic:\n    B() { cout<<\"B\"<<endl; }\n};\nint main() {\n    B b;\n    return 0;\n}",
+    "options": null,
+    "answer": "A B",
+    "explanation": "创建派生类对象时，先调用基类构造函数输出A，再调用派生类构造函数输出B。",
+    "knowledgePoints": [
+      "构造顺序",
+      "继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承",
+      "构造函数调用顺序"
+    ]
+  },
+  {
+    "id": 146,
+    "type": "fillin",
+    "chapter": "多继承与虚基类",
+    "stem": "函数调用语句d.f()有二义性，请修改这条语句，消除f函数调用的二义性。\nclass B1 { public: void f() {} };\nclass B2 { public: void f() {} };\nclass D : public B1, public B2 { };\nint main() {\n    D d;\n    d.f(); // 有二义性\n}",
+    "options": null,
+    "answer": "d.B1::f()或d.B2::f()",
+    "explanation": "使用作用域分辨符::明确指定调用哪个基类的f()函数来消除二义性。",
+    "knowledgePoints": [
+      "二义性",
+      "作用域分辨符",
+      "多继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "多继承",
+      "二义性问题",
+      "作用域解析运算符"
+    ]
+  },
+  {
+    "id": 147,
+    "type": "fillin",
+    "chapter": "多态与虚函数",
+    "stem": "请写出以下程序的输出结果：\nclass Shape {\npublic:\n    void Draw() { cout<<\"Shape\"<<endl; }\n};\nclass Circle:public Shape {\npublic:\n    void Draw() { cout<<\"Circle\"<<endl; }\n};\nint main() {\n    Circle c;\n    Shape* s=&c;\n    s->Draw();\n    return 0;\n}",
+    "options": null,
+    "answer": "Shape",
+    "explanation": "Shape的Draw()不是虚函数，通过基类指针调用时使用静态绑定，调用的是基类的Draw()，输出Shape。",
+    "knowledgePoints": [
+      "静态绑定",
+      "非虚函数",
+      "基类指针"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "静态联编"
+    ]
+  },
+  {
+    "id": 148,
+    "type": "fillin",
+    "chapter": "模板",
+    "stem": "在空白处实现名为Swap的函数模板，使得main函数中交换int和char类型变量的代码正确运行。",
+    "options": null,
+    "answer": "template<typename Type>\nvoid Swap(Type& a, Type& b)\n{\n    Type t = a;\n    a = b;\n    b = t;\n}",
+    "explanation": "函数模板Swap使用模板参数Type，通过引用参数交换两个变量的值。",
+    "knowledgePoints": [
+      "函数模板",
+      "交换函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数模板"
+    ]
+  },
+  {
+    "id": 149,
+    "type": "fillin",
+    "chapter": "STL",
+    "stem": "在下面程序的空白处填入合适的代码使得程序可以正确运行。\nvector<int> v;\nfor(int i=0;i<10;i++) v.push_back(i);\n________ it;\nfor(it=v.begin();it<v.end();it++)\n    cout<<*it<<\" \";",
+    "options": null,
+    "answer": "vector<int>::iterator",
+    "explanation": "遍历vector需要使用vector<int>::iterator类型的迭代器。",
+    "knowledgePoints": [
+      "迭代器",
+      "vector",
+      "iterator类型"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "迭代器"
+    ]
+  },
+  {
+    "id": 150,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "C++标准库中的输入输出流的头文件为（ ）。",
+    "options": [
+      "A. stdafx.h",
+      "B. string",
+      "C. iostream",
+      "D. cstdio"
+    ],
+    "answer": "C",
+    "explanation": "C++标准输入输出流定义在<iostream>头文件中。",
+    "knowledgePoints": [
+      "iostream",
+      "头文件"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "输入输出运算符重载"
+    ]
+  },
+  {
+    "id": 151,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "对于任意一个类，析构函数的个数最多为（ ）。",
+    "options": [
+      "A. 0",
+      "B. 1",
+      "C. 2",
+      "D. 3"
+    ],
+    "answer": "B",
+    "explanation": "每个类只能有一个析构函数，析构函数不能重载。",
+    "knowledgePoints": [
+      "析构函数",
+      "唯一性"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "析构函数"
+    ]
+  },
+  {
+    "id": 152,
+    "type": "choice",
+    "chapter": "类与对象",
+    "stem": "聚合与组合都描述包含关系，相比而言，（ ）。",
+    "options": [
+      "A. 聚合与组合一样松散",
+      "B. 组合更松散",
+      "C. 聚合更松散",
+      "D. 聚合与组合的松散程度无法比较"
+    ],
+    "answer": "C",
+    "explanation": "聚合是弱的包含关系（部分可以独立存在），组合是强的包含关系（部分不能独立存在），所以聚合更松散。",
+    "knowledgePoints": [
+      "聚合",
+      "组合",
+      "包含关系"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "has-a关系"
+    ]
+  },
+  {
+    "id": 153,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "为提高程序效率，对于功能简单且需频繁调用的函数建议声明为（ ）。",
+    "options": [
+      "A. 内联函数",
+      "B. 重载函数",
+      "C. 递归函数",
+      "D. 函数模板"
+    ],
+    "answer": "A",
+    "explanation": "内联函数在编译时将函数体插入调用处，避免函数调用开销，适合功能简单且频繁调用的函数。",
+    "knowledgePoints": [
+      "内联函数",
+      "效率"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "内联函数"
+    ]
+  },
+  {
+    "id": 154,
+    "type": "choice",
+    "chapter": "文件IO",
+    "stem": "若需要以只读方式打开一个二进制文件\"a.bin\"，正确的操作为（ ）。",
+    "options": [
+      "A. ifstream myFile(\"a.bin\");",
+      "B. ofstream myFile(\"a.bin\", ios::binary);",
+      "C. fstream myFile(\"a.bin\", ios::out|ios::binary);",
+      "D. fstream myFile(\"a.bin\", ios::in|ios::binary);"
+    ],
+    "answer": "D",
+    "explanation": "只读方式打开二进制文件需要使用ios::in|ios::binary。A缺少binary模式，B和C是写入模式。",
+    "knowledgePoints": [
+      "二进制文件",
+      "ios::in",
+      "ios::binary"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "文件操作",
+      "文件打开模式"
+    ]
+  },
+  {
+    "id": 155,
+    "type": "choice",
+    "chapter": "友元",
+    "stem": "引入友元的主要目的是为了（ ）。",
+    "options": [
+      "A. 增强数据安全性",
+      "B. 提高程序的可靠性",
+      "C. 提高程序的效率和灵活性",
+      "D. 保证类的封装性"
+    ],
+    "answer": "C",
+    "explanation": "友元破坏了类的封装性，但带来了效率和灵活性的提升，允许外部函数直接访问私有成员。",
+    "knowledgePoints": [
+      "友元",
+      "效率",
+      "灵活性"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "友元"
+    ]
+  },
+  {
+    "id": 156,
+    "type": "choice",
+    "chapter": "模板",
+    "stem": "类模板的实例化（ ）。",
+    "options": [
+      "A. 在编译时进行",
+      "B. 属于动态联编",
+      "C. 在运行时进行",
+      "D. 在连接时进行"
+    ],
+    "answer": "A",
+    "explanation": "类模板的实例化在编译时进行，编译器根据模板实参生成具体的类定义。",
+    "knowledgePoints": [
+      "模板实例化",
+      "编译时"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "模板实例化"
+    ]
+  },
+  {
+    "id": 157,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "下列关于构造函数和析构函数的描述不正确的是（ ）。",
+    "options": [
+      "A. 构造函数和析构函数都没有返回值",
+      "B. 构造函数可以定义为虚函数",
+      "C. 构造函数和析构函数都不能被继承",
+      "D. 析构函数可以定义为虚函数"
+    ],
+    "answer": "B",
+    "explanation": "构造函数不能是虚函数。在构造对象时，对象的类型已经确定，不需要动态联编。",
+    "knowledgePoints": [
+      "构造函数",
+      "虚函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数",
+      "析构函数",
+      "虚函数"
+    ]
+  },
+  {
+    "id": 158,
+    "type": "choice",
+    "chapter": "类与对象",
+    "stem": "下列关于成员函数的描述中，错误的是（ ）。",
+    "options": [
+      "A. 成员函数一定是内联函数",
+      "B. 成员函数可以重载",
+      "C. 成员函数可以设置缺省参数值",
+      "D. 成员函数可以是静态的"
+    ],
+    "answer": "A",
+    "explanation": "只有在类体内定义的成员函数默认为内联函数，在类外定义的成员函数不是内联函数。",
+    "knowledgePoints": [
+      "成员函数",
+      "内联函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "内联函数"
+    ]
+  },
+  {
+    "id": 159,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "类的构造函数是在定义该类的一个（ ）时被自动调用执行的。",
+    "options": [
+      "A. 数据成员",
+      "B. 对象",
+      "C. 成员函数",
+      "D. 友元函数"
+    ],
+    "answer": "B",
+    "explanation": "构造函数在创建类的对象时被自动调用。",
+    "knowledgePoints": [
+      "构造函数",
+      "对象创建"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数",
+      "对象生命周期"
+    ]
+  },
+  {
+    "id": 160,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "在定义一个派生类时，若不使用保留字显式地规定采用何种继承方式，则默认为（ ）方式。",
+    "options": [
+      "A. 私有继承",
+      "B. 非私有继承",
+      "C. 保护继承",
+      "D. 公有继承"
+    ],
+    "answer": "A",
+    "explanation": "使用class关键字定义派生类时，默认继承方式为private（私有继承）。",
+    "knowledgePoints": [
+      "默认继承方式",
+      "私有继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承方式"
+    ]
+  },
+  {
+    "id": 161,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "在派生类构造函数的初始化列表中可以不包含（ ）。",
+    "options": [
+      "A. 基类的构造函数",
+      "B. 基类子对象成员的初始化",
+      "C. 派生类对象成员的初始化",
+      "D. 派生类中一般数据成员的初始化"
+    ],
+    "answer": "D",
+    "explanation": "一般数据成员可以在构造函数体内赋值，不一定要在初始化列表中。基类构造和对象成员初始化通常需要在初始化列表中完成。",
+    "knowledgePoints": [
+      "初始化列表",
+      "一般数据成员"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数",
+      "初始化列表",
+      "构造函数调用顺序"
+    ]
+  },
+  {
+    "id": 162,
+    "type": "choice",
+    "chapter": "友元",
+    "stem": "不属于类的成员函数的是（ ）。",
+    "options": [
+      "A. 静态成员函数",
+      "B. 友元函数",
+      "C. 构造函数",
+      "D. 析构函数"
+    ],
+    "answer": "B",
+    "explanation": "友元函数不是类的成员函数，它是类外的函数被授权可以访问类的私有成员。",
+    "knowledgePoints": [
+      "友元函数",
+      "非成员函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "友元函数"
+    ]
+  },
+  {
+    "id": 163,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "抽象类应含有（ ）。",
+    "options": [
+      "A. 至少一个虚函数",
+      "B. 至多一个虚函数",
+      "C. 至少一个纯虚函数",
+      "D. 至多一个纯虚函数"
+    ],
+    "answer": "C",
+    "explanation": "抽象类的定义要求包含至少一个纯虚函数。",
+    "knowledgePoints": [
+      "抽象类",
+      "纯虚函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "抽象类",
+      "纯虚函数"
+    ]
+  },
+  {
+    "id": 164,
+    "type": "choice",
+    "chapter": "文件IO",
+    "stem": "当用输出文件流对象调用open成员函数打开一个文件时，打开方式参数也可以省略，缺省按（ ）方式打开。",
+    "options": [
+      "A. ios_base::in",
+      "B. ios_base::out",
+      "C. ios_base::trunk",
+      "D. ios_base::binary"
+    ],
+    "answer": "B",
+    "explanation": "ofstream（输出文件流）的默认打开方式是ios_base::out。",
+    "knowledgePoints": [
+      "ofstream",
+      "默认打开方式"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "文件打开模式"
+    ]
+  },
+  {
+    "id": 165,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "下列哪个操作不会调用拷贝构造函数（ ）。",
+    "options": [
+      "A. 基于一个现有对象构造另一个同类对象",
+      "B. 函数调用时按值传递对象",
+      "C. 函数调用时按值返回对象",
+      "D. 函数调用时按引用传递对象"
+    ],
+    "answer": "D",
+    "explanation": "按引用传递对象不会创建对象的副本，因此不会调用拷贝构造函数。其他三种情况都会调用拷贝构造函数。",
+    "knowledgePoints": [
+      "拷贝构造函数调用时机",
+      "引用传递"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "拷贝构造函数",
+      "引用"
+    ]
+  },
+  {
+    "id": 166,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "下面程序的输出为（ ）。\n#include <iostream>\nusing namespace std;\nclass A {\npublic:\n    A() { cout<<\"A\"<<endl; }\n    ~A() { cout<<\"~A\"<<endl; }\n};\nint main() {\n    cout<<\"Hello World!\"<<endl;\n    return 0;\n}",
+    "options": [
+      "A. A\\nHello World!\\n~A",
+      "B. A\\n~A\\nHello World!",
+      "C. Hello World!",
+      "D. Hello World!\\nA\\n~A"
+    ],
+    "answer": "A",
+    "explanation": "全局对象a在main函数之前构造（输出A），main中输出Hello World!，程序结束时全局对象析构（输出~A）。",
+    "knowledgePoints": [
+      "全局对象",
+      "构造析构顺序"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数",
+      "析构函数调用时机",
+      "对象生命周期"
+    ]
+  },
+  {
+    "id": 167,
+    "type": "truefalse",
+    "chapter": "类与对象",
+    "stem": "以下代码对吗？\nclass A {\nprotected:\n    int x;\npublic:\n    int y;\n    A(){x=y=0;}\n};\nint main() {\n    A a;\n    cout<<a.y<<\" \"<<a.x<<endl;\n}",
+    "options": null,
+    "answer": "错",
+    "explanation": "x是protected成员，不能在类外通过对象直接访问。a.x会导致编译错误。",
+    "knowledgePoints": [
+      "protected成员",
+      "访问控制"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "封装"
+    ]
+  },
+  {
+    "id": 168,
+    "type": "truefalse",
+    "chapter": "构造函数与析构函数",
+    "stem": "以下代码对吗？\nclass A {\nprotected:\n    int x;\npublic:\n    int y;\n    A(int xx,int yy):x(xx),y(yy){}\n};\nint main() {\n    A a;\n}",
+    "options": null,
+    "answer": "错",
+    "explanation": "类A只定义了带两个参数的构造函数，编译器不会自动生成默认构造函数，因此A a;无法通过编译。",
+    "knowledgePoints": [
+      "默认构造函数",
+      "构造函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "默认构造函数",
+      "构造函数重载"
+    ]
+  },
+  {
+    "id": 169,
+    "type": "truefalse",
+    "chapter": "this/const/static成员",
+    "stem": "以下代码对吗？\nint main() {\n    int a=5;\n    int *const ptr=&a;\n    (*ptr)++;\n    cout<<a<<endl;\n}",
+    "options": null,
+    "answer": "对",
+    "explanation": "int *const ptr表示ptr是常量指针（指针本身不能改变），但可以通过ptr修改所指向的值。(*ptr)++合法，输出6。",
+    "knowledgePoints": [
+      "常量指针",
+      "const指针"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "const指针"
+    ]
+  },
+  {
+    "id": 170,
+    "type": "truefalse",
+    "chapter": "this/const/static成员",
+    "stem": "以下代码对吗？\nclass A {\nprotected:\n    int x;\npublic:\n    int y;\n    A(int xx,int yy):x(xx),y(yy){}\n};\nint main() {\n    cout<<A::y<<endl;\n}",
+    "options": null,
+    "answer": "错",
+    "explanation": "y是非静态数据成员，不能通过类名::成员名的方式访问。只有静态成员才能这样访问。",
+    "knowledgePoints": [
+      "非静态成员",
+      "类名访问"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "static成员"
+    ]
+  },
+  {
+    "id": 171,
+    "type": "truefalse",
+    "chapter": "运算符重载",
+    "stem": "以下代码对吗？Complex c1+8.9是否合法？\nclass Complex {\n    double real,image;\npublic:\n    Complex(double r=0,double i=0):real(r),image(i){}\n    Complex operator+(const Complex& c) const {\n        return Complex(real+c.real,image+c.image);\n    }\n};\nint main() {\n    Complex c1(5.6,6.6);\n    Complex c2=c1+8.9;\n    return 0;\n}",
+    "options": null,
+    "answer": "对",
+    "explanation": "8.9可以通过Complex的隐式类型转换构造函数Complex(double r=0, double i=0)自动转换为Complex对象，所以c1+8.9合法。",
+    "knowledgePoints": [
+      "隐式类型转换",
+      "运算符重载"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数",
+      "运算符重载"
+    ]
+  },
+  {
+    "id": 172,
+    "type": "truefalse",
+    "chapter": "运算符重载",
+    "stem": "以下代码对吗？8.9+c1是否合法？（operator+是成员函数重载）\nclass Complex {\n    double real,image;\npublic:\n    Complex(double r=0,double i=0):real(r),image(i){}\n    Complex operator+(const Complex& c) const {\n        return Complex(real+c.real,image+c.image);\n    }\n};\nint main() {\n    Complex c1(5.6,6.6);\n    Complex c2=8.9+c1;\n    return 0;\n}",
+    "options": null,
+    "answer": "错",
+    "explanation": "当+重载为成员函数时，左操作数必须是该类对象。8.9不是Complex对象，不能调用Complex的operator+成员函数，因此8.9+c1非法。",
+    "knowledgePoints": [
+      "运算符重载",
+      "成员函数",
+      "左操作数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "成员运算符重载",
+      "运算符重载"
+    ]
+  },
+  {
+    "id": 173,
+    "type": "truefalse",
+    "chapter": "继承与派生",
+    "stem": "以下代码对吗？\nclass A {\n    int x;\npublic:\n    A(int xx):x(xx){}\n    void Print(){cout<<x<<endl;}\n};\nclass B:public A {\npublic:\n    void Print(){A::Print();}\n};\nint main() {\n    B b;\n    b.Print();\n}",
+    "options": null,
+    "answer": "错",
+    "explanation": "类B没有定义构造函数，且基类A只有带参数的构造函数，没有默认构造函数。B b;需要调用B的默认构造函数，而B的默认构造函数需要调用A的默认构造函数，但A没有默认构造函数，编译错误。",
+    "knowledgePoints": [
+      "构造函数",
+      "默认构造函数",
+      "继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数",
+      "继承"
+    ]
+  },
+  {
+    "id": 174,
+    "type": "truefalse",
+    "chapter": "this/const/static成员",
+    "stem": "以下代码对吗？\nclass A {\n    int x;\npublic:\n    A(int xx):x(xx) {}\n    void Print() const {\n        cout<<x<<endl;\n    }\n};\nint main() {\n    const A a(5);\n    a.Print();\n    return 0;\n}",
+    "options": null,
+    "answer": "对",
+    "explanation": "const对象只能调用const成员函数。Print()被声明为const成员函数，所以const A a(5); a.Print();合法。",
+    "knowledgePoints": [
+      "const对象",
+      "const成员函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "const对象",
+      "const成员函数"
+    ]
+  },
+  {
+    "id": 175,
+    "type": "truefalse",
+    "chapter": "多态与虚函数",
+    "stem": "以下代码可以输出Circle吗？\nclass Shape {\npublic:\n    virtual void Draw() { cout<<\"Shape\"<<endl; }\n    virtual ~Shape(){}\n};\nclass Circle:public Shape {\npublic:\n    void Draw() { cout<<\"Circle\"<<endl; }\n};\nint main() {\n    Shape* c=new Circle();\n    (*c).Draw();\n    return 0;\n}",
+    "options": null,
+    "answer": "对",
+    "explanation": "Draw()是虚函数，通过基类指针解引用调用仍然会使用动态绑定。(*c).Draw()等价于c->Draw()，会调用Circle::Draw()，输出Circle。",
+    "knowledgePoints": [
+      "虚函数",
+      "动态绑定",
+      "多态"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "多态",
+      "虚函数"
+    ]
+  },
+  {
+    "id": 176,
+    "type": "truefalse",
+    "chapter": "STL",
+    "stem": "以下代码对吗？（使用set<Data>但Data类没有定义比较运算符）\nclass Data {\n    int x;\npublic:\n    Data(int xx=0):x(xx) {}\n    friend ostream& operator<<(ostream& out,const Data& d);\n};\nint main() {\n    set<Data> s;\n    s.insert(Data(1));\n    s.insert(Data(2));\n    ...\n}",
+    "options": null,
+    "answer": "错",
+    "explanation": "std::set 是一个内部红黑树结构的关联容器，默认要求元素类型支持小于号（<）运算符（即 std::less<T>）来进行大小比较和排序。这里的 Data 类没有重载 operator<，因此插入元素时会编译报错。",
+    "knowledgePoints": [
+      "set",
+      "比较运算符",
+      "关联容器"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "关联容器",
+      "运算符重载"
+    ]
+  },
+  {
+    "id": 177,
+    "type": "choice",
+    "chapter": "运算符重载",
+    "stem": "能用友元函数重载的运算符是（ ）。",
+    "options": [
+      "A. +",
+      "B. ->",
+      "C. []",
+      "D. ="
+    ],
+    "answer": "A",
+    "explanation": "=、->、[]、()只能重载为成员函数。+可以重载为友元函数。",
+    "knowledgePoints": [
+      "友元重载",
+      "运算符限制"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "运算符重载",
+      "友元运算符重载"
+    ]
+  },
+  {
+    "id": 178,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "在C++中使用流进行输入输出，其中专用于从键盘进行输入的流是（ ）。",
+    "options": [
+      "A. cerr",
+      "B. cin",
+      "C. cout",
+      "D. cfile"
+    ],
+    "answer": "B",
+    "explanation": "cin是标准输入流对象，默认连接到键盘。",
+    "knowledgePoints": [
+      "cin",
+      "标准输入"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "命名空间"
+    ]
+  },
+  {
+    "id": 179,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "假设存在函数int max(int,int)返回两参数中较大值，若求22、59、70中最大值，下列说法不正确的是（ ）",
+    "options": [
+      "A. int m = max(22,max(59,70));",
+      "B. int m = max(max(22,59),70);",
+      "C. int m = max(22,59,70);",
+      "D. int m = max(59,max(22,70));"
+    ],
+    "answer": "C",
+    "explanation": "max(int,int)只接收两个参数，max(22,59,70)传入三个参数不符合函数原型。",
+    "knowledgePoints": [
+      "函数调用",
+      "参数匹配"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数重载"
+    ]
+  },
+  {
+    "id": 180,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "int fun(int, int)，不可与下列哪个函数构成重载（ ）",
+    "options": [
+      "A. int fun(int, int, int)",
+      "B. double fun(int, int)",
+      "C. double fun(double, double)",
+      "D. double fun(int, double)"
+    ],
+    "answer": "B",
+    "explanation": "B与原函数参数表相同（都是int, int），仅返回值不同，不构成重载。重载要求参数个数或参数类型不同。",
+    "knowledgePoints": [
+      "函数重载",
+      "返回值不构成重载"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数重载"
+    ]
+  },
+  {
+    "id": 181,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "内联函数的特点是（ ）。",
+    "options": [
+      "A. 减少代码量，加快访问速度",
+      "B. 减少代码量，减缓访问速度",
+      "C. 增加代码量，减缓访问速度",
+      "D. 增加代码量，加快访问速度"
+    ],
+    "answer": "D",
+    "explanation": "内联函数在每个调用处展开函数体，增加了代码量，但省去了函数调用的开销，加快了执行速度。",
+    "knowledgePoints": [
+      "内联函数特点",
+      "代码膨胀"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "内联函数"
+    ]
+  },
+  {
+    "id": 182,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "函数默认参数在函数原型中说明，默认参数必须放在参数序列的（ ）。",
+    "options": [
+      "A. 前部",
+      "B. 中部",
+      "C. 后部",
+      "D. 两端"
+    ],
+    "answer": "C",
+    "explanation": "默认参数必须从右向左连续设置，即放在参数序列的后部。",
+    "knowledgePoints": [
+      "默认参数",
+      "参数位置"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "默认参数"
+    ]
+  },
+  {
+    "id": 183,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "如果没有为一个类定义任何构造函数的情况下，下列描述正确的是（ ）。",
+    "options": [
+      "A. 编译器总是自动创建一个不带参数的构造函数",
+      "B. 这个类没有构造函数",
+      "C. 这个类不需要构造函数",
+      "D. 该类不能通过编译"
+    ],
+    "answer": "A",
+    "explanation": "如果没有定义任何构造函数，编译器会自动生成一个默认的无参构造函数。",
+    "knowledgePoints": [
+      "默认构造函数",
+      "编译器自动生成"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "默认构造函数"
+    ]
+  },
+  {
+    "id": 184,
+    "type": "choice",
+    "chapter": "友元",
+    "stem": "如果类A被声明为类B的友元（ ）。",
+    "options": [
+      "A. 类A的成员即类B的成员",
+      "B. 类B的成员即类A的成员",
+      "C. 类A的成员函数不得访问类B的成员",
+      "D. 类B不一定是类A的友元"
+    ],
+    "answer": "D",
+    "explanation": "友元关系不具有对称性。A是B的友元，A可以访问B的私有成员，但B不一定是A的友元。",
+    "knowledgePoints": [
+      "友元关系",
+      "非对称性"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "友元类",
+      "友元"
+    ]
+  },
+  {
+    "id": 185,
+    "type": "choice",
+    "chapter": "类与对象",
+    "stem": "类的私有成员可在何处被访问（ ）。",
+    "options": [
+      "A. 本类的成员函数中",
+      "B. 本类以及子类的成员函数中",
+      "C. 通过对象名在任何位置",
+      "D. 不可访问"
+    ],
+    "answer": "A",
+    "explanation": "private成员只能在本类的成员函数和友元函数中访问，不能在派生类或类外直接访问。",
+    "knowledgePoints": [
+      "private成员",
+      "访问权限"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "封装",
+      "默认访问权限"
+    ]
+  },
+  {
+    "id": 186,
+    "type": "choice",
+    "chapter": "绪论",
+    "stem": "在每个C++程序中都必须包含有这样一个函数，该函数的函数名为（ ）。",
+    "options": [
+      "A. main",
+      "B. MAIN",
+      "C. name",
+      "D. function"
+    ],
+    "answer": "A",
+    "explanation": "C++程序的入口函数为main，区分大小写。",
+    "knowledgePoints": [
+      "main函数",
+      "程序入口"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "面向对象四大特征"
+    ]
+  },
+  {
+    "id": 187,
+    "type": "choice",
+    "chapter": "this/const/static成员",
+    "stem": "如果在类外有函数调用CPoint::func(); 则函数func()是类CPoint的（ ）。",
+    "options": [
+      "A. 私有静态成员函数",
+      "B. 公有非静态成员函数",
+      "C. 公有静态成员函数",
+      "D. 友元函数"
+    ],
+    "answer": "C",
+    "explanation": "通过类名::函数名()的方式调用，说明func()是公有的静态成员函数。非静态成员函数需要通过对象调用。",
+    "knowledgePoints": [
+      "静态成员函数",
+      "类名调用"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "static成员",
+      "静态成员函数"
+    ]
+  },
+  {
+    "id": 188,
+    "type": "choice",
+    "chapter": "this/const/static成员",
+    "stem": "一个类的所有对象共享的是（ ）。",
+    "options": [
+      "A. 私有数据成员",
+      "B. 公有数据成员",
+      "C. 保护数据成员",
+      "D. 静态数据成员"
+    ],
+    "answer": "D",
+    "explanation": "静态数据成员属于类而非对象，所有对象共享同一份静态数据成员。",
+    "knowledgePoints": [
+      "静态数据成员",
+      "共享"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "static成员",
+      "静态数据成员"
+    ]
+  },
+  {
+    "id": 189,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "动态联编所支持的多态性称为（ ）。",
+    "options": [
+      "A. 虚函数",
+      "B. 继承",
+      "C. 编译时多态性",
+      "D. 运行时多态性"
+    ],
+    "answer": "D",
+    "explanation": "动态联编（动态绑定）支持的多态性称为运行时多态性，通过虚函数实现。",
+    "knowledgePoints": [
+      "运行时多态",
+      "动态联编"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "多态",
+      "动态联编"
+    ]
+  },
+  {
+    "id": 190,
+    "type": "choice",
+    "chapter": "模板",
+    "stem": "定义类模板时要使用关键字（ ）。",
+    "options": [
+      "A. const",
+      "B. new",
+      "C. delete",
+      "D. template"
+    ],
+    "answer": "D",
+    "explanation": "定义类模板需要使用template关键字，后跟模板参数列表。",
+    "knowledgePoints": [
+      "template关键字",
+      "类模板"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "类模板",
+      "模板"
+    ]
+  },
+  {
+    "id": 191,
+    "type": "choice",
+    "chapter": "多继承与虚基类",
+    "stem": "对虚基类的定义（ ）。",
+    "options": [
+      "A. 不需要使用虚函数",
+      "B. 必须使用虚函数",
+      "C. 必须使用private",
+      "D. 必须使用public"
+    ],
+    "answer": "A",
+    "explanation": "虚基类和虚函数是两个不同的概念。虚基类使用virtual关键字修饰继承方式，不需要虚函数。",
+    "knowledgePoints": [
+      "虚基类",
+      "与虚函数无关"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚基类",
+      "虚继承"
+    ]
+  },
+  {
+    "id": 192,
+    "type": "choice",
+    "chapter": "运算符重载",
+    "stem": "类型转换函数（ ）。",
+    "options": [
+      "A. 不能带有参数",
+      "B. 只能带一个参数",
+      "C. 只能带2个参数",
+      "D. 只能带3个参数"
+    ],
+    "answer": "A",
+    "explanation": "类型转换函数的格式为operator 类型名()，没有参数，也不指定返回类型。",
+    "knowledgePoints": [
+      "类型转换函数",
+      "operator"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "运算符重载"
+    ]
+  },
+  {
+    "id": 193,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "说明虚函数的关键字是（ ）。",
+    "options": [
+      "A. inline",
+      "B. virtual",
+      "C. define",
+      "D. static"
+    ],
+    "answer": "B",
+    "explanation": "虚函数使用virtual关键字声明。",
+    "knowledgePoints": [
+      "virtual关键字",
+      "虚函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚函数"
+    ]
+  },
+  {
+    "id": 194,
+    "type": "truefalse",
+    "chapter": "多态与虚函数",
+    "stem": "虚函数在基类和派生类之间定义，且要求函数原型完全一致。",
+    "options": null,
+    "answer": "对",
+    "explanation": "派生类覆盖基类的虚函数时，要求函数名、参数表和返回类型都相同（协变返回类型例外）。",
+    "knowledgePoints": [
+      "虚函数覆盖",
+      "函数原型"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚函数"
+    ]
+  },
+  {
+    "id": 195,
+    "type": "truefalse",
+    "chapter": "C++对C的扩充",
+    "stem": "内联函数中可以出现递归语句。",
+    "options": null,
+    "answer": "错",
+    "explanation": "内联函数不能包含复杂的控制结构如递归、循环等。递归函数无法在编译时完全展开。",
+    "knowledgePoints": [
+      "内联函数限制",
+      "递归"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "内联函数"
+    ]
+  },
+  {
+    "id": 196,
+    "type": "truefalse",
+    "chapter": "模板",
+    "stem": "模板类与类模板的意义完全相同。",
+    "options": null,
+    "answer": "错",
+    "explanation": "类模板是定义的模板，模板类是类模板实例化后生成的具体类。两者概念不同。",
+    "knowledgePoints": [
+      "类模板",
+      "模板类"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "类模板"
+    ]
+  },
+  {
+    "id": 197,
+    "type": "truefalse",
+    "chapter": "this/const/static成员",
+    "stem": "常对象只能调用常成员函数。",
+    "options": null,
+    "answer": "对",
+    "explanation": "const对象只能调用const成员函数，不能调用非const成员函数，以确保对象的数据不被修改。",
+    "knowledgePoints": [
+      "const对象",
+      "const成员函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "const对象",
+      "const成员函数"
+    ]
+  },
+  {
+    "id": 198,
+    "type": "truefalse",
+    "chapter": "C++对C的扩充",
+    "stem": "重载函数要求函数有相同的函数名，但具有不同的参数序列。",
+    "options": null,
+    "answer": "对",
+    "explanation": "函数重载要求函数名相同，参数列表（参数个数或参数类型）不同。",
+    "knowledgePoints": [
+      "函数重载",
+      "参数列表"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数重载"
+    ]
+  },
+  {
+    "id": 199,
+    "type": "fillin",
+    "chapter": "C++对C的扩充",
+    "stem": "在用C++进行程序设计时，最好用（ ）代替malloc。",
+    "options": null,
+    "answer": "new",
+    "explanation": "C++推荐使用new运算符代替C的malloc函数进行动态内存分配，new可以调用构造函数并返回正确类型的指针。",
+    "knowledgePoints": [
+      "new",
+      "malloc替代"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "动态内存管理"
+    ]
+  },
+  {
+    "id": 200,
+    "type": "fillin",
+    "chapter": "模板",
+    "stem": "函数模板中紧随template之后尖括号内的类型参数都要冠以保留字（ ）。",
+    "options": null,
+    "answer": "class或typename",
+    "explanation": "模板参数列表中的类型参数需要用class或typename关键字修饰。",
+    "knowledgePoints": [
+      "模板参数",
+      "class/typename"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数模板"
+    ]
+  },
+  {
+    "id": 201,
+    "type": "fillin",
+    "chapter": "C++对C的扩充",
+    "stem": "编译时多态性可以用（ ）函数实现。",
+    "options": null,
+    "answer": "重载",
+    "explanation": "编译时多态性（静态多态）通过函数重载和运算符重载实现。",
+    "knowledgePoints": [
+      "编译时多态",
+      "函数重载"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数重载"
+    ]
+  },
+  {
+    "id": 202,
+    "type": "fillin",
+    "chapter": "this/const/static成员",
+    "stem": "用关键字static修饰的类的成员称为（ ）成员。",
+    "options": null,
+    "answer": "静态",
+    "explanation": "static修饰的成员称为静态成员，包括静态数据成员和静态成员函数。",
+    "knowledgePoints": [
+      "static",
+      "静态成员"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "static成员"
+    ]
+  },
+  {
+    "id": 203,
+    "type": "fillin",
+    "chapter": "运算符重载",
+    "stem": "重载运算符\"+\"的函数名为（ ）。",
+    "options": null,
+    "answer": "operator+",
+    "explanation": "C++中重载运算符的函数名为operator后加运算符符号。",
+    "knowledgePoints": [
+      "运算符重载",
+      "函数名"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "运算符重载"
+    ]
+  },
+  {
+    "id": 204,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "说明内联函数的关键字是（ ）。",
+    "options": [
+      "A. inline",
+      "B. virtual",
+      "C. define",
+      "D. static"
+    ],
+    "answer": "A",
+    "explanation": "inline关键字用于声明内联函数。",
+    "knowledgePoints": [
+      "inline",
+      "内联函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "内联函数"
+    ]
+  },
+  {
+    "id": 205,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "假定CAb为一个类，则执行CAb oX;语句时将自动调用该类的（ ）。",
+    "options": [
+      "A. 有参构造函数",
+      "B. 无参构造函数",
+      "C. 拷贝构造函数",
+      "D. 赋值重载函数"
+    ],
+    "answer": "B",
+    "explanation": "CAb oX;不带参数创建对象，会调用无参构造函数（默认构造函数）。",
+    "knowledgePoints": [
+      "无参构造函数",
+      "对象创建"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "默认构造函数"
+    ]
+  },
+  {
+    "id": 206,
+    "type": "choice",
+    "chapter": "文件IO",
+    "stem": "cin是某个类的标准对象的引用，该类是（ ）。",
+    "options": [
+      "A. ostream",
+      "B. istream",
+      "C. stdout",
+      "D. stdin"
+    ],
+    "answer": "B",
+    "explanation": "cin是istream类的标准对象，用于标准输入。",
+    "knowledgePoints": [
+      "cin",
+      "istream"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "文件操作"
+    ]
+  },
+  {
+    "id": 207,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "下面的哪个保留字不能作为函数的返回类型？（ ）",
+    "options": [
+      "A. void",
+      "B. int",
+      "C. new",
+      "D. long"
+    ],
+    "answer": "C",
+    "explanation": "new是运算符，不是数据类型，不能作为函数的返回类型。",
+    "knowledgePoints": [
+      "返回类型",
+      "保留字"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "动态内存管理"
+    ]
+  },
+  {
+    "id": 208,
+    "type": "choice",
+    "chapter": "this/const/static成员",
+    "stem": "由于数据隐藏的需要，静态数据成员通常被说明为（ ）。",
+    "options": [
+      "A. 私有的",
+      "B. 公有的",
+      "C. 保护的",
+      "D. 不可访问的"
+    ],
+    "answer": "A",
+    "explanation": "为了数据隐藏和封装，静态数据成员通常声明为private，通过公有的静态成员函数来访问。",
+    "knowledgePoints": [
+      "静态数据成员",
+      "数据隐藏"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "静态数据成员",
+      "封装"
+    ]
+  },
+  {
+    "id": 209,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "编译时多态性使用什么获得？（ ）",
+    "options": [
+      "A. 重载函数",
+      "B. 继承",
+      "C. 虚函数",
+      "D. B和C"
+    ],
+    "answer": "A",
+    "explanation": "编译时多态性通过函数重载和运算符重载实现。虚函数实现的是运行时多态。",
+    "knowledgePoints": [
+      "编译时多态",
+      "重载函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "静态联编",
+      "函数重载"
+    ]
+  },
+  {
+    "id": 210,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "拷贝构造函数的参数通常是（ ）。",
+    "options": [
+      "A. 无特殊要求",
+      "B. 指向对象的指针",
+      "C. 自己类对象的常引用",
+      "D. 对象"
+    ],
+    "answer": "C",
+    "explanation": "拷贝构造函数的参数通常是本类对象的const引用，避免无限递归调用。",
+    "knowledgePoints": [
+      "拷贝构造函数",
+      "const引用参数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "拷贝构造函数"
+    ]
+  },
+  {
+    "id": 211,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "C++有几种联编？（ ）",
+    "options": [
+      "A. 1种",
+      "B. 2种",
+      "C. 3种",
+      "D. 4种"
+    ],
+    "answer": "B",
+    "explanation": "C++有两种联编方式：静态联编（编译时确定）和动态联编（运行时确定）。",
+    "knowledgePoints": [
+      "联编",
+      "静态联编",
+      "动态联编"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "静态联编",
+      "动态联编"
+    ]
+  },
+  {
+    "id": 212,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "基类和派生类可以分别称为（ ）。",
+    "options": [
+      "A. \"大类\"和\"小类\"",
+      "B. \"父类\"和\"子类\"",
+      "C. \"小类\"和\"大类\"",
+      "D. \"子类\"和\"父类\""
+    ],
+    "answer": "B",
+    "explanation": "基类也称为父类，派生类也称为子类。",
+    "knowledgePoints": [
+      "基类/父类",
+      "派生类/子类"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承"
+    ]
+  },
+  {
+    "id": 213,
+    "type": "truefalse",
+    "chapter": "多态与虚函数",
+    "stem": "不可以定义抽象类的对象。",
+    "options": null,
+    "answer": "对",
+    "explanation": "抽象类包含纯虚函数，不能直接实例化创建对象。",
+    "knowledgePoints": [
+      "抽象类",
+      "不能实例化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "抽象类"
+    ]
+  },
+  {
+    "id": 214,
+    "type": "truefalse",
+    "chapter": "C++对C的扩充",
+    "stem": "内联函数的定义必须出现在第一次调用内联函数之前。",
+    "options": null,
+    "answer": "对",
+    "explanation": "内联函数需要在调用前完整定义（不仅仅是声明），因为编译器需要在调用处展开函数体。",
+    "knowledgePoints": [
+      "内联函数",
+      "定义顺序"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "内联函数"
+    ]
+  },
+  {
+    "id": 215,
+    "type": "truefalse",
+    "chapter": "模板",
+    "stem": "模板函数与函数模板的意义完全相同。",
+    "options": null,
+    "answer": "错",
+    "explanation": "函数模板是模板的定义，模板函数（函数模板实例）是函数模板实例化后生成的具体函数。",
+    "knowledgePoints": [
+      "函数模板",
+      "模板函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数模板"
+    ]
+  },
+  {
+    "id": 216,
+    "type": "truefalse",
+    "chapter": "this/const/static成员",
+    "stem": "只有常成员函数才可以操作常对象。",
+    "options": null,
+    "answer": "对",
+    "explanation": "const对象只能调用const成员函数，非const成员函数不能操作const对象。",
+    "knowledgePoints": [
+      "const对象",
+      "const成员函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "const成员函数",
+      "const对象"
+    ]
+  },
+  {
+    "id": 217,
+    "type": "truefalse",
+    "chapter": "C++对C的扩充",
+    "stem": "引用可以不初始化。",
+    "options": null,
+    "answer": "错",
+    "explanation": "引用在声明时必须初始化，且初始化后不能重新绑定。",
+    "knowledgePoints": [
+      "引用",
+      "必须初始化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "引用"
+    ]
+  },
+  {
+    "id": 218,
+    "type": "fillin",
+    "chapter": "模板",
+    "stem": "设函数max是由函数模板实现的，并且max(3.5, 5)和max(3, 5)都是正确的函数调用，则此函数模板具有（ ）个类型参数。",
+    "options": null,
+    "answer": "2",
+    "explanation": "max(3.5, 5)中3.5是double，5是int，两个参数类型不同。要同时支持两种不同类型的参数，函数模板需要2个类型参数。",
+    "knowledgePoints": [
+      "函数模板",
+      "多类型参数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数模板"
+    ]
+  },
+  {
+    "id": 219,
+    "type": "fillin",
+    "chapter": "this/const/static成员",
+    "stem": "由static修饰的数据成员为该类的所有对象（ ）。",
+    "options": null,
+    "answer": "共享",
+    "explanation": "静态数据成员被该类的所有对象共享，只有一份存储空间。",
+    "knowledgePoints": [
+      "静态数据成员",
+      "共享"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "static成员"
+    ]
+  },
+  {
+    "id": 220,
+    "type": "fillin",
+    "chapter": "C++对C的扩充",
+    "stem": "重载函数在参数类型或参数个数上不同，但（ ）相同。",
+    "options": null,
+    "answer": "函数名",
+    "explanation": "重载函数要求函数名相同，通过参数的类型或个数不同来区分。",
+    "knowledgePoints": [
+      "函数重载",
+      "函数名相同"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数重载"
+    ]
+  },
+  {
+    "id": 221,
+    "type": "fillin",
+    "chapter": "C++对C的扩充",
+    "stem": "使用new建立的动态对象在不用时必须用（ ）释放所占用的空间。",
+    "options": null,
+    "answer": "delete",
+    "explanation": "new分配的内存必须使用delete释放，避免内存泄漏。",
+    "knowledgePoints": [
+      "delete",
+      "动态内存释放"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "动态内存管理"
+    ]
+  },
+  {
+    "id": 222,
+    "type": "fillin",
+    "chapter": "运算符重载",
+    "stem": "重载运算符\"<<\"的函数名为（ ）。",
+    "options": null,
+    "answer": "operator<<",
+    "explanation": "重载<<运算符的函数名为operator<<。",
+    "knowledgePoints": [
+      "运算符重载",
+      "operator<<"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "输入输出运算符重载"
+    ]
+  },
+  {
+    "id": 223,
+    "type": "truefalse",
+    "chapter": "构造函数与析构函数",
+    "stem": "构造函数没有值类型，其函数体中不能使用return语句。",
+    "options": null,
+    "answer": "错",
+    "explanation": "构造函数没有返回值类型是对的，但函数体中可以使用不带返回值的return语句（return;）。",
+    "knowledgePoints": [
+      "构造函数",
+      "return语句"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数"
+    ]
+  },
+  {
+    "id": 224,
+    "type": "truefalse",
+    "chapter": "继承与派生",
+    "stem": "在public继承方式下，基类中被说明为protected的成员在派生类中可被访问。",
+    "options": null,
+    "answer": "对",
+    "explanation": "public继承时，基类的protected成员在派生类中仍是protected的，可以被派生类的成员函数访问。",
+    "knowledgePoints": [
+      "public继承",
+      "protected成员"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承方式"
+    ]
+  },
+  {
+    "id": 225,
+    "type": "truefalse",
+    "chapter": "构造函数与析构函数",
+    "stem": "类内对象成员构造函数的调用顺序，取决于该类构造函数的初始化列表中的内容。",
+    "options": null,
+    "answer": "错",
+    "explanation": "对象成员的构造顺序取决于它们在类中声明的顺序，而非初始化列表中的排列顺序。",
+    "knowledgePoints": [
+      "构造顺序",
+      "声明顺序",
+      "初始化列表"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数调用顺序",
+      "初始化列表"
+    ]
+  },
+  {
+    "id": 226,
+    "type": "truefalse",
+    "chapter": "多态与虚函数",
+    "stem": "抽象类不会产生实例，所以不需要有构造函数。",
+    "options": null,
+    "answer": "错",
+    "explanation": "虽然抽象类不能直接实例化，但派生类对象在构造时会调用基类（抽象类）的构造函数，因此抽象类可以有构造函数。",
+    "knowledgePoints": [
+      "抽象类",
+      "构造函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "抽象类",
+      "构造函数"
+    ]
+  },
+  {
+    "id": 227,
+    "type": "truefalse",
+    "chapter": "多态与虚函数",
+    "stem": "在继承过程中，带着虚函数的类作为基类时，该类成为虚基类。",
+    "options": null,
+    "answer": "错",
+    "explanation": "虚基类和包含虚函数的类是不同的概念。虚基类是用virtual关键字修饰继承方式时被继承的基类，与虚函数无关。",
+    "knowledgePoints": [
+      "虚基类",
+      "虚函数",
+      "概念区分"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚基类",
+      "虚函数"
+    ]
+  },
+  {
+    "id": 228,
+    "type": "truefalse",
+    "chapter": "友元",
+    "stem": "类B是类A的派生类，类C是类A的友元类，那么类C也是类B的友元类。",
+    "options": null,
+    "answer": "错",
+    "explanation": "友元关系不可继承。基类的友元不会自动成为派生类的友元。",
+    "knowledgePoints": [
+      "友元不可继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "友元类",
+      "继承"
+    ]
+  },
+  {
+    "id": 229,
+    "type": "truefalse",
+    "chapter": "继承与派生",
+    "stem": "类D以public方式继承类B，若在这两个类中以同样的方式分别声明一个同名的整型变量x，那么，为类D的对象分配内存空间时，不需要为类B中声明的x分配空间。",
+    "options": null,
+    "answer": "错",
+    "explanation": "派生类的同名成员会隐藏基类的同名成员，但基类的成员仍然存在于对象中，需要分配空间。",
+    "knowledgePoints": [
+      "成员隐藏",
+      "内存分配"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承"
+    ]
+  },
+  {
+    "id": 230,
+    "type": "truefalse",
+    "chapter": "友元",
+    "stem": "类的友元函数可以访问类的私有成员。",
+    "options": null,
+    "answer": "对",
+    "explanation": "友元函数被授权可以访问类的所有成员，包括私有成员。",
+    "knowledgePoints": [
+      "友元函数",
+      "私有成员访问"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "友元函数"
+    ]
+  },
+  {
+    "id": 231,
+    "type": "truefalse",
+    "chapter": "C++对C的扩充",
+    "stem": "C++中函数返回值的类型是由return语句中的表达式的类型决定的。",
+    "options": null,
+    "answer": "错",
+    "explanation": "函数返回值类型由函数声明/定义中指定的返回类型决定，而非return语句中的表达式类型。",
+    "knowledgePoints": [
+      "返回值类型",
+      "函数声明"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数重载"
+    ]
+  },
+  {
+    "id": 232,
+    "type": "truefalse",
+    "chapter": "构造函数与析构函数",
+    "stem": "类Stu的缺省构造函数和析构函数是Stu()和~Stu()。",
+    "options": null,
+    "answer": "对",
+    "explanation": "默认构造函数为类名()，析构函数为~类名()。",
+    "knowledgePoints": [
+      "默认构造函数",
+      "析构函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "默认构造函数",
+      "析构函数"
+    ]
+  },
+  {
+    "id": 233,
+    "type": "truefalse",
+    "chapter": "构造函数与析构函数",
+    "stem": "构造函数必须定义，不能默认。",
+    "options": null,
+    "answer": "错",
+    "explanation": "如果不定义构造函数，编译器会自动生成默认构造函数。",
+    "knowledgePoints": [
+      "默认构造函数",
+      "编译器生成"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "默认构造函数"
+    ]
+  },
+  {
+    "id": 234,
+    "type": "truefalse",
+    "chapter": "类与对象",
+    "stem": "在类中定义的函数默认为内联函数。",
+    "options": null,
+    "answer": "对",
+    "explanation": "在类体内定义（而非仅声明）的成员函数默认为内联函数。",
+    "knowledgePoints": [
+      "类内定义",
+      "内联函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "内联函数"
+    ]
+  },
+  {
+    "id": 235,
+    "type": "truefalse",
+    "chapter": "C++对C的扩充",
+    "stem": "在C++中使用new和delete实现堆内存中进行数据的动态分配和释放。",
+    "options": null,
+    "answer": "对",
+    "explanation": "new用于在堆上动态分配内存，delete用于释放。",
+    "knowledgePoints": [
+      "new/delete",
+      "堆内存"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "动态内存管理"
+    ]
+  },
+  {
+    "id": 236,
+    "type": "truefalse",
+    "chapter": "C++对C的扩充",
+    "stem": "设置函数参数默认值，应从右向左设置。",
+    "options": null,
+    "answer": "对",
+    "explanation": "默认参数必须从参数表的右端开始连续设置。",
+    "knowledgePoints": [
+      "默认参数",
+      "从右向左"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "默认参数"
+    ]
+  },
+  {
+    "id": 237,
+    "type": "truefalse",
+    "chapter": "运算符重载",
+    "stem": "C++中所有运算符都可以重载。",
+    "options": null,
+    "answer": "错",
+    "explanation": "::、?:、.、sizeof、.*等运算符不能被重载。",
+    "knowledgePoints": [
+      "不可重载运算符"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "不可重载运算符"
+    ]
+  },
+  {
+    "id": 238,
+    "type": "truefalse",
+    "chapter": "this/const/static成员",
+    "stem": "静态数据成员和非静态数据成员一样，用构造函数初始化。",
+    "options": null,
+    "answer": "错",
+    "explanation": "静态数据成员必须在类外进行初始化，不能在构造函数中初始化。",
+    "knowledgePoints": [
+      "静态数据成员初始化",
+      "类外初始化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "静态数据成员"
+    ]
+  },
+  {
+    "id": 239,
+    "type": "truefalse",
+    "chapter": "继承与派生",
+    "stem": "在protected继承下，基类中被说明为public和protected的成员都能被派生类的成员函数访问。",
+    "options": null,
+    "answer": "对",
+    "explanation": "protected继承时，基类的public和protected成员在派生类中都变为protected，派生类的成员函数可以访问。",
+    "knowledgePoints": [
+      "protected继承",
+      "访问权限"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "保护继承"
+    ]
+  },
+  {
+    "id": 240,
+    "type": "truefalse",
+    "chapter": "多态与虚函数",
+    "stem": "构造函数和析构函数都可以被声明为虚函数。",
+    "options": null,
+    "answer": "错",
+    "explanation": "构造函数不能是虚函数。析构函数可以是虚函数。",
+    "knowledgePoints": [
+      "虚函数",
+      "构造函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚函数",
+      "构造函数",
+      "析构函数"
+    ]
+  },
+  {
+    "id": 241,
+    "type": "truefalse",
+    "chapter": "多继承与虚基类",
+    "stem": "当使用带参数的构造函数的虚基类时，最终派生类的构造函数必须负责对虚基类的初始化。",
+    "options": null,
+    "answer": "对",
+    "explanation": "虚基类的构造函数由最终派生类直接调用，而不是由中间派生类调用，以保证虚基类只初始化一次。",
+    "knowledgePoints": [
+      "虚基类",
+      "最终派生类初始化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚基类",
+      "构造函数调用顺序"
+    ]
+  },
+  {
+    "id": 242,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "构造函数是在（ ）时被执行。",
+    "options": [
+      "A. 程序编译",
+      "B. 创建对象",
+      "C. 创建类",
+      "D. 程序装入内存"
+    ],
+    "answer": "B",
+    "explanation": "构造函数在创建对象时自动被调用执行。",
+    "knowledgePoints": [
+      "构造函数执行时机",
+      "对象创建"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数"
+    ]
+  },
+  {
+    "id": 243,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "在内联函数内允许使用的是（ ）。",
+    "options": [
+      "A. 循环语句",
+      "B. 开关语句",
+      "C. 赋值语句",
+      "D. 以上都允许"
+    ],
+    "answer": "D",
+    "explanation": "内联函数在语法上允许使用任何语句，但复杂的控制结构可能导致编译器不进行内联展开。",
+    "knowledgePoints": [
+      "内联函数",
+      "语法限制"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "内联函数"
+    ]
+  },
+  {
+    "id": 244,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "在类的继承与派生的过程中，关于派生类不正确的说法是（ ）。",
+    "options": [
+      "A. 派生类可以继承基类的所有特性",
+      "B. 派生类只能继承基类的部分特性",
+      "C. 派生类可以重新定义已有的成员",
+      "D. 派生类可以改变现有成员的属性"
+    ],
+    "answer": "B",
+    "explanation": "派生类继承基类的所有成员（包括不可访问的私有成员），而非只继承部分特性。",
+    "knowledgePoints": [
+      "继承",
+      "派生类"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承"
+    ]
+  },
+  {
+    "id": 245,
+    "type": "choice",
+    "chapter": "友元",
+    "stem": "一个类的友元函数能够访问该类的（ ）。",
+    "options": [
+      "A. 私有成员",
+      "B. 保护成员",
+      "C. 共有成员",
+      "D. 所有成员"
+    ],
+    "answer": "D",
+    "explanation": "友元函数可以访问类的所有成员，不受访问权限限制。",
+    "knowledgePoints": [
+      "友元函数",
+      "访问权限"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "友元函数"
+    ]
+  },
+  {
+    "id": 246,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "下面关于重载函数的说法正确的是（ ）。",
+    "options": [
+      "A. 重载函数一定具有不同的返回值类型",
+      "B. 重载函数形参个数一定不同",
+      "C. 重载函数一定具有不同的形参列表",
+      "D. 重载函数名可以不同"
+    ],
+    "answer": "C",
+    "explanation": "重载函数必须满足函数名相同，但形参列表不同（形参个数或形参类型不同）。返回值类型不同不能作为重载的依据，重载函数名必须完全相同。因此，C（重载函数一定具有不同的形参列表）是正确的。",
+    "knowledgePoints": [
+      "函数重载条件"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数重载"
+    ]
+  },
+  {
+    "id": 247,
+    "type": "choice",
+    "chapter": "this/const/static成员",
+    "stem": "静态成员为该类的所有（ ）共享。",
+    "options": [
+      "A. 成员",
+      "B. 对象",
+      "C. this指针",
+      "D. 友元"
+    ],
+    "answer": "B",
+    "explanation": "静态成员属于类，被该类的所有对象共享。",
+    "knowledgePoints": [
+      "静态成员",
+      "对象共享"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "静态成员"
+    ]
+  },
+  {
+    "id": 248,
+    "type": "choice",
+    "chapter": "运算符重载",
+    "stem": "为了满足运算符\"+\"的可交换性，必须重载为（ ）。",
+    "options": [
+      "A. 静态成员函数",
+      "B. 友元函数",
+      "C. 普通函数",
+      "D. 成员函数"
+    ],
+    "answer": "B",
+    "explanation": "成员函数重载+时，左操作数必须是该类对象。为了支持可交换性（如5+obj），需要重载为友元函数。",
+    "knowledgePoints": [
+      "运算符可交换性",
+      "友元函数重载"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "友元运算符重载"
+    ]
+  },
+  {
+    "id": 249,
+    "type": "choice",
+    "chapter": "多态与虚函数",
+    "stem": "关于虚函数和抽象类的描述，（ ）是错误的。",
+    "options": [
+      "A. 纯虚函数是一种特殊的函数，它没有具体实现",
+      "B. 抽象类是具有纯虚函数的类",
+      "C. 一个基类中声明有纯虚函数，则它的派生类一定不再是抽象类",
+      "D. 抽象类只能作为基类使用，其纯虚函数的实现由派生类给出"
+    ],
+    "answer": "C",
+    "explanation": "如果派生类没有实现基类的所有纯虚函数，则派生类仍然是抽象类。所以C的说法是错误的。",
+    "knowledgePoints": [
+      "抽象类",
+      "纯虚函数实现"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "纯虚函数",
+      "抽象类"
+    ]
+  },
+  {
+    "id": 250,
+    "type": "choice",
+    "chapter": "运算符重载",
+    "stem": "下列运算符中，（ ）运算符不可以重载。",
+    "options": [
+      "A. ?:",
+      "B. +",
+      "C. --",
+      "D. <="
+    ],
+    "answer": "A",
+    "explanation": "条件运算符?:不能被重载。+、--、<=都可以被重载。",
+    "knowledgePoints": [
+      "不可重载运算符",
+      "?:"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "不可重载运算符"
+    ]
+  },
+  {
+    "id": 251,
+    "type": "choice",
+    "chapter": "模板",
+    "stem": "类模板的参数可作为（ ）。",
+    "options": [
+      "A. 成员函数的返回类型",
+      "B. 成员函数的参数类型",
+      "C. 数据成员的类型",
+      "D. 以上三者均可"
+    ],
+    "answer": "D",
+    "explanation": "类模板的参数可以用作数据成员类型、成员函数的参数类型和返回类型。",
+    "knowledgePoints": [
+      "类模板参数",
+      "类型参数用途"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "类模板"
+    ]
+  },
+  {
+    "id": 252,
+    "type": "choice",
+    "chapter": "模板",
+    "stem": "template<class T>\nT fun(T x, T y){return x*x+y*y;}\n下列对fun的调用错误的是（ ）",
+    "options": [
+      "A. fun(3,5);",
+      "B. fun(3.2,5.5);",
+      "C. fun(3.2,5);",
+      "D. fun<int>(3.2,5);"
+    ],
+    "answer": "C",
+    "explanation": "函数模板 fun(T x, T y) 要求两个参数类型完全一致。在调用 fun(3.2, 5) 时，第一个参数是 double，第二个参数是 int，编译器在进行自动模板参数推导时会产生二义性冲突而报错。而显式指定模板参数的 fun<int>(3.2, 5) 则可以正常调用（会将 3.2 隐式转换为 int）。",
+    "knowledgePoints": [
+      "函数模板",
+      "类型推导",
+      "模板参数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数模板",
+      "模板实例化"
+    ]
+  },
+  {
+    "id": 253,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "以下程序执行的结果为（ ）\nclass B {\npublic:\n    ~B(){cout<<\"B\";}\n};\nclass D:public B {\npublic:\n    ~D(){cout<<\"D\";}\n};\nint main() {\n    return 0;\n}",
+    "options": [
+      "A. B",
+      "B. D",
+      "C. BD",
+      "D. DB"
+    ],
+    "answer": "D",
+    "explanation": "析构顺序与构造顺序相反：先调用派生类析构（输出D），再调用基类析构（输出B），输出DB。",
+    "knowledgePoints": [
+      "析构顺序",
+      "继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "继承",
+      "析构函数调用顺序"
+    ]
+  },
+  {
+    "id": 254,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "在公有派生情况下，有关派生类对象和基类对象的关系，下面不正确的是（ ）",
+    "options": [
+      "A. 派生类的对象可以赋值给基类的对象",
+      "B. 派生类的对象可以初始化基类的引用",
+      "C. 派生类的对象可以直接访问基类中的成员",
+      "D. 派生类的对象的地址可以赋给指向基类的指针"
+    ],
+    "answer": "C",
+    "explanation": "派生类对象不能直接访问基类的所有成员（如private和protected成员）。A、B、D都是赋值兼容原则的内容。",
+    "knowledgePoints": [
+      "赋值兼容原则",
+      "成员访问"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "公有继承",
+      "继承"
+    ]
+  },
+  {
+    "id": 255,
+    "type": "choice",
+    "chapter": "继承与派生",
+    "stem": "C++中，能被派生类继承的有（ ）",
+    "options": [
+      "A. 构造函数",
+      "B. 虚函数",
+      "C. 友元函数",
+      "D. 析构函数"
+    ],
+    "answer": "B",
+    "explanation": "构造函数、析构函数不能被继承，友元函数不是类的成员也不能被继承。虚函数可以被派生类继承。",
+    "knowledgePoints": [
+      "可继承成员",
+      "虚函数继承"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "虚函数",
+      "继承"
+    ]
+  },
+  {
+    "id": 256,
+    "type": "fillin",
+    "chapter": "继承与派生",
+    "stem": "封装是面向对象程序设计的基本特性，将数据和（ ）捆绑在一起，并加上访问控制，称为封装。",
+    "options": null,
+    "answer": "操作",
+    "explanation": "封装是将数据和对数据的操作（方法/函数）捆绑在一起。",
+    "knowledgePoints": [
+      "封装",
+      "数据与操作"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "封装",
+      "面向对象四大特征"
+    ]
+  },
+  {
+    "id": 257,
+    "type": "fillin",
+    "chapter": "类与对象",
+    "stem": "类中成员的访问权限可以分为公有、（ ）和私有。",
+    "options": null,
+    "answer": "保护(protected)",
+    "explanation": "C++中三种访问权限为public（公有）、protected（保护）、private（私有）。",
+    "knowledgePoints": [
+      "访问权限",
+      "protected"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "封装",
+      "默认访问权限"
+    ]
+  },
+  {
+    "id": 258,
+    "type": "fillin",
+    "chapter": "C++对C的扩充",
+    "stem": "定义重载函数时，应至少使重载函数的参数个数或者（ ）不同。",
+    "options": null,
+    "answer": "参数类型",
+    "explanation": "重载函数要求参数个数或参数类型不同。",
+    "knowledgePoints": [
+      "函数重载",
+      "参数类型"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数重载"
+    ]
+  },
+  {
+    "id": 259,
+    "type": "fillin",
+    "chapter": "多态与虚函数",
+    "stem": "将函数体和函数调用相联系称为绑定，C++默认的函数调用绑定方式是（ ）绑定，是在程序运行之前，由编译器和链接器实现。",
+    "options": null,
+    "answer": "静态",
+    "explanation": "C++默认使用静态绑定（编译时绑定），虚函数才使用动态绑定。",
+    "knowledgePoints": [
+      "静态绑定",
+      "默认绑定方式"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "静态联编"
+    ]
+  },
+  {
+    "id": 260,
+    "type": "fillin",
+    "chapter": "运算符重载",
+    "stem": "重载运算符\"<<\"的函数名为（ ）。",
+    "options": null,
+    "answer": "operator<<",
+    "explanation": "重载<<运算符的函数名为operator<<。",
+    "knowledgePoints": [
+      "运算符重载",
+      "operator<<"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "运算符重载",
+      "输入输出运算符重载"
+    ]
+  },
+  {
+    "id": 261,
+    "type": "fillin",
+    "chapter": "C++对C的扩充",
+    "stem": "重载函数在参数类型或参数个数上不同，但（ ）相同。",
+    "options": null,
+    "answer": "函数名",
+    "explanation": "重载函数必须有相同的函数名。",
+    "knowledgePoints": [
+      "函数重载",
+      "函数名"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "函数重载"
+    ]
+  },
+  {
+    "id": 262,
+    "type": "truefalse",
+    "chapter": "this/const/static成员",
+    "stem": "this指针是一个常量，含有当前实施调用的对象的地址，不能改变this指针的值，也不能取this指针的地址。",
+    "options": null,
+    "answer": "对",
+    "explanation": "this是ClassName* const类型的常量指针，不能被赋值，也不能对其取地址。",
+    "knowledgePoints": [
+      "this指针",
+      "常量指针"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "this指针"
+    ]
+  },
+  {
+    "id": 263,
+    "type": "truefalse",
+    "chapter": "this/const/static成员",
+    "stem": "const关键字可以修饰对象和成员函数，且const成员函数不能够修改类数据成员。",
+    "options": null,
+    "answer": "对",
+    "explanation": "const成员函数中，this指针是指向const对象的指针，不能修改数据成员（除非成员声明为mutable）。",
+    "knowledgePoints": [
+      "const成员函数",
+      "不可修改"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "const成员函数",
+      "const对象"
+    ]
+  },
+  {
+    "id": 264,
+    "type": "truefalse",
+    "chapter": "运算符重载",
+    "stem": "自增和自减运算符都可以对常量对象操作。",
+    "options": null,
+    "answer": "错",
+    "explanation": "自增自减运算符会修改对象的值，常量对象不允许被修改。",
+    "knowledgePoints": [
+      "const对象",
+      "自增自减"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "运算符重载",
+      "const对象"
+    ]
+  },
+  {
+    "id": 265,
+    "type": "truefalse",
+    "chapter": "运算符重载",
+    "stem": "赋值运算符只能作为成员函数重载。",
+    "options": null,
+    "answer": "对",
+    "explanation": "operator=只能重载为成员函数。",
+    "knowledgePoints": [
+      "赋值运算符",
+      "成员函数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "运算符重载",
+      "赋值运算符重载"
+    ]
+  },
+  {
+    "id": 266,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "以下代码中，变量a的作用域为（ ）\nvoid fun(int x);\nint main() {......}\nvoid fun(int x) {\n    int a;\n    ......\n}",
+    "options": [
+      "A. 函数原型作用域",
+      "B. 块作用域",
+      "C. 类作用域",
+      "D. 文件作用域"
+    ],
+    "answer": "B",
+    "explanation": "变量a在函数fun的函数体内声明，属于块作用域（局部作用域）。",
+    "knowledgePoints": [
+      "作用域",
+      "块作用域"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "作用域解析运算符"
+    ]
+  },
+  {
+    "id": 267,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "下面关于命名空间的说法，错误的是（ ）",
+    "options": [
+      "A. 命名空间的引入让程序员可以在不同的模块中使用相同名字表示不同事物",
+      "B. 一个命名空间中可以集合很多不同的标识符",
+      "C. 一个命名空间中的标识符命名作用域相同",
+      "D. 一个命名空间对应多个命名作用域"
+    ],
+    "answer": "D",
+    "explanation": "一个命名空间对应一个命名作用域，而非多个。",
+    "knowledgePoints": [
+      "命名空间",
+      "命名作用域"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "命名空间"
+    ]
+  },
+  {
+    "id": 268,
+    "type": "choice",
+    "chapter": "文件IO",
+    "stem": "在C++中打开一个文件就是将整个文件与一个（ ）建立关联，关闭一个文件就是取消这种关联。",
+    "options": [
+      "A. 类",
+      "B. 对象",
+      "C. 结构",
+      "D. 流"
+    ],
+    "answer": "D",
+    "explanation": "打开文件是将文件与一个流（stream）对象建立关联。",
+    "knowledgePoints": [
+      "文件流",
+      "流关联"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "文件操作"
+    ]
+  },
+  {
+    "id": 269,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "在（ ）的情况下适宜采用inline定义内联函数。",
+    "options": [
+      "A. 函数体含有递归语句",
+      "B. 函数体含有循环语句",
+      "C. 函数代码小、频繁调用",
+      "D. 函数代码多，不常调用"
+    ],
+    "answer": "C",
+    "explanation": "内联函数适合代码量小且频繁调用的场合，这样可以有效减少函数调用开销。",
+    "knowledgePoints": [
+      "内联函数",
+      "适用场景"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "内联函数"
+    ]
+  },
+  {
+    "id": 270,
+    "type": "truefalse",
+    "chapter": "类与对象",
+    "stem": "在声明类的同时，不能直接定义对象。",
+    "options": null,
+    "answer": "错",
+    "explanation": "C++允许在类声明的末尾分号之前定义对象，如class A { ... } a;",
+    "knowledgePoints": [
+      "类声明",
+      "对象定义"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "类与对象"
+    ]
+  },
+  {
+    "id": 271,
+    "type": "truefalse",
+    "chapter": "类与对象",
+    "stem": "在C++中，系统自动为类分配存储空间，所以可以在类声明中给数据对象赋初值。",
+    "options": null,
+    "answer": "错",
+    "explanation": "类声明只是定义类型，不分配存储空间。数据成员的初始化应在构造函数中进行（C++11允许类内初始化，但此题考的是传统规则）。",
+    "knowledgePoints": [
+      "类声明",
+      "数据成员初始化"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数",
+      "初始化列表"
+    ]
+  },
+  {
+    "id": 272,
+    "type": "truefalse",
+    "chapter": "构造函数与析构函数",
+    "stem": "拷贝构造函数的形参只能是本类对象的引用。",
+    "options": null,
+    "answer": "错",
+    "explanation": "拷贝构造函数的形参通常是const引用，但也可以是非const引用。说法中\"只能\"过于绝对，但核心要求确实是引用。此外，拷贝构造函数可以有额外的默认参数。",
+    "knowledgePoints": [
+      "拷贝构造函数",
+      "形参类型"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "拷贝构造函数",
+      "引用"
+    ]
+  },
+  {
+    "id": 273,
+    "type": "choice",
+    "chapter": "类与对象",
+    "stem": "类中数据成员的生存期，下面说法正确的是（ ）",
+    "options": [
+      "A. 类中数据成员的生存期与对象的生存期无关",
+      "B. 类中数据成员的生存期比对象的生存期长",
+      "C. 类中数据成员的生存期比对象的生存期短",
+      "D. 类中数据成员的生存期由对象决定"
+    ],
+    "answer": "D",
+    "explanation": "非静态数据成员随对象的创建而产生，随对象的销毁而消亡，生存期由对象决定。",
+    "knowledgePoints": [
+      "数据成员生存期",
+      "对象生存期"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "对象生命周期"
+    ]
+  },
+  {
+    "id": 274,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "Student是已定义的一个类，那么执行语句 Student stu1, stu2(3), *stu3, *stu4 调用了（ ）次构造函数。",
+    "options": [
+      "A. 1",
+      "B. 2",
+      "C. 3",
+      "D. 4"
+    ],
+    "answer": "B",
+    "explanation": "stu1调用默认构造函数（1次），stu2(3)调用带参构造函数（1次），*stu3和*stu4只是声明指针，不创建对象，不调用构造函数。共2次。",
+    "knowledgePoints": [
+      "构造函数调用次数",
+      "指针声明"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数",
+      "构造函数重载"
+    ]
+  },
+  {
+    "id": 275,
+    "type": "choice",
+    "chapter": "构造函数与析构函数",
+    "stem": "假设A是一个类，p为指向该类的一个含有n个对象的动态数组的指针，则执行delete[]p语句时，共调用该类的析构函数次数为（ ）",
+    "options": [
+      "A. 0",
+      "B. 1",
+      "C. n",
+      "D. n+1"
+    ],
+    "answer": "C",
+    "explanation": "delete[]会对数组中的每个对象调用析构函数，共n个对象，调用n次。",
+    "knowledgePoints": [
+      "delete[]",
+      "析构函数调用次数"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "new/delete数组",
+      "析构函数调用时机"
+    ]
+  },
+  {
+    "id": 276,
+    "type": "choice",
+    "chapter": "C++对C的扩充",
+    "stem": "下列关于引用的用法中，正确的是（ ）。\n   int &refx = x;\n   int &refx = &x;\n   refx = x;",
+    "options": [
+      "A. int x = 100; int &refx = x;",
+      "B. int x = 100; int &refx = &x;",
+      "C. int &refx = 100;",
+      "D. int x = 100, &refx; refx = x;"
+    ],
+    "answer": "A",
+    "explanation": "引用必须用同类型的变量初始化。A是正确的引用初始化。B将指针赋给引用类型不匹配，C不能用字面量初始化非const引用，D引用必须在声明时初始化。",
+    "knowledgePoints": [
+      "引用初始化",
+      "引用语法"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "引用"
+    ]
+  },
+  {
+    "id": 277,
+    "type": "fillin",
+    "chapter": "继承与派生",
+    "stem": "有基类 Chair、Person 及双继承派生类 ChairofSuzume 定义如下：\n```cpp\nclass Chair {\npublic:\n    Chair() { cout << \"Chair\" << \" \"; }\n    Chair(const Chair&) { cout << \"CopyChair\" << \" \"; }\n    ~Chair() { cout << \"~Chair\" << \" \"; }\n};\nclass Person {\n    string name;\npublic:\n    Person(string n): name(n) { cout << \"Person\" << \" \"; }\n    Person(const Person& p): name(p.name) { cout << \"CopyPerson\" << \" \"; }\n    ~Person() { cout << \"~Person\" << \" \"; }\n};\nclass ChairofSuzume : public Chair, public Person {\npublic:\n    ChairofSuzume(string name): Chair(), Person(name) { cout << \"ChairofSuzume\" << \" \"; }\n    ~ChairofSuzume() { cout << \"~ChairofSuzume\" << \" \"; }\n};\n```\n在 main 函数中执行以下代码：\n```cpp\nChairofSuzume broken_chair(\"Suzume\");\nChairofSuzume Souta(broken_chair);\n```\n请写出该 main 函数运行结束前（即销毁这两个对象时），析构函数的输出序列（用空格分隔各个析构输出）。",
+    "options": null,
+    "answer": "~ChairofSuzume ~Person ~Chair ~ChairofSuzume ~Person ~Chair",
+    "explanation": "由于 ChairofSuzume 没有自定义拷贝构造函数，编译器自动生成默认拷贝构造，会级联调用基类的拷贝构造，创建 Souta 时输出 CopyChair CopyPerson。main 函数结束时，局部对象按照相反的顺序销毁，即先销毁后创建的 Souta，再销毁 broken_chair。每个对象销毁时，先调用派生类析构函数，再调用基类析构函数（由于声明顺序是 public Chair, public Person，因此销毁顺序是先 Person 后 Chair）。所以析构的总输出是：~ChairofSuzume ~Person ~Chair ~ChairofSuzume ~Person ~Chair。",
+    "knowledgePoints": [
+      "多重继承",
+      "构造与析构顺序",
+      "拷贝构造"
+    ],
+    "status": "confirmed",
+    "knowledgePointsNormalized": [
+      "构造函数调用顺序",
+      "析构函数调用顺序",
+      "拷贝构造函数"
+    ]
+  }
+]

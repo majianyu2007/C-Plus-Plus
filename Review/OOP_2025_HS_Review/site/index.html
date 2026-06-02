@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="面向对象程序设计（C++）期末复习刷题系统 - 选择题、判断题、填空题、程序题在线练习">
+  <title>OOP 期末复习刷题系统</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%236366f1'/%3E%3Ctext x='32' y='41' font-size='28' text-anchor='middle' fill='white' font-family='Arial'%3EC%2B%2B%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- 头部 -->
+    <header class="app-header">
+      <div class="header-inner">
+        <a href="#" class="logo" onclick="return false;">
+          <div class="logo-icon">C++</div>
+          <div class="logo-text">OOP 刷题<span> · 期末复习</span></div>
+        </a>
+        <nav class="nav-tabs">
+          <button class="nav-tab active" data-page="quiz" id="nav-quiz">刷题</button>
+          <button class="nav-tab" data-page="knowledge" id="nav-knowledge">知识点</button>
+          <button class="nav-tab" data-page="progress" id="nav-progress">进度</button>
+          <button class="nav-tab" data-page="ai-tutor" id="nav-ai-tutor">AI 导师</button>
+        </nav>
+        <div class="header-actions">
+          <button class="header-btn" id="theme-toggle" title="切换主题">🌓 主题</button>
+          <button class="header-btn" id="settings-open" title="设置">⚙️ 设置</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 统计栏 -->
+    <div class="stats-bar">
+      <div class="stats-inner">
+        <div class="stat-item">
+          <span class="stat-dot choice"></span>
+          <span>选择题</span>
+          <span class="stat-value" id="stat-choice">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-dot truefalse"></span>
+          <span>判断题</span>
+          <span class="stat-value" id="stat-truefalse">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-dot fillin"></span>
+          <span>填空题</span>
+          <span class="stat-value" id="stat-fillin">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-dot programming"></span>
+          <span>程序题</span>
+          <span class="stat-value" id="stat-programming">0</span>
+        </div>
+        <div class="stat-item" style="margin-left: auto;">
+          <span class="stat-dot mastered"></span>
+          <span>已掌握</span>
+          <span class="stat-value" id="stat-mastered">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-dot review"></span>
+          <span>待复习</span>
+          <span class="stat-value" id="stat-review">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-dot wrong"></span>
+          <span>错题</span>
+          <span class="stat-value" id="stat-wrong">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+      <!-- 刷题页面 -->
+      <div class="page active" id="page-quiz">
+        <div class="toolbar">
+          <div class="search-box">
+            <input type="text" id="search-input" placeholder="搜索题目关键词…">
+          </div>
+          <div class="filter-group" id="type-filters">
+            <button class="filter-btn active" data-type="all">全部</button>
+            <button class="filter-btn" data-type="choice">选择题</button>
+            <button class="filter-btn" data-type="truefalse">判断题</button>
+            <button class="filter-btn" data-type="fillin">填空题</button>
+            <button class="filter-btn" data-type="programming">程序题</button>
+          </div>
+          <select class="chapter-select" id="chapter-filter">
+            <option value="all">全部章节</option>
+          </select>
+          <select class="chapter-select" id="knowledge-filter" title="按知识点筛选">
+            <option value="all">全部知识点</option>
+          </select>
+          <div class="filter-group" id="status-filters">
+            <button class="filter-btn" data-status="unmarked">未标记</button>
+            <button class="filter-btn" data-status="mastered">已掌握</button>
+            <button class="filter-btn" data-status="review">待复习</button>
+            <button class="filter-btn" data-status="wrong">错题</button>
+            <button class="filter-btn" id="favorites-only" title="只显示已收藏的题目">★ 收藏</button>
+          </div>
+          <div class="filter-group" id="mode-filters" style="margin-left: auto;">
+            <button class="filter-btn active" data-mode="list">📋 列表模式</button>
+            <button class="filter-btn" data-mode="focus">🎯 焦点模式</button>
+            <button class="filter-btn" id="today-review" title="生成今日复习队列并进入焦点模式">🗓️ 今日复习</button>
+          </div>
+        </div>
+        <div class="question-list" id="question-list">
+          <div class="loading"><div class="loading-spinner"></div></div>
+        </div>
+        <div class="focus-navigation" id="focus-navigation" style="display: none;"></div>
+      </div>
+
+      <!-- 知识点页面 -->
+      <div class="page" id="page-knowledge">
+        <div class="toolbar">
+          <div class="search-box">
+            <input type="text" id="knowledge-search" placeholder="搜索知识点…">
+          </div>
+        </div>
+        <div class="knowledge-section" id="knowledge-point-index" style="margin-bottom: 16px;"></div>
+        <div id="knowledge-list">
+          <div class="loading"><div class="loading-spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- 进度页面 -->
+      <div class="page" id="page-progress">
+        <div class="knowledge-section">
+          <h2 style="color: var(--text-primary); margin-bottom: 20px; font-size: 1.2rem;">学习进度</h2>
+
+          <div class="progress-container-grid">
+            <!-- 环形进度 -->
+            <div class="question-card circular-progress-card">
+              <div class="circular-progress-wrapper">
+                <svg class="progress-ring" width="120" height="120">
+                  <circle class="progress-ring-bg" stroke="var(--bg-code)" stroke-width="8" fill="transparent" r="50" cx="60" cy="60"/>
+                  <circle class="progress-ring-circle" id="progress-ring-circle" stroke="url(#progress-gradient)" stroke-width="8" fill="transparent" r="50" cx="60" cy="60" stroke-dasharray="314.16" stroke-dashoffset="314.16" stroke-linecap="round"/>
+                  <defs>
+                    <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="var(--accent-primary)"/>
+                      <stop offset="100%" stop-color="var(--accent-secondary)"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div class="circular-progress-text">
+                  <span id="progress-percent">0%</span>
+                  <span class="label">掌握率</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 数据卡片网格 -->
+            <div class="progress-stats-grid">
+              <div class="question-card stat-card shadow-sm">
+                <div class="num" id="progress-total" style="color: var(--accent-info)">0</div>
+                <div class="label">总题数</div>
+              </div>
+              <div class="question-card stat-card shadow-sm">
+                <div class="num" id="progress-mastered" style="color: var(--accent-success)">0</div>
+                <div class="label">已掌握</div>
+              </div>
+              <div class="question-card stat-card shadow-sm">
+                <div class="num" id="progress-review" style="color: var(--accent-warning)">0</div>
+                <div class="label">待复习</div>
+              </div>
+              <div class="question-card stat-card shadow-sm">
+                <div class="num" id="progress-wrong" style="color: var(--accent-danger)">0</div>
+                <div class="label">错题</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px;">
+            <h3 style="margin-bottom: 16px; font-size: 1rem; color: var(--text-primary);">按章节进度</h3>
+            <div id="chapter-progress"></div>
+          </div>
+
+          <div style="margin-top: 28px;">
+            <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--text-primary);">最近作答</h3>
+            <div id="recent-attempts"></div>
+          </div>
+
+          <div style="margin-top: 28px; display:flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <button class="show-answer-btn" onclick="window.exportProgress()" style="border-color: var(--accent-info); color: var(--accent-info);">
+              ⬇️ 导出进度
+            </button>
+            <button class="show-answer-btn" onclick="document.getElementById('import-file').click()" style="border-color: var(--accent-secondary); color: var(--accent-secondary);">
+              ⬆️ 导入进度
+            </button>
+            <button class="show-answer-btn" onclick="window.startTodayReview()" style="border-color: var(--accent-primary); color: var(--accent-primary); background: var(--accent-primary-glow);">
+              🗓️ 今日复习（焦点模式）
+            </button>
+            <input id="import-file" type="file" accept="application/json" style="display:none;" />
+          </div>
+
+          <div style="margin-top: 32px; text-align: center;">
+            <button class="show-answer-btn" onclick="resetProgress()" style="color: var(--accent-danger); border-color: var(--accent-danger);">
+              🗑️ 重置所有进度
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI 导师页面 -->
+      <div class="page" id="page-ai-tutor">
+        <div class="ai-tutor-container">
+          <div class="ai-tutor-header">
+            <h3>💬 C++ OOP 智能伴学导师</h3>
+            <p>您可以向我提问关于 C++ 面向对象程序设计的任何概念、贴入代码让我评审、或者让我为您出复习题！</p>
+            <button class="clear-chat-btn" onclick="window.clearChat()">🗑️ 清空对话</button>
+          </div>
+          <div class="chat-messages" id="chat-messages">
+            <div class="message ai">
+              <div class="avatar">🤖</div>
+              <div class="message-content">
+                你好！我是你的 C++ OOP 期末复习智能导师。请在下方输入您想咨询的问题，或者直接点击某个题目下方的“AI 助手解答”！
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <textarea id="chat-input" placeholder="输入您的问题，按 Shift + Enter 换行，Enter 发送…"></textarea>
+            <button id="chat-send-btn">发送 ➔</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="app-footer">
+      面向对象程序设计 期末复习系统
+      <span id="meta-version" style="margin-left: 10px; color: var(--text-muted);"></span>
+    </footer>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" title="回到顶部" aria-label="回到顶部">↑</button>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- API 设置弹窗 -->
+  <div class="modal-backdrop" id="settings-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>⚙️ 设置</h3>
+        <button class="modal-close-btn" id="settings-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
+          设置您的 API 密钥以启用智能 AI 答题助手和 AI 伴学导师。所有配置均直接存储在您的本地浏览器（localStorage）中，不会上传到任何第三方中转服务器。
+        </p>
+        <div class="form-group">
+          <label for="ai-mode">AI 使用方式</label>
+          <select id="ai-mode" class="chapter-select" style="width: 100%;">
+            <option value="api">直连 API（站内生成回答）</option>
+            <option value="clipboard">复制提示词（用网页版大模型自己提问）</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-top: -6px;">
+          <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+            <input type="checkbox" id="save-api-key" style="width:auto; accent-color: var(--accent-primary);">
+            保存 API Key 到浏览器（不勾选则仅本次会话有效）
+          </label>
+        </div>
+        <div class="form-group" style="margin-top: -6px;">
+          <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+            <input type="checkbox" id="redo-mode" style="width:auto; accent-color: var(--accent-primary);">
+            重做模式（做题时不自动显示答案/正确项）
+          </label>
+        </div>
+        <div style="font-size: 0.82rem; color: var(--text-muted); margin: 8px 0 16px; line-height: 1.6;">
+          浏览器端直连 LLM 需要目标端点允许 CORS；若遇到跨域报错，请更换支持 CORS 的 OpenAI 兼容网关/代理。API Key 存在本地浏览器有泄露风险（共享电脑/浏览器扩展/XSS），建议仅在可信环境使用，并可随时清除 Key。
+        </div>
+        <div class="form-group">
+          <label for="api-base">API Base URL (端点)</label>
+          <input type="text" id="api-base" placeholder="例如：https://api.deepseek.com/v1 或 https://api.openai.com/v1">
+        </div>
+        <div class="form-group">
+          <label for="api-key">API Key (密钥)</label>
+          <input type="password" id="api-key" placeholder="输入您的 API Key">
+        </div>
+        <div class="form-group">
+          <label for="api-model">API Model (模型名称)</label>
+          <input type="text" id="api-model" placeholder="例如：deepseek-chat 或 gpt-4o-mini">
+        </div>
+        <div style="margin-top: 16px; display: flex; gap: 8px;">
+          <button class="show-answer-btn" id="api-test" style="flex: 1; border-color: var(--accent-info); color: var(--accent-info);">⚡ 测试连接</button>
+          <button class="show-answer-btn" id="api-clear-key" style="flex: 1; border-color: var(--accent-danger); color: var(--accent-danger);">🧹 清除 Key</button>
+          <button class="show-answer-btn" id="api-save" style="flex: 1; background: var(--accent-primary); border-color: var(--accent-primary); color: white;">💾 保存配置</button>
+        </div>
+        <div id="api-test-result" style="margin-top: 12px; font-size: 0.85rem; text-align: center;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
