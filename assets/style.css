@@ -1656,3 +1656,159 @@ body {
 
 
 
+
+/* ============================================================
+   专业复习首页信息区
+   ============================================================ */
+.quiz-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(260px, 0.8fr);
+  gap: 18px;
+  margin-bottom: 22px;
+  padding: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.22), transparent 32%),
+    radial-gradient(circle at 85% 10%, rgba(14, 165, 233, 0.18), transparent 28%),
+    linear-gradient(135deg, var(--bg-card), rgba(19, 26, 46, 0.86));
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.quiz-hero .eyebrow {
+  color: var(--accent-secondary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.quiz-hero h1 {
+  font-size: clamp(1.5rem, 3vw, 2.35rem);
+  line-height: 1.18;
+  letter-spacing: -0.04em;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.quiz-hero p {
+  max-width: 780px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.primary-cta,
+.secondary-cta {
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.primary-cta {
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  box-shadow: var(--shadow-glow);
+}
+
+.secondary-cta {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.primary-cta:hover,
+.secondary-cta:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent-primary);
+}
+
+.hero-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-content: stretch;
+}
+
+.hero-metric {
+  min-height: 96px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.045);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-metric span {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.hero-metric small {
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.review-insights {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 22px 0 8px;
+}
+
+.insight-card {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  padding: 14px 16px;
+}
+
+.insight-card.primary {
+  border-color: var(--border-active);
+  box-shadow: 0 0 0 3px var(--accent-primary-glow);
+}
+
+.insight-card strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+}
+
+.insight-card span {
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 900px) {
+  .quiz-hero,
+  .review-insights {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .quiz-hero {
+    padding: 18px;
+  }
+
+  .hero-metrics {
+    grid-template-columns: 1fr;
+  }
+}
