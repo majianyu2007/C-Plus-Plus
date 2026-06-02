@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="专业的 C++ 面向对象程序设计期末复习刷题平台：题库练习、知识点讲义、错题复盘、间隔复习与 AI 伴学。">
-  <title>C++ OOP 期末复习刷题平台</title>
+  <meta name="description" content="C++ 面向对象程序设计复习工具：题库练习、知识讲义、错题标记与进度记录。">
+  <title>C++ OOP 复习工具</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%236366f1'/%3E%3Ctext x='32' y='41' font-size='28' text-anchor='middle' fill='white' font-family='Arial'%3EC%2B%2B%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -15,17 +15,17 @@
       <div class="header-inner">
         <a href="#" class="logo" onclick="return false;">
           <div class="logo-icon">C++</div>
-          <div class="logo-text">C++ OOP 复习平台<span> · 刷题与讲义</span></div>
+          <div class="logo-text">C++ OOP 复习<span> · 题库与讲义</span></div>
         </a>
         <nav class="nav-tabs">
           <button class="nav-tab active" data-page="quiz" id="nav-quiz">题库训练</button>
           <button class="nav-tab" data-page="knowledge" id="nav-knowledge">知识讲义</button>
-          <button class="nav-tab" data-page="progress" id="nav-progress">学习进度</button>
-          <button class="nav-tab" data-page="ai-tutor" id="nav-ai-tutor">AI 伴学</button>
+          <button class="nav-tab" data-page="progress" id="nav-progress">进度概览</button>
+          <button class="nav-tab" data-page="ai-tutor" id="nav-ai-tutor">问答助手</button>
         </nav>
         <div class="header-actions">
           <button class="header-btn" id="theme-toggle" title="切换主题">🌓 主题</button>
-          <button class="header-btn" id="settings-open" title="学习与 AI 设置">⚙️ 设置</button>
+          <button class="header-btn" id="settings-open" title="学习与问答设置">⚙️ 设置</button>
         </div>
       </div>
     </header>
@@ -78,17 +78,17 @@
         <section class="quiz-hero" aria-labelledby="quiz-hero-title">
           <div class="quiz-hero-main">
             <div class="eyebrow">C++ OOP Final Review</div>
-            <h1 id="quiz-hero-title">把刷题、讲义、错题复盘串成一条复习闭环</h1>
-            <p>按章节与知识点精准筛题，配合焦点模式、今日复习队列和 AI 讲解，帮助你在考前高效巩固类与对象、继承、多态、运算符重载、模板与异常等核心内容。</p>
+            <h1 id="quiz-hero-title">题库、讲义和错题记录放在同一处</h1>
+            <p>按章节、题型和知识点筛题；需要讲解时可一键复制提示词，到你常用的模型里继续追问。</p>
             <div class="hero-actions">
-              <button class="primary-cta" type="button" onclick="window.startTodayReview()">🗓️ 开始今日复习</button>
-              <button class="secondary-cta" type="button" onclick="window._goToPage('knowledge')">📚 查看知识讲义</button>
+              <button class="primary-cta" type="button" onclick="window.startTodayReview()">🗓️ 复习待处理题</button>
+              <button class="secondary-cta" type="button" onclick="window._goToPage('knowledge')">📚 看讲义</button>
             </div>
           </div>
           <div class="hero-metrics" aria-label="复习概览">
             <div class="hero-metric"><span id="hero-total">0</span><small>题库总量</small></div>
             <div class="hero-metric"><span id="hero-kp">0</span><small>知识点标签</small></div>
-            <div class="hero-metric"><span id="hero-due">0</span><small>今日待复习</small></div>
+            <div class="hero-metric"><span id="hero-due">0</span><small>待复习</small></div>
             <div class="hero-metric"><span id="hero-accuracy">--</span><small>近 20 次正确率</small></div>
           </div>
         </section>
@@ -119,7 +119,7 @@
           <div class="filter-group" id="mode-filters" style="margin-left: auto;">
             <button class="filter-btn active" data-mode="list">📋 列表</button>
             <button class="filter-btn" data-mode="focus">🎯 单题</button>
-            <button class="filter-btn" id="today-review" title="生成今日复习队列并进入焦点模式">🗓️ 今日复习</button>
+            <button class="filter-btn" id="today-review" title="进入待复习/错题队列的单题模式">🗓️ 待复习</button>
           </div>
         </div>
         <div class="question-list" id="question-list">
@@ -144,8 +144,8 @@
       <!-- 进度页面 -->
       <div class="page" id="page-progress">
         <div class="knowledge-section">
-          <h2 style="color: var(--text-primary); margin-bottom: 8px; font-size: 1.2rem;">学习进度</h2>
-          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">掌握率、错题、待复习和最近作答会自动汇总，建议每天优先完成“今日复习”。</p>
+          <h2 style="color: var(--text-primary); margin-bottom: 8px; font-size: 1.2rem;">进度概览</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">这里汇总掌握率、错题、待复习和最近作答，方便判断下一步该看哪里。</p>
 
           <div class="progress-container-grid">
             <!-- 环形进度 -->
@@ -208,9 +208,6 @@
             <button class="show-answer-btn" onclick="document.getElementById('import-file').click()" style="border-color: var(--accent-secondary); color: var(--accent-secondary);">
               ⬆️ 导入进度
             </button>
-            <button class="show-answer-btn" onclick="window.startTodayReview()" style="border-color: var(--accent-primary); color: var(--accent-primary); background: var(--accent-primary-glow);">
-              🗓️ 今日复习（焦点模式）
-            </button>
             <input id="import-file" type="file" accept="application/json" style="display:none;" />
           </div>
 
@@ -222,19 +219,19 @@
         </div>
       </div>
 
-      <!-- AI 导师页面 -->
+      <!-- 问答助手页面 -->
       <div class="page" id="page-ai-tutor">
         <div class="ai-tutor-container">
           <div class="ai-tutor-header">
-            <h3>💬 C++ OOP 智能伴学导师</h3>
-            <p>可以追问概念、粘贴代码进行评审，也可以让它按薄弱知识点生成小测；建议把 AI 回答作为复习辅助，并以课程讲义与标准答案为准。</p>
+            <h3>💬 C++ OOP 问答助手</h3>
+            <p>可以追问概念、粘贴代码检查思路，或让它围绕薄弱知识点出几道小题；最终仍以课程要求和标准答案为准。</p>
             <button class="clear-chat-btn" onclick="window.clearChat()">🗑️ 清空对话</button>
           </div>
           <div class="chat-messages" id="chat-messages">
             <div class="message ai">
               <div class="avatar">🤖</div>
               <div class="message-content">
-                你好！我是你的 C++ OOP 期末复习智能导师。请在下方输入您想咨询的问题，或者直接点击某个题目下方的“AI 助手解答”！
+                你好，这里可以帮你整理 C++ OOP 题目思路、概念和代码。默认会复制提示词，方便你粘贴到常用模型中提问。
               </div>
             </div>
           </div>
@@ -248,7 +245,7 @@
 
     <!-- 底部 -->
     <footer class="app-footer">
-      C++ 面向对象程序设计 · 专业复习刷题平台
+      C++ 面向对象程序设计 · 复习题库与讲义
       <span id="meta-version" style="margin-left: 10px; color: var(--text-muted);"></span>
     </footer>
   </div>
@@ -265,13 +262,13 @@
       </div>
       <div class="modal-body">
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
-          设置您的 API 密钥以启用智能 AI 答题助手和 AI 伴学导师。所有配置均直接存储在您的本地浏览器（localStorage）中，不会上传到任何第三方中转服务器。
+          默认使用“复制提示词”模式，不需要填写 API Key。若要在站内直接生成回答，可配置兼容 OpenAI Chat Completions 的接口；配置只保存在本地浏览器。
         </p>
         <div class="form-group">
-          <label for="ai-mode">AI 使用方式</label>
+          <label for="ai-mode">问答使用方式</label>
           <select id="ai-mode" class="chapter-select" style="width: 100%;">
-            <option value="api">直连 API（站内生成回答）</option>
-            <option value="clipboard">复制提示词（用网页版大模型自己提问）</option>
+            <option value="clipboard">复制提示词（默认）</option>
+            <option value="api">直连 API（站内生成）</option>
           </select>
         </div>
         <div class="form-group" style="margin-top: -6px;">
@@ -287,7 +284,7 @@
           </label>
         </div>
         <div style="font-size: 0.82rem; color: var(--text-muted); margin: 8px 0 16px; line-height: 1.6;">
-          浏览器端直连 LLM 需要目标端点允许 CORS；若遇到跨域报错，请更换支持 CORS 的 OpenAI 兼容网关/代理。API Key 存在本地浏览器有泄露风险（共享电脑/浏览器扩展/XSS），建议仅在可信环境使用，并可随时清除 Key。
+          浏览器端直连接口需要目标端点允许 CORS。API Key 保存在浏览器会有泄露风险，建议只在可信设备使用，并可随时清除。
         </div>
         <div class="form-group">
           <label for="api-base">API Base URL (端点)</label>

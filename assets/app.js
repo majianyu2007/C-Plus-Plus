@@ -25,7 +25,7 @@
     knowledgePointCounts: {},
     kpLectureMap: {}, // { "知识点": "讲义章节hint" }
     chatHistory: [
-      { role: 'assistant', content: '你好！我是你的 C++ OOP 期末复习智能导师。请在下方输入您想咨询的问题，或者直接点击某个题目下方的“AI 助手解答”！' }
+      { role: 'assistant', content: '你好，这里可以帮你整理 C++ OOP 题目思路、概念和代码。你也可以在题目卡片里复制讲解提示词后到常用模型中提问。' }
     ],
     quizMode: 'list',     // 'list' (列表) 或 'focus' (单题焦点)
     focusIndex: 0         // 焦点模式下的当前题目索引
@@ -59,7 +59,7 @@
 
   state.settings = Object.assign(
     {
-      aiMode: localStorage.getItem('oop_ai_mode') || 'api', // 'api' | 'clipboard'
+      aiMode: localStorage.getItem('oop_ai_mode') || 'clipboard', // 'api' | 'clipboard'
       saveApiKey: localStorage.getItem('oop_save_api_key') !== '0',
       redoMode: localStorage.getItem('oop_redo_mode') === '1'
     },
@@ -245,16 +245,46 @@
   // 主题管理 (Theme Manager)
   // ============================================================
   function initTheme() {
-    const savedTheme = localStorage.getItem('oop_theme') || 'dark';
-    if (savedTheme === 'light') {
-      document.body.classList.add('light-theme');
+    const btn = document.getElementById('theme-toggle');
+    const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: light)') : null;
+
+    function getThemeMode() {
+      return localStorage.getItem('oop_theme') || 'system';
     }
 
-    document.getElementById('theme-toggle').addEventListener('click', () => {
-      document.body.classList.toggle('light-theme');
-      const currentTheme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
-      localStorage.setItem('oop_theme', currentTheme);
-    });
+    function applyTheme(mode = getThemeMode()) {
+      const resolvedLight = mode === 'light' || (mode === 'system' && media && media.matches);
+      document.body.classList.toggle('light-theme', !!resolvedLight);
+      document.body.classList.toggle('dark-theme', !resolvedLight);
+      if (btn) {
+        const labels = { system: '跟随系统', light: '浅色', dark: '深色' };
+        btn.textContent = `🌓 ${labels[mode] || labels.system}`;
+        btn.title = `当前：${labels[mode] || labels.system}。点击切换主题。`;
+      }
+    }
+
+    applyTheme();
+
+    if (media) {
+      const onSystemThemeChange = () => {
+        if (getThemeMode() === 'system') applyTheme('system');
+      };
+      if (typeof media.addEventListener === 'function') {
+        media.addEventListener('change', onSystemThemeChange);
+      } else if (typeof media.addListener === 'function') {
+        media.addListener(onSystemThemeChange);
+      }
+    }
+
+    if (btn) {
+      btn.addEventListener('click', () => {
+        const order = ['system', 'light', 'dark'];
+        const current = getThemeMode();
+        const next = order[(order.indexOf(current) + 1) % order.length] || 'system';
+        localStorage.setItem('oop_theme', next);
+        applyTheme(next);
+      });
+    }
   }
 
   // ============================================================
@@ -279,7 +309,7 @@
     inputBase.value = apiConfig.base;
     inputKey.value = apiConfig.key;
     inputModel.value = apiConfig.model;
-    if (inputAiMode) inputAiMode.value = state.settings.aiMode || 'api';
+    if (inputAiMode) inputAiMode.value = state.settings.aiMode || 'clipboard';
     if (inputSaveKey) inputSaveKey.checked = !!state.settings.saveApiKey;
     if (inputRedoMode) inputRedoMode.checked = !!state.settings.redoMode;
 
@@ -312,7 +342,7 @@
       }
       localStorage.setItem('oop_api_model', apiConfig.model);
 
-      state.settings.aiMode = inputAiMode ? inputAiMode.value : 'api';
+      state.settings.aiMode = inputAiMode ? inputAiMode.value : 'clipboard';
       state.settings.redoMode = inputRedoMode ? !!inputRedoMode.checked : false;
       localStorage.setItem('oop_ai_mode', state.settings.aiMode);
       localStorage.setItem('oop_redo_mode', state.settings.redoMode ? '1' : '0');
@@ -989,8 +1019,8 @@
       html += `<div class="question-stem" style="font-size:0.88rem;color:var(--text-secondary);">${escapeHtml(q.requirement || '').replace(/\\n/g, '<br>').replace(/\n/g, '<br>')}</div>`;
       html += `
         <div class="programming-input-wrapper">
-          <textarea class="programming-input" id="prog-input-${safeUniqueId}" placeholder="在此贴入您的 C++ 实现代码，让 AI 导师为您判定与打分..."></textarea>
-          <button class="show-answer-btn grade-btn" style="margin-top: 8px; border-color: var(--accent-warning); color: var(--accent-warning);" onclick="window._gradeProgrammingAnswer('${safeUniqueId}')">⚡ AI 智能判题</button>
+          <textarea class="programming-input" id="prog-input-${safeUniqueId}" placeholder="粘贴你的 C++ 实现，用提示词检查思路与边界..."></textarea>
+          <button class="show-answer-btn grade-btn" style="margin-top: 8px; border-color: var(--accent-warning); color: var(--accent-warning);" onclick="window._gradeProgrammingAnswer('${safeUniqueId}')">检查代码</button>
         </div>
         <div class="programming-grading-result" id="grading-${safeUniqueId}" style="display: none;"></div>
       `;
@@ -1032,9 +1062,9 @@
         const encKp = encodeURIComponent(kp);
         const safeEncKp = escapeAttr(encKp);
         html += `
-          <div class="kp-chip" title="点击：按该知识点筛题；右侧图标：打开知识点讲义" onclick="window._filterByKnowledgePointEncoded('${safeEncKp}')">
+          <div class="kp-chip" title="点击打开讲义；右侧图标按该知识点筛题" onclick="window._jumpToKnowledgePointEncoded('${safeEncKp}')">
             ${safeKp}
-            <span class="kp-action" title="查看知识点" onclick="event.stopPropagation(); window._jumpToKnowledgePointEncoded('${safeEncKp}');">📚</span>
+            <span class="kp-action" title="按该知识点筛题" onclick="event.stopPropagation(); window._filterByKnowledgePointEncoded('${safeEncKp}');">练题</span>
           </div>
         `;
       });
@@ -1046,7 +1076,7 @@
     html += `<button class="show-answer-btn" id="toggle-answer-btn-${safeUniqueId}" onclick="window._toggleAnswer('${safeUniqueId}')">`;
     html += `📖 ${isProgramming ? '查看参考代码' : '显示答案'}</button>`;
     html += `<button class="show-answer-btn" id="ai-toggle-btn-${safeUniqueId}" style="border-color: var(--accent-primary); color: var(--accent-primary); background: var(--accent-primary-glow);" onclick="window._runAiAnalysis('${safeUniqueId}')">`;
-    html += `✨ 生成 AI 解答</button>`;
+    html += `🧾 获取讲解提示词</button>`;
     html += `</div>`;
 
     // 选择/判断题：就地反馈（与填空题风格一致）
@@ -1174,39 +1204,52 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  function normalizeSearchText(text) {
+    return String(text || '').toLowerCase().replace(/[\s《》“”"'`·:：,，.。()（）\[\]【】_-]+/g, '');
+  }
+
   window._filterByKnowledgePointEncoded = function (encKp) {
     const kp = decodeURIComponent(String(encKp || ''));
     window._filterByKnowledgePoint(kp);
   };
 
   window._jumpToKnowledgePoint = function (kp) {
-    window._goToPage('knowledge');
-
     const input = document.getElementById('knowledge-search');
     const lectureHint = (state.kpLectureMap && state.kpLectureMap[kp]) ? state.kpLectureMap[kp] : '';
-    const query = lectureHint || kp || '';
-    if (input) input.value = query;
-    renderKnowledge(String(query).toLowerCase());
+    const queries = [lectureHint, kp].filter(Boolean);
 
-    // 等待 DOM 更新后尝试定位
+    window._goToPage('knowledge');
+    if (input) input.value = '';
+    renderKnowledge('');
+
     setTimeout(() => {
-      // 1) 优先定位到包含关键词的章节
       const chapters = Array.from(document.querySelectorAll('#knowledge-list .knowledge-chapter'));
+      const normalizedQueries = queries.map(normalizeSearchText).filter(Boolean);
       let target = null;
+
       for (const ch of chapters) {
         const title = ch.querySelector('.chapter-title');
         const body = ch.querySelector('.chapter-body');
-        const haystack = ((title ? title.textContent : '') + ' ' + (body ? body.textContent : '')).toLowerCase();
-        if (haystack.includes(String(query).toLowerCase())) {
+        const haystack = normalizeSearchText(`${title ? title.textContent : ''} ${body ? body.textContent : ''}`);
+        if (normalizedQueries.some(q => haystack.includes(q))) {
           target = ch;
           break;
         }
       }
 
+      if (!target && lectureHint) {
+        const hintHead = normalizeSearchText(String(lectureHint).split(/[：:·-]/)[0]);
+        target = chapters.find(ch => normalizeSearchText(ch.textContent).includes(hintHead));
+      }
+
       if (target) {
-        target.classList.add('open');
+        chapters.forEach(ch => ch.classList.remove('jump-highlight'));
+        target.classList.add('open', 'jump-highlight');
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => target.classList.remove('jump-highlight'), 1800);
       } else {
+        if (input) input.value = kp || '';
+        renderKnowledge(String(kp || '').toLowerCase());
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }, 60);
@@ -1256,6 +1299,18 @@
     if (el) el.classList.add('visible');
   };
 
+  function normalizeChoiceAnswer(answer) {
+    const match = String(answer || '').toUpperCase().match(/[A-D]/);
+    return match ? match[0] : String(answer || '').trim().toUpperCase();
+  }
+
+  function normalizeTrueFalseAnswer(answer) {
+    const raw = String(answer || '').trim().toLowerCase();
+    if (['true', 't', 'yes', 'y', '正确', '对', '√', '✓'].includes(raw)) return '对';
+    if (['false', 'f', 'no', 'n', '错误', '错', '×', '✗'].includes(raw)) return '错';
+    return String(answer || '').trim();
+  }
+
   window._selectOption = function (uniqueId, selectedLetter, element) {
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     if (uniqueId.startsWith('prog-')) return;
@@ -1263,16 +1318,17 @@
     const q = state.questions.find(item => String(item.id) === realId);
     if (!q) return;
 
-    const answerStr = (q.answer || '').trim().toUpperCase();
+    const answerStr = normalizeChoiceAnswer(q.answer);
     const isCorrect = selectedLetter === answerStr;
     const feedbackEl = document.getElementById('feedback-' + uniqueId);
-
     const card = findQuestionCard(uniqueId);
+
     if (card) {
       card.querySelectorAll('.option-item').forEach(opt => {
         opt.classList.remove('selected', 'correct', 'incorrect');
       });
     }
+    element.classList.add('selected');
 
     if (isCorrect) {
       if (!state.settings.redoMode) element.classList.add('correct');
@@ -1315,7 +1371,7 @@
     const q = state.questions.find(item => String(item.id) === realId);
     if (!q) return;
 
-    const answerStr = (q.answer || '').trim();
+    const answerStr = normalizeTrueFalseAnswer(q.answer);
     const isCorrect = selectedValue === answerStr;
     const feedbackEl = document.getElementById('feedback-' + uniqueId);
 
@@ -1530,14 +1586,14 @@ ${userCode}
         <div style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7;">
           🧾 判题提示词已复制到剪贴板。<br>
           请粘贴到你偏好的网页版大模型进行“评审打分”。<br><br>
-          <span style="color: var(--text-muted);">（若想站内自动判题，请在 ⚙️ 设置 中把“AI 使用方式”切回“直连 API”，并配置可用端点与 Key。）</span>
+          <span style="color: var(--text-muted);">（若想站内自动判题，请在 ⚙️ 设置 中把“问答使用方式”切回“直连 API”，并配置可用端点与 Key。）</span>
         </div>
       `;
       return;
     }
 
     gradingEl.style.display = 'block';
-    gradingEl.innerHTML = '<div class="loading" style="padding:10px 0;"><div class="loading-spinner" style="width:20px;height:20px;"></div><span style="margin-left:8px;font-size:0.85rem;color:var(--text-secondary);">AI 导师正在审阅代码中，请稍候…</span></div>';
+    gradingEl.innerHTML = '<div class="loading" style="padding:10px 0;"><div class="loading-spinner" style="width:20px;height:20px;"></div><span style="margin-left:8px;font-size:0.85rem;color:var(--text-secondary);">正在审阅代码，请稍候…</span></div>';
 
     try {
       const res = await fetch(`${apiBase}/chat/completions`, {
@@ -1639,7 +1695,7 @@ ${userCode}
     // 已生成：再次点击只做 展开/收起，不重复请求
     if (loaded) {
       container.style.display = isVisible ? 'none' : 'block';
-      if (btn) btn.textContent = isVisible ? '✨ 展开 AI 解答' : '🙈 收起 AI 解答';
+      if (btn) btn.textContent = isVisible ? '🧾 展开讲解' : '收起讲解';
       if (!isVisible) container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       return;
     }
@@ -1648,7 +1704,7 @@ ${userCode}
     container.innerHTML = `
       <div class="ai-analysis-container">
         <div class="ai-analysis-header">
-          <span id="ai-title-${uniqueId}">✨ AI 答题分析助手 (${apiConfig.model})</span>
+          <span id="ai-title-${uniqueId}">题目讲解 (${apiConfig.model})</span>
           <span style="font-size:0.75rem;opacity:0.8;" id="ai-status-${uniqueId}">正在连接模型…</span>
         </div>
         <div class="ai-analysis-box" id="ai-box-${uniqueId}">
@@ -1669,18 +1725,18 @@ ${userCode}
 
     if (isProg) {
       const q = state.programming.find(item => String(item.id) === realId);
-      promptContent = `请你深度剖析下面这道 C++ 程序设计期末考题：\n题目：${q.title}\n功能要求：${q.requirement}\n参考代码实现：\n\`\`\`cpp\n${q.answerCode}\n\`\`\`\n核心知识点：${q.keyPoints.join(', ')}`;
+      promptContent = `请分析下面这道 C++ 程序设计复习题：\n题目：${q.title}\n功能要求：${q.requirement}\n参考代码实现：\n\`\`\`cpp\n${q.answerCode}\n\`\`\`\n核心知识点：${q.keyPoints.join(', ')}`;
     } else {
       const q = state.questions.find(item => String(item.id) === realId);
-      promptContent = `请你深度剖析下面这道 C++ 客观题：\n题型：${q.type === 'choice' ? '选择题' : q.type === 'truefalse' ? '判断题' : '填空题'}\n题目章节：${q.chapter}\n题干：${q.stem}\n${q.options ? '选项：\n' + q.options.join('\n') : ''}\n正确答案：${q.answer}\n原版答案解析：${q.explanation || '无'}`;
+      promptContent = `请分析下面这道 C++ 客观题：\n题型：${q.type === 'choice' ? '选择题' : q.type === 'truefalse' ? '判断题' : '填空题'}\n题目章节：${q.chapter}\n题干：${q.stem}\n${q.options ? '选项：\n' + q.options.join('\n') : ''}\n正确答案：${q.answer}\n原版答案解析：${q.explanation || '无'}`;
     }
 
-    const systemPrompt = "你是一位精通 C++ 面向对象程序设计（OOP）的资深 AI 伴学导师。请为学生提供深入浅出的解题步骤思路、该题关联的 C++ 核心机制解析（例如为什么不能写成某种错误的语法）、以及相关的核心代码小范例（如果有）。请使用 Markdown 语法排版，逻辑清晰，中文作答，保证 self-contained 完备性。";
+    const systemPrompt = "你是一位精通 C++ 面向对象程序设计（OOP）的老师。请为学生提供深入浅出的解题步骤思路、该题关联的 C++ 核心机制解析（例如为什么不能写成某种错误的语法）、以及相关的核心代码小范例（如果有）。请使用 Markdown 语法排版，逻辑清晰，中文作答，保证 self-contained 完备性。";
 
     const boxContent = document.getElementById(`ai-box-${uniqueId}`);
     const statusSpan = document.getElementById(`ai-status-${uniqueId}`);
     const titleSpan = document.getElementById(`ai-title-${uniqueId}`);
-    if (btn) btn.textContent = '🙈 收起 AI 解答';
+    if (btn) btn.textContent = '收起讲解';
 
     if (state.settings.aiMode === 'clipboard' || !apiConfig.key || !window.isSecureContext) {
       const promptToCopy = `${systemPrompt}\n\n${promptContent}`;
@@ -1691,7 +1747,7 @@ ${userCode}
         <div style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.7;">
           提示词已复制到剪贴板。<br>
           你可以直接打开你常用的网页版大模型，把提示词粘贴进去提问。<br><br>
-          <span style="color: var(--text-muted);">（若想站内直接生成回答，请在 ⚙️ 设置 中把“AI 使用方式”切回“直连 API”。）</span>
+          <span style="color: var(--text-muted);">（若想站内直接生成回答，请在 ⚙️ 设置 中把“问答使用方式”切回“直连 API”。）</span>
         </div>
       `;
       container.setAttribute('data-loaded', '1');
@@ -1781,7 +1837,7 @@ ${userCode}
           e.preventDefault();
           e.stopPropagation();
           container.setAttribute('data-loaded', '0');
-          if (btn) btn.textContent = '🙈 收起 AI 解答';
+          if (btn) btn.textContent = '收起讲解';
           window._runAiAnalysis(uniqueId);
         };
         header.appendChild(regen);
@@ -1789,8 +1845,8 @@ ${userCode}
 
     } catch (err) {
       statusSpan.textContent = '请求出错 ❌';
-      boxContent.innerHTML = `<div style="color: var(--accent-danger); font-weight: 500;">❌ AI 助手解答失败: ${err.message}<br><br><span style="font-size: 0.8rem; color: var(--text-secondary);">温馨提示：请点击 Header 的 ⚙️ API 设置 确认您的 Base URL、Key 和 Model 正确，且没有网络限制。</span></div>`;
-      if (btn) btn.textContent = '✨ 生成 AI 解答';
+      boxContent.innerHTML = `<div style="color: var(--accent-danger); font-weight: 500;">❌ 讲解请求失败: ${err.message}<br><br><span style="font-size: 0.8rem; color: var(--text-secondary);">提示：请在 ⚙️ 设置中确认 Base URL、Key 和 Model 正确，且当前网络可访问该端点。</span></div>`;
+      if (btn) btn.textContent = '🧾 获取讲解提示词';
     }
   };
 
@@ -1804,11 +1860,19 @@ ${userCode}
 
     if (!messageText) return;
     if (state.settings.aiMode === 'clipboard' || !apiConfig.key) {
-      const systemPrompt = "你是一位精通 C++ 面向对象程序设计的智能 AI 导师。你可以解答学生关于类与对象、深拷贝、多态虚函数、运算符重载、模板与 STL、异常处理、新特性的任何问题。回答需使用 Markdown 语法进行高质量排版。";
-      const promptToCopy = `${systemPrompt}\n\n用户问题：\n${messageText}\n\n（请用中文回答，并使用 Markdown 排版）`;
-      await copyPromptAndNotify(promptToCopy);
+      const systemPrompt = "你是一位精通 C++ 面向对象程序设计的老师。你可以解答类与对象、深拷贝、多态虚函数、运算符重载、模板与 STL、异常处理和新特性等问题。回答请用 Markdown 排版，步骤清楚。";
+      const promptToCopy = `${systemPrompt}
+
+用户问题：
+${messageText}
+
+（请用中文回答，并使用 Markdown 排版）`;
+      const copied = await copyPromptAndNotify(promptToCopy);
       appendMessage('user', messageText);
-      appendMessage('ai', '我已将你的问题与提示词复制到剪贴板。请粘贴到你偏好的网页版大模型中提问。');
+      appendMessage('ai', copied
+        ? '已复制完整提示词。请粘贴到你常用的模型中提问。'
+        : '自动复制没有成功。请手动复制输入框内容，或检查浏览器剪贴板权限。');
+      if (copied) inputEl.value = '';
       return;
     }
 
@@ -1834,7 +1898,7 @@ ${userCode}
     appendPlaceholderMessage(aiMsgId);
 
     const aiMsgContentDiv = document.getElementById(aiMsgId);
-    const systemPrompt = "你是一位精通 C++ 面向对象程序设计的智能 AI 导师。你可以解答学生关于类与对象、深拷贝、多态虚函数、运算符重载、模板与 STL、异常处理、新特性的任何问题。回答需使用 Markdown 语法进行高质量排版。";
+    const systemPrompt = "你是一位精通 C++ 面向对象程序设计的老师。你可以解答类与对象、深拷贝、多态虚函数、运算符重载、模板与 STL、异常处理和新特性等问题。回答请用 Markdown 排版，步骤清楚。";
 
     try {
       const response = await fetch(`${apiConfig.base}/chat/completions`, {
@@ -1946,25 +2010,41 @@ ${userCode}
 
   async function copyPromptAndNotify(text) {
     try {
-      await navigator.clipboard.writeText(text);
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.top = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        if (!ok) throw new Error('execCommand copy failed');
+      }
       showToast('提示词已复制到剪贴板', 'success');
+      return true;
     } catch (e) {
       showToast('复制失败：请检查浏览器剪贴板权限', 'error');
+      return false;
     }
   }
 
   function updateAiTutorVisibility() {
     const nav = document.getElementById('nav-ai-tutor');
     const page = document.getElementById('page-ai-tutor');
-    const hidden = state.settings.aiMode === 'clipboard';
-    if (nav) nav.style.display = hidden ? 'none' : '';
-    if (page) page.style.display = hidden ? 'none' : '';
-    // 如果当前正处于 AI 导师页但被隐藏，则切回刷题
-    if (hidden) {
-      const active = document.querySelector('.page.active');
-      if (active && active.id === 'page-ai-tutor') {
-        window._goToPage('quiz');
-      }
+    const isClipboard = state.settings.aiMode === 'clipboard';
+
+    // 默认复制提示词时也保留问答助手页：该页会复制完整提问模板，而不是站内直连。
+    if (nav) {
+      nav.style.display = '';
+      nav.title = isClipboard ? '复制提示词后到常用模型中提问' : '站内直连接口生成回答';
+    }
+    if (page) {
+      page.style.display = '';
+      page.dataset.mode = isClipboard ? 'clipboard' : 'api';
     }
   }
 
@@ -2007,22 +2087,51 @@ ${userCode}
   }
 
   window._jumpToQuestionByKey = function (idKey) {
-    const isProg = idKey.startsWith('prog_');
-    const realId = idKey.replace(/^(q_|prog_)/, '');
+    const key = String(idKey || '');
+    const isProg = key.startsWith('prog_');
+    const realId = key.replace(/^(q_|prog_)/, '');
+    const target = state.allItems.find(q => String(q.id) === String(realId) && (isProg ? q.type === 'programming' : q.type !== 'programming'));
+
+    if (!target) {
+      showToast('没有找到这道题，可能题库版本已变化。', 'warning');
+      return;
+    }
+
     state.currentType = 'all';
-    document.querySelectorAll('#type-filters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
-    state.quizMode = 'focus';
-    document.querySelectorAll('#mode-filters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === 'focus'));
+    state.currentChapter = 'all';
+    state.currentStatus = null;
+    state.searchQuery = '';
     state.selectedKnowledgePoint = 'all';
+    state.favoritesOnly = false;
+    state.quizMode = 'focus';
+
+    document.querySelectorAll('#type-filters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
+    document.querySelectorAll('#status-filters .filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#mode-filters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === 'focus'));
     const knowledgeSelect = document.getElementById('knowledge-filter');
     if (knowledgeSelect) knowledgeSelect.value = 'all';
+    const chapterSelect = document.getElementById('chapter-filter');
+    if (chapterSelect) chapterSelect.value = 'all';
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) searchInput.value = '';
+    const favBtn = document.getElementById('favorites-only');
+    if (favBtn) favBtn.classList.remove('active');
 
-    // 设置筛选为仅目标题
-    state.filtered = state.allItems.filter(q => String(q.id) === String(realId) && (isProg ? q.type === 'programming' : q.type !== 'programming'));
-    state.focusIndex = 0;
+    filterAndRender();
+    state.focusIndex = Math.max(0, state.filtered.indexOf(target));
     window._goToPage('quiz');
     renderQuestionList();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => {
+      const uniqueId = target.type === 'programming' ? `prog-${target.id}` : `q-${target.id}`;
+      const card = findQuestionCard(uniqueId);
+      if (card) {
+        card.classList.add('jump-highlight');
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => card.classList.remove('jump-highlight'), 1600);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 40);
   };
 
   function renderFooterMeta() {
@@ -2037,16 +2146,16 @@ ${userCode}
   }
 
   window.clearChat = function() {
-    if (confirm('确定要清空 AI 导师的聊天历史记录吗？')) {
+    if (confirm('确定要清空问答历史记录吗？')) {
       state.chatHistory = [
-        { role: 'assistant', content: '对话已重置。你好！我是你的 C++ OOP 期末复习智能导师。请在下方输入您想咨询的问题！' }
+        { role: 'assistant', content: '对话已重置。你好，这里可以帮你整理 C++ OOP 概念、题目思路和代码问题。' }
       ];
       const container = document.getElementById('chat-messages');
       container.innerHTML = `
         <div class="message ai">
           <div class="avatar">🤖</div>
           <div class="message-content">
-            对话已重置。你好！我是你的 C++ OOP 期末复习智能导师。请在下方输入您想咨询的问题！
+            对话已重置。你好，这里可以帮你整理 C++ OOP 概念、题目思路和代码问题。
           </div>
         </div>
       `;
@@ -2108,7 +2217,7 @@ ${userCode}
         const encKp = encodeURIComponent(kp);
         const safeEncKp = escapeAttr(encKp);
         const c = state.knowledgePointCounts[kp] || 0;
-        return `<div class="kp-chip" onclick="window._filterByKnowledgePointEncoded('${safeEncKp}')" title="点击：按该知识点筛题">${escapeHtml(kp)}${c ? ` <span style="opacity:0.7;font-size:0.8em;">(${c})</span>` : ''} <span class="kp-action" onclick="event.stopPropagation(); window._jumpToKnowledgePointEncoded('${safeEncKp}');" title="查看讲义">📚</span></div>`;
+        return `<div class="kp-chip" onclick="window._jumpToKnowledgePointEncoded('${safeEncKp}')" title="点击打开对应讲义">${escapeHtml(kp)}${c ? ` <span style="opacity:0.7;font-size:0.8em;">(${c})</span>` : ''} <span class="kp-action" onclick="event.stopPropagation(); window._filterByKnowledgePointEncoded('${safeEncKp}');" title="按该知识点筛题">练题</span></div>`;
       }).join('');
 
       indexContainer.innerHTML = `
@@ -2157,9 +2266,8 @@ ${userCode}
       });
       const relatedHtml = relatedUniq.slice(0, 10).map(({ kp, item }) => {
         const label = item.type === 'programming' ? `程序 ${item.id}` : `第 ${item.id} 题`;
-        const encKp = encodeURIComponent(kp);
-        const safeEncKp = escapeAttr(encKp);
-        return `<button class="rq-link" onclick="window._filterByKnowledgePointEncoded('${safeEncKp}')" title="按该知识点筛题">${escapeHtml(label)} · ${escapeHtml(kp)}</button>`;
+        const idKey = item.type === 'programming' ? `prog_${item.id}` : `q_${item.id}`;
+        return `<button class="rq-link" onclick="window._jumpToQuestionByKey('${escapeAttr(idKey)}')" title="打开这道题">${escapeHtml(label)} · ${escapeHtml(kp)}</button>`;
       }).join('');
 
       return `
@@ -2313,7 +2421,7 @@ ${userCode}
           const s = Object.assign({}, data.settings);
           delete s.apiKey;
           state.settings = Object.assign(state.settings, s);
-          localStorage.setItem('oop_ai_mode', state.settings.aiMode || 'api');
+          localStorage.setItem('oop_ai_mode', state.settings.aiMode || 'clipboard');
           localStorage.setItem('oop_redo_mode', state.settings.redoMode ? '1' : '0');
           localStorage.setItem('oop_save_api_key', state.settings.saveApiKey ? '1' : '0');
           saveJsonToStorage(SETTINGS_KEY, state.settings);
@@ -2352,13 +2460,13 @@ ${userCode}
     if (!btn) return;
     const dueCount = getTodayReviewKeys().length;
     btn.disabled = dueCount === 0;
-    btn.textContent = dueCount === 0 ? '🗓️ 今日复习（0）' : `🗓️ 今日复习（${dueCount}）`;
+    btn.textContent = dueCount === 0 ? '🗓️ 待复习（0）' : `🗓️ 待复习（${dueCount}）`;
   }
 
   window.startTodayReview = function () {
     const keys = getTodayReviewKeys();
     if (!keys.length) {
-      showToast('今天暂无需要复习的题目', 'info');
+      showToast('当前暂无需要复习的题目', 'info');
       updateTodayReviewButton();
       return;
     }
@@ -2372,7 +2480,7 @@ ${userCode}
     document.querySelectorAll('#mode-filters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === 'focus'));
     window._goToPage('quiz');
     renderQuestionList();
-    showToast(`今日复习：${state.filtered.length} 题`, 'success');
+    showToast(`待复习：${state.filtered.length} 题`, 'success');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
