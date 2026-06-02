@@ -257,7 +257,7 @@
       document.body.classList.toggle('light-theme', !!resolvedLight);
       document.body.classList.toggle('dark-theme', !resolvedLight);
       if (btn) {
-        const labels = { system: '跟随系统', light: '浅色', dark: '深色' };
+        const labels = { system: '系统', light: '浅色', dark: '深色' };
         btn.textContent = `🌓 ${labels[mode] || labels.system}`;
         btn.title = `当前：${labels[mode] || labels.system}。点击切换主题。`;
       }
@@ -361,6 +361,7 @@
         inputKey.value = '';
         localStorage.removeItem('oop_api_key');
         sessionStorage.removeItem('oop_api_key_session');
+        updateAiTutorVisibility();
         showToast('已清除 API Key', 'info');
       });
     }
@@ -2035,16 +2036,19 @@ ${messageText}
   function updateAiTutorVisibility() {
     const nav = document.getElementById('nav-ai-tutor');
     const page = document.getElementById('page-ai-tutor');
-    const isClipboard = state.settings.aiMode === 'clipboard';
+    const hasConfiguredApi = state.settings.aiMode === 'api' && !!apiConfig.key;
 
-    // 默认复制提示词时也保留问答助手页：该页会复制完整提问模板，而不是站内直连。
     if (nav) {
-      nav.style.display = '';
-      nav.title = isClipboard ? '复制提示词后到常用模型中提问' : '站内直连接口生成回答';
+      nav.style.display = hasConfiguredApi ? '' : 'none';
+      nav.title = hasConfiguredApi ? '站内直连接口生成回答' : '配置 API 后显示问答助手';
     }
     if (page) {
-      page.style.display = '';
-      page.dataset.mode = isClipboard ? 'clipboard' : 'api';
+      page.style.display = hasConfiguredApi ? '' : 'none';
+      page.dataset.mode = hasConfiguredApi ? 'api' : 'hidden';
+    }
+
+    if (!hasConfiguredApi && page && page.classList.contains('active')) {
+      window._goToPage('quiz');
     }
   }
 
