@@ -165,6 +165,7 @@
       initApiSettings();
       initImportProgress();
       renderStats();
+      renderDashboard();
       filterAndRender();
       renderKnowledge();
       renderProgress();
@@ -198,15 +199,17 @@
     } catch (e) { console.warn('无法保存进度'); }
   }
 
-  function setQuestionStatus(id, status) {
+  function setQuestionStatus(id, status, options = {}) {
     const key = String(id);
-    if (state.userProgress[key] === status) {
-      delete state.userProgress[key]; // 取消标记
+    const shouldToggle = options.toggle !== false;
+    if (shouldToggle && state.userProgress[key] === status) {
+      delete state.userProgress[key]; // 手动再次点击同一状态时取消标记
     } else {
       state.userProgress[key] = status;
     }
     saveProgress();
     renderStats();
+    renderDashboard();
     renderProgress();
     updateCardActions(id);
     updateTodayReviewButton();
@@ -231,6 +234,7 @@
       state.questionStats = {};
       saveJsonToStorage(STATS_KEY, state.questionStats);
       renderStats();
+      renderDashboard();
       renderProgress();
       filterAndRender();
       updateTodayReviewButton();
@@ -245,7 +249,7 @@
     if (savedTheme === 'light') {
       document.body.classList.add('light-theme');
     }
-    
+
     document.getElementById('theme-toggle').addEventListener('click', () => {
       document.body.classList.toggle('light-theme');
       const currentTheme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
@@ -285,7 +289,7 @@
 
     openBtn.addEventListener('click', window.openSettings);
     closeBtn.addEventListener('click', () => { modal.classList.remove('visible'); });
-    
+
     // 点击背景关闭
     modal.addEventListener('click', (e) => {
       if (e.target === modal) modal.classList.remove('visible');
@@ -391,7 +395,7 @@
 
   function highlightCpp(code) {
     const rawCode = code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-    
+
     const tokenRegex = new RegExp(
       '(//.*)|' +                                                       // 1: line comment
       '(/\\*[\\s\\S]*?\\*/)|' +                                         // 2: block comment
@@ -412,12 +416,12 @@
     let resultHtml = '';
     let match;
     tokenRegex.lastIndex = 0;
-    
+
     while ((match = tokenRegex.exec(rawCode)) !== null) {
       if (tokenRegex.lastIndex === match.index) {
         tokenRegex.lastIndex++;
       }
-      
+
       const [
         full,
         lineComment,
@@ -434,7 +438,7 @@
         space,
         other
       ] = match;
-      
+
       if (lineComment || blockComment) {
         resultHtml += `<span class="token comment">${escapeHtml(full)}</span>`;
       } else if (strLiteral || charLiteral) {
@@ -460,10 +464,10 @@
 
   function parseMarkdown(text) {
     if (!text) return '';
-    
+
     // 1. 规范化换行符，处理 Windows \r\n 平台差异
     let normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-    
+
     // 2. 保护代码块，提取出来免受其他块的格式化污染
     const codeBlocks = [];
     normalized = normalized.replace(/```([a-zA-Z0-9+#-]*)[ \t]*\n([\s\S]*?)\n```/g, (match, lang, code) => {
@@ -471,7 +475,7 @@
       codeBlocks.push({ lang: lang || 'cpp', code: code });
       return `\n\n${id}\n\n`;
     });
-    
+
     // 行内基本元素转义与格式化
     function formatInline(txt) {
       if (!txt) return '';
@@ -484,15 +488,15 @@
       t = t.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
       return t;
     }
-    
+
     const lines = normalized.split('\n');
     const blocks = [];
     let activeBlock = null;
-    
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       const trimmed = line.trim();
-      
+
       // 处理空行
       if (trimmed === '') {
         if (activeBlock) {
@@ -501,7 +505,7 @@
         }
         continue;
       }
-      
+
       // 处理代码块占位符
       if (trimmed.startsWith('__CODE_BLOCK_PH_') && trimmed.endsWith('__')) {
         if (activeBlock) {
@@ -511,7 +515,7 @@
         blocks.push({ type: 'code_placeholder', content: trimmed });
         continue;
       }
-      
+
       // 处理水平分割线
       if (trimmed === '---' || trimmed === '***') {
         if (activeBlock) {
@@ -521,7 +525,7 @@
         blocks.push({ type: 'hr' });
         continue;
       }
-      
+
       // 处理标题
       const headerMatch = line.match(/^(#{1,6})\s+(.*)$/);
       if (headerMatch) {
@@ -532,7 +536,7 @@
         blocks.push({ type: 'header', level: headerMatch[1].length, content: headerMatch[2] });
         continue;
       }
-      
+
       // 处理引用
       if (line.startsWith('>') || trimmed.startsWith('>')) {
         if (activeBlock && activeBlock.type !== 'blockquote') {
@@ -545,7 +549,7 @@
         activeBlock.lines.push(line.replace(/^\s*>\s?/, ''));
         continue;
       }
-      
+
       // 处理表格
       if (trimmed.startsWith('|')) {
         if (activeBlock && activeBlock.type !== 'table') {
@@ -558,7 +562,7 @@
         activeBlock.lines.push(trimmed);
         continue;
       }
-      
+
       // 处理无序列表
       const ulMatch = line.match(/^(\s*)([-\*\+])\s+(.*)$/);
       if (ulMatch) {
@@ -572,7 +576,7 @@
         activeBlock.items.push({ indent: ulMatch[1].length, content: ulMatch[3] });
         continue;
       }
-      
+
       // 处理有序列表
       const olMatch = line.match(/^(\s*)(\d+)\.\s+(.*)$/);
       if (olMatch) {
@@ -586,7 +590,7 @@
         activeBlock.items.push({ indent: olMatch[1].length, content: olMatch[3] });
         continue;
       }
-      
+
       // 默认：段落
       if (activeBlock && activeBlock.type !== 'p') {
         blocks.push(activeBlock);
@@ -597,13 +601,13 @@
       }
       activeBlock.lines.push(line);
     }
-    
+
     if (activeBlock) {
       blocks.push(activeBlock);
     }
-    
+
     const formattedBlocks = [];
-    
+
     blocks.forEach(block => {
       if (block.type === 'code_placeholder') {
         formattedBlocks.push(block.content);
@@ -619,7 +623,7 @@
         let tableHtml = '<table>';
         let hasHeader = false;
         let bodyOpen = false;
-        
+
         block.lines.forEach(line => {
           const cells = line.split('|').slice(1, -1).map(c => c.trim());
           if (cells.every(c => /^:-*|-*:|:-*:|-+$/.test(c))) {
@@ -644,7 +648,7 @@
         let listHtml = '';
         let currentIndent = 0;
         const listStack = [];
-        
+
         block.items.forEach((item, idx) => {
           if (idx === 0) {
             listHtml += `<${tag}>`;
@@ -664,7 +668,7 @@
           listHtml += `<li>${formatInline(item.content)}</li>`;
           currentIndent = item.indent;
         });
-        
+
         while (listStack.length > 0) {
           const top = listStack.pop();
           listHtml += `</${top}>`;
@@ -675,9 +679,9 @@
         formattedBlocks.push(`<p>${content}</p>`);
       }
     });
-    
+
     let finalHtml = formattedBlocks.join('\n');
-    
+
     // 4. 还原受保护的代码块并进行语法高亮
     codeBlocks.forEach((codeBlock, idx) => {
       const codeHtml = (codeBlock.lang === 'cpp' || codeBlock.lang === 'c++')
@@ -691,7 +695,7 @@
       `;
       finalHtml = finalHtml.replace(`__CODE_BLOCK_PH_${idx}__`, replacement);
     });
-    
+
     return finalHtml;
   }
 
@@ -814,14 +818,14 @@
     // AI 导师键盘与发送绑定
     const chatInput = document.getElementById('chat-input');
     const chatSendBtn = document.getElementById('chat-send-btn');
-    
+
     chatInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         sendChatMessage();
       }
     });
-    
+
     chatSendBtn.addEventListener('click', sendChatMessage);
 
     // 监听全局键盘事件用于焦点模式左右按键刷题
@@ -918,7 +922,7 @@
   function renderQuestionList() {
     const container = document.getElementById('question-list');
     const navContainer = document.getElementById('focus-navigation');
-    
+
     if (state.filtered.length === 0) {
       container.innerHTML = '<div class="empty-state"><div class="icon">📋</div><p>没有匹配的题目</p></div>';
       navContainer.style.display = 'none';
@@ -931,7 +935,7 @@
     } else {
       // 焦点刷题模式 (一页一题)
       navContainer.style.display = 'flex';
-      
+
       // 边界越界校验
       if (state.focusIndex >= state.filtered.length) state.focusIndex = 0;
       if (state.focusIndex < 0) state.focusIndex = state.filtered.length - 1;
@@ -956,15 +960,16 @@
     const typeBadge = { choice: 'badge-choice', truefalse: 'badge-truefalse', fillin: 'badge-fillin', programming: 'badge-programming' };
     const status = getQuestionStatus(getProgressKeyForItem(q));
     const uniqueId = isProgramming ? `prog-${q.id}` : `q-${q.id}`;
+    const safeUniqueId = escapeAttr(uniqueId);
 
-    let html = `<div class="question-card" data-type="${q.type}" data-id="${uniqueId}">`;
+    let html = `<div class="question-card" data-type="${q.type}" data-id="${safeUniqueId}">`;
 
     // 头部
     html += `<div class="question-header">`;
     html += `<div class="question-meta">`;
-    html += `<span class="question-number">${isProgramming ? '程序' : ''}第 ${q.id} 题</span>`;
-    html += `<span class="badge ${typeBadge[q.type]}">${typeLabel[q.type]}</span>`;
-    if (q.chapter) html += `<span class="badge badge-chapter">${q.chapter}</span>`;
+    html += `<span class="question-number">${isProgramming ? '程序' : ''}第 ${escapeHtml(q.id)} 题</span>`;
+    html += `<span class="badge ${typeBadge[q.type]}">${escapeHtml(typeLabel[q.type] || q.type)}</span>`;
+    if (q.chapter) html += `<span class="badge badge-chapter">${escapeHtml(q.chapter)}</span>`;
     if (q.status === 'pending') html += `<span class="badge badge-pending">待核对</span>`;
     html += `</div>`;
 
@@ -972,10 +977,10 @@
     html += `<div class="question-actions">`;
     const favKey = q.type === 'programming' ? `prog_${q.id}` : `q_${q.id}`;
     const isFav = !!state.favorites[favKey];
-    html += `<button class="action-btn fav ${isFav ? 'active' : ''}" title="${isFav ? '已收藏' : '收藏'}" onclick="window._toggleFavorite('${favKey}')">★</button>`;
-    html += `<button class="action-btn status-btn ${status === 'mastered' ? 'mastered' : ''}" data-status="mastered" title="已掌握" onclick="window._setStatus('${uniqueId}','mastered')">✓</button>`;
-    html += `<button class="action-btn status-btn ${status === 'review' ? 'review' : ''}" data-status="review" title="待复习" onclick="window._setStatus('${uniqueId}','review')">↻</button>`;
-    html += `<button class="action-btn status-btn ${status === 'wrong' ? 'wrong' : ''}" data-status="wrong" title="错题" onclick="window._setStatus('${uniqueId}','wrong')">✗</button>`;
+    html += `<button class="action-btn fav ${isFav ? 'active' : ''}" title="${isFav ? '已收藏' : '收藏'}" onclick="window._toggleFavorite('${escapeAttr(favKey)}')">★</button>`;
+    html += `<button class="action-btn status-btn ${status === 'mastered' ? 'mastered' : ''}" data-status="mastered" title="已掌握" onclick="window._setStatus('${safeUniqueId}','mastered')">✓</button>`;
+    html += `<button class="action-btn status-btn ${status === 'review' ? 'review' : ''}" data-status="review" title="待复习" onclick="window._setStatus('${safeUniqueId}','review')">↻</button>`;
+    html += `<button class="action-btn status-btn ${status === 'wrong' ? 'wrong' : ''}" data-status="wrong" title="错题" onclick="window._setStatus('${safeUniqueId}','wrong')">✗</button>`;
     html += `</div></div>`;
 
     // 题目内容
@@ -984,20 +989,20 @@
       html += `<div class="question-stem" style="font-size:0.88rem;color:var(--text-secondary);">${escapeHtml(q.requirement || '').replace(/\\n/g, '<br>').replace(/\n/g, '<br>')}</div>`;
       html += `
         <div class="programming-input-wrapper">
-          <textarea class="programming-input" id="prog-input-${uniqueId}" placeholder="在此贴入您的 C++ 实现代码，让 AI 导师为您判定与打分..."></textarea>
-          <button class="show-answer-btn grade-btn" style="margin-top: 8px; border-color: var(--accent-warning); color: var(--accent-warning);" onclick="window._gradeProgrammingAnswer('${uniqueId}')">⚡ AI 智能判题</button>
+          <textarea class="programming-input" id="prog-input-${safeUniqueId}" placeholder="在此贴入您的 C++ 实现代码，让 AI 导师为您判定与打分..."></textarea>
+          <button class="show-answer-btn grade-btn" style="margin-top: 8px; border-color: var(--accent-warning); color: var(--accent-warning);" onclick="window._gradeProgrammingAnswer('${safeUniqueId}')">⚡ AI 智能判题</button>
         </div>
-        <div class="programming-grading-result" id="grading-${uniqueId}" style="display: none;"></div>
+        <div class="programming-grading-result" id="grading-${safeUniqueId}" style="display: none;"></div>
       `;
     } else {
       html += `<div class="question-stem">${formatStem(q.stem || '')}</div>`;
       if (q.type === 'fillin') {
         html += `
           <div class="fillin-input-wrapper">
-            <input type="text" class="fillin-input" placeholder="输入您的答案以进行比对..." onkeydown="if(event.key==='Enter') window._checkFillinAnswer('${uniqueId}', this)">
-            <button class="show-answer-btn check-btn" onclick="window._checkFillinAnswer('${uniqueId}', this.previousElementSibling)">检查答案</button>
+            <input type="text" class="fillin-input" placeholder="输入您的答案以进行比对..." onkeydown="if(event.key==='Enter') window._checkFillinAnswer('${safeUniqueId}', this)">
+            <button class="show-answer-btn check-btn" onclick="window._checkFillinAnswer('${safeUniqueId}', this.previousElementSibling)">检查答案</button>
           </div>
-          <div class="fillin-feedback" id="feedback-${uniqueId}" style="display: none;"></div>
+          <div class="fillin-feedback" id="feedback-${safeUniqueId}" style="display: none;"></div>
         `;
       }
     }
@@ -1008,13 +1013,13 @@
       q.options.forEach(opt => {
         const letterMatch = opt.trim().match(/^([A-D])[.、\s]/i);
         const letter = letterMatch ? letterMatch[1].toUpperCase() : '';
-        html += `<div class="option-item" data-letter="${letter}" onclick="window._selectOption('${uniqueId}', '${letter}', this)">${formatOptionText(opt)}</div>`;
+        html += `<div class="option-item" data-letter="${letter}" onclick="window._selectOption('${safeUniqueId}', '${escapeAttr(letter)}', this)">${formatOptionText(opt)}</div>`;
       });
       html += `</div>`;
     } else if (q.type === 'truefalse') {
       html += `<div class="options-list">`;
-      html += `<div class="option-item" data-val="对" onclick="window._selectOptionTF('${uniqueId}', '对', this)">对</div>`;
-      html += `<div class="option-item" data-val="错" onclick="window._selectOptionTF('${uniqueId}', '错', this)">错</div>`;
+      html += `<div class="option-item" data-val="对" onclick="window._selectOptionTF('${safeUniqueId}', '对', this)">对</div>`;
+      html += `<div class="option-item" data-val="错" onclick="window._selectOptionTF('${safeUniqueId}', '错', this)">错</div>`;
       html += `</div>`;
     }
 
@@ -1025,10 +1030,11 @@
       kps.forEach(kp => {
         const safeKp = escapeHtml(kp);
         const encKp = encodeURIComponent(kp);
+        const safeEncKp = escapeAttr(encKp);
         html += `
-          <div class="kp-chip" title="点击：按该知识点筛题；右侧图标：打开知识点讲义" onclick="window._filterByKnowledgePointEncoded('${encKp}')">
+          <div class="kp-chip" title="点击：按该知识点筛题；右侧图标：打开知识点讲义" onclick="window._filterByKnowledgePointEncoded('${safeEncKp}')">
             ${safeKp}
-            <span class="kp-action" title="查看知识点" onclick="event.stopPropagation(); window._jumpToKnowledgePointEncoded('${encKp}');">📚</span>
+            <span class="kp-action" title="查看知识点" onclick="event.stopPropagation(); window._jumpToKnowledgePointEncoded('${safeEncKp}');">📚</span>
           </div>
         `;
       });
@@ -1037,22 +1043,22 @@
 
     // 操作按钮条
     html += `<div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">`;
-    html += `<button class="show-answer-btn" id="toggle-answer-btn-${uniqueId}" onclick="window._toggleAnswer('${uniqueId}')">`;
+    html += `<button class="show-answer-btn" id="toggle-answer-btn-${safeUniqueId}" onclick="window._toggleAnswer('${safeUniqueId}')">`;
     html += `📖 ${isProgramming ? '查看参考代码' : '显示答案'}</button>`;
-    html += `<button class="show-answer-btn" id="ai-toggle-btn-${uniqueId}" style="border-color: var(--accent-primary); color: var(--accent-primary); background: var(--accent-primary-glow);" onclick="window._runAiAnalysis('${uniqueId}')">`;
+    html += `<button class="show-answer-btn" id="ai-toggle-btn-${safeUniqueId}" style="border-color: var(--accent-primary); color: var(--accent-primary); background: var(--accent-primary-glow);" onclick="window._runAiAnalysis('${safeUniqueId}')">`;
     html += `✨ 生成 AI 解答</button>`;
     html += `</div>`;
 
     // 选择/判断题：就地反馈（与填空题风格一致）
     if (!isProgramming && (q.type === 'choice' || q.type === 'truefalse')) {
-      html += `<div class="fillin-feedback" id="feedback-${uniqueId}" style="display: none;"></div>`;
+      html += `<div class="fillin-feedback" id="feedback-${safeUniqueId}" style="display: none;"></div>`;
     }
 
     // AI 对话渲染区
-    html += `<div class="ai-analysis-wrapper" id="ai-analysis-${uniqueId}" data-loaded="0" style="display: none; width: 100%;"></div>`;
+    html += `<div class="ai-analysis-wrapper" id="ai-analysis-${safeUniqueId}" data-loaded="0" style="display: none; width: 100%;"></div>`;
 
     // 答案区域
-    html += `<div class="answer-section" id="answer-${uniqueId}">`;
+    html += `<div class="answer-section" id="answer-${safeUniqueId}">`;
     html += `<div class="answer-box">`;
     html += `<div class="answer-label">答案</div>`;
 
@@ -1063,7 +1069,7 @@
       html += `<button class="copy-code-btn" onclick="window.copyToClipboard(this)">复制</button>`;
       html += `<pre><code class="language-cpp">${highlighted}</code></pre>`;
       html += `</div>`;
-      
+
       if (q.keyPoints && q.keyPoints.length) {
         html += `<div class="explanation"><strong>关键要点：</strong><ul>`;
         q.keyPoints.forEach(kp => { html += `<li>${escapeHtml(kp)}</li>`; });
@@ -1097,10 +1103,14 @@
   }
 
   function escapeHtml(text) {
-    if (!text) return '';
+    if (text === null || text === undefined) return '';
     const div = document.createElement('div');
-    div.textContent = text;
+    div.textContent = String(text);
     return div.innerHTML;
+  }
+
+  function escapeAttr(text) {
+    return escapeHtml(text).replace(/'/g, '&#39;').replace(/`/g, '&#96;');
   }
 
   function getKnowledgePointsForItem(item) {
@@ -1222,6 +1232,14 @@
   // ============================================================
   // 全局答题方法
   // ============================================================
+
+  function findQuestionCard(uniqueId) {
+    if (window.CSS && typeof window.CSS.escape === 'function') {
+      return document.querySelector(`[data-id="${window.CSS.escape(uniqueId)}"]`);
+    }
+    return Array.from(document.querySelectorAll('[data-id]')).find(card => card.getAttribute('data-id') === String(uniqueId));
+  }
+
   window._toggleAnswer = function (id) {
     const el = document.getElementById('answer-' + id);
     if (el) el.classList.toggle('visible');
@@ -1249,7 +1267,7 @@
     const isCorrect = selectedLetter === answerStr;
     const feedbackEl = document.getElementById('feedback-' + uniqueId);
 
-    const card = document.querySelector(`[data-id="${uniqueId}"]`);
+    const card = findQuestionCard(uniqueId);
     if (card) {
       card.querySelectorAll('.option-item').forEach(opt => {
         opt.classList.remove('selected', 'correct', 'incorrect');
@@ -1258,7 +1276,7 @@
 
     if (isCorrect) {
       if (!state.settings.redoMode) element.classList.add('correct');
-      window._setStatus(uniqueId, 'mastered');
+      window._setStatus(uniqueId, 'mastered', { toggle: false });
       recordAttempt(`q_${realId}`, 'correct');
       updateSrs(`q_${realId}`, true);
       if (feedbackEl) {
@@ -1268,7 +1286,7 @@
       }
     } else {
       if (!state.settings.redoMode) element.classList.add('incorrect');
-      window._setStatus(uniqueId, 'wrong');
+      window._setStatus(uniqueId, 'wrong', { toggle: false });
       recordAttempt(`q_${realId}`, 'wrong');
       updateSrs(`q_${realId}`, false);
       if (feedbackEl) {
@@ -1301,7 +1319,7 @@
     const isCorrect = selectedValue === answerStr;
     const feedbackEl = document.getElementById('feedback-' + uniqueId);
 
-    const card = document.querySelector(`[data-id="${uniqueId}"]`);
+    const card = findQuestionCard(uniqueId);
     if (card) {
       card.querySelectorAll('.option-item').forEach(opt => {
         opt.classList.remove('selected', 'correct', 'incorrect');
@@ -1310,7 +1328,7 @@
 
     if (isCorrect) {
       if (!state.settings.redoMode) element.classList.add('correct');
-      window._setStatus(uniqueId, 'mastered');
+      window._setStatus(uniqueId, 'mastered', { toggle: false });
       recordAttempt(`q_${realId}`, 'correct');
       updateSrs(`q_${realId}`, true);
       if (feedbackEl) {
@@ -1320,7 +1338,7 @@
       }
     } else {
       if (!state.settings.redoMode) element.classList.add('incorrect');
-      window._setStatus(uniqueId, 'wrong');
+      window._setStatus(uniqueId, 'wrong', { toggle: false });
       recordAttempt(`q_${realId}`, 'wrong');
       updateSrs(`q_${realId}`, false);
       if (feedbackEl) {
@@ -1342,31 +1360,31 @@
     }
   };
 
-  window._setStatus = function (uniqueId, status) {
+  window._setStatus = function (uniqueId, status, options = {}) {
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     const isProg = uniqueId.startsWith('prog-');
     const key = isProg ? `prog_${realId}` : `q_${realId}`;
-    setQuestionStatus(key, status);
+    setQuestionStatus(key, status, options);
   };
 
   window._checkFillinAnswer = function (uniqueId, inputEl) {
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     const q = state.questions.find(item => String(item.id) === realId);
     if (!q) return;
-    
+
     const userAns = inputEl.value.trim().toLowerCase();
     const correctAnsStr = (q.answer || '').trim().toLowerCase();
     const feedbackEl = document.getElementById('feedback-' + uniqueId);
-    
+
     if (!userAns) {
       feedbackEl.style.display = 'inline-block';
       feedbackEl.className = 'fillin-feedback incorrect';
       feedbackEl.innerHTML = '⚠️ 请先输入您的答案！';
       return;
     }
-    
+
     feedbackEl.style.display = 'inline-block';
-    
+
     function normalize(str) {
       return str
         .replace(/\s+/g, '') // 移除所有空格以允许变宽空白的匹配
@@ -1378,7 +1396,7 @@
         .replace(/iostream\.h/g, 'iostream')
         .replace(/std::/g, ''); // 忽略 std:: 命名空间前缀
     }
-    
+
     function splitParts(raw) {
       if (!raw) return [];
       return String(raw)
@@ -1416,17 +1434,17 @@
         if (joined && normUserAll === joined) isCorrect = true;
       }
     }
-    
+
     if (isCorrect) {
       feedbackEl.className = 'fillin-feedback correct';
       feedbackEl.innerHTML = '🎉 恭喜你，回答正确！';
-      window._setStatus(uniqueId, 'mastered');
+      window._setStatus(uniqueId, 'mastered', { toggle: false });
       recordAttempt(`q_${realId}`, 'correct');
       updateSrs(`q_${realId}`, true);
     } else {
       feedbackEl.className = 'fillin-feedback incorrect';
       feedbackEl.innerHTML = `❌ 回答错误！您的答案与参考答案不匹配。建议点击“显示答案”比对。`;
-      window._setStatus(uniqueId, 'wrong');
+      window._setStatus(uniqueId, 'wrong', { toggle: false });
       recordAttempt(`q_${realId}`, 'wrong');
       updateSrs(`q_${realId}`, false);
     }
@@ -1453,7 +1471,7 @@
       s.wrongCount = (s.wrongCount || 0) + 1;
     }
     const days = [1, 3, 7, 14, 30, 60];
-    const nextDays = days[Math.max(0, Math.min(s.streak, days.length - 1))];
+    const nextDays = days[Math.max(0, Math.min((s.streak || 1) - 1, days.length - 1))];
     s.nextReviewTs = now + nextDays * 24 * 60 * 60 * 1000;
     state.questionStats[idKey] = s;
     saveJsonToStorage(STATS_KEY, state.questionStats);
@@ -1472,37 +1490,20 @@
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     const q = state.programming.find(item => String(item.id) === realId);
     if (!q) return;
-    
+
     const textarea = document.getElementById('prog-input-' + uniqueId);
     const userCode = textarea.value.trim();
     const gradingEl = document.getElementById('grading-' + uniqueId);
-    
+
     if (!userCode) {
       alert('请先贴入您的 C++ 代码！');
       return;
     }
-    
+
     const apiBase = localStorage.getItem('oop_api_base') || apiConfig.base;
     const apiKey = sessionStorage.getItem('oop_api_key_session') || localStorage.getItem('oop_api_key') || apiConfig.key;
     const apiModel = localStorage.getItem('oop_api_model') || apiConfig.model || 'gpt-4o-mini';
-    
-    if (state.settings.aiMode === 'clipboard' || !apiBase || !apiKey) {
-      const promptToCopy = `${systemPrompt}\n\n${userPrompt}`;
-      await copyPromptAndNotify(promptToCopy);
-      gradingEl.style.display = 'block';
-      gradingEl.innerHTML = `
-        <div style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7;">
-          🧾 判题提示词已复制到剪贴板。<br>
-          请粘贴到你偏好的网页版大模型进行“评审打分”。<br><br>
-          <span style="color: var(--text-muted);">（若想站内自动判题，请在 ⚙️ 设置 中把“AI 使用方式”切回“直连 API”，并配置可用端点与 Key。）</span>
-        </div>
-      `;
-      return;
-    }
-    
-    gradingEl.style.display = 'block';
-    gradingEl.innerHTML = '<div class="loading" style="padding:10px 0;"><div class="loading-spinner" style="width:20px;height:20px;"></div><span style="margin-left:8px;font-size:0.85rem;color:var(--text-secondary);">AI 导师正在审阅代码中，请稍候…</span></div>';
-    
+
     const systemPrompt = "你是一位精通 C++ 面向对象程序设计的资深评测导师。请将学生的解答代码与标准答案进行仔细对比，检查是否实现了题目所有要求（核心 OOP 设计、构造与析构、内存管理等），指出代码中的逻辑错误、编译隐患、或者不符合 C++17 标准的问题。请给出 0 到 100 之间的评分（格式为：【得分：85分】），并提供详细的改进意见。请使用 Markdown 语法进行高质量排版，中文作答。";
     const userPrompt = `【题目名称】: ${q.title}
 【题目要求】:
@@ -1520,6 +1521,24 @@ ${userCode}
 
 请对上述学生解答代码进行评审打分并给出建议。`;
 
+
+    if (state.settings.aiMode === 'clipboard' || !apiBase || !apiKey || !window.isSecureContext) {
+      const promptToCopy = `${systemPrompt}\n\n${userPrompt}`;
+      await copyPromptAndNotify(promptToCopy);
+      gradingEl.style.display = 'block';
+      gradingEl.innerHTML = `
+        <div style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7;">
+          🧾 判题提示词已复制到剪贴板。<br>
+          请粘贴到你偏好的网页版大模型进行“评审打分”。<br><br>
+          <span style="color: var(--text-muted);">（若想站内自动判题，请在 ⚙️ 设置 中把“AI 使用方式”切回“直连 API”，并配置可用端点与 Key。）</span>
+        </div>
+      `;
+      return;
+    }
+
+    gradingEl.style.display = 'block';
+    gradingEl.innerHTML = '<div class="loading" style="padding:10px 0;"><div class="loading-spinner" style="width:20px;height:20px;"></div><span style="margin-left:8px;font-size:0.85rem;color:var(--text-secondary);">AI 导师正在审阅代码中，请稍候…</span></div>';
+
     try {
       const res = await fetch(`${apiBase}/chat/completions`, {
         method: 'POST',
@@ -1536,23 +1555,23 @@ ${userCode}
           stream: true
         })
       });
-      
+
       if (!res.ok) {
         throw new Error(`HTTP 错误 ${res.status}`);
       }
-      
+
       gradingEl.innerHTML = '';
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
       let gradingText = '';
-      
+
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
-        
+
         const chunk = decoder.decode(value, { stream: true });
         const lines = chunk.split('\n');
-        
+
         for (const line of lines) {
           const cleanLine = line.trim();
           if (cleanLine.startsWith('data: ')) {
@@ -1560,7 +1579,7 @@ ${userCode}
             if (dataContent === '[DONE]') break;
             try {
               const parsed = JSON.parse(dataContent);
-              const content = parsed.choices[0].delta.content || '';
+              const content = parsed.choices?.[0]?.delta?.content || '';
               gradingText += content;
               gradingEl.innerHTML = parseMarkdown(gradingText);
             } catch (e) {
@@ -1569,16 +1588,16 @@ ${userCode}
           }
         }
       }
-      
+
       const scoreMatch = gradingText.match(/【得分：(\d+)分】|得分[：\s](\d+)/);
       if (scoreMatch) {
         const score = parseInt(scoreMatch[1] || scoreMatch[2]);
         if (score >= 85) {
-          window._setStatus(uniqueId, 'mastered');
+          window._setStatus(uniqueId, 'mastered', { toggle: false });
         } else if (score < 60) {
-          window._setStatus(uniqueId, 'wrong');
+          window._setStatus(uniqueId, 'wrong', { toggle: false });
         } else {
-          window._setStatus(uniqueId, 'review');
+          window._setStatus(uniqueId, 'review', { toggle: false });
         }
         recordAttempt(`prog_${realId}`, score >= 85 ? 'correct' : score < 60 ? 'wrong' : 'review');
         updateSrs(`prog_${realId}`, score >= 85);
@@ -1592,8 +1611,8 @@ ${userCode}
     const isProg = key.startsWith('prog_');
     const realId = key.replace(/^(q_|prog_)/, '');
     const uniqueId = isProg ? `prog-${realId}` : `q-${realId}`;
-    
-    const card = document.querySelector(`[data-id="${uniqueId}"]`);
+
+    const card = findQuestionCard(uniqueId);
     if (card) {
       const currentStatus = getQuestionStatus(key);
       const statusBtns = card.querySelectorAll('.status-btn');
@@ -1663,7 +1682,7 @@ ${userCode}
     const titleSpan = document.getElementById(`ai-title-${uniqueId}`);
     if (btn) btn.textContent = '🙈 收起 AI 解答';
 
-    if (state.settings.aiMode === 'clipboard' || !apiConfig.key) {
+    if (state.settings.aiMode === 'clipboard' || !apiConfig.key || !window.isSecureContext) {
       const promptToCopy = `${systemPrompt}\n\n${promptContent}`;
       await copyPromptAndNotify(promptToCopy);
       if (titleSpan) titleSpan.textContent = '🧾 已复制提示词';
@@ -1714,7 +1733,7 @@ ${userCode}
 
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
-        
+
         // 留下最后未完成的行
         buffer = lines.pop();
 
@@ -1727,9 +1746,9 @@ ${userCode}
             try {
               const jsonStr = cleanLine.slice(6);
               const data = JSON.parse(jsonStr);
-              const delta = data.choices[0].delta.content || '';
+              const delta = data.choices?.[0]?.delta?.content || '';
               aiResponseText += delta;
-              
+
               // 实时 Markdown 解析渲染
               boxContent.innerHTML = parseMarkdown(aiResponseText);
             } catch (e) {
@@ -1743,7 +1762,7 @@ ${userCode}
       if (buffer && buffer.startsWith('data: ')) {
         try {
           const data = JSON.parse(buffer.slice(6));
-          aiResponseText += (data.choices[0].delta.content || '');
+          aiResponseText += (data.choices?.[0]?.delta?.content || '');
           boxContent.innerHTML = parseMarkdown(aiResponseText);
         } catch(e) {}
       }
@@ -1839,7 +1858,7 @@ ${userCode}
       }
 
       aiMsgContentDiv.innerHTML = '';
-      
+
       const reader = response.body.getReader();
       const decoder = new TextDecoder('utf-8');
       let aiText = '';
@@ -1859,7 +1878,7 @@ ${userCode}
           if (cleanLine.startsWith('data: ')) {
             try {
               const data = JSON.parse(cleanLine.slice(6));
-              const textChunk = data.choices[0].delta.content || '';
+              const textChunk = data.choices?.[0]?.delta?.content || '';
               aiText += textChunk;
               aiMsgContentDiv.innerHTML = parseMarkdown(aiText);
               scrollChatToBottom();
@@ -1871,7 +1890,7 @@ ${userCode}
       if (buffer && buffer.startsWith('data: ')) {
         try {
           const data = JSON.parse(buffer.slice(6));
-          aiText += (data.choices[0].delta.content || '');
+          aiText += (data.choices?.[0]?.delta?.content || '');
           aiMsgContentDiv.innerHTML = parseMarkdown(aiText);
         } catch(e) {}
       }
@@ -1891,13 +1910,13 @@ ${userCode}
     const container = document.getElementById('chat-messages');
     const msgDiv = document.createElement('div');
     msgDiv.className = `message ${sender}`;
-    
+
     const avatar = sender === 'ai' ? '🤖' : '👤';
     msgDiv.innerHTML = `
       <div class="avatar">${avatar}</div>
       <div class="message-content">${sender === 'user' ? escapeHtml(text).replace(/\n/g, '<br>') : parseMarkdown(text)}</div>
     `;
-    
+
     container.appendChild(msgDiv);
     scrollChatToBottom();
   }
@@ -2055,6 +2074,21 @@ ${userCode}
     document.getElementById('stat-wrong').textContent = progress.wrong;
   }
 
+  function renderDashboard() {
+    const totalEl = document.getElementById('hero-total');
+    const kpEl = document.getElementById('hero-kp');
+    const dueEl = document.getElementById('hero-due');
+    const accuracyEl = document.getElementById('hero-accuracy');
+    if (totalEl) totalEl.textContent = state.allItems.length;
+    if (kpEl) kpEl.textContent = state.allKnowledgePoints.length;
+    if (dueEl) dueEl.textContent = typeof getTodayReviewKeys === 'function' ? getTodayReviewKeys().length : 0;
+    if (accuracyEl) {
+      const attempts = (state.attempts || []).slice(0, 20);
+      const correct = attempts.filter(a => a.result === 'correct').length;
+      accuracyEl.textContent = attempts.length ? `${Math.round(correct / attempts.length * 100)}%` : '--';
+    }
+  }
+
   // ============================================================
   // 知识点页面
   // ============================================================
@@ -2072,8 +2106,9 @@ ${userCode}
     if (indexContainer) {
       const chips = state.allKnowledgePoints.slice(0, 60).map(kp => {
         const encKp = encodeURIComponent(kp);
+        const safeEncKp = escapeAttr(encKp);
         const c = state.knowledgePointCounts[kp] || 0;
-        return `<div class="kp-chip" onclick="window._filterByKnowledgePointEncoded('${encKp}')" title="点击：按该知识点筛题">${escapeHtml(kp)}${c ? ` <span style="opacity:0.7;font-size:0.8em;">(${c})</span>` : ''} <span class="kp-action" onclick="event.stopPropagation(); window._jumpToKnowledgePointEncoded('${encKp}');" title="查看讲义">📚</span></div>`;
+        return `<div class="kp-chip" onclick="window._filterByKnowledgePointEncoded('${safeEncKp}')" title="点击：按该知识点筛题">${escapeHtml(kp)}${c ? ` <span style="opacity:0.7;font-size:0.8em;">(${c})</span>` : ''} <span class="kp-action" onclick="event.stopPropagation(); window._jumpToKnowledgePointEncoded('${safeEncKp}');" title="查看讲义">📚</span></div>`;
       }).join('');
 
       indexContainer.innerHTML = `
@@ -2097,9 +2132,9 @@ ${userCode}
     }
 
     container.innerHTML = data.map((ch, i) => {
-      const renderedBody = ch.markdown 
-        ? parseMarkdown(ch.markdown) 
-        : (ch.content ? ch.content.replace(/\n/g, '<br>') : '') + 
+      const renderedBody = ch.markdown
+        ? parseMarkdown(ch.markdown)
+        : (ch.content ? ch.content.replace(/\n/g, '<br>') : '') +
           (ch.points ? '<ul>' + ch.points.map(p => `<li>${escapeHtml(p)}</li>`).join('') + '</ul>' : '');
 
       // 基于文本匹配的“相关题目”入口（弱关联，但能形成跳转闭环）
@@ -2123,7 +2158,8 @@ ${userCode}
       const relatedHtml = relatedUniq.slice(0, 10).map(({ kp, item }) => {
         const label = item.type === 'programming' ? `程序 ${item.id}` : `第 ${item.id} 题`;
         const encKp = encodeURIComponent(kp);
-        return `<button class="rq-link" onclick="window._filterByKnowledgePointEncoded('${encKp}')" title="按该知识点筛题">${escapeHtml(label)} · ${escapeHtml(kp)}</button>`;
+        const safeEncKp = escapeAttr(encKp);
+        return `<button class="rq-link" onclick="window._filterByKnowledgePointEncoded('${safeEncKp}')" title="按该知识点筛题">${escapeHtml(label)} · ${escapeHtml(kp)}</button>`;
       }).join('');
 
       return `
@@ -2168,7 +2204,7 @@ ${userCode}
     if (wrongEl) wrongEl.textContent = progress.wrong;
 
     const percent = total > 0 ? Math.round(progress.mastered / total * 100) : 0;
-    
+
     // 更新环形进度 SVG 的 Dash Offset
     const ringCircle = document.getElementById('progress-ring-circle');
     if (ringCircle) {
@@ -2179,6 +2215,25 @@ ${userCode}
 
     const percentText = document.getElementById('progress-percent');
     if (percentText) percentText.textContent = percent + '%';
+
+    const insights = document.getElementById('review-insights');
+    if (insights) {
+      const dueCount = getTodayReviewKeys().length;
+      const marked = progress.mastered + progress.review + progress.wrong;
+      const untouched = Math.max(total - marked, 0);
+      const nextAction = dueCount > 0
+        ? `优先完成 ${dueCount} 道到期复习题，防止遗忘曲线回落。`
+        : untouched > 0
+          ? `继续推进 ${untouched} 道未标记题，先用焦点模式做一轮诊断。`
+          : '当前题库已全部纳入学习记录，可按错题与待复习标签做二轮巩固。';
+      insights.innerHTML = `
+        <div class="insight-card primary"><strong>下一步建议</strong><span>${escapeHtml(nextAction)}</span></div>
+        <div class="insight-card"><strong>错题负荷</strong><span>${progress.wrong} 道错题，建议先看解析再重做。</span></div>
+        <div class="insight-card"><strong>复习节奏</strong><span>${progress.review} 道待复习，${state.favorites ? Object.keys(state.favorites).length : 0} 道已收藏。</span></div>
+      `;
+    }
+
+    renderDashboard();
 
     // 按章节进度
     const chapterContainer = document.getElementById('chapter-progress');
