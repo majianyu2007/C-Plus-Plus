@@ -6,9 +6,52 @@
   <meta name="description" content="C++ 面向对象程序设计复习工具：题库练习、知识讲义、错题标记与进度记录。">
   <title>C++ OOP 复习工具</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%236366f1'/%3E%3Ctext x='32' y='41' font-size='28' text-anchor='middle' fill='white' font-family='Arial'%3EC%2B%2B%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <script>
+    (function() {
+      // 1. 主题初始化 (防止暗色/亮色闪烁)
+      const theme = localStorage.getItem('oop_theme') || 'system';
+      const isLight = theme === 'light' || (theme === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+      document.body.classList.add(isLight ? 'light-theme' : 'dark-theme');
+      
+      // 2. 字体家族初始化
+      const font = localStorage.getItem('oop_font_family') || 'inter';
+      const fontMap = {
+        'inter': "'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif",
+        'system': "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        'serif': "Georgia, 'Times New Roman', 'Noto Serif SC', serif",
+        'mono': "'JetBrains Mono', 'Fira Code', Consolas, monospace"
+      };
+      if (fontMap[font]) {
+        document.documentElement.style.setProperty('--font-sans', fontMap[font]);
+      }
+      
+      // 3. 字号大小初始化
+      const size = localStorage.getItem('oop_font_size') || 'normal';
+      const sizeMap = {
+        'small': '14px',
+        'normal': '16px',
+        'large': '18px',
+        'xlarge': '20px'
+      };
+      if (sizeMap[size]) {
+        document.documentElement.style.fontSize = sizeMap[size];
+      }
+    })();
+  </script>
+
+  <!-- 全局加载遮罩 (当大解析 JSON 文件过大时，提升首次加载体验) -->
+  <div class="loading-cover" id="app-loading-cover">
+    <div class="loading-box">
+      <div class="loading-spinner-large"></div>
+      <div class="loading-text">📚 正在加载题库与解析数据，请稍候…</div>
+    </div>
+  </div>
   <div class="app-container">
     <!-- 头部 -->
     <header class="app-header">
@@ -21,11 +64,10 @@
           <button class="nav-tab active" data-page="quiz" id="nav-quiz">题库训练</button>
           <button class="nav-tab" data-page="knowledge" id="nav-knowledge">知识讲义</button>
           <button class="nav-tab" data-page="progress" id="nav-progress">进度概览</button>
-          <button class="nav-tab" data-page="ai-tutor" id="nav-ai-tutor">问答助手</button>
         </nav>
         <div class="header-actions">
           <button class="header-btn" id="theme-toggle" title="切换主题">🌓 主题</button>
-          <button class="header-btn" id="settings-open" title="学习与问答设置">⚙️ 设置</button>
+          <button class="header-btn" id="settings-open" title="学习设置">⚙️ 设置</button>
         </div>
       </div>
     </header>
@@ -219,28 +261,7 @@
         </div>
       </div>
 
-      <!-- 问答助手页面 -->
-      <div class="page" id="page-ai-tutor">
-        <div class="ai-tutor-container">
-          <div class="ai-tutor-header">
-            <h3>💬 C++ OOP 问答助手</h3>
-            <p>可以追问概念、粘贴代码检查思路，或让它围绕薄弱知识点出几道小题；最终仍以课程要求和标准答案为准。</p>
-            <button class="clear-chat-btn" onclick="window.clearChat()">🗑️ 清空对话</button>
-          </div>
-          <div class="chat-messages" id="chat-messages">
-            <div class="message ai">
-              <div class="avatar">🤖</div>
-              <div class="message-content">
-                你好，这里可以帮你整理 C++ OOP 题目思路、概念和代码。默认会复制提示词，方便你粘贴到常用模型中提问。
-              </div>
-            </div>
-          </div>
-          <div class="chat-input-area">
-            <textarea id="chat-input" placeholder="输入您的问题，按 Shift + Enter 换行，Enter 发送…"></textarea>
-            <button id="chat-send-btn">发送 ➔</button>
-          </div>
-        </div>
-      </div>
+
     </main>
 
     <!-- 底部 -->
@@ -253,7 +274,7 @@
   <button class="back-to-top" id="back-to-top" title="回到顶部" aria-label="回到顶部">↑</button>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <!-- API 设置弹窗 -->
+  <!-- 设置弹窗 -->
   <div class="modal-backdrop" id="settings-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -261,49 +282,33 @@
         <button class="modal-close-btn" id="settings-close">✕</button>
       </div>
       <div class="modal-body">
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
-          默认使用“复制提示词”模式，不需要填写 API Key。若要在站内直接生成回答，可配置兼容 OpenAI Chat Completions 的接口；配置只保存在本地浏览器。
-        </p>
-        <div class="form-group">
-          <label for="ai-mode">问答使用方式</label>
-          <select id="ai-mode" class="chapter-select" style="width: 100%;">
-            <option value="clipboard">复制提示词（默认）</option>
-            <option value="api">直连 API（站内生成）</option>
-          </select>
-        </div>
-        <div class="form-group" style="margin-top: -6px;">
-          <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
-            <input type="checkbox" id="save-api-key" style="width:auto; accent-color: var(--accent-primary);">
-            保存 API Key 到浏览器（不勾选则仅本次会话有效）
-          </label>
-        </div>
-        <div class="form-group" style="margin-top: -6px;">
+        <div class="form-group" style="margin-bottom: 16px;">
           <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
             <input type="checkbox" id="redo-mode" style="width:auto; accent-color: var(--accent-primary);">
-            重做模式（做题时不自动显示答案/正确项）
+            <strong>重做模式</strong>（做题时不自动显示答案/正确项）
           </label>
         </div>
-        <div style="font-size: 0.82rem; color: var(--text-muted); margin: 8px 0 16px; line-height: 1.6;">
-          浏览器端直连接口需要目标端点允许 CORS。API Key 保存在浏览器会有泄露风险，建议只在可信设备使用，并可随时清除。
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label for="setting-font-family" style="font-weight: 500; margin-bottom: 6px; display: block; font-size: 0.9rem;">界面字体</label>
+          <select id="setting-font-family" class="chapter-select" style="width: 100%; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); outline: none; padding-inline: 10px;">
+            <option value="inter">默认高级雅致 (Inter / 华文细黑)</option>
+            <option value="system">系统默认无衬线 (System Sans-serif)</option>
+            <option value="serif">学术风衬线体 (Georgia / 宋体)</option>
+            <option value="mono">极客写码等宽 (JetBrains Mono)</option>
+          </select>
         </div>
-        <div class="form-group">
-          <label for="api-base">API Base URL (端点)</label>
-          <input type="text" id="api-base" placeholder="例如：https://api.deepseek.com/v1 或 https://api.openai.com/v1">
-        </div>
-        <div class="form-group">
-          <label for="api-key">API Key (密钥)</label>
-          <input type="password" id="api-key" placeholder="输入您的 API Key">
-        </div>
-        <div class="form-group">
-          <label for="api-model">API Model (模型名称)</label>
-          <input type="text" id="api-model" placeholder="例如：deepseek-chat 或 gpt-4o-mini">
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label for="setting-font-size" style="font-weight: 500; margin-bottom: 6px; display: block; font-size: 0.9rem;">基准字号</label>
+          <select id="setting-font-size" class="chapter-select" style="width: 100%; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); outline: none; padding-inline: 10px;">
+            <option value="small">小 (14px)</option>
+            <option value="normal">中 / 默认 (16px)</option>
+            <option value="large">大 (18px)</option>
+            <option value="xlarge">超大 (20px)</option>
+          </select>
         </div>
         <div style="margin-top: 16px; display: flex; gap: 8px;">
-          <button class="show-answer-btn" id="api-test" style="flex: 1; border-color: var(--accent-info); color: var(--accent-info);">⚡ 测试连接</button>
-          <button class="show-answer-btn" id="api-clear-key" style="flex: 1; border-color: var(--accent-danger); color: var(--accent-danger);">🧹 清除 Key</button>
-          <button class="show-answer-btn" id="api-save" style="flex: 1; background: var(--accent-primary); border-color: var(--accent-primary); color: white;">💾 保存配置</button>
+          <button class="show-answer-btn" id="settings-save" style="flex: 1; background: var(--accent-primary); border-color: var(--accent-primary); color: white;">💾 保存设置</button>
         </div>
-        <div id="api-test-result" style="margin-top: 12px; font-size: 0.85rem; text-align: center;"></div>
       </div>
     </div>
   </div>
