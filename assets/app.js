@@ -22,11 +22,9 @@
     userProgress: {},     // { questionId: 'mastered' | 'review' | 'wrong' }
     chapters: [],
     allKnowledgePoints: [],
-    knowledgePointCounts: {},
     kpLectureMap: {}, // { "知识点": "讲义章节hint" }
-    chatHistory: [
-      { role: 'assistant', content: '你好，这里可以帮你整理 C++ OOP 题目思路、概念和代码。你也可以在题目卡片里复制讲解提示词后到常用模型中提问。' }
-    ],
+    favoritesOnly: false,
+    pendingOnly: false,
     quizMode: 'list',     // 'list' (列表) 或 'focus' (单题焦点)
     focusIndex: 0         // 焦点模式下的当前题目索引
   };
@@ -70,14 +68,7 @@
   state.attempts = loadJsonFromStorage(ATTEMPTS_KEY, []); // [{id,ts,result}]
   state.questionStats = loadJsonFromStorage(STATS_KEY, {}); // { "q_1": {streak,nextReviewTs,wrongCount,lastTs} }
 
-  // ============================================================
-  // API & LLM 配置管理
-  // ============================================================
-  const apiConfig = {
-    base: localStorage.getItem('oop_api_base') || 'https://api.openai.com/v1',
-    key: sessionStorage.getItem('oop_api_key_session') || localStorage.getItem('oop_api_key') || '',
-    model: localStorage.getItem('oop_api_model') || 'gpt-4o-mini'
-  };
+
 
   function showToast(message, kind = 'info') {
     const el = document.getElementById('toast');
@@ -169,13 +160,14 @@
       filterAndRender();
       renderKnowledge();
       renderProgress();
-      updateAiTutorVisibility();
-      initBackToTop();
+      // initBackToTop removed: event binding consolidated in initUI
       renderFooterMeta();
       updateTodayReviewButton();
 
+      hideLoadingCover();
     } catch (err) {
       console.error('数据加载失败:', err);
+      hideLoadingCover();
       document.getElementById('question-list').innerHTML =
         '<div class="empty-state"><div class="icon">⚠️</div><p>数据加载失败，请确认 <code>data/</code> 目录下有 JSON 数据文件，并通过 HTTP 方式访问站点（不要用 file:/// 直接打开）。</p></div>';
     }
@@ -241,6 +233,43 @@
     }
   };
 
+  function hideLoadingCover() {
+    const loader = document.getElementById('app-loading-cover');
+    if (loader) {
+      loader.classList.add('fade-out');
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 400);
+    }
+  }
+
+  function applyFontAndSize(font, size) {
+    const fontMap = {
+      'inter': "'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif",
+      'system': "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      'serif': "Georgia, 'Times New Roman', 'Noto Serif SC', serif",
+      'mono': "'JetBrains Mono', 'Fira Code', Consolas, monospace"
+    };
+    const sizeMap = {
+      'small': '14px',
+      'normal': '16px',
+      'large': '18px',
+      'xlarge': '20px'
+    };
+    if (fontMap[font]) {
+      document.documentElement.style.setProperty('--font-sans', fontMap[font]);
+    }
+    if (sizeMap[size]) {
+      document.documentElement.style.fontSize = sizeMap[size];
+    }
+  }
+
+  // 兜底应用初始字体字号
+  applyFontAndSize(
+    localStorage.getItem('oop_font_family') || 'inter',
+    localStorage.getItem('oop_font_size') || 'normal'
+  );
+
   // ============================================================
   // 主题管理 (Theme Manager)
   // ============================================================
@@ -288,30 +317,22 @@
   }
 
   // ============================================================
-  // API 设置面板管理 (API Configuration)
+  // 设置面板管理
   // ============================================================
   function initApiSettings() {
     const modal = document.getElementById('settings-modal');
     const openBtn = document.getElementById('settings-open');
     const closeBtn = document.getElementById('settings-close');
-    const saveBtn = document.getElementById('api-save');
-    const testBtn = document.getElementById('api-test');
+    const saveBtn = document.getElementById('settings-save');
 
-    const inputBase = document.getElementById('api-base');
-    const inputKey = document.getElementById('api-key');
-    const inputModel = document.getElementById('api-model');
-    const inputAiMode = document.getElementById('ai-mode');
-    const inputSaveKey = document.getElementById('save-api-key');
     const inputRedoMode = document.getElementById('redo-mode');
-    const clearKeyBtn = document.getElementById('api-clear-key');
+    const inputFontFamily = document.getElementById('setting-font-family');
+    const inputFontSize = document.getElementById('setting-font-size');
 
     // 加载初始值
-    inputBase.value = apiConfig.base;
-    inputKey.value = apiConfig.key;
-    inputModel.value = apiConfig.model;
-    if (inputAiMode) inputAiMode.value = state.settings.aiMode || 'clipboard';
-    if (inputSaveKey) inputSaveKey.checked = !!state.settings.saveApiKey;
     if (inputRedoMode) inputRedoMode.checked = !!state.settings.redoMode;
+    if (inputFontFamily) inputFontFamily.value = localStorage.getItem('oop_font_family') || 'inter';
+    if (inputFontSize) inputFontSize.value = localStorage.getItem('oop_font_size') || 'normal';
 
     window.openSettings = function() {
       modal.classList.add('visible');
@@ -325,84 +346,22 @@
       if (e.target === modal) modal.classList.remove('visible');
     });
 
-    saveBtn.addEventListener('click', () => {
-      apiConfig.base = inputBase.value.trim() || 'https://api.openai.com/v1';
-      apiConfig.key = inputKey.value.trim();
-      apiConfig.model = inputModel.value.trim() || 'gpt-4o-mini';
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        state.settings.redoMode = inputRedoMode ? !!inputRedoMode.checked : false;
+        localStorage.setItem('oop_redo_mode', state.settings.redoMode ? '1' : '0');
+        saveJsonToStorage(SETTINGS_KEY, state.settings);
 
-      localStorage.setItem('oop_api_base', apiConfig.base);
-      state.settings.saveApiKey = inputSaveKey ? !!inputSaveKey.checked : true;
-      localStorage.setItem('oop_save_api_key', state.settings.saveApiKey ? '1' : '0');
-      if (state.settings.saveApiKey) {
-        localStorage.setItem('oop_api_key', apiConfig.key);
-        sessionStorage.removeItem('oop_api_key_session');
-      } else {
-        sessionStorage.setItem('oop_api_key_session', apiConfig.key);
-        localStorage.removeItem('oop_api_key');
-      }
-      localStorage.setItem('oop_api_model', apiConfig.model);
+        const fontVal = inputFontFamily ? inputFontFamily.value : 'inter';
+        const sizeVal = inputFontSize ? inputFontSize.value : 'normal';
+        localStorage.setItem('oop_font_family', fontVal);
+        localStorage.setItem('oop_font_size', sizeVal);
 
-      state.settings.aiMode = inputAiMode ? inputAiMode.value : 'clipboard';
-      state.settings.redoMode = inputRedoMode ? !!inputRedoMode.checked : false;
-      localStorage.setItem('oop_ai_mode', state.settings.aiMode);
-      localStorage.setItem('oop_redo_mode', state.settings.redoMode ? '1' : '0');
-      saveJsonToStorage(SETTINGS_KEY, state.settings);
+        applyFontAndSize(fontVal, sizeVal);
 
-      updateAiTutorVisibility();
-      showToast('设置已保存', 'success');
-      modal.classList.remove('visible');
-    });
-
-    testBtn.addEventListener('click', testApiConnection);
-
-    if (clearKeyBtn) {
-      clearKeyBtn.addEventListener('click', () => {
-        apiConfig.key = '';
-        inputKey.value = '';
-        localStorage.removeItem('oop_api_key');
-        sessionStorage.removeItem('oop_api_key_session');
-        updateAiTutorVisibility();
-        showToast('已清除 API Key', 'info');
+        showToast('设置已保存', 'success');
+        modal.classList.remove('visible');
       });
-    }
-  }
-
-  async function testApiConnection() {
-    const base = document.getElementById('api-base').value.trim();
-    const key = document.getElementById('api-key').value.trim();
-    const model = document.getElementById('api-model').value.trim();
-    const resultDiv = document.getElementById('api-test-result');
-
-    if (!key) {
-      resultDiv.innerHTML = '<span style="color: var(--accent-danger);">❌ 请先输入 API Key 密钥</span>';
-      return;
-    }
-
-    resultDiv.innerHTML = '<span style="color: var(--accent-info);">⚡ 正在测试 API 联通性，请稍候…</span>';
-
-    try {
-      const res = await fetch(`${base}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${key}`
-        },
-        body: JSON.stringify({
-          model: model,
-          messages: [{ role: 'user', content: 'Say OK' }],
-          max_tokens: 10
-        })
-      });
-
-      if (res.ok) {
-        resultDiv.innerHTML = '<span style="color: var(--accent-success);">✅ 连接测试成功！此模型端点可用。</span>';
-      } else {
-        const errorData = await res.json().catch(() => ({}));
-        const errMsg = errorData.error ? errorData.error.message : `HTTP 错误码 ${res.status}`;
-        resultDiv.innerHTML = `<span style="color: var(--accent-danger);">❌ 连接失败: ${errMsg}</span>`;
-      }
-    } catch (e) {
-      resultDiv.innerHTML = `<span style="color: var(--accent-danger);">❌ 网络请求错误: ${e.message}</span>`;
     }
   }
 
@@ -743,11 +702,7 @@
       const pageEl = document.getElementById('page-' + page);
       if (pageEl) pageEl.classList.add('active');
 
-      if (page === 'ai-tutor') {
-        const input = document.getElementById('chat-input');
-        if (input) input.focus();
-        scrollChatToBottom();
-      }
+
 
       updateBackToTopVisibility();
     }
@@ -787,6 +742,12 @@
         if (btn.id === 'favorites-only') {
           state.favoritesOnly = !state.favoritesOnly;
           btn.classList.toggle('active', state.favoritesOnly);
+          filterAndRender();
+          return;
+        }
+        if (btn.id === 'pending-only') {
+          state.pendingOnly = !state.pendingOnly;
+          btn.classList.toggle('active', state.pendingOnly);
           filterAndRender();
           return;
         }
@@ -840,10 +801,14 @@
       }, 300);
     });
 
-    // 知识点搜索
+    // 知识点搜索（带 debounce）
+    let knowledgeSearchTimer;
     document.getElementById('knowledge-search').addEventListener('input', (e) => {
-      const query = e.target.value.trim().toLowerCase();
-      renderKnowledge(query);
+      clearTimeout(knowledgeSearchTimer);
+      knowledgeSearchTimer = setTimeout(() => {
+        const query = e.target.value.trim().toLowerCase();
+        renderKnowledge(query);
+      }, 300);
     });
 
     // AI 导师键盘与发送绑定
@@ -887,14 +852,7 @@
     window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
   }
 
-  function updateBackToTopVisibility() {
-    const btn = document.getElementById('back-to-top');
-    if (!btn) return;
-
-    const isQuizActive = document.getElementById('page-quiz')?.classList.contains('active');
-    const shouldShow = Boolean(isQuizActive) && state.quizMode === 'list' && window.scrollY > 600;
-    btn.classList.toggle('visible', shouldShow);
-  }
+  // updateBackToTopVisibility: single definition below (around line 2063)
 
   // ============================================================
   // 筛选与渲染
@@ -925,7 +883,8 @@
     if (state.searchQuery) {
       items = items.filter(q => {
         const text = (q.stem || '') + (q.title || '') + (q.requirement || '') +
-          (q.options ? q.options.join(' ') : '') + (q.chapter || '');
+          (q.options ? q.options.join(' ') : '') + (q.chapter || '') +
+          ' ' + getKnowledgePointsForItem(q).join(' ');
         return text.toLowerCase().includes(state.searchQuery);
       });
     }
@@ -946,9 +905,13 @@
 
     state.filtered = items;
     state.focusIndex = 0; // 筛选改变时重置焦点到第一题
+    listPageCount = 1; // 重置分页
     renderQuestionList();
     updateBackToTopVisibility();
   }
+
+  const PAGE_SIZE = 30;
+  let listPageCount = 1;
 
   function renderQuestionList() {
     const container = document.getElementById('question-list');
@@ -962,7 +925,13 @@
 
     if (state.quizMode === 'list') {
       navContainer.style.display = 'none';
-      container.innerHTML = state.filtered.map(q => renderQuestionCard(q)).join('');
+      const visibleCount = PAGE_SIZE * listPageCount;
+      const visible = state.filtered.slice(0, visibleCount);
+      let html = visible.map(q => renderQuestionCard(q)).join('');
+      if (visibleCount < state.filtered.length) {
+        html += `<div style="text-align:center;padding:20px;"><button class="show-answer-btn" style="border-color:var(--accent-primary);color:var(--accent-primary);" onclick="window._loadMoreQuestions()">加载更多（还有 ${state.filtered.length - visibleCount} 题）</button></div>`;
+      }
+      container.innerHTML = html;
     } else {
       // 焦点刷题模式 (一页一题)
       navContainer.style.display = 'flex';
@@ -977,13 +946,21 @@
       // 渲染底部分页控制
       navContainer.innerHTML = `
         <button class="filter-btn" onclick="window._prevFocusQuestion()">← 上一题</button>
-        <span class="focus-index-info">第 ${state.focusIndex + 1} / ${state.filtered.length} 题</span>
+        <span class="focus-index-info">第 ${state.focusIndex + 1} / ${state.filtered.length} 题<br><span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">← → 箭头键切换</span></span>
         <button class="filter-btn" onclick="window._nextFocusQuestion()">下一题 →</button>
       `;
+
+      // 切换焦点模式时滚动到题目区域
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     updateBackToTopVisibility();
   }
+
+  window._loadMoreQuestions = function () {
+    listPageCount++;
+    renderQuestionList();
+  };
 
   function renderQuestionCard(q) {
     const isProgramming = q.type === 'programming';
@@ -1102,14 +1079,17 @@
       html += `</div>`;
 
       if (q.keyPoints && q.keyPoints.length) {
-        html += `<div class="explanation"><strong>关键要点：</strong><ul>`;
+        html += `<div class="explanation" style="margin-bottom: 12px;"><strong>关键要点：</strong><ul>`;
         q.keyPoints.forEach(kp => { html += `<li>${escapeHtml(kp)}</li>`; });
         html += `</ul></div>`;
+      }
+      if (q.explanation) {
+        html += `<div class="explanation" style="border-left: 3px solid var(--accent-info); padding-left: 12px; background: var(--bg-secondary); border-radius: var(--radius-sm); margin-top: 10px;">${parseMarkdown(q.explanation)}</div>`;
       }
     } else {
       html += `<div class="answer-text">${escapeHtml(q.answer || '待核对')}</div>`;
       if (q.explanation) {
-        html += `<div class="explanation">${escapeHtml(q.explanation)}</div>`;
+        html += `<div class="explanation">${parseMarkdown(q.explanation)}</div>`;
       }
     }
 
@@ -1316,13 +1296,16 @@
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     if (uniqueId.startsWith('prog-')) return;
 
+    // 防止重复作答
+    const card = findQuestionCard(uniqueId);
+    if (card && card.querySelector('.option-item.correct, .option-item.incorrect')) return;
+
     const q = state.questions.find(item => String(item.id) === realId);
     if (!q) return;
 
     const answerStr = normalizeChoiceAnswer(q.answer);
     const isCorrect = selectedLetter === answerStr;
     const feedbackEl = document.getElementById('feedback-' + uniqueId);
-    const card = findQuestionCard(uniqueId);
 
     if (card) {
       card.querySelectorAll('.option-item').forEach(opt => {
@@ -1369,6 +1352,10 @@
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     if (uniqueId.startsWith('prog-')) return;
 
+    // 防止重复作答
+    const card = findQuestionCard(uniqueId);
+    if (card && card.querySelector('.option-item.correct, .option-item.incorrect')) return;
+
     const q = state.questions.find(item => String(item.id) === realId);
     if (!q) return;
 
@@ -1376,7 +1363,6 @@
     const isCorrect = selectedValue === answerStr;
     const feedbackEl = document.getElementById('feedback-' + uniqueId);
 
-    const card = findQuestionCard(uniqueId);
     if (card) {
       card.querySelectorAll('.option-item').forEach(opt => {
         opt.classList.remove('selected', 'correct', 'incorrect');
@@ -1557,10 +1543,6 @@
       return;
     }
 
-    const apiBase = localStorage.getItem('oop_api_base') || apiConfig.base;
-    const apiKey = sessionStorage.getItem('oop_api_key_session') || localStorage.getItem('oop_api_key') || apiConfig.key;
-    const apiModel = localStorage.getItem('oop_api_model') || apiConfig.model || 'gpt-4o-mini';
-
     const systemPrompt = "你是一位精通 C++ 面向对象程序设计的资深评测导师。请将学生的解答代码与标准答案进行仔细对比，检查是否实现了题目所有要求（核心 OOP 设计、构造与析构、内存管理等），指出代码中的逻辑错误、编译隐患、或者不符合 C++17 标准的问题。请给出 0 到 100 之间的评分（格式为：【得分：85分】），并提供详细的改进意见。请使用 Markdown 语法进行高质量排版，中文作答。";
     const userPrompt = `【题目名称】: ${q.title}
 【题目要求】:
@@ -1578,147 +1560,32 @@ ${userCode}
 
 请对上述学生解答代码进行评审打分并给出建议。`;
 
-
-    if (state.settings.aiMode === 'clipboard' || !apiBase || !apiKey || !window.isSecureContext) {
-      const promptToCopy = `${systemPrompt}\n\n${userPrompt}`;
-      await copyPromptAndNotify(promptToCopy);
-      gradingEl.style.display = 'block';
-      gradingEl.innerHTML = `
-        <div style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7;">
-          🧾 判题提示词已复制到剪贴板。<br>
-          请粘贴到你偏好的网页版大模型进行“评审打分”。<br><br>
-          <span style="color: var(--text-muted);">（若想站内自动判题，请在 ⚙️ 设置 中把“问答使用方式”切回“直连 API”，并配置可用端点与 Key。）</span>
-        </div>
-      `;
-      return;
-    }
-
+    const promptToCopy = `${systemPrompt}\n\n${userPrompt}`;
+    await copyPromptAndNotify(promptToCopy);
     gradingEl.style.display = 'block';
-    gradingEl.innerHTML = '<div class="loading" style="padding:10px 0;"><div class="loading-spinner" style="width:20px;height:20px;"></div><span style="margin-left:8px;font-size:0.85rem;color:var(--text-secondary);">正在审阅代码，请稍候…</span></div>';
-
-    try {
-      const res = await fetch(`${apiBase}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          model: apiModel,
-          messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: userPrompt }
-          ],
-          stream: true
-        })
-      });
-
-      if (!res.ok) {
-        throw new Error(`HTTP 错误 ${res.status}`);
-      }
-
-      gradingEl.innerHTML = '';
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder('utf-8');
-      let gradingText = '';
-
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n');
-
-        for (const line of lines) {
-          const cleanLine = line.trim();
-          if (cleanLine.startsWith('data: ')) {
-            const dataContent = cleanLine.slice(6);
-            if (dataContent === '[DONE]') break;
-            try {
-              const parsed = JSON.parse(dataContent);
-              const content = parsed.choices?.[0]?.delta?.content || '';
-              gradingText += content;
-              gradingEl.innerHTML = parseMarkdown(gradingText);
-            } catch (e) {
-              // 忽略解析错误
-            }
-          }
-        }
-      }
-
-      const scoreMatch = gradingText.match(/【得分：(\d+)分】|得分[：\s](\d+)/);
-      if (scoreMatch) {
-        const score = parseInt(scoreMatch[1] || scoreMatch[2]);
-        if (score >= 85) {
-          window._setStatus(uniqueId, 'mastered', { toggle: false });
-        } else if (score < 60) {
-          window._setStatus(uniqueId, 'wrong', { toggle: false });
-        } else {
-          window._setStatus(uniqueId, 'review', { toggle: false });
-        }
-        recordAttempt(`prog_${realId}`, score >= 85 ? 'correct' : score < 60 ? 'wrong' : 'review');
-        updateSrs(`prog_${realId}`, score >= 85);
-      }
-    } catch (err) {
-      gradingEl.innerHTML = `<span style="color: var(--accent-danger);">❌ 判题出错: ${err.message}，请检查 API 配置或网络连接。</span>`;
-    }
+    gradingEl.innerHTML = `
+      <div style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7;">
+        🧾 判题/审查提示词已复制到剪贴板。<br>
+        请粘贴到你偏好的网页版大模型进行“评审打分”。
+      </div>
+    `;
   };
 
-  function updateCardActions(key) {
-    const isProg = key.startsWith('prog_');
-    const realId = key.replace(/^(q_|prog_)/, '');
-    const uniqueId = isProg ? `prog-${realId}` : `q-${realId}`;
-
-    const card = findQuestionCard(uniqueId);
-    if (card) {
-      const currentStatus = getQuestionStatus(key);
-      const statusBtns = card.querySelectorAll('.status-btn');
-      statusBtns.forEach(btn => btn.classList.remove('mastered', 'review', 'wrong'));
-      if (currentStatus) {
-        statusBtns.forEach(btn => {
-          if (btn.getAttribute('data-status') === currentStatus) btn.classList.add(currentStatus);
-        });
-      }
-    }
-  }
-
-  // ============================================================
-  // LLM 助手执行逻辑 (Stream Fetcher)
-  // ============================================================
   window._runAiAnalysis = async function (uniqueId) {
     const container = document.getElementById(`ai-analysis-${uniqueId}`);
     if (!container) return;
 
     const btn = document.getElementById(`ai-toggle-btn-${uniqueId}`);
-    const loaded = container.getAttribute('data-loaded') === '1';
     const isVisible = container.style.display !== 'none';
 
-    // 已生成：再次点击只做 展开/收起，不重复请求
-    if (loaded) {
-      container.style.display = isVisible ? 'none' : 'block';
-      if (btn) btn.textContent = isVisible ? '🧾 展开讲解' : '收起讲解';
-      if (!isVisible) container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (isVisible) {
+      container.style.display = 'none';
+      if (btn) btn.textContent = '🧾 获取讲解提示词';
       return;
     }
 
     container.style.display = 'block';
-    container.innerHTML = `
-      <div class="ai-analysis-container">
-        <div class="ai-analysis-header">
-          <span id="ai-title-${uniqueId}">题目讲解 (${apiConfig.model})</span>
-          <span style="font-size:0.75rem;opacity:0.8;" id="ai-status-${uniqueId}">正在连接模型…</span>
-        </div>
-        <div class="ai-analysis-box" id="ai-box-${uniqueId}">
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line" style="width: 80%;"></div>
-          <div class="skeleton-line" style="width: 90%;"></div>
-          <div class="skeleton-line" style="width: 50%;"></div>
-        </div>
-      </div>
-    `;
-
-    // 滚动一下以便用户看见
-    container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (btn) btn.textContent = '收起提示词';
 
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     const isProg = uniqueId.startsWith('prog-');
@@ -1734,280 +1601,25 @@ ${userCode}
 
     const systemPrompt = "你是一位精通 C++ 面向对象程序设计（OOP）的老师。请为学生提供深入浅出的解题步骤思路、该题关联的 C++ 核心机制解析（例如为什么不能写成某种错误的语法）、以及相关的核心代码小范例（如果有）。请使用 Markdown 语法排版，逻辑清晰，中文作答，保证 self-contained 完备性。";
 
-    const boxContent = document.getElementById(`ai-box-${uniqueId}`);
-    const statusSpan = document.getElementById(`ai-status-${uniqueId}`);
-    const titleSpan = document.getElementById(`ai-title-${uniqueId}`);
-    if (btn) btn.textContent = '收起讲解';
+    const promptToCopy = `${systemPrompt}\n\n${promptContent}`;
+    await copyPromptAndNotify(promptToCopy);
 
-    if (state.settings.aiMode === 'clipboard' || !apiConfig.key || !window.isSecureContext) {
-      const promptToCopy = `${systemPrompt}\n\n${promptContent}`;
-      await copyPromptAndNotify(promptToCopy);
-      if (titleSpan) titleSpan.textContent = '🧾 已复制提示词';
-      statusSpan.textContent = '去网页版大模型粘贴提问';
-      boxContent.innerHTML = `
-        <div style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.7;">
-          提示词已复制到剪贴板。<br>
-          你可以直接打开你常用的网页版大模型，把提示词粘贴进去提问。<br><br>
-          <span style="color: var(--text-muted);">（若想站内直接生成回答，请在 ⚙️ 设置 中把“问答使用方式”切回“直连 API”。）</span>
+    container.innerHTML = `
+      <div class="ai-analysis-container">
+        <div class="ai-analysis-header">
+          <span id="ai-title-${uniqueId}">🧾 讲解提示词已复制到剪贴板</span>
         </div>
-      `;
-      container.setAttribute('data-loaded', '1');
-      return;
-    }
-
-    try {
-      const response = await fetch(`${apiConfig.base}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiConfig.key}`
-        },
-        body: JSON.stringify({
-          model: apiConfig.model,
-          messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: promptContent }
-          ],
-          stream: true
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP 错误 ${response.status}`);
-      }
-
-      statusSpan.textContent = '正在打字解析中…';
-      boxContent.innerHTML = ''; // 清理骨架屏
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder('utf-8');
-      let aiResponseText = '';
-      let buffer = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-
-        // 留下最后未完成的行
-        buffer = lines.pop();
-
-        for (const line of lines) {
-          const cleanLine = line.trim();
-          if (!cleanLine) continue;
-          if (cleanLine === 'data: [DONE]') continue;
-
-          if (cleanLine.startsWith('data: ')) {
-            try {
-              const jsonStr = cleanLine.slice(6);
-              const data = JSON.parse(jsonStr);
-              const delta = data.choices?.[0]?.delta?.content || '';
-              aiResponseText += delta;
-
-              // 实时 Markdown 解析渲染
-              boxContent.innerHTML = parseMarkdown(aiResponseText);
-            } catch (e) {
-              // 忽略分片导致的解析错误
-            }
-          }
-        }
-      }
-
-      // 消费剩余缓冲
-      if (buffer && buffer.startsWith('data: ')) {
-        try {
-          const data = JSON.parse(buffer.slice(6));
-          aiResponseText += (data.choices?.[0]?.delta?.content || '');
-          boxContent.innerHTML = parseMarkdown(aiResponseText);
-        } catch(e) {}
-      }
-
-      statusSpan.textContent = '解答完成 ✨';
-      container.setAttribute('data-loaded', '1');
-
-      // 在 header 右侧提供“重新生成”入口（显式再请求）
-      const header = container.querySelector('.ai-analysis-header');
-      if (header && !header.querySelector('.ai-regenerate')) {
-        const regen = document.createElement('button');
-        regen.className = 'show-answer-btn ai-regenerate';
-        regen.style.cssText = 'padding:4px 10px;font-size:0.78rem;border-color:var(--border-color);color:var(--text-secondary);background:transparent;';
-        regen.textContent = '🔄 重新生成';
-        regen.onclick = (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          container.setAttribute('data-loaded', '0');
-          if (btn) btn.textContent = '收起讲解';
-          window._runAiAnalysis(uniqueId);
-        };
-        header.appendChild(regen);
-      }
-
-    } catch (err) {
-      statusSpan.textContent = '请求出错 ❌';
-      boxContent.innerHTML = `<div style="color: var(--accent-danger); font-weight: 500;">❌ 讲解请求失败: ${err.message}<br><br><span style="font-size: 0.8rem; color: var(--text-secondary);">提示：请在 ⚙️ 设置中确认 Base URL、Key 和 Model 正确，且当前网络可访问该端点。</span></div>`;
-      if (btn) btn.textContent = '🧾 获取讲解提示词';
-    }
-  };
-
-  // ============================================================
-  // AI 导师聊天面板 (AI Tutor Session)
-  // ============================================================
-  async function sendChatMessage() {
-    const inputEl = document.getElementById('chat-input');
-    const sendBtn = document.getElementById('chat-send-btn');
-    const messageText = inputEl.value.trim();
-
-    if (!messageText) return;
-    if (state.settings.aiMode === 'clipboard' || !apiConfig.key) {
-      const systemPrompt = "你是一位精通 C++ 面向对象程序设计的老师。你可以解答类与对象、深拷贝、多态虚函数、运算符重载、模板与 STL、异常处理和新特性等问题。回答请用 Markdown 排版，步骤清楚。";
-      const promptToCopy = `${systemPrompt}
-
-用户问题：
-${messageText}
-
-（请用中文回答，并使用 Markdown 排版）`;
-      const copied = await copyPromptAndNotify(promptToCopy);
-      appendMessage('user', messageText);
-      appendMessage('ai', copied
-        ? '已复制完整提示词。请粘贴到你常用的模型中提问。'
-        : '自动复制没有成功。请手动复制输入框内容，或检查浏览器剪贴板权限。');
-      if (copied) inputEl.value = '';
-      return;
-    }
-
-    // 禁用输入以防止发送冲突
-    inputEl.value = '';
-    inputEl.disabled = true;
-    sendBtn.disabled = true;
-
-    // 插入 User 消息
-    appendMessage('user', messageText);
-    state.chatHistory.push({ role: 'user', content: messageText });
-
-    // 限制历史上下文
-    if (state.chatHistory.length > 10) {
-      state.chatHistory = [
-        state.chatHistory[0],
-        ...state.chatHistory.slice(state.chatHistory.length - 8)
-      ];
-    }
-
-    // 插入 AI loading 气泡
-    const aiMsgId = `ai-msg-${Date.now()}`;
-    appendPlaceholderMessage(aiMsgId);
-
-    const aiMsgContentDiv = document.getElementById(aiMsgId);
-    const systemPrompt = "你是一位精通 C++ 面向对象程序设计的老师。你可以解答类与对象、深拷贝、多态虚函数、运算符重载、模板与 STL、异常处理和新特性等问题。回答请用 Markdown 排版，步骤清楚。";
-
-    try {
-      const response = await fetch(`${apiConfig.base}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiConfig.key}`
-        },
-        body: JSON.stringify({
-          model: apiConfig.model,
-          messages: [
-            { role: 'system', content: systemPrompt },
-            ...state.chatHistory
-          ],
-          stream: true
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP 错误码 ${response.status}`);
-      }
-
-      aiMsgContentDiv.innerHTML = '';
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder('utf-8');
-      let aiText = '';
-      let buffer = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        buffer = lines.pop();
-
-        for (const line of lines) {
-          const cleanLine = line.trim();
-          if (cleanLine === 'data: [DONE]') continue;
-          if (cleanLine.startsWith('data: ')) {
-            try {
-              const data = JSON.parse(cleanLine.slice(6));
-              const textChunk = data.choices?.[0]?.delta?.content || '';
-              aiText += textChunk;
-              aiMsgContentDiv.innerHTML = parseMarkdown(aiText);
-              scrollChatToBottom();
-            } catch(e) {}
-          }
-        }
-      }
-
-      if (buffer && buffer.startsWith('data: ')) {
-        try {
-          const data = JSON.parse(buffer.slice(6));
-          aiText += (data.choices?.[0]?.delta?.content || '');
-          aiMsgContentDiv.innerHTML = parseMarkdown(aiText);
-        } catch(e) {}
-      }
-
-      state.chatHistory.push({ role: 'assistant', content: aiText });
-
-    } catch (err) {
-      aiMsgContentDiv.innerHTML = `<span style="color: var(--accent-danger); font-weight: 500;">❌ 发送失败: ${err.message}<br><br>建议检查您的 ⚙️ API 设置 是否正常。</span>`;
-    } finally {
-      inputEl.disabled = false;
-      sendBtn.disabled = false;
-      inputEl.focus();
-    }
-  }
-
-  function appendMessage(sender, text) {
-    const container = document.getElementById('chat-messages');
-    const msgDiv = document.createElement('div');
-    msgDiv.className = `message ${sender}`;
-
-    const avatar = sender === 'ai' ? '🤖' : '👤';
-    msgDiv.innerHTML = `
-      <div class="avatar">${avatar}</div>
-      <div class="message-content">${sender === 'user' ? escapeHtml(text).replace(/\n/g, '<br>') : parseMarkdown(text)}</div>
-    `;
-
-    container.appendChild(msgDiv);
-    scrollChatToBottom();
-  }
-
-  function appendPlaceholderMessage(id) {
-    const container = document.getElementById('chat-messages');
-    const msgDiv = document.createElement('div');
-    msgDiv.className = 'message ai';
-    msgDiv.innerHTML = `
-      <div class="avatar">🤖</div>
-      <div class="message-content" id="${id}">
-        <div class="skeleton-line" style="width: 140px;"></div>
-        <div class="skeleton-line" style="width: 260px;"></div>
-        <div class="skeleton-line" style="width: 180px;"></div>
+        <div class="ai-analysis-box" id="ai-box-${uniqueId}">
+          <div style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.7;">
+            讲解提示词已复制到剪贴板。<br>
+            如果你想获取其他大模型的解释，可以打开网页端 AI 并直接粘贴发送。
+          </div>
+        </div>
       </div>
     `;
-    container.appendChild(msgDiv);
-    scrollChatToBottom();
-  }
 
-  function scrollChatToBottom() {
-    const container = document.getElementById('chat-messages');
-    if (container) {
-      container.scrollTop = container.scrollHeight;
-    }
-  }
+    container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
 
   async function copyPromptAndNotify(text) {
     try {
@@ -2033,32 +1645,9 @@ ${messageText}
     }
   }
 
-  function updateAiTutorVisibility() {
-    const nav = document.getElementById('nav-ai-tutor');
-    const page = document.getElementById('page-ai-tutor');
-    const hasConfiguredApi = state.settings.aiMode === 'api' && !!apiConfig.key;
 
-    if (nav) {
-      nav.style.display = hasConfiguredApi ? '' : 'none';
-      nav.title = hasConfiguredApi ? '站内直连接口生成回答' : '配置 API 后显示问答助手';
-    }
-    if (page) {
-      page.style.display = hasConfiguredApi ? '' : 'none';
-      page.dataset.mode = hasConfiguredApi ? 'api' : 'hidden';
-    }
 
-    if (!hasConfiguredApi && page && page.classList.contains('active')) {
-      window._goToPage('quiz');
-    }
-  }
-
-  function initBackToTop() {
-    const btn = document.getElementById('back-to-top');
-    if (!btn) return;
-    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-    window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
-    updateBackToTopVisibility();
-  }
+  // initBackToTop consolidated into initUI
 
   function updateBackToTopVisibility() {
     const btn = document.getElementById('back-to-top');
@@ -2107,6 +1696,7 @@ ${messageText}
     state.searchQuery = '';
     state.selectedKnowledgePoint = 'all';
     state.favoritesOnly = false;
+    state.pendingOnly = false;
     state.quizMode = 'focus';
 
     document.querySelectorAll('#type-filters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
@@ -2389,6 +1979,7 @@ ${messageText}
       progress: state.userProgress || {},
       favorites: state.favorites || {},
       attempts: state.attempts || [],
+      questionStats: state.questionStats || {},
       settings: Object.assign({}, state.settings || {}, { apiKey: undefined })
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
@@ -2425,11 +2016,13 @@ ${messageText}
           const s = Object.assign({}, data.settings);
           delete s.apiKey;
           state.settings = Object.assign(state.settings, s);
-          localStorage.setItem('oop_ai_mode', state.settings.aiMode || 'clipboard');
           localStorage.setItem('oop_redo_mode', state.settings.redoMode ? '1' : '0');
-          localStorage.setItem('oop_save_api_key', state.settings.saveApiKey ? '1' : '0');
           saveJsonToStorage(SETTINGS_KEY, state.settings);
-          updateAiTutorVisibility();
+        }
+
+        if (data.questionStats && typeof data.questionStats === 'object') {
+          state.questionStats = data.questionStats;
+          saveJsonToStorage(STATS_KEY, state.questionStats);
         }
 
         saveProgress();

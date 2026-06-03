@@ -1,37 +1,64 @@
 {
   "title": "面向对象程序设计期末复习题库",
-  "version": "2025.06",
-  "generatedAt": "2025-06-02",
+  "version": "2026.06",
+  "generatedAt": "2026-06-03",
   "stats": {
-    "totalQuestions": 185,
-    "multipleChoice": 120,
-    "trueFalse": 35,
-    "fillInBlank": 30,
-    "programming": 18,
-    "pendingReview": 12
+    "totalQuestions": 595,
+    "multipleChoice": 244,
+    "trueFalse": 127,
+    "fillInBlank": 172,
+    "programming": 52,
+    "pendingReview": 485
   },
   "chapters": [
-    "绪论",
     "C++对C的扩充",
-    "类与对象",
-    "构造函数与析构函数",
+    "C++新标准",
+    "STL",
+    "[OCR不清]",
     "this/const/static成员",
     "友元",
-    "继承与派生",
-    "多继承与虚基类",
     "多态与虚函数",
-    "运算符重载",
-    "模板",
-    "STL",
+    "多继承与虚基类",
     "异常处理",
+    "指针与引用",
     "文件IO",
-    "C++新标准"
+    "构造函数与析构函数",
+    "模板",
+    "模板·const成员",
+    "类与对象",
+    "类和对象·const成员",
+    "类和对象·运算符重载·静态成员",
+    "类和对象·静态成员",
+    "类和对象·静态成员·拷贝构造",
+    "类和对象·静态成员·组合",
+    "继承与多态·抽象类",
+    "继承与多态·虚函数",
+    "继承与派生",
+    "绪论",
+    "运算符重载",
+    "运算符重载·友元函数"
   ],
   "questionTypes": [
-    {"type": "choice", "label": "选择题", "count": 120},
-    {"type": "truefalse", "label": "判断题", "count": 35},
-    {"type": "fillin", "label": "填空题", "count": 30},
-    {"type": "programming", "label": "程序题", "count": 18}
+    {
+      "type": "choice",
+      "label": "选择题",
+      "count": 244
+    },
+    {
+      "type": "truefalse",
+      "label": "判断题",
+      "count": 127
+    },
+    {
+      "type": "fillin",
+      "label": "填空题",
+      "count": 172
+    },
+    {
+      "type": "programming",
+      "label": "程序题",
+      "count": 52
+    }
   ],
   "sources": [
     "2021-2022学年第2学期B卷",
@@ -44,6 +71,7 @@
     "模拟试卷一",
     "模拟试卷二",
     "C++基础模拟",
-    "模拟试题一至六"
+    "模拟试题一至六",
+    "book.pdf 视觉提取"
   ]
 }
