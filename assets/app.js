@@ -24,7 +24,6 @@
     allKnowledgePoints: [],
     kpLectureMap: {}, // { "知识点": "讲义章节hint" }
     favoritesOnly: false,
-    pendingOnly: false,
     quizMode: 'list',     // 'list' (列表) 或 'focus' (单题焦点)
     focusIndex: 0         // 焦点模式下的当前题目索引
   };
@@ -826,12 +825,6 @@
           filterAndRender();
           return;
         }
-        if (btn.id === 'pending-only') {
-          state.pendingOnly = !state.pendingOnly;
-          btn.classList.toggle('active', state.pendingOnly);
-          filterAndRender();
-          return;
-        }
         if (btn.classList.contains('active')) {
           btn.classList.remove('active');
           state.currentStatus = null;
@@ -1059,7 +1052,6 @@
     html += `<span class="question-number">${isProgramming ? '程序' : ''}第 ${escapeHtml(q.id)} 题</span>`;
     html += `<span class="badge ${typeBadge[q.type]}">${escapeHtml(typeLabel[q.type] || q.type)}</span>`;
     if (q.chapter) html += `<span class="badge badge-chapter">${escapeHtml(q.chapter)}</span>`;
-    if (q.status === 'pending') html += `<span class="badge badge-pending">待核对</span>`;
     html += `</div>`;
 
     // 操作按钮
@@ -1777,7 +1769,6 @@ ${userCode}
     state.searchQuery = '';
     state.selectedKnowledgePoint = 'all';
     state.favoritesOnly = false;
-    state.pendingOnly = false;
     state.quizMode = 'focus';
 
     document.querySelectorAll('#type-filters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
