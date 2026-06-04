@@ -1,63 +1,104 @@
 {
   "title": "面向对象程序设计期末复习题库",
   "version": "2026.06",
-  "generatedAt": "2026-06-03",
+  "generatedAt": "2026-06-04",
   "stats": {
-    "totalQuestions": 595,
-    "multipleChoice": 244,
-    "trueFalse": 127,
-    "fillInBlank": 172,
-    "programming": 52,
-    "pendingReview": 485
+    "totalQuestions": 469,
+    "pendingReview": 360,
+    "invalidQuestions": 0,
+    "choice": 173,
+    "fillin": 150,
+    "truefalse": 102,
+    "programming": 42,
+    "program_output": 2
   },
-  "chapters": [
-    "C++对C的扩充",
-    "C++新标准",
-    "STL",
-    "[OCR不清]",
-    "this/const/static成员",
-    "友元",
-    "多态与虚函数",
-    "多继承与虚基类",
-    "异常处理",
-    "指针与引用",
-    "文件IO",
-    "构造函数与析构函数",
-    "模板",
-    "模板·const成员",
-    "类与对象",
-    "类和对象·const成员",
-    "类和对象·运算符重载·静态成员",
-    "类和对象·静态成员",
-    "类和对象·静态成员·拷贝构造",
-    "类和对象·静态成员·组合",
-    "继承与多态·抽象类",
-    "继承与多态·虚函数",
-    "继承与派生",
-    "绪论",
-    "运算符重载",
-    "运算符重载·友元函数"
-  ],
   "questionTypes": [
     {
       "type": "choice",
       "label": "选择题",
-      "count": 244
-    },
-    {
-      "type": "truefalse",
-      "label": "判断题",
-      "count": 127
+      "count": 173
     },
     {
       "type": "fillin",
       "label": "填空题",
-      "count": 172
+      "count": 150
+    },
+    {
+      "type": "program_output",
+      "label": "输出结果题",
+      "count": 2
     },
     {
       "type": "programming",
-      "label": "程序题",
-      "count": 52
+      "label": "编程题",
+      "count": 42
+    },
+    {
+      "type": "truefalse",
+      "label": "判断题",
+      "count": 102
+    }
+  ],
+  "chapters": [
+    {
+      "chapter": "绪论",
+      "count": 8
+    },
+    {
+      "chapter": "C++对C的扩充",
+      "count": 58
+    },
+    {
+      "chapter": "类与对象",
+      "count": 44
+    },
+    {
+      "chapter": "构造函数与析构函数",
+      "count": 58
+    },
+    {
+      "chapter": "this/const/static成员",
+      "count": 54
+    },
+    {
+      "chapter": "友元",
+      "count": 18
+    },
+    {
+      "chapter": "运算符重载",
+      "count": 42
+    },
+    {
+      "chapter": "继承与派生",
+      "count": 59
+    },
+    {
+      "chapter": "多继承与虚基类",
+      "count": 12
+    },
+    {
+      "chapter": "多态与虚函数",
+      "count": 56
+    },
+    {
+      "chapter": "模板",
+      "count": 35
+    },
+    {
+      "chapter": "STL",
+      "count": 10
+    },
+    {
+      "chapter": "文件IO",
+      "count": 12
+    },
+    {
+      "chapter": "异常处理",
+      "count": 1
+    },
+    {
+      "chapter": "指针与引用",
+      "count": 2
     }
   ],
   "sources": [
@@ -73,5 +114,50 @@
     "C++基础模拟",
     "模拟试题一至六",
     "book.pdf 视觉提取"
-  ]
+  ],
+  "cleaning": {
+    "originalQuestions": 533,
+    "cleanedQuestions": 469,
+    "invalidQuestions": 0,
+    "duplicateMerged": 50,
+    "secondPass": {
+      "duplicateParenthesesFixed": 98,
+      "duplicateMerged": 9,
+      "newlyInvalid": 3,
+      "movedProgramOutputToProgramming": [
+        "P48",
+        "P49"
+      ]
+    },
+    "finalPass": {
+      "duplicateMerged": 6,
+      "mergedPairs": [
+        {
+          "id": 323,
+          "mergedInto": "505"
+        },
+        {
+          "id": 349,
+          "mergedInto": "249"
+        },
+        {
+          "id": 402,
+          "mergedInto": "114"
+        },
+        {
+          "id": 463,
+          "mergedInto": "221"
+        },
+        {
+          "id": 472,
+          "mergedInto": "427"
+        },
+        {
+          "id": 521,
+          "mergedInto": "340"
+        }
+      ]
+    },
+    "droppedInvalidQuestions": 14
+  }
 }

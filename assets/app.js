@@ -55,18 +55,54 @@
     }
   }
 
+  const defaultSettings = {
+    aiMode: localStorage.getItem('oop_ai_mode') || 'clipboard',
+    saveApiKey: localStorage.getItem('oop_save_api_key') !== '0',
+    redoMode: localStorage.getItem('oop_redo_mode') === '1',
+    shuffle: true,
+    seed: Math.floor(Math.random() * 1000000) + 1
+  };
+
   state.settings = Object.assign(
-    {
-      aiMode: localStorage.getItem('oop_ai_mode') || 'clipboard', // 'api' | 'clipboard'
-      saveApiKey: localStorage.getItem('oop_save_api_key') !== '0',
-      redoMode: localStorage.getItem('oop_redo_mode') === '1'
-    },
+    defaultSettings,
     loadJsonFromStorage(SETTINGS_KEY, {})
   );
 
   state.favorites = loadJsonFromStorage(FAVORITES_KEY, {}); // { "q_1": true }
   state.attempts = loadJsonFromStorage(ATTEMPTS_KEY, []); // [{id,ts,result}]
   state.questionStats = loadJsonFromStorage(STATS_KEY, {}); // { "q_1": {streak,nextReviewTs,wrongCount,lastTs} }
+
+  function createSeededRandom(seed) {
+    let currentSeed = seed;
+    return function () {
+      currentSeed = (currentSeed * 1664525 + 1013904223) % 4294967296;
+      return currentSeed / 4294967296;
+    };
+  }
+
+  function seededShuffle(array, seed) {
+    const rng = createSeededRandom(seed);
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      const temp = shuffled[i];
+      shuffled[i] = shuffled[j];
+      shuffled[j] = temp;
+    }
+    return shuffled;
+  }
+
+  function applyShuffle() {
+    if (state.settings.shuffle) {
+      if (!state.settings.seed) {
+        state.settings.seed = Math.floor(Math.random() * 1000000) + 1;
+        saveJsonToStorage(SETTINGS_KEY, state.settings);
+      }
+      state.allItems = seededShuffle(state.originalAllItems, state.settings.seed);
+    } else {
+      state.allItems = [...state.originalAllItems];
+    }
+  }
 
 
 
@@ -119,7 +155,10 @@
       state.programming.forEach(p => { p.type = 'programming'; });
 
       // 合并所有题目
-      state.allItems = [...state.questions, ...state.programming];
+      state.originalAllItems = [...state.questions, ...state.programming];
+
+      // 应用乱序逻辑
+      applyShuffle();
 
       // 读取标准化知识点词表（若存在），用于“知识点→讲义章节”精准跳转
       try {
@@ -326,15 +365,26 @@
     const saveBtn = document.getElementById('settings-save');
 
     const inputRedoMode = document.getElementById('redo-mode');
+    const inputShuffleMode = document.getElementById('shuffle-mode');
+    const inputSeed = document.getElementById('setting-seed');
+    const seedGroup = document.getElementById('seed-group');
+    const regenBtn = document.getElementById('regenerate-seed');
     const inputFontFamily = document.getElementById('setting-font-family');
     const inputFontSize = document.getElementById('setting-font-size');
 
-    // 加载初始值
-    if (inputRedoMode) inputRedoMode.checked = !!state.settings.redoMode;
-    if (inputFontFamily) inputFontFamily.value = localStorage.getItem('oop_font_family') || 'inter';
-    if (inputFontSize) inputFontSize.value = localStorage.getItem('oop_font_size') || 'normal';
-
     window.openSettings = function() {
+      if (inputRedoMode) inputRedoMode.checked = !!state.settings.redoMode;
+      if (inputFontFamily) inputFontFamily.value = localStorage.getItem('oop_font_family') || 'inter';
+      if (inputFontSize) inputFontSize.value = localStorage.getItem('oop_font_size') || 'normal';
+      if (inputShuffleMode) {
+        inputShuffleMode.checked = !!state.settings.shuffle;
+        if (seedGroup) {
+          seedGroup.style.display = state.settings.shuffle ? 'block' : 'none';
+        }
+      }
+      if (inputSeed) {
+        inputSeed.value = state.settings.seed || '';
+      }
       modal.classList.add('visible');
     };
 
@@ -346,10 +396,35 @@
       if (e.target === modal) modal.classList.remove('visible');
     });
 
+    if (inputShuffleMode) {
+      inputShuffleMode.addEventListener('change', () => {
+        if (seedGroup) {
+          seedGroup.style.display = inputShuffleMode.checked ? 'block' : 'none';
+        }
+      });
+    }
+
+    if (regenBtn && inputSeed) {
+      regenBtn.addEventListener('click', () => {
+        const newSeed = Math.floor(Math.random() * 1000000) + 1;
+        inputSeed.value = newSeed;
+      });
+    }
+
     if (saveBtn) {
       saveBtn.addEventListener('click', () => {
         state.settings.redoMode = inputRedoMode ? !!inputRedoMode.checked : false;
         localStorage.setItem('oop_redo_mode', state.settings.redoMode ? '1' : '0');
+
+        const shuffleChecked = inputShuffleMode ? !!inputShuffleMode.checked : false;
+        const enteredSeed = inputSeed ? parseInt(inputSeed.value, 10) : 0;
+        const shuffleChanged = (state.settings.shuffle !== shuffleChecked) || (state.settings.seed !== enteredSeed);
+
+        state.settings.shuffle = shuffleChecked;
+        if (shuffleChecked) {
+          state.settings.seed = enteredSeed || Math.floor(Math.random() * 1000000) + 1;
+        }
+
         saveJsonToStorage(SETTINGS_KEY, state.settings);
 
         const fontVal = inputFontFamily ? inputFontFamily.value : 'inter';
@@ -358,6 +433,12 @@
         localStorage.setItem('oop_font_size', sizeVal);
 
         applyFontAndSize(fontVal, sizeVal);
+
+        if (shuffleChanged) {
+          applyShuffle();
+          filterAndRender();
+          renderProgress();
+        }
 
         showToast('设置已保存', 'success');
         modal.classList.remove('visible');
@@ -2029,6 +2110,7 @@ ${userCode}
         saveJsonToStorage(FAVORITES_KEY, state.favorites);
         saveJsonToStorage(ATTEMPTS_KEY, state.attempts);
 
+        applyShuffle();
         renderStats();
         filterAndRender();
         renderProgress();

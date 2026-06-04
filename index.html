@@ -289,6 +289,20 @@
           </label>
         </div>
         <div class="form-group" style="margin-bottom: 16px;">
+          <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+            <input type="checkbox" id="shuffle-mode" style="width:auto; accent-color: var(--accent-primary);">
+            <strong>随机打乱题目顺序</strong>（开启后所有人的顺序不一样）
+          </label>
+        </div>
+        <div class="form-group" id="seed-group" style="margin-bottom: 16px; display: none;">
+          <label for="setting-seed" style="font-weight: 500; margin-bottom: 6px; display: block; font-size: 0.9rem;">当前随机种子 (Seed)</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="number" id="setting-seed" style="flex: 1; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); outline: none; padding-inline: 10px;" placeholder="输入数字种子" />
+            <button class="show-answer-btn" id="regenerate-seed" style="border-color: var(--accent-secondary); color: var(--accent-secondary); margin: 0; white-space: nowrap; font-size: 0.85rem;" type="button">🔄 随机生成</button>
+          </div>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">设置相同种子可以使题目顺序完全一致。</p>
+        </div>
+        <div class="form-group" style="margin-bottom: 16px;">
           <label for="setting-font-family" style="font-weight: 500; margin-bottom: 6px; display: block; font-size: 0.9rem;">界面字体</label>
           <select id="setting-font-family" class="chapter-select" style="width: 100%; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); outline: none; padding-inline: 10px;">
             <option value="inter">默认高级雅致 (Inter / 华文细黑)</option>
