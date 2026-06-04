@@ -245,6 +245,21 @@
     updateTodayReviewButton();
   }
 
+  // 更新题目卡片上的状态按钮样式
+  function updateCardActions(progressKey) {
+    const status = getQuestionStatus(progressKey);
+    // progressKey 格式: "q_123" 或 "prog_123"
+    const dataId = progressKey.replace(/^q_/, 'q-').replace(/^prog_/, 'prog-');
+    const card = document.querySelector(`.question-card[data-id="${dataId}"]`);
+    if (!card) return;
+    card.querySelectorAll('.status-btn').forEach(btn => {
+      const btnStatus = btn.getAttribute('data-status');
+      btn.classList.toggle('mastered', btnStatus === 'mastered' && status === 'mastered');
+      btn.classList.toggle('review', btnStatus === 'review' && status === 'review');
+      btn.classList.toggle('wrong', btnStatus === 'wrong' && status === 'wrong');
+    });
+  }
+
   function getQuestionStatus(id) {
     return state.userProgress[String(id)] || null;
   }
@@ -1005,7 +1020,7 @@
       navContainer.style.display = 'none';
       const visibleCount = PAGE_SIZE * listPageCount;
       const visible = state.filtered.slice(0, visibleCount);
-      let html = visible.map(q => renderQuestionCard(q)).join('');
+      let html = visible.map((q, idx) => renderQuestionCard(q, idx + 1)).join('');
       if (visibleCount < state.filtered.length) {
         html += `<div style="text-align:center;padding:20px;"><button class="show-answer-btn" style="border-color:var(--accent-primary);color:var(--accent-primary);" onclick="window._loadMoreQuestions()">加载更多（还有 ${state.filtered.length - visibleCount} 题）</button></div>`;
       }
@@ -1019,7 +1034,7 @@
       if (state.focusIndex < 0) state.focusIndex = state.filtered.length - 1;
 
       const q = state.filtered[state.focusIndex];
-      container.innerHTML = renderQuestionCard(q);
+      container.innerHTML = renderQuestionCard(q, state.focusIndex + 1);
 
       // 渲染底部分页控制
       navContainer.innerHTML = `
@@ -1040,7 +1055,7 @@
     renderQuestionList();
   };
 
-  function renderQuestionCard(q) {
+  function renderQuestionCard(q, displayIndex) {
     const isProgramming = q.type === 'programming';
     const typeLabel = { choice: '选择题', truefalse: '判断题', fillin: '填空题', programming: '程序题' };
     const typeBadge = { choice: 'badge-choice', truefalse: 'badge-truefalse', fillin: 'badge-fillin', programming: 'badge-programming' };
@@ -1053,7 +1068,8 @@
     // 头部
     html += `<div class="question-header">`;
     html += `<div class="question-meta">`;
-    html += `<span class="question-number">${isProgramming ? '程序' : ''}第 ${escapeHtml(q.id)} 题</span>`;
+    const displayNum = displayIndex != null ? displayIndex : q.id;
+    html += `<span class="question-number" title="原始题号: ${escapeHtml(q.id)}">${isProgramming ? '程序' : ''}第 ${escapeHtml(String(displayNum))} 题</span>`;
     html += `<span class="badge ${typeBadge[q.type]}">${escapeHtml(typeLabel[q.type] || q.type)}</span>`;
     if (q.chapter) html += `<span class="badge badge-chapter">${escapeHtml(q.chapter)}</span>`;
     html += `</div>`;
@@ -1505,6 +1521,9 @@
 
     feedbackEl.style.display = 'inline-block';
 
+    // 统计题干中的填空数量
+    const blankCount = ((q.stem || '').match(/_{2,}/g) || []).length;
+
     function normalize(str) {
       return str
         .replace(/\s+/g, '') // 移除所有空格以允许变宽空白的匹配
@@ -1517,32 +1536,48 @@
         .replace(/std::/g, ''); // 忽略 std:: 命名空间前缀
     }
 
-    function splitParts(raw) {
+    // 用于拆分一个空的多种可接受写法（不按空格拆分）
+    function splitAlternatives(raw) {
       if (!raw) return [];
       return String(raw)
         .trim()
-        .split(/或|\/|，|,|、|\s+/)
+        .split(/或|\//)
+        .map(s => s.trim())
+        .filter(Boolean);
+    }
+
+    // 用于拆分多个空的答案（仅用 、 和中英文逗号作为多空分隔符）
+    function splitBlanks(raw) {
+      if (!raw) return [];
+      return String(raw)
+        .trim()
+        .split(/、|，|,/)
         .map(s => s.trim())
         .filter(Boolean);
     }
 
     const normUserAll = normalize(userAns);
-    const userParts = splitParts(userAns).map(p => normalize(p)).filter(Boolean);
-    const correctParts = splitParts(correctAnsStr).map(p => normalize(p)).filter(Boolean);
 
     let isCorrect = false;
 
-    if (correctParts.length <= 1) {
-      // 单空：兼容用户输入的任意分隔写法
-      const candidates = correctParts.length ? correctParts : [normalize(correctAnsStr)];
+    if (blankCount <= 1) {
+      // 单空：答案可能有多种可接受的写法（用 或 / 分隔）
+      const alternatives = splitAlternatives(correctAnsStr).map(p => normalize(p)).filter(Boolean);
+      const candidates = alternatives.length ? alternatives : [normalize(correctAnsStr)];
       isCorrect = candidates.some(opt => opt && normUserAll === opt);
     } else {
-      // 多空：优先严格顺序匹配；其次集合匹配（允许用户用空格/顿号等输入）
+      // 多空：用 、或逗号分隔正确答案的各个空
+      const correctParts = splitBlanks(correctAnsStr).map(p => normalize(p)).filter(Boolean);
+      // 用户输入也按同样规则拆分
+      const userParts = splitBlanks(userAns).map(p => normalize(p)).filter(Boolean);
+
       if (userParts.length === correctParts.length) {
+        // 优先严格顺序匹配
         const orderOk = userParts.every((p, idx) => p === correctParts[idx]);
         if (orderOk) {
           isCorrect = true;
         } else {
+          // 其次集合匹配（允许顺序不同）
           const a = [...userParts].sort().join('|');
           const b = [...correctParts].sort().join('|');
           if (a === b) isCorrect = true;
