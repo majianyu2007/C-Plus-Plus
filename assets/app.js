@@ -1202,7 +1202,13 @@
         html += `<div class="explanation" style="border-left: 3px solid var(--accent-info); padding-left: 12px; background: var(--bg-secondary); border-radius: var(--radius-sm); margin-top: 10px;">${parseMarkdown(q.explanation)}</div>`;
       }
     } else {
-      html += `<div class="answer-text">${escapeHtml(q.answer || '待核对')}</div>`;
+      let displayAns = q.answer;
+      if (q.type === 'truefalse') {
+        displayAns = normalizeTrueFalseAnswer(q.answer);
+      }
+      if (displayAns === false) displayAns = '错';
+      if (displayAns === true) displayAns = '对';
+      html += `<div class="answer-text">${escapeHtml(displayAns || '待核对')}</div>`;
       if (q.explanation) {
         html += `<div class="explanation">${parseMarkdown(q.explanation)}</div>`;
       }
@@ -1401,6 +1407,8 @@
   }
 
   function normalizeTrueFalseAnswer(answer) {
+    if (answer === true) return '对';
+    if (answer === false) return '错';
     const raw = String(answer || '').trim().toLowerCase();
     if (['true', 't', 'yes', 'y', '正确', '对', '√', '✓'].includes(raw)) return '对';
     if (['false', 'f', 'no', 'n', '错误', '错', '×', '✗'].includes(raw)) return '错';
