@@ -9,7 +9,7 @@
     "choice": 173,
     "fillin": 150,
     "truefalse": 102,
-    "programming": 42,
+    "programming": 44,
     "program_output": 2
   },
   "questionTypes": [
@@ -31,7 +31,7 @@
     {
       "type": "programming",
       "label": "编程题",
-      "count": 42
+      "count": 44
     },
     {
       "type": "truefalse",

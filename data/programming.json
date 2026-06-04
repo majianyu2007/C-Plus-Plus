@@ -660,7 +660,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P25",
+    "id": "P24",
     "chapter": "构造函数与析构函数",
     "title": "输出圆面积错误原因",
     "requirement": "找出程序在输出半径为 2.5 的圆的面积时结果异常（如输出为 0 或其他错误值）的原因，并说明正确的成员初始化方式。",
@@ -679,7 +679,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P26",
+    "id": "P25",
     "chapter": "类与对象",
     "title": "类与对象常见错误提示",
     "requirement": "编写程序，定义一个简单的 Student 类，并输出 C++ 类与对象程序设计中常见的语法错误及注意事项。",
@@ -699,7 +699,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P27",
+    "id": "P26",
     "chapter": "C++对C的扩充",
     "title": "指针与引用常见错误分析",
     "requirement": "列举 C++ 指针与引用程序中的常见错误，并说明产生错误的原因。要求至少说明指针未初始化、空指针解引用、悬空指针、动态内存释放不匹配以及引用初始化等问题，并给出简单的正确使用示例。",
@@ -719,7 +719,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P28",
+    "id": "P27",
     "chapter": "构造函数与析构函数",
     "title": "Date 类构造函数改错",
     "requirement": "指出下面代码中的错误，并说明原因，然后给出修改后的正确写法。\n\n错误代码示例：\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass Date {\nprivate:\n    int year;\n    int month;\n    int day;\n\npublic:\n    void Date(int year, int month, int day) {\n        year = year;\n        month = month;\n        day = day;\n    }\n\n    void show() const {\n        cout << year << '-' << month << '-' << day << endl;\n    }\n};\n\nint main() {\n    Date d(2024, 6, 1);\n    d.show();\n    return 0;\n}\n```\n\n要求说明：\n1. 指出构造函数定义中的错误；\n2. 说明形参与成员变量同名时直接赋值的问题；\n3. 给出正确的构造函数写法。",
@@ -738,7 +738,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P29",
+    "id": "P28",
     "chapter": "继承与派生",
     "title": "protected 成员访问改错",
     "requirement": "指出下面错误，并说明原因。",
@@ -757,7 +757,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P30",
+    "id": "P29",
     "chapter": "C++对C的扩充",
     "title": "引用变量改错",
     "requirement": "指出下面错误，并说明原因。",
@@ -775,7 +775,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P31",
+    "id": "P30",
     "chapter": "继承与派生",
     "title": "派生类对象访问基类私有成员改错",
     "requirement": "指出下面错误，并说明原因。",
@@ -794,7 +794,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P32",
+    "id": "P31",
     "chapter": "多继承与虚基类",
     "title": "多继承同名成员函数二义性改错",
     "requirement": "指出多继承中多个基类含有同名成员函数时，派生类对象直接调用该同名函数可能产生的错误，并说明原因；同时给出正确的改正方法。",
@@ -813,7 +813,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P33",
+    "id": "P32",
     "chapter": "类与对象",
     "title": "设计 Rect 类",
     "requirement": "设计 Rect 类，包含私有数据成员 length、width，默认值为 0；通过成员函数设置长和宽并保证范围在 (0,50)；实现 GetPerimeter() 求周长。",
@@ -832,7 +832,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P34",
+    "id": "P33",
     "chapter": "运算符重载",
     "title": "定义二维坐标类 Vector2d",
     "requirement": "定义 Vector2d 类，私有 double 成员 x、y；定义构造函数、Show() 函数；以成员函数方式重载 +，实现两个对象 x、y 对应相加；编写测试程序。",
@@ -851,7 +851,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P39",
+    "id": "P34",
     "chapter": "模板",
     "title": "函数模板求绝对值",
     "requirement": "编写一个函数模板，用于求参数的绝对值，并编写测试程序进行测试。函数模板声明如下：template <class Type> Type Abs(Type tVar)",
@@ -869,7 +869,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P40",
+    "id": "P35",
     "chapter": "运算符重载",
     "title": "复数类与加法运算符重载",
     "requirement": "定义一个复数类 CComplex，定义带有 2 个参数（其中一个为缺省参数）的构造函数，显示复数值的函数 Show()，重载“+”运算符（用成员函数实现），并编写测试程序进行测试。",
@@ -888,7 +888,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P41",
+    "id": "P36",
     "chapter": "模板",
     "title": "函数模板求数组元素之和",
     "requirement": "编写一个函数模板，用于求数组中各元素之和，并编写测试程序进行测试。函数模板声明为：template <class Type> Type Sum(Type tArray[], int iSize)",
@@ -906,7 +906,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P42",
+    "id": "P37",
     "chapter": "多态与虚函数",
     "title": "抽象类 CShape 及派生类求图形周长（矩形与圆）",
     "requirement": "定义抽象类 CShape，包含纯虚函数 GetLength()；派生出矩形类 CRectangle 和圆类 CCircle，在派生类中重写 GetLength()，用于求图形的周长，并编写测试程序。",
@@ -925,7 +925,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P44",
+    "id": "P38",
     "chapter": "多态与虚函数",
     "title": "Shape 抽象基类及派生类 Circle、Rectangle",
     "requirement": "编写程序，定义抽象基类 Shape(形状)，由它派生出 2 个派生类：Circle(圆形) 和 Rectangle(矩形)；用函数 Show() 分别显示各种图形的相关信息；最后显示所有图形的总面积。",
@@ -944,7 +944,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P45",
+    "id": "P39",
     "chapter": "多态与虚函数",
     "title": "Shape 抽象基类及派生类面积计算",
     "requirement": "定义抽象基类 Shape，由它派生 Circle、Rectangle、Square，用虚函数 ShowArea() 分别显示各种图形面积，并显示所有图形总面积。",
@@ -963,7 +963,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P48",
+    "id": "P40",
     "chapter": "构造函数与析构函数",
     "title": "程序分析题7",
     "requirement": "阅读下列程序，写出输出结果。\n\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int i;\npublic:\n    A() {\n        i = 0;\n        cout << \"constructor,i=\" << i << \",\";\n    }\n\n    ~A() {\n        cout << \"destructor\";\n    }\n};\n\nint main() {\n    A obj;\n    return 0;\n}",
@@ -983,7 +983,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P49",
+    "id": "P41",
     "chapter": "构造函数与析构函数",
     "title": "程序分析题8",
     "requirement": "阅读下列程序，写出输出结果。\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x;\n    int y;\npublic:\n    A(int a, int b) {\n        x = a;\n        y = b;\n    }\n\n    void show() {\n        cout << x << \" \" << y << endl;\n    }\n};\n\nint main() {\n    A obj(2, 3);\n    obj.show();\n    return 0;\n}\n```",
@@ -1001,7 +1001,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P50",
+    "id": "P42",
     "chapter": "类与对象",
     "title": "DateInfo 类设计",
     "requirement": "设计 DateInfo 类，包含无参构造函数、带参构造函数、日期设置成员函数、日期输出成员函数和日期获取成员函数。",
@@ -1020,7 +1020,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P51",
+    "id": "P43",
     "chapter": "运算符重载",
     "title": "Complex 复数类与加法运算符重载",
     "requirement": "定义 Complex 类，私有数据成员 r、i；提供带两个参数的构造函数、Show() 函数，并以成员函数形式重载运算符 +，实现两个复数对象对应成员相加；编写测试程序。",
@@ -1038,7 +1038,7 @@
     "audit_status": "done"
   },
   {
-    "id": "P52",
+    "id": "P44",
     "chapter": "构造函数与析构函数",
     "title": "编程题 52",
     "requirement": "指出下面程序 main 函数中的错误，以及原因。\nclass A\n{\n    int a,b;\npublic:\n    A(int aa,int bb){a=aa;b=bb;}\n};\nvoid main()\n{\n    A x(2,3), y(4);\n}",
