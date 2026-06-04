@@ -59,13 +59,27 @@
     saveApiKey: localStorage.getItem('oop_save_api_key') !== '0',
     redoMode: localStorage.getItem('oop_redo_mode') === '1',
     shuffle: true,
-    seed: Math.floor(Math.random() * 1000000) + 1
+    seed: null
   };
 
   state.settings = Object.assign(
+    {},
     defaultSettings,
     loadJsonFromStorage(SETTINGS_KEY, {})
   );
+
+  function generateSeed() {
+    return Math.floor(Math.random() * 1000000) + 1;
+  }
+
+  function normalizeSettings() {
+    state.settings.shuffle = state.settings.shuffle !== false;
+    state.settings.redoMode = !!state.settings.redoMode;
+    const parsedSeed = Number.parseInt(state.settings.seed, 10);
+    state.settings.seed = Number.isFinite(parsedSeed) && parsedSeed > 0 ? parsedSeed : null;
+  }
+
+  normalizeSettings();
 
   state.favorites = loadJsonFromStorage(FAVORITES_KEY, {}); // { "q_1": true }
   state.attempts = loadJsonFromStorage(ATTEMPTS_KEY, []); // [{id,ts,result}]
@@ -92,13 +106,15 @@
   }
 
   function applyShuffle() {
+    normalizeSettings();
     if (state.settings.shuffle) {
       if (!state.settings.seed) {
-        state.settings.seed = Math.floor(Math.random() * 1000000) + 1;
-        saveJsonToStorage(SETTINGS_KEY, state.settings);
+        state.settings.seed = generateSeed();
       }
+      saveJsonToStorage(SETTINGS_KEY, state.settings);
       state.allItems = seededShuffle(state.originalAllItems, state.settings.seed);
     } else {
+      saveJsonToStorage(SETTINGS_KEY, state.settings);
       state.allItems = [...state.originalAllItems];
     }
   }
@@ -340,8 +356,12 @@
       document.body.classList.toggle('dark-theme', !resolvedLight);
       if (btn) {
         const labels = { system: '系统', light: '浅色', dark: '深色' };
-        btn.textContent = `🌓 ${labels[mode] || labels.system}`;
-        btn.title = `当前：${labels[mode] || labels.system}。点击切换主题。`;
+        const label = labels[mode] || labels.system;
+        const labelEl = btn.querySelector('.header-btn-label');
+        if (labelEl) labelEl.textContent = label;
+        else btn.textContent = `🌓 ${label}`;
+        btn.title = `当前：${label}。点击切换主题。`;
+        btn.setAttribute('aria-label', `切换主题，当前：${label}`);
       }
     }
 
@@ -420,7 +440,7 @@
 
     if (regenBtn && inputSeed) {
       regenBtn.addEventListener('click', () => {
-        const newSeed = Math.floor(Math.random() * 1000000) + 1;
+        const newSeed = generateSeed();
         inputSeed.value = newSeed;
       });
     }
@@ -431,12 +451,14 @@
         localStorage.setItem('oop_redo_mode', state.settings.redoMode ? '1' : '0');
 
         const shuffleChecked = inputShuffleMode ? !!inputShuffleMode.checked : false;
-        const enteredSeed = inputSeed ? parseInt(inputSeed.value, 10) : 0;
-        const shuffleChanged = (state.settings.shuffle !== shuffleChecked) || (state.settings.seed !== enteredSeed);
+        const enteredSeed = inputSeed ? Number.parseInt(inputSeed.value, 10) : 0;
+        const nextSeed = shuffleChecked && enteredSeed > 0 ? enteredSeed : (shuffleChecked ? generateSeed() : state.settings.seed);
+        const shuffleChanged = (state.settings.shuffle !== shuffleChecked) || (state.settings.seed !== nextSeed);
 
         state.settings.shuffle = shuffleChecked;
         if (shuffleChecked) {
-          state.settings.seed = enteredSeed || Math.floor(Math.random() * 1000000) + 1;
+          state.settings.seed = nextSeed;
+          if (inputSeed) inputSeed.value = state.settings.seed;
         }
 
         saveJsonToStorage(SETTINGS_KEY, state.settings);
@@ -1491,6 +1513,7 @@
         opt.classList.remove('selected', 'correct', 'incorrect');
       });
     }
+    element.classList.add('selected');
 
     if (isCorrect) {
       if (!state.settings.redoMode) element.classList.add('correct');
