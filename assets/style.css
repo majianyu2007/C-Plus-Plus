@@ -2430,3 +2430,176 @@ textarea:focus-visible,
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* ============================================================
+   新手引导遮罩
+   ============================================================ */
+.onboarding-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 6000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.22s ease, visibility 0.22s ease;
+}
+
+.onboarding-backdrop.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.onboarding-backdrop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 7, 18, 0.72);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+
+.onboarding-spotlight {
+  position: fixed;
+  z-index: 6001;
+  border: 2px solid var(--accent-primary);
+  border-radius: 18px;
+  box-shadow: 0 0 0 9999px rgba(3, 7, 18, 0.68), 0 0 32px var(--accent-primary-glow);
+  opacity: 0;
+  transform: scale(0.98);
+  transition: inset 0.24s ease, width 0.24s ease, height 0.24s ease, opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.onboarding-spotlight.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.onboarding-card {
+  position: fixed;
+  z-index: 6200;
+  width: min(420px, calc(100vw - 32px));
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-active);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35), var(--shadow-glow);
+  padding: 20px;
+  pointer-events: auto;
+  transform: translateY(8px);
+  transition: left 0.24s ease, top 0.24s ease, transform 0.24s ease;
+}
+
+.onboarding-progress {
+  color: var(--accent-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.onboarding-card h3 {
+  font-size: 1.15rem;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+
+.onboarding-card p {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  margin-bottom: 14px;
+}
+
+.onboarding-task {
+  background: var(--bg-card);
+  border: 1px dashed var(--border-active);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+}
+
+.onboarding-task.done {
+  border-color: var(--accent-success);
+  color: var(--accent-success);
+}
+
+.onboarding-actions,
+.onboarding-nav-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.onboarding-btn {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  min-height: 38px;
+  padding: 8px 13px;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.onboarding-btn:hover:not(:disabled) {
+  border-color: var(--border-active);
+  transform: translateY(-1px);
+}
+
+.onboarding-btn.primary {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  border-color: transparent;
+  color: white;
+}
+
+.onboarding-btn.ghost {
+  color: var(--text-muted);
+}
+
+.onboarding-btn.subtle {
+  color: var(--text-secondary);
+}
+
+.onboarding-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+
+.onboarding-target-active {
+  position: relative;
+  z-index: 6100 !important;
+  box-shadow: 0 0 0 3px var(--accent-primary-glow), 0 0 24px var(--accent-primary-glow) !important;
+}
+
+@media (max-width: 700px) {
+  .onboarding-card {
+    left: 16px !important;
+    right: 16px;
+    top: auto !important;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    width: auto;
+    max-height: 46vh;
+    overflow-y: auto;
+  }
+
+  .onboarding-actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .onboarding-nav-actions {
+    width: 100%;
+  }
+
+  .onboarding-nav-actions .onboarding-btn,
+  .onboarding-actions > .onboarding-btn {
+    flex: 1;
+  }
+}
