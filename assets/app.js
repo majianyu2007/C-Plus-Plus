@@ -974,11 +974,16 @@
 
     // 搜索
     if (state.searchQuery) {
+      const query = state.searchQuery.toLowerCase();
       items = items.filter(q => {
-        const text = (q.stem || '') + (q.title || '') + (q.requirement || '') +
+        const idStr = String(q.id).toLowerCase();
+        const isProg = q.type === 'programming';
+        const label = isProg ? `程序${idStr}` : `第${idStr}题`;
+        const text = idStr + ' ' + label + ' ' +
+          (q.stem || '') + (q.title || '') + (q.requirement || '') +
           (q.options ? q.options.join(' ') : '') + (q.chapter || '') +
           ' ' + getKnowledgePointsForItem(q).join(' ');
-        return text.toLowerCase().includes(state.searchQuery);
+        return text.toLowerCase().includes(query);
       });
     }
 
@@ -1068,10 +1073,11 @@
     // 头部
     html += `<div class="question-header">`;
     html += `<div class="question-meta">`;
-    const displayNum = displayIndex != null ? displayIndex : q.id;
-    html += `<span class="question-number" title="原始题号: ${escapeHtml(q.id)}">${isProgramming ? '程序' : ''}第 ${escapeHtml(String(displayNum))} 题</span>`;
+    const label = isProgramming ? `程序 ${q.id}` : `第 ${q.id} 题`;
+    html += `<span class="question-number">${escapeHtml(label)}</span>`;
     html += `<span class="badge ${typeBadge[q.type]}">${escapeHtml(typeLabel[q.type] || q.type)}</span>`;
     if (q.chapter) html += `<span class="badge badge-chapter">${escapeHtml(q.chapter)}</span>`;
+    if (displayIndex != null) html += `<span class="badge badge-index" title="当前列表序号">#${displayIndex}</span>`;
     html += `</div>`;
 
     // 操作按钮
