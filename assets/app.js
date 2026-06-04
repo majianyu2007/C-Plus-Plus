@@ -1546,14 +1546,26 @@
         .filter(Boolean);
     }
 
-    // 用于拆分多个空的答案（仅用 、 和中英文逗号作为多空分隔符）
+    // 用于拆分多个空的答案（支持 、，,；; 作为多空分隔符）
     function splitBlanks(raw) {
       if (!raw) return [];
       return String(raw)
         .trim()
-        .split(/、|，|,/)
+        .split(/、|，|,|；|;/)
         .map(s => s.trim())
         .filter(Boolean);
+    }
+
+    // 智能拆分用户输入：先尝试结构化分隔符，不够再用空格
+    function splitUserInput(raw, expectedCount) {
+      if (!raw) return [];
+      const byDelim = splitBlanks(raw);
+      if (byDelim.length >= expectedCount) return byDelim;
+      // 用户可能用空格分隔各空答案，回退到空格拆分
+      const bySpace = String(raw).trim().split(/\s+/).map(s => s.trim()).filter(Boolean);
+      if (bySpace.length >= expectedCount) return bySpace;
+      // 都不够，返回分隔符拆分的结果
+      return byDelim;
     }
 
     const normUserAll = normalize(userAns);
@@ -1566,10 +1578,10 @@
       const candidates = alternatives.length ? alternatives : [normalize(correctAnsStr)];
       isCorrect = candidates.some(opt => opt && normUserAll === opt);
     } else {
-      // 多空：用 、或逗号分隔正确答案的各个空
+      // 多空：用 、逗号 分号等分隔正确答案的各个空
       const correctParts = splitBlanks(correctAnsStr).map(p => normalize(p)).filter(Boolean);
-      // 用户输入也按同样规则拆分
-      const userParts = splitBlanks(userAns).map(p => normalize(p)).filter(Boolean);
+      // 用户输入：智能拆分，支持空格分隔
+      const userParts = splitUserInput(userAns, correctParts.length).map(p => normalize(p)).filter(Boolean);
 
       if (userParts.length === correctParts.length) {
         // 优先严格顺序匹配
