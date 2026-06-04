@@ -813,28 +813,48 @@ body {
   animation: fadeInUp 0.3s ease;
 }
 
-.chapter-body h4 {
+.chapter-body h1, .explanation h1,
+.chapter-body h2, .explanation h2,
+.chapter-body h3, .explanation h3,
+.chapter-body h4, .explanation h4,
+.chapter-body h5, .explanation h5,
+.chapter-body h6, .explanation h6 {
   color: var(--text-primary);
+  font-weight: 600;
   margin: 16px 0 8px;
-  font-size: 0.95rem;
 }
+.chapter-body h1, .explanation h1 { font-size: 1.2rem; }
+.chapter-body h2, .explanation h2 { font-size: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; }
+.chapter-body h3, .explanation h3 { font-size: 1.02rem; }
+.chapter-body h4, .explanation h4 { font-size: 0.95rem; }
+.chapter-body h5, .explanation h5 { font-size: 0.9rem; }
+.chapter-body h6, .explanation h6 { font-size: 0.85rem; color: var(--text-muted); }
 
-.chapter-body ul {
+.chapter-body ul, .explanation ul,
+.chapter-body ol, .explanation ol {
   padding-left: 20px;
   margin: 8px 0;
 }
 
-.chapter-body li {
+.chapter-body li, .explanation li {
   margin-bottom: 4px;
 }
 
-.chapter-body code {
+.chapter-body code, .explanation code {
   font-family: var(--font-mono);
   background: var(--bg-code);
   padding: 1px 6px;
   border-radius: 4px;
   font-size: 0.85em;
   color: var(--accent-secondary);
+}
+
+.explanation p {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+.explanation p:last-child {
+  margin-bottom: 0;
 }
 
 /* ============================================================
@@ -1155,14 +1175,14 @@ body {
    Markdown & C++ 语法高亮
    ============================================================ */
 /* Markdown 表格 */
-.chapter-body table, .message-content table, .ai-analysis-box table {
+.chapter-body table, .message-content table, .ai-analysis-box table, .explanation table {
   width: 100%;
   border-collapse: collapse;
   margin: 12px 0 16px;
   font-size: 0.85rem;
 }
 
-.chapter-body th, .message-content th, .ai-analysis-box th {
+.chapter-body th, .message-content th, .ai-analysis-box th, .explanation th {
   background: var(--bg-code);
   color: var(--text-primary);
   font-weight: 600;
@@ -1171,14 +1191,14 @@ body {
   text-align: left;
 }
 
-.chapter-body td, .message-content td, .ai-analysis-box td {
+.chapter-body td, .message-content td, .ai-analysis-box td, .explanation td {
   padding: 8px 12px;
   border: 1px solid var(--border-color);
   color: var(--text-secondary);
 }
 
 /* Markdown 引用 */
-.chapter-body blockquote, .message-content blockquote, .ai-analysis-box blockquote {
+.chapter-body blockquote, .message-content blockquote, .ai-analysis-box blockquote, .explanation blockquote {
   border-left: 4px solid var(--accent-primary);
   background: var(--bg-code);
   padding: 10px 16px;
@@ -1973,6 +1993,7 @@ textarea:focus-visible,
 .chapter-body,
 .message-content,
 .ai-analysis-box,
+.explanation,
 .code-block,
 .code-block-wrapper {
   overflow-wrap: anywhere;
@@ -1980,7 +2001,8 @@ textarea:focus-visible,
 
 .chapter-body table,
 .message-content table,
-.ai-analysis-box table {
+.ai-analysis-box table,
+.explanation table {
   display: block;
   overflow-x: auto;
   white-space: nowrap;
