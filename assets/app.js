@@ -219,6 +219,7 @@
       updateTodayReviewButton();
 
       hideLoadingCover();
+      setTimeout(() => initOnboarding(), 520);
     } catch (err) {
       console.error('数据加载失败:', err);
       hideLoadingCover();
@@ -405,6 +406,7 @@
     const regenBtn = document.getElementById('regenerate-seed');
     const inputFontFamily = document.getElementById('setting-font-family');
     const inputFontSize = document.getElementById('setting-font-size');
+    const reopenOnboardingBtn = document.getElementById('settings-reopen-onboarding');
 
     window.openSettings = function() {
       if (inputRedoMode) inputRedoMode.checked = !!state.settings.redoMode;
@@ -424,6 +426,12 @@
 
     openBtn.addEventListener('click', window.openSettings);
     closeBtn.addEventListener('click', () => { modal.classList.remove('visible'); });
+    if (reopenOnboardingBtn) {
+      reopenOnboardingBtn.addEventListener('click', () => {
+        modal.classList.remove('visible');
+        startOnboarding({ manual: true });
+      });
+    }
 
     // 点击背景关闭
     modal.addEventListener('click', (e) => {
@@ -821,6 +829,249 @@
 
     return finalHtml;
   }
+
+  // ============================================================
+  // 新手引导：默认每次加载都展示，支持跳过与试操作
+  // ============================================================
+  let onboardingStarted = false;
+  let onboardingIndex = 0;
+  let onboardingActionDone = false;
+  let onboardingActionCleanup = null;
+
+  const onboardingSteps = [
+    {
+      title: '欢迎，新手从这里开始',
+      text: '这个工具把 C++ OOP 期末复习常用的题库训练、知识讲义、错题复习和进度统计放在同一个页面里。接下来会逐个讲清楚，也会让你动手试一下。',
+      selector: '.quiz-hero',
+      button: '开始引导'
+    },
+    {
+      title: '主导航：三块学习区域',
+      text: '顶部导航可以在“题库训练”“知识讲义”“进度概览”之间切换：刷题、查概念、看复习状态都从这里进入。',
+      selector: '.nav-tabs'
+    },
+    {
+      title: '题库训练：先筛出你要做的题',
+      text: '搜索框可以按题干、章节或知识点查找；题型、章节、知识点和状态筛选可以帮你快速缩小范围。',
+      selector: '.toolbar[aria-label="题库筛选工具栏"]'
+    },
+    {
+      title: '试一试：切换到单题模式',
+      text: '列表模式适合快速浏览；单题模式适合正式自测。请点击高亮区域里的“🎯 单题”，体验一次模式切换。',
+      selector: '#mode-filters',
+      task: '请点击“🎯 单题”按钮，完成后会自动进入下一步。',
+      actionSelector: '#mode-filters [data-mode="focus"]',
+      actionEvent: 'click',
+      requireAction: true
+    },
+    {
+      title: '题目卡片：答题、看解析、做标记',
+      text: '每张题卡右上角可以收藏、标记已掌握、待复习或错题；题目下方可以显示答案，也能复制讲解提示词，方便继续追问。',
+      selector: '.question-card',
+      before: () => window._goToPage('quiz')
+    },
+    {
+      title: '试一试：显示一次答案',
+      text: '遇到不会的题，可以先思考再展开答案。请点击当前题卡里的“显示答案 / 查看参考代码”按钮。',
+      selector: '.question-card [id^="toggle-answer-btn-"]',
+      task: '请点击“显示答案”或“查看参考代码”，看看解析区域如何展开。',
+      actionSelector: '.question-card [id^="toggle-answer-btn-"]',
+      actionEvent: 'click',
+      requireAction: true
+    },
+    {
+      title: '知识讲义：概念不清就查这里',
+      text: '讲义页支持搜索标题、概念和代码关键字；题目里的知识点标签也可以跳到相关讲义。',
+      selector: '#page-knowledge .toolbar',
+      before: () => window._goToPage('knowledge')
+    },
+    {
+      title: '进度概览：决定下一步复习什么',
+      text: '进度页会汇总掌握率、待复习、错题和最近作答，适合每天复习前先看一眼。',
+      selector: '#page-progress .knowledge-section',
+      before: () => window._goToPage('progress')
+    },
+    {
+      title: '设置：调整你的刷题方式',
+      text: '右上角设置里可以开启重做模式、随机题序，调整字体字号；如果以后想重看引导，也可以在设置里点击“重新查看新手引导”。',
+      selector: '#settings-open',
+      before: () => window._goToPage('quiz'),
+      button: '完成'
+    }
+  ];
+
+  function initOnboarding() {
+    const overlay = document.getElementById('onboarding');
+    if (!overlay || onboardingStarted) return;
+    startOnboarding();
+  }
+
+  function startOnboarding() {
+    const overlay = document.getElementById('onboarding');
+    if (!overlay) return;
+    onboardingStarted = true;
+    onboardingIndex = 0;
+    onboardingActionDone = false;
+
+    const skipBtn = document.getElementById('onboarding-skip');
+    const prevBtn = document.getElementById('onboarding-prev');
+    const nextBtn = document.getElementById('onboarding-next');
+
+    if (skipBtn && !skipBtn.dataset.bound) {
+      skipBtn.dataset.bound = '1';
+      skipBtn.addEventListener('click', finishOnboarding);
+    }
+    if (prevBtn && !prevBtn.dataset.bound) {
+      prevBtn.dataset.bound = '1';
+      prevBtn.addEventListener('click', () => showOnboardingStep(onboardingIndex - 1));
+    }
+    if (nextBtn && !nextBtn.dataset.bound) {
+      nextBtn.dataset.bound = '1';
+      nextBtn.addEventListener('click', () => {
+        const step = onboardingSteps[onboardingIndex];
+        if (step && step.requireAction && !onboardingActionDone) return;
+        if (onboardingIndex >= onboardingSteps.length - 1) {
+          finishOnboarding();
+        } else {
+          showOnboardingStep(onboardingIndex + 1);
+        }
+      });
+    }
+
+    overlay.classList.add('visible');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.addEventListener('keydown', handleOnboardingKeydown);
+    showOnboardingStep(0);
+  }
+
+  function handleOnboardingKeydown(e) {
+    if (!onboardingStarted) return;
+    if (e.key === 'Escape') finishOnboarding();
+    if (e.key === 'ArrowRight') {
+      const step = onboardingSteps[onboardingIndex];
+      if (!step.requireAction || onboardingActionDone) showOnboardingStep(onboardingIndex + 1);
+    }
+    if (e.key === 'ArrowLeft') showOnboardingStep(onboardingIndex - 1);
+  }
+
+  function finishOnboarding() {
+    const overlay = document.getElementById('onboarding');
+    cleanupOnboardingStep();
+    onboardingStarted = false;
+    if (overlay) {
+      overlay.classList.remove('visible');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+    document.removeEventListener('keydown', handleOnboardingKeydown);
+  }
+
+  function cleanupOnboardingStep() {
+    document.querySelectorAll('.onboarding-target-active').forEach(el => el.classList.remove('onboarding-target-active'));
+    if (typeof onboardingActionCleanup === 'function') onboardingActionCleanup();
+    onboardingActionCleanup = null;
+    const spotlight = document.getElementById('onboarding-spotlight');
+    if (spotlight) spotlight.classList.remove('visible');
+  }
+
+  function showOnboardingStep(nextIndex) {
+    if (nextIndex < 0 || nextIndex >= onboardingSteps.length) return;
+    cleanupOnboardingStep();
+    onboardingIndex = nextIndex;
+    onboardingActionDone = false;
+
+    const step = onboardingSteps[onboardingIndex];
+    if (typeof step.before === 'function') step.before();
+
+    const progress = document.getElementById('onboarding-progress');
+    const title = document.getElementById('onboarding-title');
+    const text = document.getElementById('onboarding-text');
+    const task = document.getElementById('onboarding-task');
+    const prevBtn = document.getElementById('onboarding-prev');
+    const nextBtn = document.getElementById('onboarding-next');
+
+    if (progress) progress.textContent = `新手引导 ${onboardingIndex + 1} / ${onboardingSteps.length}`;
+    if (title) title.textContent = step.title;
+    if (text) text.textContent = step.text;
+    if (task) {
+      task.hidden = !step.task;
+      task.textContent = step.task || '';
+      task.classList.remove('done');
+    }
+    if (prevBtn) prevBtn.disabled = onboardingIndex === 0;
+    if (nextBtn) {
+      nextBtn.disabled = !!step.requireAction;
+      nextBtn.textContent = step.requireAction ? '等待你操作…' : (step.button || (onboardingIndex === onboardingSteps.length - 1 ? '完成' : '下一步'));
+    }
+
+    setTimeout(() => {
+      const target = document.querySelector(step.selector);
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      setTimeout(() => positionOnboarding(target), 260);
+      target.classList.add('onboarding-target-active');
+      if (step.requireAction) bindOnboardingAction(step);
+    }, 80);
+  }
+
+  function bindOnboardingAction(step) {
+    const actionEl = document.querySelector(step.actionSelector || step.selector);
+    if (!actionEl) return;
+    const handler = () => {
+      onboardingActionDone = true;
+      const task = document.getElementById('onboarding-task');
+      const nextBtn = document.getElementById('onboarding-next');
+      if (task) {
+        task.textContent = '已完成操作，可以继续下一步。';
+        task.classList.add('done');
+      }
+      if (nextBtn) {
+        nextBtn.disabled = false;
+        nextBtn.textContent = '下一步';
+      }
+      setTimeout(() => {
+        if (onboardingStarted && onboardingActionDone) showOnboardingStep(onboardingIndex + 1);
+      }, 650);
+    };
+    actionEl.addEventListener(step.actionEvent || 'click', handler, { once: true });
+    onboardingActionCleanup = () => actionEl.removeEventListener(step.actionEvent || 'click', handler);
+  }
+
+  function positionOnboarding(target) {
+    const card = document.getElementById('onboarding-card');
+    const spotlight = document.getElementById('onboarding-spotlight');
+    if (!card || !spotlight || !target) return;
+
+    const rect = target.getBoundingClientRect();
+    const padding = 10;
+    const top = Math.max(8, rect.top - padding);
+    const left = Math.max(8, rect.left - padding);
+    const width = Math.min(window.innerWidth - left - 8, rect.width + padding * 2);
+    const height = Math.min(window.innerHeight - top - 8, rect.height + padding * 2);
+
+    spotlight.style.left = `${left}px`;
+    spotlight.style.top = `${top}px`;
+    spotlight.style.width = `${width}px`;
+    spotlight.style.height = `${height}px`;
+    spotlight.classList.add('visible');
+
+    const cardRect = card.getBoundingClientRect();
+    let cardLeft = Math.min(Math.max(16, rect.left), window.innerWidth - cardRect.width - 16);
+    let cardTop = rect.bottom + 18;
+    if (cardTop + cardRect.height > window.innerHeight - 16) {
+      cardTop = rect.top - cardRect.height - 18;
+    }
+    if (cardTop < 16) cardTop = 16;
+
+    card.style.left = `${cardLeft}px`;
+    card.style.top = `${cardTop}px`;
+  }
+
+  window.addEventListener('resize', () => {
+    if (!onboardingStarted) return;
+    const step = onboardingSteps[onboardingIndex];
+    const target = step && document.querySelector(step.selector);
+    if (target) positionOnboarding(target);
+  });
 
   // ============================================================
   // UI 初始化
