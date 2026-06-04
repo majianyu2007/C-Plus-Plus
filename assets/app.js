@@ -889,14 +889,18 @@
     const chatInput = document.getElementById('chat-input');
     const chatSendBtn = document.getElementById('chat-send-btn');
 
-    chatInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendChatMessage();
-      }
-    });
+    if (chatInput) {
+      chatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendChatMessage();
+        }
+      });
+    }
 
-    chatSendBtn.addEventListener('click', sendChatMessage);
+    if (chatSendBtn) {
+      chatSendBtn.addEventListener('click', sendChatMessage);
+    }
 
     // 监听全局键盘事件用于焦点模式左右按键刷题
     document.addEventListener('keydown', (e) => {
