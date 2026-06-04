@@ -1541,6 +1541,7 @@ body {
     linear-gradient(135deg, var(--bg-card), rgba(19, 26, 46, 0.86));
   box-shadow: var(--shadow-md);
   overflow: hidden;
+  align-items: center;
 }
 
 .quiz-hero .eyebrow {
@@ -1606,7 +1607,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
-  align-content: stretch;
+  align-content: center;
 }
 
 .hero-metric {
@@ -1905,6 +1906,7 @@ textarea:focus-visible,
   grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.75fr);
   gap: clamp(16px, 2vw, 26px);
   padding: clamp(20px, 3vw, 34px);
+  align-items: center;
 }
 
 .quiz-hero::after {
