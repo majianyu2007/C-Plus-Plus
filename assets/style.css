@@ -455,7 +455,6 @@ body {
 .badge-fillin { background: rgba(253, 203, 110, 0.15); color: var(--accent-warning); }
 .badge-programming { background: rgba(225, 112, 85, 0.15); color: var(--accent-danger); }
 .badge-chapter { background: rgba(116, 185, 255, 0.1); color: var(--accent-info); }
-.badge-pending { background: rgba(253, 203, 110, 0.15); color: var(--accent-warning); }
 
 .question-actions {
   display: flex;
