@@ -555,9 +555,25 @@
 
     // 2. 保护代码块，提取出来免受其他块的格式化污染
     const codeBlocks = [];
-    normalized = normalized.replace(/```([a-zA-Z0-9+#-]*)[ \t]*\n([\s\S]*?)\n```/g, (match, lang, code) => {
+    normalized = normalized.replace(/^[ \t]*```([a-zA-Z0-9+#-]*)[ \t]*\n([\s\S]*?)\n[ \t]*```/gm, (match, lang, code) => {
+      const indentMatch = match.match(/^[ \t]*/);
+      const indent = indentMatch ? indentMatch[0] : '';
+      const indentLength = indent.length;
+      
+      let processedCode = code;
+      if (indentLength > 0) {
+        const lines = code.split('\n');
+        const processedLines = lines.map(line => {
+          if (line.startsWith(indent)) {
+            return line.slice(indentLength);
+          }
+          return line;
+        });
+        processedCode = processedLines.join('\n');
+      }
+
       const id = `__CODE_BLOCK_PH_${codeBlocks.length}__`;
-      codeBlocks.push({ lang: lang || 'cpp', code: code });
+      codeBlocks.push({ lang: lang || 'cpp', code: processedCode });
       return `\n\n${id}\n\n`;
     });
 
