@@ -295,6 +295,7 @@
       saveJsonToStorage(ATTEMPTS_KEY, state.attempts);
       state.questionStats = {};
       saveJsonToStorage(STATS_KEY, state.questionStats);
+      localStorage.removeItem('oop_onboarding_completed');
       renderStats();
       renderDashboard();
       renderProgress();
@@ -909,6 +910,7 @@
   function initOnboarding() {
     const overlay = document.getElementById('onboarding');
     if (!overlay || onboardingStarted) return;
+    if (localStorage.getItem('oop_onboarding_completed') === 'true') return;
     startOnboarding();
   }
 
@@ -968,6 +970,7 @@
   }
 
   function finishOnboarding() {
+    localStorage.setItem('oop_onboarding_completed', 'true');
     const overlay = document.getElementById('onboarding');
     cleanupOnboardingStep();
     onboardingStarted = false;
