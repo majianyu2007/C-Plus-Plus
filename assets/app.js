@@ -25,7 +25,8 @@
     kpLectureMap: {}, // { "知识点": "讲义章节hint" }
     favoritesOnly: false,
     quizMode: 'list',     // 'list' (列表) 或 'focus' (单题焦点)
-    focusIndex: 0         // 焦点模式下的当前题目索引
+    focusIndex: 0,         // 焦点模式下的当前题目索引
+    isReadyForScrollSave: false
   };
 
   // ============================================================
@@ -226,12 +227,9 @@
       renderFooterMeta();
       updateTodayReviewButton();
 
-      // 导航回上次所在的页面
+      // 导航回上次所在的页面，这会自动触发滚动位置与焦点恢复
       const savedPage = localStorage.getItem('oop_active_page') || 'quiz';
       window._goToPage(savedPage);
-
-      // 恢复滚动位置或单题焦点索引
-      restoreScrollOrFocusIndex();
 
       hideLoadingCover();
       setTimeout(() => initOnboarding(), 520);
@@ -324,26 +322,60 @@
   }
 
   function restoreScrollOrFocusIndex() {
-    if (state.quizMode === 'focus') {
-      const savedId = localStorage.getItem('oop_last_question_id');
-      if (savedId) {
-        const idx = state.filtered.findIndex(q => {
-          const key = q.type === 'programming' ? `prog_${q.id}` : `q_${q.id}`;
-          return key === savedId;
-        });
-        if (idx !== -1) {
-          state.focusIndex = idx;
-          renderQuestionList();
+    const activePage = localStorage.getItem('oop_active_page') || 'quiz';
+    
+    if (activePage === 'quiz') {
+      if (state.quizMode === 'focus') {
+        // focusIndex 已在 filterAndRender(true) 中处理恢复
+        state.isReadyForScrollSave = true;
+      } else {
+        const savedScrollY = localStorage.getItem('oop_scroll_y');
+        if (savedScrollY) {
+          const targetScrollY = parseInt(savedScrollY, 10);
+          if (targetScrollY > 0) {
+            let attempts = 0;
+            const tryScroll = () => {
+              window.scrollTo(0, targetScrollY);
+              attempts++;
+              // 检查实际滚动高度是否接近目标，如果页面未加载完高度不够则重试
+              if (Math.abs(window.scrollY - targetScrollY) > 4 && attempts < 15) {
+                setTimeout(tryScroll, 60);
+              } else {
+                state.isReadyForScrollSave = true;
+              }
+            };
+            setTimeout(tryScroll, 100);
+          } else {
+            state.isReadyForScrollSave = true;
+          }
+        } else {
+          state.isReadyForScrollSave = true;
         }
       }
-    } else {
-      const savedScrollY = localStorage.getItem('oop_scroll_y');
+    } else if (activePage === 'knowledge') {
+      const savedScrollY = localStorage.getItem('oop_knowledge_scroll_y');
       if (savedScrollY) {
-        // 等待一小会儿确保 DOM 渲染布局完成
-        setTimeout(() => {
-          window.scrollTo(0, parseInt(savedScrollY, 10));
-        }, 80);
+        const targetScrollY = parseInt(savedScrollY, 10);
+        if (targetScrollY > 0) {
+          let attempts = 0;
+          const tryScroll = () => {
+            window.scrollTo(0, targetScrollY);
+            attempts++;
+            if (Math.abs(window.scrollY - targetScrollY) > 4 && attempts < 15) {
+              setTimeout(tryScroll, 60);
+            } else {
+              state.isReadyForScrollSave = true;
+            }
+          };
+          setTimeout(tryScroll, 100);
+        } else {
+          state.isReadyForScrollSave = true;
+        }
+      } else {
+        state.isReadyForScrollSave = true;
       }
+    } else {
+      state.isReadyForScrollSave = true;
     }
   }
 
@@ -400,6 +432,7 @@
       localStorage.removeItem('oop_view_state');
       localStorage.removeItem('oop_last_question_id');
       localStorage.removeItem('oop_scroll_y');
+      localStorage.removeItem('oop_knowledge_scroll_y');
       localStorage.removeItem('oop_active_page');
       renderStats();
       renderDashboard();
@@ -1278,10 +1311,18 @@
   // 记录滚动位置以支持刷新后恢复
   let scrollSaveTimer;
   window.addEventListener('scroll', () => {
-    if (!onboardingStarted && state.quizMode === 'list' && document.querySelector('.nav-tab.active')?.dataset.page === 'quiz') {
+    if (!state.isReadyForScrollSave || onboardingStarted) return;
+
+    const activePage = document.querySelector('.nav-tab.active')?.dataset.page;
+    if (activePage === 'quiz' && state.quizMode === 'list') {
       clearTimeout(scrollSaveTimer);
       scrollSaveTimer = setTimeout(() => {
         localStorage.setItem('oop_scroll_y', window.scrollY);
+      }, 150);
+    } else if (activePage === 'knowledge') {
+      clearTimeout(scrollSaveTimer);
+      scrollSaveTimer = setTimeout(() => {
+        localStorage.setItem('oop_knowledge_scroll_y', window.scrollY);
       }, 150);
     }
   }, { passive: true });
@@ -1301,6 +1342,10 @@
 
       localStorage.setItem('oop_active_page', page);
       updateBackToTopVisibility();
+
+      // 切换页面时，先暂停滚动位置保存，然后恢复该页面的滚动位置
+      state.isReadyForScrollSave = false;
+      restoreScrollOrFocusIndex();
     }
 
     window._goToPage = setActivePage;
@@ -1327,6 +1372,7 @@
         btn.classList.add('active');
         state.quizMode = btn.dataset.mode;
         state.focusIndex = 0;
+        saveViewState();
         renderQuestionList();
         updateBackToTopVisibility();
       });
@@ -1503,20 +1549,34 @@
     }
 
     state.filtered = items;
-    if (!isInitialLoad) {
+    if (isInitialLoad) {
+      if (state.quizMode === 'focus') {
+        const savedId = localStorage.getItem('oop_last_question_id');
+        if (savedId) {
+          const idx = state.filtered.findIndex(q => {
+            const key = q.type === 'programming' ? `prog_${q.id}` : `q_${q.id}`;
+            return key === savedId;
+          });
+          if (idx !== -1) {
+            state.focusIndex = idx;
+          }
+        }
+      }
+    } else {
       state.focusIndex = 0; // 筛选改变时重置焦点到第一题
       listPageCount = 1; // 重置分页
       localStorage.setItem('oop_scroll_y', '0');
       saveViewState();
     }
-    renderQuestionList();
+    renderQuestionList({ noScroll: isInitialLoad });
     updateBackToTopVisibility();
   }
 
   const PAGE_SIZE = 30;
   let listPageCount = 1;
 
-  function renderQuestionList() {
+  function renderQuestionList(options = {}) {
+    const noScroll = options.noScroll || false;
     const container = document.getElementById('question-list');
     const navContainer = document.getElementById('focus-navigation');
 
@@ -1558,7 +1618,9 @@
       `;
 
       // 切换焦点模式时滚动到题目区域
-      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (!noScroll) {
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
     updateBackToTopVisibility();
