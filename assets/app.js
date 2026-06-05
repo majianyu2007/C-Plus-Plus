@@ -1110,62 +1110,52 @@
 
     const cardRect = card.getBoundingClientRect();
     const isMobile = window.innerWidth <= 700;
+    const gap = isMobile ? 12 : 16;
+    const margin = 16;
 
     if (isMobile) {
-      card.style.left = '16px';
-      card.style.right = '16px';
+      card.style.left = `${margin}px`;
+      card.style.right = `${margin}px`;
       card.style.width = 'auto';
       card.style.transform = ''; // Reset centering transform
-      
-      const targetCenterY = rect.top + rect.height / 2;
-      const viewportCenterY = window.innerHeight / 2;
-      
-      if (targetCenterY > viewportCenterY) {
-        card.style.top = 'calc(16px + env(safe-area-inset-top, 0px))';
-        card.style.bottom = 'auto';
-      } else {
-        card.style.top = 'auto';
-        card.style.bottom = 'calc(16px + env(safe-area-inset-bottom, 0px))';
-      }
     } else {
       card.style.right = '';
       card.style.width = '';
-      card.style.bottom = '';
       card.style.transform = ''; // Reset centering transform
       
-      const gap = 16;
       let cardLeft = left;
-      if (cardLeft + cardRect.width > window.innerWidth - 16) {
-        cardLeft = window.innerWidth - cardRect.width - 16;
+      if (cardLeft + cardRect.width > window.innerWidth - margin) {
+        cardLeft = window.innerWidth - cardRect.width - margin;
       }
-      if (cardLeft < 16) cardLeft = 16;
+      if (cardLeft < margin) cardLeft = margin;
+      card.style.left = `${cardLeft}px`;
+    }
 
-      // Vertical positioning logic relative to spotlight bounds (with padding)
-      let cardTop = top + height + gap;
-      if (cardTop + cardRect.height > window.innerHeight - 16) {
+    // Unified vertical positioning logic relative to spotlight bounds (above or below)
+    let cardTop = top + height + gap;
+    if (cardTop + cardRect.height > window.innerHeight - margin) {
+      cardTop = top - cardRect.height - gap;
+    }
+    
+    // If it still goes off screen, select the area with more space
+    if (cardTop < margin) {
+      const spaceBelow = window.innerHeight - (top + height);
+      const spaceAbove = top;
+      if (spaceBelow > spaceAbove) {
+        cardTop = top + height + gap;
+      } else {
         cardTop = top - cardRect.height - gap;
       }
-      
-      // If it still goes off screen, select the area with more space
-      if (cardTop < 16) {
-        const spaceBelow = window.innerHeight - (top + height);
-        const spaceAbove = top;
-        if (spaceBelow > spaceAbove) {
-          cardTop = top + height + gap;
-        } else {
-          cardTop = top - cardRect.height - gap;
-        }
-      }
-      
-      // Boundary clamp
-      if (cardTop < 16) cardTop = 16;
-      if (cardTop + cardRect.height > window.innerHeight - 16) {
-        cardTop = window.innerHeight - cardRect.height - 16;
-      }
-
-      card.style.left = `${cardLeft}px`;
-      card.style.top = `${cardTop}px`;
     }
+    
+    // Boundary clamp to keep card in view
+    if (cardTop < margin) cardTop = margin;
+    if (cardTop + cardRect.height > window.innerHeight - margin) {
+      cardTop = window.innerHeight - cardRect.height - margin;
+    }
+
+    card.style.top = `${cardTop}px`;
+    card.style.bottom = 'auto'; // Clear bottom as we use top positioning
 
     card.classList.add('visible');
   }
