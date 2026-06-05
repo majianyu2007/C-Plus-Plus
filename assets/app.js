@@ -858,8 +858,8 @@
     {
       title: '试一试：切换到单题模式',
       text: '列表模式适合快速浏览；单题模式适合正式自测。请点击高亮区域里的“🎯 单题”，体验一次模式切换。',
-      selector: '#mode-filters [data-mode="focus"]',
-      task: '请点击高亮的“🎯 单题”按钮，完成后会自动进入下一步。',
+      selector: '#mode-filters',
+      task: '请点击“🎯 单题”按钮，完成后会自动进入下一步。',
       actionSelector: '#mode-filters [data-mode="focus"]',
       actionEvent: 'click',
       requireAction: true
@@ -1006,9 +1006,9 @@
     setTimeout(() => {
       const target = document.querySelector(step.selector);
       if (!target) return;
-      target.classList.add('onboarding-target-active');
       target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-      setTimeout(() => positionOnboarding(target), 280);
+      setTimeout(() => positionOnboarding(target), 260);
+      target.classList.add('onboarding-target-active');
       if (step.requireAction) bindOnboardingAction(step);
     }, 80);
   }
@@ -1041,59 +1041,26 @@
     const spotlight = document.getElementById('onboarding-spotlight');
     if (!card || !spotlight || !target) return;
 
-    const viewport = window.visualViewport || { width: window.innerWidth, height: window.innerHeight, offsetLeft: 0, offsetTop: 0 };
-    const viewportWidth = viewport.width || window.innerWidth;
-    const viewportHeight = viewport.height || window.innerHeight;
-    const viewportLeft = viewport.offsetLeft || 0;
-    const viewportTop = viewport.offsetTop || 0;
-    const isCompact = viewportWidth <= 1024;
-    const margin = isCompact ? 14 : 16;
-    const gap = isCompact ? 12 : 18;
-
     const rect = target.getBoundingClientRect();
-    const padding = isCompact ? 8 : 10;
-    const spotTop = Math.max(viewportTop + 8, rect.top - padding);
-    const spotLeft = Math.max(viewportLeft + 8, rect.left - padding);
-    const spotWidth = Math.min(viewportLeft + viewportWidth - spotLeft - 8, rect.width + padding * 2);
-    const spotHeight = Math.min(viewportTop + viewportHeight - spotTop - 8, rect.height + padding * 2);
+    const padding = 10;
+    const top = Math.max(8, rect.top - padding);
+    const left = Math.max(8, rect.left - padding);
+    const width = Math.min(window.innerWidth - left - 8, rect.width + padding * 2);
+    const height = Math.min(window.innerHeight - top - 8, rect.height + padding * 2);
 
-    spotlight.style.left = `${spotLeft}px`;
-    spotlight.style.top = `${spotTop}px`;
-    spotlight.style.width = `${spotWidth}px`;
-    spotlight.style.height = `${spotHeight}px`;
+    spotlight.style.left = `${left}px`;
+    spotlight.style.top = `${top}px`;
+    spotlight.style.width = `${width}px`;
+    spotlight.style.height = `${height}px`;
     spotlight.classList.add('visible');
 
-    card.style.right = 'auto';
-    card.style.bottom = 'auto';
-    card.style.maxHeight = '';
-    card.style.width = isCompact ? `${Math.max(280, viewportWidth - margin * 2)}px` : '';
-
-    const initialCardRect = card.getBoundingClientRect();
-    const cardWidth = initialCardRect.width;
-    const cardHeight = initialCardRect.height;
-    const availableBelow = viewportTop + viewportHeight - rect.bottom - gap - margin;
-    const availableAbove = rect.top - viewportTop - gap - margin;
-    const placeBelow = availableBelow >= cardHeight || availableBelow >= availableAbove;
-    const availableSpace = Math.max(placeBelow ? availableBelow : availableAbove, 160);
-    const finalCardHeight = Math.min(cardHeight, availableSpace);
-
-    card.style.maxHeight = `${finalCardHeight}px`;
-
-    let cardLeft;
-    if (isCompact) {
-      cardLeft = viewportLeft + margin;
-    } else {
-      cardLeft = Math.min(
-        Math.max(viewportLeft + margin, rect.left),
-        viewportLeft + viewportWidth - cardWidth - margin
-      );
+    const cardRect = card.getBoundingClientRect();
+    let cardLeft = Math.min(Math.max(16, rect.left), window.innerWidth - cardRect.width - 16);
+    let cardTop = rect.bottom + 18;
+    if (cardTop + cardRect.height > window.innerHeight - 16) {
+      cardTop = rect.top - cardRect.height - 18;
     }
-
-    let cardTop = placeBelow ? rect.bottom + gap : rect.top - finalCardHeight - gap;
-    cardTop = Math.min(
-      Math.max(viewportTop + margin, cardTop),
-      viewportTop + viewportHeight - finalCardHeight - margin
-    );
+    if (cardTop < 16) cardTop = 16;
 
     card.style.left = `${cardLeft}px`;
     card.style.top = `${cardTop}px`;
