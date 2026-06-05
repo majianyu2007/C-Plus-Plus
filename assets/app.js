@@ -990,8 +990,8 @@
       selector: '.nav-tabs'
     },
     {
-      title: '题库训练：先筛出你要做的题',
-      text: '搜索框可以按题干、章节或知识点查找；题型、章节、知识点和状态筛选可以帮你快速缩小范围。',
+      title: '题库训练：搜索与题号跳转',
+      text: '搜索框可以按题干、章节或知识点进行过滤；旁边新增的题号跳转框支持直接输入数据库题号（如 42, P1）或乱序序号（如 #21）快速定位题目；下方各类筛选还可以帮你进一步缩小范围。',
       selector: '.toolbar[aria-label="题库筛选工具栏"]'
     },
     {
@@ -1437,6 +1437,17 @@
       }, 300);
     });
 
+    // 题号跳转
+    const jumpInput = document.getElementById('jump-input');
+    if (jumpInput) {
+      jumpInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          window._jumpToQuestionInput();
+        }
+      });
+    }
+
     // 知识点搜索（带 debounce）
     let knowledgeSearchTimer;
     document.getElementById('knowledge-search').addEventListener('input', (e) => {
@@ -1640,7 +1651,7 @@
     const uniqueId = isProgramming ? `prog-${q.id}` : `q-${q.id}`;
     const safeUniqueId = escapeAttr(uniqueId);
 
-    let html = `<div class="question-card" data-type="${q.type}" data-id="${safeUniqueId}">`;
+    let html = `<div class="question-card" data-type="${q.type}" data-id="${safeUniqueId}"${displayIndex != null ? ` data-index="${displayIndex}"` : ''}>`;
 
     // 头部
     html += `<div class="question-header">`;
@@ -1928,6 +1939,138 @@
     if (state.filtered.length === 0) return;
     state.focusIndex = (state.focusIndex + 1) % state.filtered.length;
     renderQuestionList();
+  };
+
+  window._jumpToQuestionInput = function () {
+    const jumpInput = document.getElementById('jump-input');
+    if (!jumpInput) return;
+    const rawVal = jumpInput.value.trim();
+    if (!rawVal) return;
+
+    const input = rawVal.toLowerCase();
+    let targetItem = null;
+    let targetIndexInFiltered = -1;
+    let isDisplayIndexSearch = false;
+
+    if (input.startsWith('#')) {
+      isDisplayIndexSearch = true;
+      const num = parseInt(input.slice(1), 10);
+      if (!isNaN(num) && num > 0 && num <= state.filtered.length) {
+        targetIndexInFiltered = num - 1;
+        targetItem = state.filtered[targetIndexInFiltered];
+      } else {
+        showToast(`当前列表中没有序号为 #${num} 的题目。当前共 ${state.filtered.length} 题`, 'warning');
+        jumpInput.select();
+        return;
+      }
+    } else {
+      // 1. Check if it matches a programming question ID (e.g. p12, prog12, p-12, prog-12)
+      const progMatch = input.match(/^(?:p|prog|prog-)\s*(\d+)$/i) || input.match(/^p(\d+)$/i);
+      if (progMatch) {
+        const num = progMatch[1];
+        const dbId = `P${num}`;
+        targetItem = state.allItems.find(q => q.type === 'programming' && String(q.id).toUpperCase() === dbId);
+      } else {
+        // 2. Check if it matches a standard question ID specifically (e.g. q12, q-12)
+        const stdMatch = input.match(/^(?:q|q-)\s*(\d+)$/i);
+        if (stdMatch) {
+          const num = parseInt(stdMatch[1], 10);
+          targetItem = state.allItems.find(q => q.type !== 'programming' && Number(q.id) === num);
+        } else {
+          // 3. It's a plain number. Try database ID of standard question first, then programming, then display index
+          const num = parseInt(input, 10);
+          if (!isNaN(num)) {
+            // Try standard question DB ID
+            targetItem = state.allItems.find(q => q.type !== 'programming' && Number(q.id) === num);
+            if (!targetItem) {
+              // Try programming question DB ID (e.g. P12)
+              const dbId = `P${num}`;
+              targetItem = state.allItems.find(q => q.type === 'programming' && String(q.id).toUpperCase() === dbId);
+            }
+            if (!targetItem) {
+              // Try display index in current filtered list
+              if (num > 0 && num <= state.filtered.length) {
+                targetIndexInFiltered = num - 1;
+                targetItem = state.filtered[targetIndexInFiltered];
+                isDisplayIndexSearch = true;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    if (!targetItem) {
+      showToast(`未找到题号为 "${rawVal}" 的题目`, 'warning');
+      jumpInput.select();
+      return;
+    }
+
+    // Check if the targetItem is in state.filtered
+    if (!isDisplayIndexSearch) {
+      targetIndexInFiltered = state.filtered.findIndex(q => q === targetItem);
+      if (targetIndexInFiltered === -1) {
+        // Not in current filtered list. Reset filters to make it visible.
+        state.currentType = 'all';
+        state.currentChapter = 'all';
+        state.currentStatus = null;
+        state.selectedKnowledgePoint = 'all';
+        state.favoritesOnly = false;
+        state.searchQuery = '';
+        
+        // Sync UI filter elements
+        syncUIWithState();
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) searchInput.value = '';
+
+        // Re-filter and render
+        filterAndRender();
+
+        // Re-find the target item index in the newly populated state.filtered
+        targetIndexInFiltered = state.filtered.findIndex(q => q === targetItem);
+        showToast('已自动重置筛选条件以定位目标题目', 'info');
+      }
+    }
+
+    if (targetIndexInFiltered === -1) {
+      showToast('无法在题库中定位该题目', 'warning');
+      jumpInput.select();
+      return;
+    }
+
+    // Go to the quiz page
+    window._goToPage('quiz');
+
+    // Perform the navigation
+    if (state.quizMode === 'focus') {
+      state.focusIndex = targetIndexInFiltered;
+      saveViewState();
+      renderQuestionList();
+    } else {
+      // List mode
+      // Calculate how many pages are required to show the item
+      const requiredPageCount = Math.ceil((targetIndexInFiltered + 1) / PAGE_SIZE);
+      if (listPageCount < requiredPageCount) {
+        listPageCount = requiredPageCount;
+        saveViewState();
+        renderQuestionList();
+      }
+
+      // Find the card element and scroll to it
+      const uniqueId = targetItem.type === 'programming' ? `prog-${targetItem.id}` : `q-${targetItem.id}`;
+      // Wait a moment for DOM rendering
+      setTimeout(() => {
+        const card = findQuestionCard(uniqueId);
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.classList.add('jump-highlight');
+          setTimeout(() => card.classList.remove('jump-highlight'), 2000);
+        } else {
+          showToast('无法在列表中找到题目卡片', 'warning');
+        }
+      }, 60);
+    }
+    jumpInput.select();
   };
 
   // ============================================================
