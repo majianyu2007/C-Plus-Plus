@@ -2450,7 +2450,12 @@ textarea:focus-visible,
 }
 
 .onboarding-backdrop::before {
-  content: none;
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 7, 18, 0.72);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
 }
 
 .onboarding-spotlight {
@@ -2458,10 +2463,10 @@ textarea:focus-visible,
   z-index: 6001;
   border: 2px solid var(--accent-primary);
   border-radius: 18px;
-  box-shadow: 0 0 0 9999px rgba(3, 7, 18, 0.48), 0 0 28px var(--accent-primary-glow);
+  box-shadow: 0 0 0 9999px rgba(3, 7, 18, 0.68), 0 0 32px var(--accent-primary-glow);
   opacity: 0;
   transform: scale(0.98);
-  transition: left 0.24s ease, top 0.24s ease, width 0.24s ease, height 0.24s ease, opacity 0.2s ease, transform 0.2s ease;
+  transition: inset 0.24s ease, width 0.24s ease, height 0.24s ease, opacity 0.2s ease, transform 0.2s ease;
   pointer-events: none;
 }
 
@@ -2474,8 +2479,6 @@ textarea:focus-visible,
   position: fixed;
   z-index: 6200;
   width: min(420px, calc(100vw - 32px));
-  max-height: min(72vh, 560px);
-  overflow-y: auto;
   background: var(--bg-secondary);
   color: var(--text-primary);
   border: 1px solid var(--border-active);
@@ -2484,7 +2487,7 @@ textarea:focus-visible,
   padding: 20px;
   pointer-events: auto;
   transform: translateY(8px);
-  transition: left 0.24s ease, top 0.24s ease, width 0.24s ease, max-height 0.24s ease, transform 0.24s ease;
+  transition: left 0.24s ease, top 0.24s ease, transform 0.24s ease;
 }
 
 .onboarding-progress {
@@ -2573,20 +2576,17 @@ textarea:focus-visible,
   position: relative;
   z-index: 6100 !important;
   box-shadow: 0 0 0 3px var(--accent-primary-glow), 0 0 24px var(--accent-primary-glow) !important;
-  filter: none !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
 }
 
-@media (max-width: 1024px) {
-  .onboarding-spotlight {
-    box-shadow: 0 0 0 9999px rgba(3, 7, 18, 0.42), 0 0 22px var(--accent-primary-glow);
-  }
-
+@media (max-width: 700px) {
   .onboarding-card {
-    width: calc(100vw - 28px);
-    max-height: min(58vh, 520px);
-    padding: 16px;
+    left: 16px !important;
+    right: 16px;
+    top: auto !important;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    width: auto;
+    max-height: 46vh;
+    overflow-y: auto;
   }
 
   .onboarding-actions {
