@@ -320,8 +320,8 @@ body {
 }
 
 .jump-box {
-  flex: 0 1 180px;
-  min-width: 140px;
+  flex: 0 1 200px;
+  min-width: 160px;
   position: relative;
 }
 
@@ -1972,7 +1972,7 @@ textarea:focus-visible,
 
 .toolbar {
   display: grid;
-  grid-template-columns: minmax(200px, 1.2fr) minmax(140px, 0.8fr) auto auto minmax(160px, auto);
+  grid-template-columns: minmax(200px, 1.2fr) minmax(160px, 0.8fr) auto auto minmax(160px, auto);
   align-items: center;
   gap: 10px;
   position: sticky;
