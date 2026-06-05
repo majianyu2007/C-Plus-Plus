@@ -2585,19 +2585,6 @@ textarea:focus-visible,
     width: auto;
     max-height: 46vh;
     overflow-y: auto;
-  }
-
-  .onboarding-actions {
-    align-items: stretch;
-    flex-direction: column-reverse;
-  }
-
-  .onboarding-nav-actions {
-    width: 100%;
-  }
-
-  .onboarding-nav-actions .onboarding-btn,
-  .onboarding-actions > .onboarding-btn {
-    flex: 1;
+    padding: 14px 16px;
   }
 }
