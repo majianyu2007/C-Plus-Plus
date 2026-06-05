@@ -867,15 +867,15 @@
     {
       title: '题目卡片：答题、看解析、做标记',
       text: '每张题卡右上角可以收藏、标记已掌握、待复习或错题；题目下方可以显示答案，也能复制讲解提示词，方便继续追问。',
-      selector: '.question-card',
+      selector: '#question-list .question-card',
       before: () => window._goToPage('quiz')
     },
     {
       title: '试一试：显示一次答案',
       text: '遇到不会的题，可以先思考再展开答案。请点击当前题卡里的“显示答案 / 查看参考代码”按钮。',
-      selector: '.question-card [id^="toggle-answer-btn-"]',
+      selector: '#question-list .question-card [id^="toggle-answer-btn-"]',
       task: '请点击“显示答案”或“查看参考代码”，看看解析区域如何展开。',
-      actionSelector: '.question-card [id^="toggle-answer-btn-"]',
+      actionSelector: '#question-list .question-card [id^="toggle-answer-btn-"]',
       actionEvent: 'click',
       requireAction: true
     },
@@ -888,7 +888,7 @@
     {
       title: '进度概览：决定下一步复习什么',
       text: '进度页会汇总掌握率、待复习、错题和最近作答，适合每天复习前先看一眼。',
-      selector: '#page-progress .knowledge-section',
+      selector: '#page-progress .progress-container-grid',
       before: () => window._goToPage('progress')
     },
     {
@@ -940,6 +940,13 @@
 
     overlay.classList.add('visible');
     overlay.setAttribute('aria-hidden', 'false');
+    
+    const card = document.getElementById('onboarding-card');
+    if (card) {
+      card.classList.add('visible');
+      card.setAttribute('aria-hidden', 'false');
+    }
+
     document.addEventListener('keydown', handleOnboardingKeydown);
     showOnboardingStep(0);
   }
@@ -961,6 +968,11 @@
     if (overlay) {
       overlay.classList.remove('visible');
       overlay.setAttribute('aria-hidden', 'true');
+    }
+    const card = document.getElementById('onboarding-card');
+    if (card) {
+      card.classList.remove('visible');
+      card.setAttribute('aria-hidden', 'true');
     }
     document.removeEventListener('keydown', handleOnboardingKeydown);
   }
@@ -1006,7 +1018,18 @@
     setTimeout(() => {
       const target = document.querySelector(step.selector);
       if (!target) return;
-      target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      const isMobile = window.innerWidth <= 700;
+      if (isMobile) {
+        const header = document.querySelector('.app-header');
+        const headerHeight = header ? header.offsetHeight : 64;
+        const targetTop = target.getBoundingClientRect().top + window.pageYOffset;
+        window.scrollTo({
+          top: targetTop - headerHeight - 20,
+          behavior: 'smooth'
+        });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      }
       setTimeout(() => positionOnboarding(target), 260);
       target.classList.add('onboarding-target-active');
       if (step.requireAction) bindOnboardingAction(step);
