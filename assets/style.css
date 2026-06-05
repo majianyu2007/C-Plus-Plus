@@ -2457,7 +2457,7 @@ textarea:focus-visible,
   box-shadow: 0 0 0 9999px rgba(3, 7, 18, 0.68), 0 0 32px var(--accent-primary-glow);
   opacity: 0;
   transform: scale(0.98);
-  transition: inset 0.24s ease, width 0.24s ease, height 0.24s ease, opacity 0.2s ease, transform 0.2s ease;
+  transition: left 0.24s ease, top 0.24s ease, width 0.24s ease, height 0.24s ease, border-radius 0.24s ease, opacity 0.2s ease, transform 0.2s ease;
   pointer-events: none;
 }
 
