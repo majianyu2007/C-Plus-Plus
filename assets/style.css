@@ -2485,9 +2485,18 @@ textarea:focus-visible,
   border-radius: var(--radius-lg);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35), var(--shadow-glow);
   padding: 20px;
-  pointer-events: auto;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
   transform: translateY(8px);
-  transition: left 0.24s ease, top 0.24s ease, transform 0.24s ease;
+  transition: left 0.24s ease, top 0.24s ease, opacity 0.22s ease, visibility 0.22s ease, transform 0.24s ease;
+}
+
+.onboarding-card.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 .onboarding-progress {
