@@ -1092,15 +1092,20 @@
 
     const rect = target.getBoundingClientRect();
     const padding = 10;
-    const top = Math.max(8, rect.top - padding);
-    const left = Math.max(8, rect.left - padding);
-    const width = Math.min(window.innerWidth - left - 8, rect.width + padding * 2);
-    const height = Math.min(window.innerHeight - top - 8, rect.height + padding * 2);
+    const top = rect.top - padding;
+    const left = rect.left - padding;
+    const width = rect.width + padding * 2;
+    const height = rect.height + padding * 2;
 
     spotlight.style.left = `${left}px`;
     spotlight.style.top = `${top}px`;
     spotlight.style.width = `${width}px`;
     spotlight.style.height = `${height}px`;
+    
+    // Dynamically copy border-radius to align perfectly with rounded / capsule elements
+    const targetStyle = window.getComputedStyle(target);
+    spotlight.style.borderRadius = targetStyle.borderRadius;
+    
     spotlight.classList.add('visible');
 
     const cardRect = card.getBoundingClientRect();
