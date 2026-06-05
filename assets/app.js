@@ -203,6 +203,9 @@
 
       // 加载用户进度
       loadProgress();
+      
+      // 加载视图状态
+      loadViewState();
 
       // 初始化界面
       initUI();
@@ -211,12 +214,24 @@
       initImportProgress();
       renderStats();
       renderDashboard();
-      filterAndRender();
+      
+      // 同步界面激活状态
+      syncUIWithState();
+      
+      // 首次数据渲染并恢复进度
+      filterAndRender(true);
+      
       renderKnowledge();
       renderProgress();
-      // initBackToTop removed: event binding consolidated in initUI
       renderFooterMeta();
       updateTodayReviewButton();
+
+      // 导航回上次所在的页面
+      const savedPage = localStorage.getItem('oop_active_page') || 'quiz';
+      window._goToPage(savedPage);
+
+      // 恢复滚动位置或单题焦点索引
+      restoreScrollOrFocusIndex();
 
       hideLoadingCover();
       setTimeout(() => initOnboarding(), 520);
@@ -244,6 +259,92 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state.userProgress));
     } catch (e) { console.warn('无法保存进度'); }
+  }
+
+  // ============================================================
+  // 视图状态保存与恢复 (刷新持久化)
+  // ============================================================
+  function saveViewState() {
+    const viewState = {
+      quizMode: state.quizMode,
+      currentType: state.currentType,
+      currentChapter: state.currentChapter,
+      currentStatus: state.currentStatus,
+      selectedKnowledgePoint: state.selectedKnowledgePoint,
+      favoritesOnly: state.favoritesOnly,
+      listPageCount: listPageCount
+    };
+    saveJsonToStorage('oop_view_state', viewState);
+  }
+
+  function loadViewState() {
+    const saved = loadJsonFromStorage('oop_view_state', null);
+    if (saved) {
+      if (saved.quizMode) state.quizMode = saved.quizMode;
+      if (saved.currentType) state.currentType = saved.currentType;
+      if (saved.currentChapter) state.currentChapter = saved.currentChapter;
+      if (saved.currentStatus) state.currentStatus = saved.currentStatus;
+      if (saved.selectedKnowledgePoint) state.selectedKnowledgePoint = saved.selectedKnowledgePoint;
+      if (saved.favoritesOnly) state.favoritesOnly = saved.favoritesOnly;
+      if (saved.listPageCount) listPageCount = saved.listPageCount;
+    }
+  }
+
+  function syncUIWithState() {
+    // 同步题型筛选激活状态
+    document.querySelectorAll('#type-filters .filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.type === state.currentType);
+    });
+
+    // 同步状态/收藏筛选激活状态
+    document.querySelectorAll('#status-filters .filter-btn').forEach(btn => {
+      if (btn.id === 'favorites-only') {
+        btn.classList.toggle('active', !!state.favoritesOnly);
+      } else {
+        btn.classList.toggle('active', btn.dataset.status === state.currentStatus);
+      }
+    });
+
+    // 同步章节筛选下拉框值
+    const chapterSelect = document.getElementById('chapter-filter');
+    if (chapterSelect) {
+      chapterSelect.value = state.currentChapter || 'all';
+    }
+
+    // 同步知识点筛选下拉框值
+    const knowledgeSelect = document.getElementById('knowledge-filter');
+    if (knowledgeSelect) {
+      knowledgeSelect.value = state.selectedKnowledgePoint || 'all';
+    }
+
+    // 同步刷题模式按钮状态
+    document.querySelectorAll('#mode-filters .filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.mode === state.quizMode);
+    });
+  }
+
+  function restoreScrollOrFocusIndex() {
+    if (state.quizMode === 'focus') {
+      const savedId = localStorage.getItem('oop_last_question_id');
+      if (savedId) {
+        const idx = state.filtered.findIndex(q => {
+          const key = q.type === 'programming' ? `prog_${q.id}` : `q_${q.id}`;
+          return key === savedId;
+        });
+        if (idx !== -1) {
+          state.focusIndex = idx;
+          renderQuestionList();
+        }
+      }
+    } else {
+      const savedScrollY = localStorage.getItem('oop_scroll_y');
+      if (savedScrollY) {
+        // 等待一小会儿确保 DOM 渲染布局完成
+        setTimeout(() => {
+          window.scrollTo(0, parseInt(savedScrollY, 10));
+        }, 80);
+      }
+    }
   }
 
   function setQuestionStatus(id, status, options = {}) {
@@ -296,6 +397,10 @@
       state.questionStats = {};
       saveJsonToStorage(STATS_KEY, state.questionStats);
       localStorage.removeItem('oop_onboarding_completed');
+      localStorage.removeItem('oop_view_state');
+      localStorage.removeItem('oop_last_question_id');
+      localStorage.removeItem('oop_scroll_y');
+      localStorage.removeItem('oop_active_page');
       renderStats();
       renderDashboard();
       renderProgress();
@@ -1170,6 +1275,17 @@
   window.addEventListener('resize', handleReposition);
   window.addEventListener('scroll', handleReposition, { passive: true });
 
+  // 记录滚动位置以支持刷新后恢复
+  let scrollSaveTimer;
+  window.addEventListener('scroll', () => {
+    if (!onboardingStarted && state.quizMode === 'list' && document.querySelector('.nav-tab.active')?.dataset.page === 'quiz') {
+      clearTimeout(scrollSaveTimer);
+      scrollSaveTimer = setTimeout(() => {
+        localStorage.setItem('oop_scroll_y', window.scrollY);
+      }, 150);
+    }
+  }, { passive: true });
+
   // ============================================================
   // UI 初始化
   // ============================================================
@@ -1183,8 +1299,7 @@
       const pageEl = document.getElementById('page-' + page);
       if (pageEl) pageEl.classList.add('active');
 
-
-
+      localStorage.setItem('oop_active_page', page);
       updateBackToTopVisibility();
     }
 
@@ -1336,7 +1451,7 @@
   // ============================================================
   // 筛选与渲染
   // ============================================================
-  function filterAndRender() {
+  function filterAndRender(isInitialLoad = false) {
     let items = state.allItems;
 
     // 类型筛选
@@ -1388,8 +1503,12 @@
     }
 
     state.filtered = items;
-    state.focusIndex = 0; // 筛选改变时重置焦点到第一题
-    listPageCount = 1; // 重置分页
+    if (!isInitialLoad) {
+      state.focusIndex = 0; // 筛选改变时重置焦点到第一题
+      listPageCount = 1; // 重置分页
+      localStorage.setItem('oop_scroll_y', '0');
+      saveViewState();
+    }
     renderQuestionList();
     updateBackToTopVisibility();
   }
@@ -1425,6 +1544,10 @@
       if (state.focusIndex < 0) state.focusIndex = state.filtered.length - 1;
 
       const q = state.filtered[state.focusIndex];
+      if (q) {
+        const key = q.type === 'programming' ? `prog_${q.id}` : `q_${q.id}`;
+        localStorage.setItem('oop_last_question_id', key);
+      }
       container.innerHTML = renderQuestionCard(q, state.focusIndex + 1);
 
       // 渲染底部分页控制
@@ -1443,6 +1566,7 @@
 
   window._loadMoreQuestions = function () {
     listPageCount++;
+    saveViewState();
     renderQuestionList();
   };
 
