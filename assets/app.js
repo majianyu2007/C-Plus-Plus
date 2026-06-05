@@ -886,9 +886,15 @@
       before: () => window._goToPage('knowledge')
     },
     {
-      title: '进度概览：决定下一步复习什么',
-      text: '进度页会汇总掌握率、待复习、错题和最近作答，适合每天复习前先看一眼。',
+      title: '进度概览：掌握率与数据统计',
+      text: '顶部的环形图和数据卡片汇总了总题数、已掌握、待复习和错题数量，方便你一眼判断整体复习状态。',
       selector: '#page-progress .progress-container-grid',
+      before: () => window._goToPage('progress')
+    },
+    {
+      title: '分章进度与复习建议',
+      text: '页面下方会根据你的答题记录自动生成复习建议与错题负荷提示，并按章节展示你的掌握进度条，助你查漏补缺。',
+      selector: '#page-progress #chapter-progress',
       before: () => window._goToPage('progress')
     },
     {
@@ -1017,22 +1023,39 @@
 
     setTimeout(() => {
       const target = document.querySelector(step.selector);
-      if (!target) return;
       const isMobile = window.innerWidth <= 700;
-      if (isMobile) {
-        const header = document.querySelector('.app-header');
-        const headerHeight = header ? header.offsetHeight : 64;
-        const targetTop = target.getBoundingClientRect().top + window.pageYOffset;
-        window.scrollTo({
-          top: targetTop - headerHeight - 20,
-          behavior: 'smooth'
-        });
+      
+      if (target) {
+        if (isMobile) {
+          const header = document.querySelector('.app-header');
+          const headerHeight = header ? header.offsetHeight : 64;
+          const targetTop = target.getBoundingClientRect().top + window.pageYOffset;
+          window.scrollTo({
+            top: targetTop - headerHeight - 20,
+            behavior: 'smooth'
+          });
+        } else {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        }
+        setTimeout(() => positionOnboarding(target), 260);
+        target.classList.add('onboarding-target-active');
+        if (step.requireAction) bindOnboardingAction(step);
       } else {
-        target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        // No target found, place the card in the center of the screen and hide the spotlight
+        const spotlight = document.getElementById('onboarding-spotlight');
+        if (spotlight) spotlight.classList.remove('visible');
+        
+        const card = document.getElementById('onboarding-card');
+        if (card) {
+          card.style.left = '50%';
+          card.style.top = '50%';
+          card.style.transform = 'translate(-50%, -50%)';
+          card.style.bottom = 'auto';
+          card.style.right = 'auto';
+          card.style.width = '';
+          card.classList.add('visible');
+        }
       }
-      setTimeout(() => positionOnboarding(target), 260);
-      target.classList.add('onboarding-target-active');
-      if (step.requireAction) bindOnboardingAction(step);
     }, 80);
   }
 
@@ -1078,23 +1101,76 @@
     spotlight.classList.add('visible');
 
     const cardRect = card.getBoundingClientRect();
-    let cardLeft = Math.min(Math.max(16, rect.left), window.innerWidth - cardRect.width - 16);
-    let cardTop = rect.bottom + 18;
-    if (cardTop + cardRect.height > window.innerHeight - 16) {
-      cardTop = rect.top - cardRect.height - 18;
-    }
-    if (cardTop < 16) cardTop = 16;
+    const isMobile = window.innerWidth <= 700;
 
-    card.style.left = `${cardLeft}px`;
-    card.style.top = `${cardTop}px`;
+    if (isMobile) {
+      card.style.left = '16px';
+      card.style.right = '16px';
+      card.style.width = 'auto';
+      card.style.transform = ''; // Reset centering transform
+      
+      const targetCenterY = rect.top + rect.height / 2;
+      const viewportCenterY = window.innerHeight / 2;
+      
+      if (targetCenterY > viewportCenterY) {
+        card.style.top = 'calc(16px + env(safe-area-inset-top, 0px))';
+        card.style.bottom = 'auto';
+      } else {
+        card.style.top = 'auto';
+        card.style.bottom = 'calc(16px + env(safe-area-inset-bottom, 0px))';
+      }
+    } else {
+      card.style.right = '';
+      card.style.width = '';
+      card.style.bottom = '';
+      card.style.transform = ''; // Reset centering transform
+      
+      const gap = 16;
+      let cardLeft = left;
+      if (cardLeft + cardRect.width > window.innerWidth - 16) {
+        cardLeft = window.innerWidth - cardRect.width - 16;
+      }
+      if (cardLeft < 16) cardLeft = 16;
+
+      // Vertical positioning logic relative to spotlight bounds (with padding)
+      let cardTop = top + height + gap;
+      if (cardTop + cardRect.height > window.innerHeight - 16) {
+        cardTop = top - cardRect.height - gap;
+      }
+      
+      // If it still goes off screen, select the area with more space
+      if (cardTop < 16) {
+        const spaceBelow = window.innerHeight - (top + height);
+        const spaceAbove = top;
+        if (spaceBelow > spaceAbove) {
+          cardTop = top + height + gap;
+        } else {
+          cardTop = top - cardRect.height - gap;
+        }
+      }
+      
+      // Boundary clamp
+      if (cardTop < 16) cardTop = 16;
+      if (cardTop + cardRect.height > window.innerHeight - 16) {
+        cardTop = window.innerHeight - cardRect.height - 16;
+      }
+
+      card.style.left = `${cardLeft}px`;
+      card.style.top = `${cardTop}px`;
+    }
+
+    card.classList.add('visible');
   }
 
-  window.addEventListener('resize', () => {
+  const handleReposition = () => {
     if (!onboardingStarted) return;
     const step = onboardingSteps[onboardingIndex];
     const target = step && document.querySelector(step.selector);
     if (target) positionOnboarding(target);
-  });
+  };
+
+  window.addEventListener('resize', handleReposition);
+  window.addEventListener('scroll', handleReposition, { passive: true });
 
   // ============================================================
   // UI 初始化
