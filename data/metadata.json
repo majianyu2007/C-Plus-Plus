@@ -3,14 +3,14 @@
   "version": "2026.06",
   "generatedAt": "2026-06-04",
   "stats": {
-    "totalQuestions": 469,
-    "pendingReview": 360,
+    "totalQuestions": 487,
+    "pendingReview": 62,
     "invalidQuestions": 0,
-    "choice": 173,
-    "fillin": 150,
-    "truefalse": 102,
-    "programming": 44,
-    "program_output": 2
+    "choice": 206,
+    "fillin": 171,
+    "truefalse": 110,
+    "programming": 0,
+    "program_output": 0
   },
   "questionTypes": [
     {
@@ -41,64 +41,56 @@
   ],
   "chapters": [
     {
-      "chapter": "绪论",
-      "count": 8
-    },
-    {
       "chapter": "C++对C的扩充",
-      "count": 58
-    },
-    {
-      "chapter": "类与对象",
-      "count": 44
-    },
-    {
-      "chapter": "构造函数与析构函数",
-      "count": 58
-    },
-    {
-      "chapter": "this/const/static成员",
-      "count": 54
-    },
-    {
-      "chapter": "友元",
-      "count": 18
-    },
-    {
-      "chapter": "运算符重载",
-      "count": 42
-    },
-    {
-      "chapter": "继承与派生",
-      "count": 59
-    },
-    {
-      "chapter": "多继承与虚基类",
-      "count": 12
-    },
-    {
-      "chapter": "多态与虚函数",
-      "count": 56
-    },
-    {
-      "chapter": "模板",
-      "count": 35
+      "count": 67
     },
     {
       "chapter": "STL",
-      "count": 10
+      "count": 12
+    },
+    {
+      "chapter": "this/const/static成员",
+      "count": 56
+    },
+    {
+      "chapter": "友元",
+      "count": 16
+    },
+    {
+      "chapter": "多态与虚函数",
+      "count": 57
+    },
+    {
+      "chapter": "多继承与虚基类",
+      "count": 13
     },
     {
       "chapter": "文件IO",
       "count": 12
     },
     {
-      "chapter": "异常处理",
-      "count": 1
+      "chapter": "构造函数与析构函数",
+      "count": 64
     },
     {
-      "chapter": "指针与引用",
-      "count": 2
+      "chapter": "模板",
+      "count": 33
+    },
+    {
+      "chapter": "类与对象",
+      "count": 50
+    },
+    {
+      "chapter": "继承与派生",
+      "count": 57
+    },
+    {
+      "chapter": "绪论",
+      "count": 12
+    },
+    {
+      "chapter": "运算符重载",
+      "count": 38
     }
   ],
   "sources": [
@@ -113,7 +105,13 @@
     "模拟试卷二",
     "C++基础模拟",
     "模拟试题一至六",
-    "book.pdf 视觉提取"
+    "book.pdf 视觉提取",
+    "模拟试题二",
+    "模拟试题三",
+    "模拟试题四",
+    "模拟试题五",
+    "模拟试题七",
+    "2018-2019学年第2学期(填空)"
   ],
   "cleaning": {
     "originalQuestions": 533,
