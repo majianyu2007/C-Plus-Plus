@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=1.4.1">
+  <link rel="stylesheet" href="assets/style.css?v=1.5.4">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#cc785c">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,8 +21,11 @@
   <script>
     (function() {
       // 1. 主题初始化 (防止暗色/亮色闪烁)
-      const theme = localStorage.getItem('oop_theme') || 'light';
-      const isLight = theme !== 'dark';
+      const storedTheme = localStorage.getItem('oop_theme') || 'system';
+      const theme = ['system', 'light', 'dark'].includes(storedTheme) ? storedTheme : 'system';
+      const prefersLight = window.matchMedia ? window.matchMedia('(prefers-color-scheme: light)').matches : true;
+      const isLight = theme === 'light' || (theme === 'system' && prefersLight);
+      document.documentElement.dataset.themeMode = theme;
       document.body.classList.add(isLight ? 'light-theme' : 'dark-theme');
       
       // 2. 字体家族初始化
@@ -55,7 +58,7 @@
   <div class="loading-cover" id="app-loading-cover">
     <div class="loading-box">
       <div class="loading-spinner-large"></div>
-      <div class="loading-text">📚 正在加载题库与解析数据，请稍候…</div>
+      <div class="loading-text">正在加载题库与解析数据，请稍候…</div>
     </div>
   </div>
   <div class="app-container">
@@ -72,8 +75,8 @@
           <button class="nav-tab" data-page="progress" id="nav-progress">进度概览</button>
         </nav>
         <div class="header-actions">
-          <button class="header-btn" id="theme-toggle" title="切换主题" aria-label="切换主题"><span class="header-btn-icon" aria-hidden="true">🌓</span><span class="header-btn-label">主题</span></button>
-          <button class="header-btn" id="settings-open" title="学习设置" aria-label="学习设置"><span class="header-btn-icon" aria-hidden="true">⚙️</span><span class="header-btn-label">设置</span></button>
+          <button class="header-btn" id="theme-toggle" title="切换主题" aria-label="切换主题"><span class="header-btn-icon" aria-hidden="true">◐</span><span class="header-btn-label">主题</span></button>
+          <button class="header-btn" id="settings-open" title="学习设置" aria-label="学习设置"><span class="header-btn-icon" aria-hidden="true">⚙</span><span class="header-btn-label">设置</span></button>
         </div>
       </div>
     </header>
@@ -134,8 +137,8 @@
             <h1 id="quiz-hero-title">题库、讲义和错题记录放在同一处</h1>
             <p>按章节、题型和知识点筛题；需要讲解时可一键复制提示词，到你常用的模型里继续追问。</p>
             <div class="hero-actions">
-              <button class="primary-cta" type="button" onclick="window.startTodayReview()">🗓️ 复习待处理题</button>
-              <button class="secondary-cta" type="button" onclick="window._goToPage('knowledge')">📚 看讲义</button>
+              <button class="primary-cta" type="button" onclick="window.startTodayReview()">复习待处理题</button>
+              <button class="secondary-cta" type="button" onclick="window._goToPage('knowledge')">看讲义</button>
             </div>
           </div>
           <div class="hero-metrics" aria-label="复习概览">
@@ -174,9 +177,9 @@
             <button class="filter-btn" id="favorites-only" title="只显示已收藏的题目">★ 收藏</button>
           </div>
           <div class="filter-group mode-filter-group" id="mode-filters">
-            <button class="filter-btn active" data-mode="list">📋 列表</button>
-            <button class="filter-btn" data-mode="focus">🎯 单题</button>
-            <button class="filter-btn" id="today-review" title="进入待复习/错题队列的单题模式">🗓️ 待复习</button>
+            <button class="filter-btn active" data-mode="list">列表</button>
+            <button class="filter-btn" data-mode="focus">单题</button>
+            <button class="filter-btn" id="today-review" title="进入待复习/错题队列的单题模式">待复习</button>
           </div>
         </div>
         <div class="question-list" id="question-list">
@@ -260,17 +263,17 @@
 
           <div style="margin-top: 28px; display:flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
             <button class="show-answer-btn" onclick="window.exportProgress()" style="border-color: var(--accent-info); color: var(--accent-info);">
-              ⬇️ 导出进度
+              导出进度
             </button>
             <button class="show-answer-btn" onclick="document.getElementById('import-file').click()" style="border-color: var(--accent-secondary); color: var(--accent-secondary);">
-              ⬆️ 导入进度
+              导入进度
             </button>
             <input id="import-file" type="file" accept="application/json" style="display:none;" />
           </div>
 
           <div style="margin-top: 32px; text-align: center;">
             <button class="show-answer-btn" onclick="resetProgress()" style="color: var(--accent-danger); border-color: var(--accent-danger);">
-              🗑️ 重置所有进度
+              重置所有进度
             </button>
           </div>
         </div>
@@ -311,7 +314,7 @@
   <div class="modal-backdrop" id="settings-modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>⚙️ 设置</h3>
+        <h3>设置</h3>
         <button class="modal-close-btn" id="settings-close">✕</button>
       </div>
       <div class="modal-body">
@@ -331,7 +334,7 @@
           <label for="setting-seed" style="font-weight: 500; margin-bottom: 6px; display: block; font-size: 0.9rem;">当前随机种子 (Seed)</label>
           <div style="display: flex; gap: 8px;">
             <input type="number" id="setting-seed" style="flex: 1; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); outline: none; padding-inline: 10px;" placeholder="输入数字种子" />
-            <button class="show-answer-btn" id="regenerate-seed" style="border-color: var(--accent-secondary); color: var(--accent-secondary); margin: 0; white-space: nowrap; font-size: 0.85rem;" type="button">🔄 随机生成</button>
+            <button class="show-answer-btn" id="regenerate-seed" style="border-color: var(--accent-secondary); color: var(--accent-secondary); margin: 0; white-space: nowrap; font-size: 0.85rem;" type="button">随机生成</button>
           </div>
           <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">设置相同种子可以使题目顺序完全一致。</p>
         </div>
@@ -354,14 +357,14 @@
           </select>
         </div>
         <div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;">
-          <button class="show-answer-btn" id="settings-reopen-onboarding" type="button" style="flex: 1; border-color: var(--accent-info); color: var(--accent-info);">🎓 重新查看新手引导</button>
-          <button class="show-answer-btn" id="settings-save" style="flex: 1; background: var(--accent-primary); border-color: var(--accent-primary); color: white;">💾 保存设置</button>
+          <button class="show-answer-btn" id="settings-reopen-onboarding" type="button" style="flex: 1; border-color: var(--accent-info); color: var(--accent-info);">重新查看新手引导</button>
+          <button class="show-answer-btn" id="settings-save" style="flex: 1; background: var(--accent-primary); border-color: var(--accent-primary); color: white;">保存设置</button>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="assets/app.js?v=1.4.1"></script>
+  <script src="assets/app.js?v=1.5.4"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
