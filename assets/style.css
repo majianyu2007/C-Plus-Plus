@@ -109,15 +109,16 @@ body {
   font-family: var(--font-sans);
   background: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: 1.55;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, .chapter-title {
   font-family: var(--font-display);
-  font-weight: 500;
-  letter-spacing: -0.025em;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
 }
 
 /* ============================================================
@@ -131,13 +132,12 @@ h1, h2, h3, h4, .chapter-title {
 
 /* 头部 */
 .app-header {
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-secondary) 100%);
+  background: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
   padding: 0 2rem;
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(20px);
 }
 
 .header-inner {
@@ -439,27 +439,13 @@ h1, h2, h3, h4, .chapter-title {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 32px;
   transition: all var(--transition-normal);
   position: relative;
   overflow: hidden;
 }
 
-.question-card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  border-radius: 0 3px 3px 0;
-}
-
-.question-card[data-type="choice"]::before { background: var(--accent-primary); }
-.question-card[data-type="truefalse"]::before { background: var(--accent-secondary); }
-.question-card[data-type="fillin"]::before { background: var(--accent-warning); }
-.question-card[data-type="coding"]::before { background: var(--accent-info); }
-.question-card[data-type="programming"]::before { background: var(--accent-danger); }
+/* Question card side borders removed as per Claude aesthetic. Rely on pill badges instead. */
 
 .question-card:hover {
   border-color: var(--border-active);
@@ -489,11 +475,11 @@ h1, h2, h3, h4, .chapter-title {
 }
 
 .badge {
-  padding: 2px 10px;
-  border-radius: 100px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
 .badge-choice { background: color-mix(in srgb, var(--accent-primary) 15%, transparent); color: var(--accent-primary); }
@@ -950,7 +936,6 @@ h1, h2, h3, h4, .chapter-title {
 }
 
 .back-to-top:hover {
-  transform: translateY(-2px);
   border-color: var(--accent-primary);
 }
 
@@ -1625,9 +1610,9 @@ h1, h2, h3, h4, .chapter-title {
   border-radius: var(--radius-md);
   padding: 10px 16px;
   font-family: var(--font-sans);
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
-  transition: transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+  transition: background var(--transition-fast), border-color var(--transition-fast);
 }
 
 .primary-cta {
@@ -1644,13 +1629,11 @@ h1, h2, h3, h4, .chapter-title {
 .primary-cta:hover {
   background: color-mix(in srgb, var(--accent-primary) 85%, #000);
   border-color: color-mix(in srgb, var(--accent-primary) 85%, #000);
-  transform: translateY(-1px);
 }
 
 .secondary-cta:hover {
   background: var(--bg-card-hover);
   border-color: var(--accent-primary);
-  transform: translateY(-1px);
 }
 
 .hero-metrics {
@@ -2559,7 +2542,6 @@ textarea:focus-visible,
 
 .onboarding-btn:hover:not(:disabled) {
   border-color: var(--border-active);
-  transform: translateY(-1px);
 }
 
 .onboarding-btn.primary {
