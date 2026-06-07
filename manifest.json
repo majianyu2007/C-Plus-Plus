@@ -2,7 +2,7 @@
   "name": "C++ OOP 复习工具",
   "short_name": "C++ OOP 复习",
   "description": "C++ 面向对象程序设计期末复习工具：包含题库训练、知识讲义、错题复习与进度记录，支持离线使用。",
-  "start_url": "./index.html?v=1.3.4",
+  "start_url": "./index.html?v=1.3.5",
   "display": "standalone",
   "background_color": "#030712",
   "theme_color": "#6366f1",
