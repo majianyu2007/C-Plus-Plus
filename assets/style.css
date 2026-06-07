@@ -4031,3 +4031,21 @@ h4,
   border-color: var(--accent-primary-hover);
   color: white;
 }
+
+/* ============================================================
+   修复代码块中 code 标签被行内代码背景、边框和内边距样式污染的问题
+   ============================================================ */
+pre code,
+.question-stem pre code,
+.chapter-body pre code,
+.explanation pre code,
+.code-block code,
+.code-block-wrapper code {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
