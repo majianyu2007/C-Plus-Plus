@@ -997,17 +997,28 @@
       title: '欢迎，新手从这里开始',
       text: '这个工具把 C++ OOP 期末复习常用的题库训练、知识讲义、错题复习和进度统计放在同一个页面里。接下来会逐个讲清楚，也会让你动手试一下。',
       selector: '.quiz-hero',
+      before: () => {
+        window._goToPage('quiz');
+        if (typeof window.clearAllFilters === 'function') {
+          window.clearAllFilters();
+        }
+        state.quizMode = 'list';
+        saveViewState();
+        filterAndRender();
+      },
       button: '开始引导'
     },
     {
       title: '主导航：三块学习区域',
       text: '顶部导航可以在“题库训练”、“知识讲义”与“进度概览”之间切换：刷题、查概念、看复习状态都从这里进入。',
-      selector: '.nav-tabs'
+      selector: '.nav-tabs',
+      before: () => window._goToPage('quiz')
     },
     {
       title: '题库训练：搜索与题号跳转',
       text: '搜索框可以按题干、章节或知识点进行过滤；旁边新增的题号跳转框支持直接输入数据库题号（如 42, P1）或乱序序号（如 #21）快速定位题目；下方各类筛选还可以帮你进一步缩小范围。',
-      selector: '.toolbar[aria-label="题库筛选工具栏"]'
+      selector: '.toolbar[aria-label="题库筛选工具栏"]',
+      before: () => window._goToPage('quiz')
     },
     {
       title: '试一试：切换到单题模式',
@@ -1016,7 +1027,13 @@
       task: '请点击“单题”按钮，完成后会自动进入下一步。',
       actionSelector: '#mode-filters [data-mode="focus"]',
       actionEvent: 'click',
-      requireAction: true
+      requireAction: true,
+      before: () => {
+        window._goToPage('quiz');
+        state.quizMode = 'list';
+        saveViewState();
+        filterAndRender();
+      }
     },
     {
       title: '题目卡片：答题、看解析、做标记',
@@ -1031,7 +1048,25 @@
       task: '请点击“显示答案”或“查看参考代码”，看看解析区域如何展开。',
       actionSelector: '#question-list .question-card [id^="toggle-answer-btn-"]',
       actionEvent: 'click',
-      requireAction: true
+      requireAction: true,
+      before: () => {
+        window._goToPage('quiz');
+        state.quizMode = 'focus';
+        saveViewState();
+        filterAndRender();
+        // 如果当前题目的答案已展开，先隐藏，以便让用户点击“显示答案”来触发引导
+        const activeCard = document.querySelector('#question-list .question-card');
+        if (activeCard) {
+          const id = activeCard.dataset.id.replace(/^(q-|prog-)/, '');
+          const el = document.getElementById('answer-' + id);
+          if (el) el.classList.remove('visible');
+          const btn = document.getElementById('toggle-answer-btn-' + id);
+          if (btn) {
+            const isProg = activeCard.dataset.id.startsWith('prog-');
+            btn.textContent = isProg ? '查看参考代码' : '显示答案';
+          }
+        }
+      }
     },
     {
       title: '知识讲义：概念不清就查这里',
@@ -1607,7 +1642,22 @@
     const navContainer = document.getElementById('focus-navigation');
 
     if (state.filtered.length === 0) {
-      container.innerHTML = '<div class="empty-state"><div class="icon">-</div><p>没有匹配的题目</p></div>';
+      const activeFilters = [];
+      if (state.currentType && state.currentType !== 'all') activeFilters.push(`题型: ${state.currentType}`);
+      if (state.currentChapter && state.currentChapter !== 'all') activeFilters.push(`章节: ${state.currentChapter}`);
+      if (state.currentStatus) activeFilters.push(`状态: ${state.currentStatus}`);
+      if (state.searchQuery) activeFilters.push(`搜索: "${state.searchQuery}"`);
+      if (state.selectedKnowledgePoint && state.selectedKnowledgePoint !== 'all') activeFilters.push(`知识点: ${state.selectedKnowledgePoint}`);
+      if (state.favoritesOnly) activeFilters.push('仅收藏');
+      
+      const filterText = activeFilters.length > 0 ? ` (当前已启用筛选 - ${activeFilters.join(', ')})` : '';
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="icon">-</div>
+          <p>没有匹配的题目${filterText}</p>
+          ${activeFilters.length > 0 ? '<button class="show-answer-btn" onclick="window.clearAllFilters()" style="margin-top: 12px; border-color: var(--accent-primary); color: var(--accent-primary);">清除所有筛选条件</button>' : ''}
+        </div>
+      `;
       navContainer.style.display = 'none';
       return;
     }
@@ -2951,6 +3001,22 @@ ${userCode}
     renderQuestionList();
     showToast(`待复习：${state.filtered.length} 题`, 'success');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  window.clearAllFilters = function () {
+    state.currentType = 'all';
+    state.currentChapter = 'all';
+    state.currentStatus = null;
+    state.selectedKnowledgePoint = 'all';
+    state.favoritesOnly = false;
+    state.searchQuery = '';
+    
+    syncUIWithState();
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) searchInput.value = '';
+    
+    saveViewState();
+    filterAndRender();
   };
 
   // ============================================================
