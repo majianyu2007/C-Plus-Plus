@@ -458,7 +458,13 @@
 
   function applyFontAndSize(font, size) {
     const fontMap = {
-      'inter': "'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif",
+      'inter': "'StyreneB', 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif",
+      'system': "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      'serif': "Georgia, 'Times New Roman', 'Noto Serif SC', serif",
+      'mono': "'JetBrains Mono', 'Fira Code', Consolas, monospace"
+    };
+    const displayFontMap = {
+      'inter': "Copernicus, 'Tiempos Headline', 'Cormorant Garamond', Georgia, 'Times New Roman', serif",
       'system': "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       'serif': "Georgia, 'Times New Roman', 'Noto Serif SC', serif",
       'mono': "'JetBrains Mono', 'Fira Code', Consolas, monospace"
@@ -471,6 +477,9 @@
     };
     if (fontMap[font]) {
       document.documentElement.style.setProperty('--font-sans', fontMap[font]);
+    }
+    if (displayFontMap[font]) {
+      document.documentElement.style.setProperty('--font-display', displayFontMap[font]);
     }
     if (sizeMap[size]) {
       document.documentElement.style.fontSize = sizeMap[size];
