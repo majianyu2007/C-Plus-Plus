@@ -557,13 +557,13 @@ h1, h2, h3, h4, .chapter-title {
 }
 
 .option-item {
-  padding: 10px 14px;
-  background: var(--bg-secondary);
+  padding: 12px 16px;
+  background: transparent;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
   line-height: 1.5;
-  transition: all var(--transition-fast);
+  transition: border-color var(--transition-fast);
   cursor: pointer;
   color: var(--text-secondary);
 }
@@ -575,7 +575,7 @@ h1, h2, h3, h4, .chapter-title {
 
 .option-item.selected {
   border-color: var(--accent-primary);
-  background: var(--accent-primary-glow);
+  background: transparent;
   color: var(--text-primary);
 }
 
@@ -659,11 +659,11 @@ h1, h2, h3, h4, .chapter-title {
 
 /* 代码块 */
 .code-block {
-  background: var(--bg-code);
-  border: 1px solid var(--border-color);
+  background: #181715;
+  border: 1px solid #252320;
   border-radius: var(--radius-md);
-  padding: 16px;
-  margin: 12px 0;
+  padding: 24px;
+  margin: 16px 0;
   overflow-x: auto;
 }
 
@@ -671,7 +671,7 @@ h1, h2, h3, h4, .chapter-title {
   font-family: var(--font-mono);
   font-size: 0.85rem;
   line-height: 1.6;
-  color: var(--text-code);
+  color: #e8e0d2;
   white-space: pre;
   margin: 0;
 }
@@ -1562,13 +1562,11 @@ h1, h2, h3, h4, .chapter-title {
 .quiz-hero {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(260px, 0.8fr);
-  gap: 18px;
-  margin-bottom: 22px;
-  padding: 24px;
-  border: 1px solid var(--border-color);
+  gap: 32px;
+  margin-bottom: 32px;
+  padding: 96px 48px;
   border-radius: var(--radius-xl);
-  background: var(--bg-card);
-  box-shadow: var(--shadow-sm);
+  background: var(--bg-primary);
   overflow: hidden;
   align-items: center;
 }
@@ -1583,11 +1581,12 @@ h1, h2, h3, h4, .chapter-title {
 }
 
 .quiz-hero h1 {
-  font-size: clamp(1.5rem, 3vw, 2.35rem);
-  line-height: 1.18;
-  letter-spacing: -0.04em;
-  margin-bottom: 12px;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+  margin-bottom: 24px;
   color: var(--text-primary);
+  font-weight: 400;
 }
 
 .quiz-hero p {

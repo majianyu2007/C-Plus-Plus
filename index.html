@@ -18,8 +18,8 @@
   <script>
     (function() {
       // 1. 主题初始化 (防止暗色/亮色闪烁)
-      const theme = localStorage.getItem('oop_theme') || 'system';
-      const isLight = theme === 'light' || (theme === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+      const theme = localStorage.getItem('oop_theme') || 'light';
+      const isLight = theme !== 'dark';
       document.body.classList.add(isLight ? 'light-theme' : 'dark-theme');
       
       // 2. 字体家族初始化
