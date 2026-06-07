@@ -237,7 +237,7 @@
       console.error('数据加载失败:', err);
       hideLoadingCover();
       document.getElementById('question-list').innerHTML =
-        '<div class="empty-state"><div class="icon">⚠️</div><p>数据加载失败，请确认 <code>data/</code> 目录下有 JSON 数据文件，并通过 HTTP 方式访问站点（不要用 file:/// 直接打开）。</p></div>';
+        '<div class="empty-state"><div class="icon">!</div><p>数据加载失败，请确认 <code>data/</code> 目录下有 JSON 数据文件，并通过 HTTP 方式访问站点（不要用 file:/// 直接打开）。</p></div>';
     }
   }
 
@@ -504,15 +504,17 @@
     }
 
     function applyTheme(mode = getThemeMode()) {
-      const resolvedLight = mode === 'light' || (mode === 'system' && media && media.matches);
+      const currentMode = ['system', 'light', 'dark'].includes(mode) ? mode : 'system';
+      const resolvedLight = currentMode === 'light' || (currentMode === 'system' && (!media || media.matches));
+      document.documentElement.dataset.themeMode = currentMode;
       document.body.classList.toggle('light-theme', !!resolvedLight);
       document.body.classList.toggle('dark-theme', !resolvedLight);
       if (btn) {
-        const labels = { system: '系统', light: '浅色', dark: '深色' };
-        const label = labels[mode] || labels.system;
+        const labels = { system: '跟随系统', light: '浅色', dark: '深色' };
+        const label = labels[currentMode] || labels.system;
         const labelEl = btn.querySelector('.header-btn-label');
         if (labelEl) labelEl.textContent = label;
-        else btn.textContent = `🌓 ${label}`;
+        else btn.textContent = label;
         btn.title = `当前：${label}。点击切换主题。`;
         btn.setAttribute('aria-label', `切换主题，当前：${label}`);
       }
@@ -1009,9 +1011,9 @@
     },
     {
       title: '试一试：切换到单题模式',
-      text: '列表模式适合快速浏览；单题模式适合正式自测。请点击高亮区域里的“🎯 单题”，体验一次模式切换。',
+      text: '列表模式适合快速浏览；单题模式适合正式自测。请点击高亮区域里的“单题”，体验一次模式切换。',
       selector: '#mode-filters',
-      task: '请点击“🎯 单题”按钮，完成后会自动进入下一步。',
+      task: '请点击“单题”按钮，完成后会自动进入下一步。',
       actionSelector: '#mode-filters [data-mode="focus"]',
       actionEvent: 'click',
       requireAction: true
@@ -1605,7 +1607,7 @@
     const navContainer = document.getElementById('focus-navigation');
 
     if (state.filtered.length === 0) {
-      container.innerHTML = '<div class="empty-state"><div class="icon">📋</div><p>没有匹配的题目</p></div>';
+      container.innerHTML = '<div class="empty-state"><div class="icon">-</div><p>没有匹配的题目</p></div>';
       navContainer.style.display = 'none';
       return;
     }
@@ -1747,9 +1749,9 @@
     // 操作按钮条
     html += `<div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">`;
     html += `<button class="show-answer-btn" id="toggle-answer-btn-${safeUniqueId}" onclick="window._toggleAnswer('${safeUniqueId}')">`;
-    html += `📖 ${isProgramming ? '查看参考代码' : '显示答案'}</button>`;
+    html += `${isProgramming ? '查看参考代码' : '显示答案'}</button>`;
     html += `<button class="show-answer-btn" id="ai-toggle-btn-${safeUniqueId}" style="border-color: var(--accent-primary); color: var(--accent-primary); background: var(--accent-primary-glow);" onclick="window._runAiAnalysis('${safeUniqueId}')">`;
-    html += `🧾 获取讲解提示词</button>`;
+    html += `获取讲解提示词</button>`;
     html += `</div>`;
 
     // 选择/判断题：就地反馈（与填空题风格一致）
@@ -2104,7 +2106,7 @@
     if (btn) {
       const isVisible = el && el.classList.contains('visible');
       const isProg = String(id).startsWith('prog-');
-      btn.textContent = isVisible ? `🙈 ${isProg ? '隐藏参考代码' : '隐藏答案'}` : `📖 ${isProg ? '查看参考代码' : '显示答案'}`;
+      btn.textContent = isVisible ? `${isProg ? '隐藏参考代码' : '隐藏答案'}` : `${isProg ? '查看参考代码' : '显示答案'}`;
     }
   };
 
@@ -2157,7 +2159,7 @@
       if (feedbackEl) {
         feedbackEl.style.display = 'inline-block';
         feedbackEl.className = 'fillin-feedback correct';
-        feedbackEl.innerHTML = '🎉 恭喜你，回答正确！';
+        feedbackEl.innerHTML = '回答正确。';
       }
     } else {
       if (!state.settings.redoMode) element.classList.add('incorrect');
@@ -2167,7 +2169,7 @@
       if (feedbackEl) {
         feedbackEl.style.display = 'inline-block';
         feedbackEl.className = 'fillin-feedback incorrect';
-        feedbackEl.innerHTML = '❌ 回答错误！';
+        feedbackEl.innerHTML = '回答错误。';
       }
     }
 
@@ -2213,7 +2215,7 @@
       if (feedbackEl) {
         feedbackEl.style.display = 'inline-block';
         feedbackEl.className = 'fillin-feedback correct';
-        feedbackEl.innerHTML = '🎉 恭喜你，回答正确！';
+        feedbackEl.innerHTML = '回答正确。';
       }
     } else {
       if (!state.settings.redoMode) element.classList.add('incorrect');
@@ -2223,7 +2225,7 @@
       if (feedbackEl) {
         feedbackEl.style.display = 'inline-block';
         feedbackEl.className = 'fillin-feedback incorrect';
-        feedbackEl.innerHTML = '❌ 回答错误！';
+        feedbackEl.innerHTML = '回答错误。';
       }
     }
 
@@ -2258,7 +2260,7 @@
     if (!userAns) {
       feedbackEl.style.display = 'inline-block';
       feedbackEl.className = 'fillin-feedback incorrect';
-      feedbackEl.innerHTML = '⚠️ 请先输入您的答案！';
+      feedbackEl.innerHTML = '请先输入您的答案。';
       return;
     }
 
@@ -2347,13 +2349,13 @@
 
     if (isCorrect) {
       feedbackEl.className = 'fillin-feedback correct';
-      feedbackEl.innerHTML = '🎉 恭喜你，回答正确！';
+      feedbackEl.innerHTML = '回答正确。';
       window._setStatus(uniqueId, 'mastered', { toggle: false });
       recordAttempt(`q_${realId}`, 'correct');
       updateSrs(`q_${realId}`, true);
     } else {
       feedbackEl.className = 'fillin-feedback incorrect';
-      feedbackEl.innerHTML = `❌ 回答错误！您的答案与参考答案不匹配。建议点击“显示答案”比对。`;
+      feedbackEl.innerHTML = `回答错误。您的答案与参考答案不匹配，建议点击“显示答案”比对。`;
       window._setStatus(uniqueId, 'wrong', { toggle: false });
       recordAttempt(`q_${realId}`, 'wrong');
       updateSrs(`q_${realId}`, false);
@@ -2432,7 +2434,7 @@ ${userCode}
     gradingEl.style.display = 'block';
     gradingEl.innerHTML = `
       <div style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7;">
-        🧾 判题/审查提示词已复制到剪贴板。<br>
+        判题/审查提示词已复制到剪贴板。<br>
         请粘贴到你偏好的网页版大模型进行“评审打分”。
       </div>
     `;
@@ -2447,7 +2449,7 @@ ${userCode}
 
     if (isVisible) {
       container.style.display = 'none';
-      if (btn) btn.textContent = '🧾 获取讲解提示词';
+      if (btn) btn.textContent = '获取讲解提示词';
       return;
     }
 
@@ -2475,7 +2477,7 @@ ${userCode}
     container.innerHTML = `
       <div class="ai-analysis-container">
         <div class="ai-analysis-header">
-          <span id="ai-title-${uniqueId}">🧾 讲解提示词已复制到剪贴板</span>
+          <span id="ai-title-${uniqueId}">讲解提示词已复制到剪贴板</span>
         </div>
         <div class="ai-analysis-box" id="ai-box-${uniqueId}">
           <div style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.7;">
@@ -2614,7 +2616,7 @@ ${userCode}
       const container = document.getElementById('chat-messages');
       container.innerHTML = `
         <div class="message ai">
-          <div class="avatar">🤖</div>
+          <div class="avatar">AI</div>
           <div class="message-content">
             对话已重置。你好，这里可以帮你整理 C++ OOP 概念、题目思路和代码问题。
           </div>
@@ -2670,7 +2672,7 @@ ${userCode}
     let data = state.knowledge;
 
     if (!data || !data.length) {
-      container.innerHTML = '<div class="empty-state"><div class="icon">📚</div><p>知识点数据加载中…</p></div>';
+      container.innerHTML = '<div class="empty-state"><div class="icon">-</div><p>知识点数据加载中…</p></div>';
       return;
     }
 
@@ -2927,7 +2929,7 @@ ${userCode}
     if (!btn) return;
     const dueCount = getTodayReviewKeys().length;
     btn.disabled = dueCount === 0;
-    btn.textContent = dueCount === 0 ? '🗓️ 待复习（0）' : `🗓️ 待复习（${dueCount}）`;
+    btn.textContent = dueCount === 0 ? '待复习（0）' : `待复习（${dueCount}）`;
   }
 
   window.startTodayReview = function () {
