@@ -18,8 +18,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "面向对象四大特征",
-      "封装"
+      "面向对象基本特征",
+      "访问控制与封装",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -45,8 +46,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "命名空间",
-      "作用域解析运算符"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -72,8 +74,8 @@
       "析构函数"
     ],
     "knowledgePointsNormalized": [
-      "struct与class区别",
-      "默认访问权限",
+      "类与对象定义",
+      "访问控制与封装",
       "析构函数"
     ],
     "explanation_status": "done",
@@ -100,8 +102,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "析构函数调用时机",
-      "动态内存管理"
+      "析构函数",
+      "构造函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -127,9 +130,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "初始化列表",
-      "static成员",
-      "友元类"
+      "const成员与常对象",
+      "this指针",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -155,9 +158,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "公有继承",
-      "私有继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -183,9 +186,9 @@
       "析构函数"
     ],
     "knowledgePointsNormalized": [
-      "构造函数调用顺序",
-      "析构函数调用顺序",
-      "继承"
+      "继承基础",
+      "构造函数",
+      "析构函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -211,9 +214,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "二义性问题",
-      "虚基类",
-      "虚继承"
+      "多继承与二义性",
+      "虚基类与菱形继承",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -239,9 +242,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "友元运算符重载",
-      "输入输出运算符重载"
+      "运算符重载规则",
+      "成员/友元运算符重载",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -267,9 +270,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "成员运算符重载",
-      "this指针"
+      "运算符重载规则",
+      "const与指针",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -295,9 +298,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "const引用",
-      "引用"
+      "运算符重载规则",
+      "引用与函数参数",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -323,9 +326,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "动态联编"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -351,9 +354,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "纯虚函数",
-      "抽象类",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -379,9 +382,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "动态联编",
-      "虚函数",
-      "静态联编"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -408,8 +411,8 @@
     ],
     "knowledgePointsNormalized": [
       "类模板",
-      "默认模板参数",
-      "模板实例化"
+      "函数模板",
+      "模板实例化与特化"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -436,7 +439,8 @@
     ],
     "knowledgePointsNormalized": [
       "类模板",
-      "模板实例化"
+      "模板实例化与特化",
+      "函数模板"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -462,7 +466,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "STL组成"
+      "STL容器与迭代器",
+      "STL算法与函数对象",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -488,9 +494,9 @@
       "类模板"
     ],
     "knowledgePointsNormalized": [
+      "STL容器与迭代器",
       "函数模板",
-      "类模板",
-      "STL组成"
+      "类模板"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -516,7 +522,8 @@
       "二进制文件读写"
     ],
     "knowledgePointsNormalized": [
-      "文件操作",
+      "输入输出流",
+      "文件流与打开模式",
       "二进制文件读写"
     ],
     "explanation_status": "done",
@@ -543,9 +550,9 @@
       "二进制文件读写"
     ],
     "knowledgePointsNormalized": [
-      "文件操作",
-      "二进制文件读写",
-      "文件打开模式"
+      "输入输出流",
+      "文件流与打开模式",
+      "二进制文件读写"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -565,8 +572,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "封装",
-      "面向对象四大特征"
+      "访问控制与封装",
+      "类与对象定义",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -586,9 +594,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "内联函数",
-      "函数重载",
-      "类模板"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -608,8 +616,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "new/delete数组",
-      "动态内存管理"
+      "C++程序结构与命名空间",
+      "动态内存new/delete",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -651,9 +660,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "拷贝构造函数",
-      "const引用",
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -673,7 +682,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "封装"
+      "类与对象定义",
+      "访问控制与封装",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -693,8 +704,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "抽象类",
-      "纯虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -714,7 +726,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "类模板"
+      "类模板",
+      "函数模板",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -734,8 +748,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "顺序容器",
-      "容器"
+      "STL容器与迭代器",
+      "C++程序结构与命名空间",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -755,7 +770,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "命名空间"
+      "输入输出运算符重载",
+      "输入输出流",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -775,8 +792,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "不可重载运算符",
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -795,7 +813,8 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "内联函数"
+      "面向对象基本特征",
+      "自增自减与赋值重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -815,7 +834,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "封装"
+      "访问控制与封装",
+      "类与对象定义",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -835,7 +856,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "对象生命周期"
+      "自增自减与赋值重载",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -855,7 +878,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "内联函数"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -875,7 +900,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "空类大小"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -896,8 +923,8 @@
     ],
     "knowledgePointsNormalized": [
       "static成员",
-      "静态数据成员",
-      "静态成员函数"
+      "this指针",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -917,8 +944,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "友元函数",
-      "友元"
+      "友元函数与友元类",
+      "成员函数与数据成员",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -938,8 +966,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "动态联编"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -959,9 +988,9 @@
       "STL算法与函数对象"
     ],
     "knowledgePointsNormalized": [
+      "STL容器与迭代器",
       "函数模板",
-      "算法",
-      "STL组成"
+      "STL算法与函数对象"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -981,8 +1010,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "面向对象四大特征",
-      "多态"
+      "面向对象基本特征",
+      "多态实现条件",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1002,8 +1032,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "迭代器",
-      "STL组成"
+      "STL容器与迭代器",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1023,8 +1054,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "静态数据成员",
-      "static成员"
+      "static成员",
+      "this指针",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1044,7 +1076,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "this指针"
+      "this指针",
+      "static成员",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1065,7 +1099,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "类模板"
+      "类模板",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1085,7 +1120,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "引用"
+      "引用与函数参数",
+      "C++程序结构与命名空间",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1105,8 +1142,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "抽象类",
-      "纯虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1126,7 +1164,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "多继承"
+      "多继承与二义性",
+      "虚基类与菱形继承",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1146,7 +1186,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "函数重载"
+      "内联函数、重载与默认参数",
+      "引用与函数参数",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1166,8 +1208,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "struct与class区别",
-      "默认访问权限"
+      "类与对象定义",
+      "访问控制与封装",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1187,8 +1230,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "默认构造函数",
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1208,8 +1252,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "关联容器",
-      "迭代器"
+      "STL容器与迭代器",
+      "包含与组合",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1229,9 +1274,9 @@
       "构造函数"
     ],
     "knowledgePointsNormalized": [
-      "析构函数调用时机",
-      "动态内存管理",
-      "析构函数调用顺序"
+      "析构函数",
+      "对象生命周期",
+      "构造函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1251,9 +1296,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "封装",
-      "this指针",
-      "对象生命周期"
+      "类与对象定义",
+      "面向对象基本特征",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1273,7 +1318,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "友元"
+      "友元函数与友元类",
+      "继承基础",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1299,8 +1346,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "继承方式"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1326,8 +1374,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "友元函数",
-      "友元"
+      "友元函数与友元类",
+      "成员函数与数据成员",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1353,11 +1402,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "公有继承",
-      "继承方式",
-      "继承",
-      "派生类",
-      "成员访问"
+      "继承基础",
+      "继承方式与访问权限",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1383,8 +1430,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "拷贝构造函数",
-      "引用"
+      "构造函数",
+      "析构函数",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1410,8 +1458,9 @@
       "构造函数"
     ],
     "knowledgePointsNormalized": [
-      "构造函数调用顺序",
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "构造函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1437,8 +1486,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "初始化列表",
-      "静态数据成员"
+      "构造函数",
+      "析构函数",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1464,9 +1514,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "友元类",
-      "友元函数",
-      "友元"
+      "友元函数与友元类",
+      "C++程序结构与命名空间",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1494,7 +1544,7 @@
     "knowledgePointsNormalized": [
       "构造函数",
       "析构函数",
-      "虚函数"
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1520,9 +1570,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "抽象类",
-      "纯虚函数",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1548,8 +1598,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "动态联编",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1575,7 +1626,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1601,8 +1654,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "文件打开模式",
-      "文件操作"
+      "文件流与打开模式",
+      "输入输出流",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1628,11 +1682,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "引用",
-      "const引用",
-      "C++基础语法",
-      "命名空间",
-      "右值引用"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "自增自减与赋值重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1658,8 +1710,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "面向对象四大特征",
-      "对象生命周期"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1685,8 +1738,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "封装",
-      "面向对象四大特征"
+      "类与对象定义",
+      "访问控制与封装",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1706,7 +1760,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "this指针"
+      "this指针",
+      "static成员",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1726,8 +1782,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "默认访问权限",
-      "struct与class区别"
+      "类与对象定义",
+      "访问控制与封装",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1747,7 +1804,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "const对象"
+      "const成员与常对象",
+      "this指针",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1767,8 +1826,9 @@
       "覆盖隐藏与同名成员"
     ],
     "knowledgePointsNormalized": [
-      "封装",
-      "面向对象四大特征"
+      "面向对象基本特征",
+      "访问控制与封装",
+      "覆盖隐藏与同名成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1788,9 +1848,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "虚基类",
-      "虚继承",
-      "多继承"
+      "虚基类与菱形继承",
+      "多继承与二义性",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1810,8 +1870,9 @@
       "覆盖隐藏与同名成员"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "覆盖隐藏与同名成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1831,8 +1892,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "new/delete数组",
-      "动态内存管理"
+      "C++程序结构与命名空间",
+      "动态内存new/delete",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1852,7 +1914,9 @@
       "输入输出运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "封装"
+      "类与对象定义",
+      "面向对象基本特征",
+      "输入输出运算符重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1872,8 +1936,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "拷贝构造函数",
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1893,9 +1958,9 @@
       "构造函数"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "构造函数",
-      "析构函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "构造函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1915,7 +1980,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "空类大小"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1935,8 +2002,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "迭代器",
-      "顺序容器"
+      "STL容器与迭代器",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1956,9 +2024,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "继承",
-      "默认访问权限"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -1978,9 +2046,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "纯虚函数",
-      "抽象类",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2000,8 +2068,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "面向对象四大特征",
-      "封装"
+      "面向对象基本特征",
+      "访问控制与封装",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2021,8 +2090,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "封装",
-      "面向对象四大特征"
+      "面向对象基本特征",
+      "访问控制与封装",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2042,8 +2112,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "拷贝构造函数",
-      "引用"
+      "构造函数",
+      "析构函数",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2063,8 +2134,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "赋值运算符重载",
-      "成员运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2085,7 +2157,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "默认构造函数"
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2105,7 +2178,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2125,7 +2200,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2145,7 +2222,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "引用"
+      "引用与函数参数",
+      "C++程序结构与命名空间",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2165,9 +2244,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "多态",
-      "函数重载",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "内联函数、重载与默认参数"
     ],
     "mergedFrom": [
       397
@@ -2190,8 +2269,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "公有继承",
-      "继承方式"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2217,8 +2297,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "公有继承",
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2244,7 +2325,9 @@
       "输入输出运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "文件操作"
+      "输入输出流",
+      "文件流与打开模式",
+      "输入输出运算符重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2270,9 +2353,9 @@
       "析构函数"
     ],
     "knowledgePointsNormalized": [
-      "动态内存管理",
-      "析构函数调用时机",
-      "对象生命周期"
+      "对象生命周期",
+      "构造函数",
+      "析构函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2298,8 +2381,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "纯虚函数",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2325,7 +2409,9 @@
       "类与对象定义"
     ],
     "knowledgePointsNormalized": [
-      "面向对象设计原则"
+      "面向对象基本特征",
+      "C++程序结构与命名空间",
+      "类与对象定义"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2351,7 +2437,9 @@
       "拷贝构造与赋值"
     ],
     "knowledgePointsNormalized": [
-      "赋值运算符重载"
+      "运算符重载规则",
+      "访问控制与封装",
+      "拷贝构造与赋值"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2377,7 +2465,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "默认参数"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2403,7 +2493,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "const指针"
+      "this指针",
+      "static成员",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2429,10 +2521,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "静态成员函数",
       "this指针",
-      "static成员",
-      "const成员"
+      "const成员与常对象",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2458,9 +2549,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "纯虚函数",
-      "抽象类",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2486,7 +2577,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "默认访问权限"
+      "访问控制与封装",
+      "类与对象定义",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2512,9 +2605,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "二义性问题",
-      "虚基类",
-      "作用域解析运算符"
+      "多继承与二义性",
+      "虚基类与菱形继承",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2540,9 +2633,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "抽象类",
-      "纯虚函数",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2568,9 +2661,9 @@
       "动态内存new/delete"
     ],
     "knowledgePointsNormalized": [
-      "构造函数调用顺序",
-      "析构函数调用顺序",
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "动态内存new/delete"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2596,9 +2689,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "构造函数重载",
+      "构造函数",
       "析构函数",
-      "构造函数"
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2624,9 +2717,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "友元函数",
-      "友元类",
-      "友元"
+      "友元函数与友元类",
+      "访问控制与封装",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2652,9 +2745,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "静态成员函数",
       "this指针",
-      "static成员"
+      "static成员",
+      "const与指针"
     ],
     "mergedFrom": [
       405
@@ -2683,8 +2776,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "内联函数",
-      "inline"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2710,7 +2804,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "函数重载"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "mergedFrom": [
       402
@@ -2733,8 +2829,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "const成员函数",
-      "this指针"
+      "this指针",
+      "const成员与常对象",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2754,8 +2851,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "赋值运算符重载",
-      "成员运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2775,7 +2873,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "引用"
+      "引用与函数参数",
+      "C++程序结构与命名空间",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2795,8 +2895,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "抽象类",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "mergedFrom": [
       369
@@ -2819,8 +2920,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "虚函数表",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2840,8 +2942,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "动态联编",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2861,7 +2964,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "this指针"
+      "this指针",
+      "static成员",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2881,8 +2986,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "默认访问权限",
-      "struct与class区别"
+      "类与对象定义",
+      "访问控制与封装",
+      "C++程序结构与命名空间"
     ],
     "mergedFrom": [
       476
@@ -2905,9 +3011,9 @@
       "包含与组合"
     ],
     "knowledgePointsNormalized": [
-      "is-a关系",
-      "has-a关系",
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "包含与组合"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2927,8 +3033,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "new/delete数组",
-      "动态内存管理"
+      "C++程序结构与命名空间",
+      "动态内存new/delete",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2954,11 +3061,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "默认访问权限",
-      "类与对象",
-      "封装",
-      "private",
-      "数据成员与成员函数"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -2984,7 +3089,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "const成员函数"
+      "const成员与常对象",
+      "this指针",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3010,8 +3117,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "文件操作",
-      "文件打开模式"
+      "文件流与打开模式",
+      "输入输出流",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3037,8 +3145,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "不可重载运算符",
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3064,8 +3173,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "友元类",
-      "友元"
+      "友元函数与友元类",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3091,9 +3201,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "私有继承",
-      "公有继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3119,8 +3229,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "动态联编",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3146,7 +3257,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "命名空间"
+      "输入输出运算符重载",
+      "输入输出流",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3172,9 +3285,9 @@
       "拷贝构造与赋值"
     ],
     "knowledgePointsNormalized": [
-      "拷贝构造函数",
-      "赋值运算符重载",
-      "动态内存管理"
+      "构造函数",
+      "析构函数",
+      "拷贝构造与赋值"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3200,9 +3313,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "虚基类",
-      "虚继承",
-      "多继承"
+      "虚基类与菱形继承",
+      "多继承与二义性",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3229,7 +3342,8 @@
     ],
     "knowledgePointsNormalized": [
       "类模板",
-      "模板实例化"
+      "函数模板",
+      "模板实例化与特化"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3255,9 +3369,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "多态",
-      "虚函数",
-      "动态联编"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3283,7 +3397,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "封装"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3310,8 +3426,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "构造函数重载",
-      "默认构造函数"
+      "析构函数",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3331,9 +3447,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "保护继承",
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3353,8 +3469,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "默认访问权限",
-      "封装"
+      "访问控制与封装",
+      "类与对象定义",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3374,8 +3491,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "虚函数表"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3395,9 +3513,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "成员运算符重载",
-      "const引用"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3417,8 +3535,8 @@
       "this指针"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "成员运算符重载",
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
       "this指针"
     ],
     "explanation_status": "done",
@@ -3439,8 +3557,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "构造函数调用顺序",
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3460,9 +3579,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "多继承",
-      "二义性问题",
-      "作用域解析运算符"
+      "多继承与二义性",
+      "虚基类与菱形继承",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3482,9 +3601,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "静态联编",
-      "虚函数",
-      "多态"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3505,7 +3624,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "引用"
+      "类模板",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3525,9 +3645,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "迭代器",
-      "顺序容器",
-      "作用域解析运算符"
+      "STL容器与迭代器",
+      "程序阅读与输出推导",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3553,8 +3673,9 @@
       "输入输出流"
     ],
     "knowledgePointsNormalized": [
-      "命名空间",
-      "输入输出运算符重载"
+      "C++程序结构与命名空间",
+      "输入输出运算符重载",
+      "输入输出流"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3580,7 +3701,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "析构函数"
+      "析构函数",
+      "构造函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3606,13 +3729,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "has-a关系",
-      "类与对象",
-      "封装",
-      "聚合",
-      "组合",
-      "包含关系",
-      "数据成员与成员函数"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3638,7 +3757,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "内联函数"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3664,8 +3785,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "文件操作",
-      "文件打开模式"
+      "文件流与打开模式",
+      "输入输出流",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3691,7 +3813,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "友元"
+      "友元函数与友元类",
+      "C++程序结构与命名空间",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3717,8 +3841,9 @@
       "函数模板"
     ],
     "knowledgePointsNormalized": [
-      "模板实例化",
-      "类模板"
+      "类模板",
+      "模板实例化与特化",
+      "函数模板"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3746,7 +3871,7 @@
     "knowledgePointsNormalized": [
       "构造函数",
       "析构函数",
-      "虚函数"
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3772,7 +3897,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "内联函数"
+      "类与对象定义",
+      "访问控制与封装",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3799,7 +3926,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "对象生命周期"
+      "析构函数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3825,8 +3953,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "私有继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3852,9 +3981,9 @@
       "初始化列表"
     ],
     "knowledgePointsNormalized": [
-      "初始化列表",
-      "继承",
-      "构造函数调用顺序"
+      "继承基础",
+      "成员函数与数据成员",
+      "初始化列表"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3880,8 +4009,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "友元函数",
-      "友元"
+      "友元函数与友元类",
+      "成员函数与数据成员",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3907,8 +4037,9 @@
       "程序阅读与输出推导"
     ],
     "knowledgePointsNormalized": [
-      "文件打开模式",
-      "文件操作"
+      "文件流与打开模式",
+      "输入输出流",
+      "程序阅读与输出推导"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3934,9 +4065,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "拷贝构造函数",
-      "引用",
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3962,9 +4093,9 @@
       "构造函数"
     ],
     "knowledgePointsNormalized": [
-      "构造函数",
-      "析构函数调用时机",
-      "对象生命周期"
+      "析构函数",
+      "对象生命周期",
+      "构造函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -3984,7 +4115,9 @@
       "程序阅读与输出推导"
     ],
     "knowledgePointsNormalized": [
-      "封装"
+      "访问控制与封装",
+      "类与对象定义",
+      "程序阅读与输出推导"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4004,8 +4137,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "默认构造函数",
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4025,7 +4159,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "const指针"
+      "this指针",
+      "static成员",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4046,8 +4182,8 @@
     ],
     "knowledgePointsNormalized": [
       "static成员",
-      "静态数据成员",
-      "作用域解析运算符"
+      "this指针",
+      "const成员与常对象"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4067,8 +4203,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "构造函数"
+      "运算符重载规则",
+      "成员/友元运算符重载",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4088,9 +4225,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "成员运算符重载",
-      "运算符重载",
-      "构造函数"
+      "运算符重载规则",
+      "成员/友元运算符重载",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4110,9 +4247,9 @@
       "构造函数"
     ],
     "knowledgePointsNormalized": [
-      "构造函数",
-      "继承",
-      "默认构造函数"
+      "继承基础",
+      "继承方式与访问权限",
+      "构造函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4132,8 +4269,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "const对象",
-      "const成员函数"
+      "const成员与常对象",
+      "this指针",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4153,9 +4291,9 @@
       "程序阅读与输出推导"
     ],
     "knowledgePointsNormalized": [
-      "多态",
-      "虚函数",
-      "动态联编"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "程序阅读与输出推导"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4175,8 +4313,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "关联容器",
-      "运算符重载"
+      "STL容器与迭代器",
+      "包含与组合",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4202,9 +4341,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "友元运算符重载",
-      "不可重载运算符",
-      "运算符重载"
+      "运算符重载规则",
+      "成员/友元运算符重载",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4230,7 +4369,9 @@
       "输入输出流"
     ],
     "knowledgePointsNormalized": [
-      "命名空间"
+      "C++程序结构与命名空间",
+      "输入输出运算符重载",
+      "输入输出流"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4256,7 +4397,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "函数重载"
+      "C++程序结构与命名空间",
+      "内联函数、重载与默认参数",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4282,7 +4425,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "函数重载"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4308,7 +4453,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "内联函数"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4334,7 +4481,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "默认参数"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4360,8 +4509,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "默认构造函数",
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4387,7 +4537,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "友元类"
+      "友元函数与友元类",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4413,7 +4565,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "封装"
+      "访问控制与封装",
+      "类与对象定义",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4440,8 +4594,8 @@
     ],
     "knowledgePointsNormalized": [
       "static成员",
-      "静态成员函数",
-      "作用域解析运算符"
+      "this指针",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4468,7 +4622,8 @@
     ],
     "knowledgePointsNormalized": [
       "static成员",
-      "静态数据成员"
+      "this指针",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4494,9 +4649,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "多态",
-      "动态联编",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4522,7 +4677,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "类模板"
+      "函数模板",
+      "类模板",
+      "C++程序结构与命名空间"
     ],
     "mergedFrom": [
       406
@@ -4551,9 +4708,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "虚基类",
-      "虚继承",
-      "多继承"
+      "虚基类与菱形继承",
+      "多继承与二义性",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4579,7 +4736,9 @@
       "类型转换函数"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "类型转换与赋值兼容",
+      "类型转换函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4605,7 +4764,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4625,9 +4786,9 @@
       "覆盖隐藏与同名成员"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "动态联编"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "覆盖隐藏与同名成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4647,7 +4808,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "内联函数"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "mergedFrom": [
       370
@@ -4671,7 +4834,8 @@
     ],
     "knowledgePointsNormalized": [
       "类模板",
-      "模板实例化"
+      "函数模板",
+      "C++程序结构与命名空间"
     ],
     "mergedFrom": [
       371
@@ -4694,9 +4858,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "const对象",
-      "const成员函数",
-      "静态成员函数"
+      "const成员与常对象",
+      "this指针",
+      "static成员"
     ],
     "mergedFrom": [
       372
@@ -4719,7 +4883,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "函数重载"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "mergedFrom": [
       373
@@ -4742,7 +4908,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "动态内存管理"
+      "C++程序结构与命名空间",
+      "动态内存new/delete",
+      "引用与函数参数"
     ],
     "mergedFrom": [
       374
@@ -4765,7 +4933,9 @@
       "类与对象定义"
     ],
     "knowledgePointsNormalized": [
-      "函数模板"
+      "函数模板",
+      "类模板",
+      "类与对象定义"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4785,9 +4955,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "函数重载",
-      "多态",
-      "静态联编"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4807,7 +4977,9 @@
       "const成员与常对象"
     ],
     "knowledgePointsNormalized": [
-      "static成员"
+      "static成员",
+      "this指针",
+      "const成员与常对象"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4833,7 +5005,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "内联函数"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4859,8 +5033,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "默认构造函数",
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "面向对象基本特征"
     ],
     "mergedFrom": [
       381
@@ -4889,7 +5064,9 @@
       "输入输出运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "文件操作"
+      "输入输出流",
+      "文件流与打开模式",
+      "输入输出运算符重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4915,7 +5092,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "动态内存管理"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4941,8 +5120,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "静态数据成员",
-      "封装"
+      "static成员",
+      "this指针",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4968,9 +5148,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "静态联编",
-      "函数重载",
-      "虚函数"
+      "多态实现条件",
+      "虚函数与动态绑定",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -4996,8 +5176,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "拷贝构造函数",
-      "const引用"
+      "构造函数",
+      "析构函数",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5023,9 +5204,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "静态联编",
-      "动态联编",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5051,7 +5232,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5071,8 +5254,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "抽象类",
-      "纯虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "mergedFrom": [
       390
@@ -5095,7 +5279,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "内联函数"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5116,7 +5302,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "模板实例化"
+      "类模板",
+      "C++程序结构与命名空间"
     ],
     "mergedFrom": [
       392
@@ -5139,8 +5326,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "const成员函数",
-      "const对象"
+      "const成员与常对象",
+      "this指针",
+      "static成员"
     ],
     "mergedFrom": [
       393
@@ -5163,7 +5351,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "引用"
+      "引用与函数参数",
+      "C++程序结构与命名空间",
+      "内联函数、重载与默认参数"
     ],
     "mergedFrom": [
       394
@@ -5186,7 +5376,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "函数模板"
+      "函数模板",
+      "类模板",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5207,7 +5399,8 @@
     ],
     "knowledgePointsNormalized": [
       "static成员",
-      "静态数据成员"
+      "this指针",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5227,7 +5420,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "函数重载"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5247,7 +5442,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "动态内存管理"
+      "C++程序结构与命名空间",
+      "动态内存new/delete",
+      "引用与函数参数"
     ],
     "mergedFrom": [
       463
@@ -5270,8 +5467,9 @@
       "输入输出运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "输入输出运算符重载",
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "输入输出运算符重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5291,7 +5489,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5311,9 +5511,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "公有继承",
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5333,9 +5533,9 @@
       "析构函数"
     ],
     "knowledgePointsNormalized": [
-      "构造函数调用顺序",
-      "初始化列表",
-      "构造函数"
+      "对象生命周期",
+      "构造函数",
+      "析构函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5355,9 +5555,9 @@
       "构造函数"
     ],
     "knowledgePointsNormalized": [
-      "抽象类",
-      "构造函数",
-      "虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "构造函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5377,9 +5577,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "虚基类",
-      "虚继承",
-      "虚函数"
+      "虚基类与菱形继承",
+      "多继承与二义性",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5399,9 +5599,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "友元类",
-      "继承",
-      "友元"
+      "友元函数与友元类",
+      "继承基础",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5421,8 +5621,9 @@
       "覆盖隐藏与同名成员"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "公有继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "覆盖隐藏与同名成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5442,8 +5643,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "友元函数",
-      "友元"
+      "友元函数与友元类",
+      "访问控制与封装",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5463,7 +5665,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "auto类型推导"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5483,9 +5687,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "默认构造函数",
+      "构造函数",
       "析构函数",
-      "构造函数"
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5505,8 +5709,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "默认构造函数",
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "对象生命周期"
     ],
     "mergedFrom": [
       278,
@@ -5530,7 +5735,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "内联函数"
+      "类与对象定义",
+      "访问控制与封装",
+      "内联函数、重载与默认参数"
     ],
     "mergedFrom": [
       279
@@ -5553,7 +5760,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "动态内存管理"
+      "C++程序结构与命名空间",
+      "动态内存new/delete",
+      "引用与函数参数"
     ],
     "mergedFrom": [
       280
@@ -5576,7 +5785,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "默认参数"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "mergedFrom": [
       281
@@ -5599,8 +5810,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "不可重载运算符",
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "mergedFrom": [
       282
@@ -5623,8 +5835,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "静态数据成员",
-      "static成员"
+      "static成员",
+      "this指针",
+      "成员函数与数据成员"
     ],
     "mergedFrom": [
       284
@@ -5647,8 +5860,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "保护继承",
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5668,9 +5882,9 @@
       "构造函数"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "构造函数",
-      "析构函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "构造函数"
     ],
     "mergedFrom": [
       286
@@ -5693,9 +5907,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "虚基类",
-      "构造函数调用顺序",
-      "多继承"
+      "虚基类与菱形继承",
+      "多继承与二义性",
+      "继承基础"
     ],
     "mergedFrom": [
       287
@@ -5725,7 +5939,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "对象生命周期"
+      "析构函数",
+      "面向对象基本特征"
     ],
     "mergedFrom": [
       288,
@@ -5755,7 +5970,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "内联函数"
+      "内联函数、重载与默认参数",
+      "引用与函数参数",
+      "C++程序结构与命名空间"
     ],
     "mergedFrom": [
       289
@@ -5784,9 +6001,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "继承方式",
-      "默认访问权限"
+      "继承基础",
+      "继承方式与访问权限",
+      "C++程序结构与命名空间"
     ],
     "mergedFrom": [
       290
@@ -5815,8 +6032,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "友元函数",
-      "友元"
+      "友元函数与友元类",
+      "访问控制与封装",
+      "C++程序结构与命名空间"
     ],
     "mergedFrom": [
       292
@@ -5845,7 +6063,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "函数重载"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "mergedFrom": [
       293
@@ -5874,7 +6094,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "static成员"
+      "static成员",
+      "this指针",
+      "面向对象基本特征"
     ],
     "mergedFrom": [
       294
@@ -5903,9 +6125,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "友元运算符重载",
-      "运算符重载",
-      "友元函数"
+      "运算符重载规则",
+      "成员/友元运算符重载",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5931,8 +6153,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "纯虚函数",
-      "抽象类"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "mergedFrom": [
       297,
@@ -5962,8 +6185,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "不可重载运算符",
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -5989,7 +6213,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "类模板"
+      "类模板",
+      "函数模板",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6016,7 +6242,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "模板实例化"
+      "类模板",
+      "类与对象定义"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6042,8 +6269,9 @@
       "析构函数"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "析构函数调用顺序"
+      "继承基础",
+      "继承方式与访问权限",
+      "析构函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6069,9 +6297,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "公有继承",
-      "继承",
-      "引用"
+      "继承基础",
+      "继承方式与访问权限",
+      "成员函数与数据成员"
     ],
     "mergedFrom": [
       337,
@@ -6101,8 +6329,9 @@
       "虚函数与动态绑定"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "虚函数与动态绑定"
     ],
     "mergedFrom": [
       338
@@ -6125,8 +6354,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "封装",
-      "面向对象四大特征"
+      "访问控制与封装",
+      "类与对象定义",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6146,7 +6376,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "封装"
+      "访问控制与封装",
+      "类与对象定义",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6166,7 +6398,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "静态联编"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6187,7 +6421,8 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const指针"
+      "static成员",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6207,8 +6442,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "const成员函数",
-      "const对象"
+      "const成员与常对象",
+      "this指针",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6228,7 +6464,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "const对象"
+      "this指针",
+      "const成员与常对象",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6254,7 +6492,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "作用域解析运算符"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6280,7 +6520,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "命名空间"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "内联函数、重载与默认参数"
     ],
     "mergedFrom": [
       310
@@ -6309,8 +6551,9 @@
       "包含与组合"
     ],
     "knowledgePointsNormalized": [
-      "文件操作",
-      "文件打开模式"
+      "文件流与打开模式",
+      "输入输出流",
+      "包含与组合"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6336,7 +6579,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "内联函数"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6356,7 +6601,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "对象生命周期"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6376,9 +6623,9 @@
       "初始化列表"
     ],
     "knowledgePointsNormalized": [
-      "构造函数",
-      "初始化列表",
-      "对象生命周期"
+      "类与对象定义",
+      "成员函数与数据成员",
+      "初始化列表"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6398,9 +6645,9 @@
       "拷贝构造与赋值"
     ],
     "knowledgePointsNormalized": [
-      "拷贝构造函数",
-      "引用",
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "拷贝构造与赋值"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6426,7 +6673,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "对象生命周期"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6453,8 +6702,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "默认构造函数",
-      "构造函数重载"
+      "析构函数",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6480,8 +6729,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "new/delete数组",
-      "析构函数调用时机"
+      "析构函数",
+      "构造函数",
+      "对象生命周期"
     ],
     "mergedFrom": [
       322
@@ -6504,9 +6754,9 @@
       "拷贝构造与赋值"
     ],
     "knowledgePointsNormalized": [
-      "构造函数调用顺序",
-      "析构函数调用顺序",
-      "拷贝构造函数"
+      "继承基础",
+      "析构函数",
+      "拷贝构造与赋值"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6526,7 +6776,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "const对象"
+      "this指针",
+      "const成员与常对象",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6552,8 +6804,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "struct与class区别",
-      "默认访问权限"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6579,9 +6832,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "友元运算符重载",
-      "友元"
+      "运算符重载规则",
+      "成员/友元运算符重载",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6601,8 +6854,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
+      "函数模板",
       "类模板",
-      "模板实例化"
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6622,7 +6876,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "命名空间"
+      "C++程序结构与命名空间",
+      "内联函数、重载与默认参数",
+      "自增自减与赋值重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6642,7 +6898,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "引用"
+      "引用与函数参数",
+      "自增自减与赋值重载",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6662,7 +6920,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "函数重载"
+      "内联函数、重载与默认参数",
+      "自增自减与赋值重载",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6682,8 +6942,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "对象生命周期",
-      "static成员"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6703,7 +6964,9 @@
       "动态内存new/delete"
     ],
     "knowledgePointsNormalized": [
-      "动态内存管理"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "动态内存new/delete"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6723,7 +6986,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "内联函数"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "自增自减与赋值重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6743,7 +7008,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "引用"
+      "引用与函数参数",
+      "C++程序结构与命名空间",
+      "const与指针"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6763,7 +7030,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "引用"
+      "引用与函数参数",
+      "C++程序结构与命名空间",
+      "自增自减与赋值重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6783,7 +7052,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "默认参数"
+      "内联函数、重载与默认参数",
+      "自增自减与赋值重载",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6803,7 +7074,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "内联函数"
+      "内联函数、重载与默认参数",
+      "自增自减与赋值重载",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6823,7 +7096,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "封装"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6843,9 +7118,9 @@
       "类与对象定义"
     ],
     "knowledgePointsNormalized": [
-      "封装",
-      "继承",
-      "友元函数"
+      "继承基础",
+      "面向对象基本特征",
+      "类与对象定义"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6866,7 +7141,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "默认参数"
+      "析构函数",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6887,8 +7163,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "new/delete数组",
-      "动态内存管理"
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6914,7 +7190,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "对象生命周期"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6934,8 +7212,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
+      "this指针",
       "static成员",
-      "静态数据成员"
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6955,7 +7234,9 @@
       "类与对象定义"
     ],
     "knowledgePointsNormalized": [
-      "友元"
+      "友元函数与友元类",
+      "面向对象基本特征",
+      "类与对象定义"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6975,7 +7256,9 @@
       "const成员与常对象"
     ],
     "knowledgePointsNormalized": [
-      "const指针"
+      "this指针",
+      "static成员",
+      "const成员与常对象"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -6995,8 +7278,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
+      "this指针",
       "static成员",
-      "静态数据成员"
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7016,8 +7300,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
+      "this指针",
       "static成员",
-      "静态数据成员"
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7037,8 +7322,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "初始化列表",
-      "构造函数"
+      "this指针",
+      "const成员与常对象",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7064,8 +7350,9 @@
       "类与对象定义"
     ],
     "knowledgePointsNormalized": [
-      "友元",
-      "友元类"
+      "友元函数与友元类",
+      "面向对象基本特征",
+      "类与对象定义"
     ],
     "mergedFrom": [
       512
@@ -7088,9 +7375,9 @@
       "覆盖隐藏与同名成员"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "多继承",
-      "二义性问题"
+      "继承基础",
+      "继承方式与访问权限",
+      "覆盖隐藏与同名成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7110,8 +7397,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "公有继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7131,9 +7419,9 @@
       "析构函数"
     ],
     "knowledgePointsNormalized": [
-      "继承",
+      "继承基础",
       "构造函数",
-      "初始化列表"
+      "析构函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7153,8 +7441,9 @@
       "析构函数"
     ],
     "knowledgePointsNormalized": [
-      "多继承",
-      "构造函数调用顺序"
+      "继承基础",
+      "构造函数",
+      "析构函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7174,7 +7463,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7194,8 +7485,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "继承方式"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7215,7 +7507,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "自增自减与赋值重载"
     ],
     "mergedFrom": [
       521
@@ -7238,9 +7532,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "友元",
-      "this指针"
+      "运算符重载规则",
+      "成员/友元运算符重载",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7260,9 +7554,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "纯虚函数",
-      "抽象类"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7282,9 +7576,9 @@
       "构造函数"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "析构函数",
-      "继承"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "构造函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7304,8 +7598,9 @@
       "构造函数"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "析构函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "构造函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7325,9 +7620,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "友元",
-      "友元函数"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7347,8 +7642,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "继承"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7368,8 +7664,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "函数重载"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7390,7 +7687,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "类模板"
+      "类模板",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7411,7 +7709,8 @@
     ],
     "knowledgePointsNormalized": [
       "类模板",
-      "模板实例化"
+      "函数模板",
+      "模板实例化与特化"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7431,7 +7730,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类模板"
+      "类模板",
+      "函数模板",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7452,7 +7753,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "类模板"
+      "类模板",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7473,7 +7775,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "模板实例化"
+      "类模板",
+      "模板实例化与特化"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7494,7 +7797,8 @@
     ],
     "knowledgePointsNormalized": [
       "类模板",
-      "模板实例化"
+      "函数模板",
+      "模板实例化与特化"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7520,7 +7824,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "命名空间"
+      "C++程序结构与命名空间",
+      "自增自减与赋值重载",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7546,8 +7852,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "函数重载",
-      "运算符重载"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7567,8 +7874,9 @@
       "初始化列表"
     ],
     "knowledgePointsNormalized": [
-      "动态内存管理",
-      "new/delete数组"
+      "C++程序结构与命名空间",
+      "动态内存new/delete",
+      "初始化列表"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7595,7 +7903,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "析构函数"
+      "析构函数",
+      "对象生命周期"
     ],
     "mergedFrom": [
       444
@@ -7625,7 +7934,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "类模板"
+      "类模板",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7651,7 +7961,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "成员/友元运算符重载",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7677,8 +7989,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "纯虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7704,9 +8017,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "纯虚函数",
-      "抽象类"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7732,9 +8045,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "多继承",
-      "虚基类",
-      "作用域解析运算符"
+      "多继承与二义性",
+      "虚基类与菱形继承",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7760,9 +8073,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "函数重载",
-      "运算符重载",
-      "静态联编"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7782,9 +8095,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "纯虚函数",
-      "抽象类"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7804,8 +8117,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
+      "this指针",
       "static成员",
-      "静态成员函数"
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7825,7 +8139,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7845,7 +8161,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7865,8 +8183,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "默认访问权限",
-      "struct与class区别"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7886,9 +8205,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
+      "this指针",
       "static成员",
-      "静态数据成员",
-      "静态成员函数"
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7908,9 +8227,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "成员运算符重载",
-      "构造函数"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7930,8 +8249,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
+      "函数模板",
       "类模板",
-      "模板实例化"
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7957,8 +8277,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "函数重载",
-      "内联函数"
+      "内联函数、重载与默认参数",
+      "C++程序结构与命名空间",
+      "自增自减与赋值重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -7985,8 +8306,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "默认构造函数",
-      "析构函数"
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8012,9 +8333,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "默认访问权限",
-      "多继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8040,8 +8361,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "继承"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8067,9 +8389,9 @@
       "析构函数"
     ],
     "knowledgePointsNormalized": [
-      "继承",
+      "继承基础",
       "构造函数",
-      "初始化列表"
+      "析构函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8095,7 +8417,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8121,7 +8445,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8147,9 +8473,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "继承"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "继承基础"
     ],
     "mergedFrom": [
       472
@@ -8178,9 +8504,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
+      "this指针",
       "static成员",
-      "静态成员函数",
-      "作用域解析运算符"
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8206,9 +8532,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "static成员",
-      "const成员函数",
-      "const对象"
+      "this指针",
+      "const成员与常对象",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8228,8 +8554,9 @@
       "析构函数"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "构造函数调用顺序"
+      "继承基础",
+      "构造函数",
+      "析构函数"
     ],
     "mergedFrom": [
       594
@@ -8252,7 +8579,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "类模板"
+      "类模板",
+      "函数模板",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8272,7 +8601,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8292,7 +8623,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "面向对象四大特征"
+      "面向对象基本特征",
+      "类与对象定义",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8334,8 +8667,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "成员运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8355,8 +8689,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "成员运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "面向对象基本特征"
     ],
     "mergedFrom": [
       602
@@ -8386,7 +8721,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "析构函数"
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8412,7 +8748,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "函数重载"
+      "内联函数、重载与默认参数",
+      "自增自减与赋值重载",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8438,8 +8776,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "封装",
-      "面向对象四大特征"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8465,7 +8804,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "const成员函数"
+      "this指针",
+      "const成员与常对象",
+      "static成员"
     ],
     "mergedFrom": [
       625
@@ -8496,7 +8837,7 @@
     "knowledgePointsNormalized": [
       "构造函数",
       "析构函数",
-      "初始化列表"
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8522,9 +8863,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
+      "this指针",
       "static成员",
-      "静态成员函数",
-      "作用域解析运算符"
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8545,7 +8886,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "默认参数"
+      "析构函数",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8587,7 +8929,9 @@
       "输入输出流"
     ],
     "knowledgePointsNormalized": [
-      "文件操作"
+      "面向对象基本特征",
+      "输入输出运算符重载",
+      "输入输出流"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8607,8 +8951,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "const对象",
-      "const成员函数"
+      "this指针",
+      "const成员与常对象",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8628,7 +8973,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8648,7 +8995,9 @@
       "类与对象定义"
     ],
     "knowledgePointsNormalized": [
-      "继承"
+      "继承基础",
+      "面向对象基本特征",
+      "类与对象定义"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8668,9 +9017,9 @@
       "程序阅读与输出推导"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "动态联编",
-      "多态"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "程序阅读与输出推导"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8724,9 +9073,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "静态成员",
-      "函数重载",
-      "默认参数"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8752,9 +9101,9 @@
       "类与对象定义"
     ],
     "knowledgePointsNormalized": [
-      "友元",
-      "友元函数",
-      "构造函数"
+      "友元函数与友元类",
+      "面向对象基本特征",
+      "类与对象定义"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8780,8 +9129,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "继承方式"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8807,9 +9157,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "公有继承",
-      "私有继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8835,9 +9185,9 @@
       "构造函数"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "构造函数",
-      "默认访问权限"
+      "继承基础",
+      "继承方式与访问权限",
+      "构造函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8863,8 +9213,9 @@
       "构造函数"
     ],
     "knowledgePointsNormalized": [
-      "多继承",
-      "二义性问题"
+      "多继承与二义性",
+      "虚基类与菱形继承",
+      "构造函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8890,8 +9241,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8917,8 +9269,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "动态联编"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8945,7 +9298,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "默认构造函数"
+      "析构函数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8965,8 +9319,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "私有继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -8986,9 +9341,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "多继承",
-      "虚基类",
-      "二义性问题"
+      "多继承与二义性",
+      "虚基类与菱形继承",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9008,7 +9363,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "对象生命周期"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9028,7 +9385,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9049,7 +9408,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "模板实例化"
+      "类模板",
+      "模板实例化与特化"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9069,7 +9429,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "默认访问权限"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9089,9 +9451,9 @@
       "构造函数"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "构造函数",
-      "静态联编"
+      "继承基础",
+      "继承方式与访问权限",
+      "构造函数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9111,8 +9473,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
+      "this指针",
       "static成员",
-      "静态数据成员"
+      "面向对象基本特征"
     ],
     "mergedFrom": [
       323
@@ -9135,9 +9498,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "公有继承",
-      "继承方式",
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9163,8 +9526,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
+      "this指针",
       "static成员",
-      "静态成员函数"
+      "成员函数与数据成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9184,9 +9548,9 @@
       "程序阅读与输出推导"
     ],
     "knowledgePointsNormalized": [
-      "const成员函数",
-      "const对象",
-      "构造函数"
+      "this指针",
+      "static成员",
+      "程序阅读与输出推导"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9206,8 +9570,9 @@
       "类模板"
     ],
     "knowledgePointsNormalized": [
-      "类模板",
-      "模板实例化"
+      "函数模板",
+      "程序阅读与输出推导",
+      "类模板"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9228,11 +9593,10 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "类与对象",
-      "成员函数",
-      "对象相加",
-      "输出流运算符重载"
+      "程序阅读与输出推导",
+      "运算符重载规则",
+      "程序改错与错误定位",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9252,9 +9616,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "构造函数调用顺序",
-      "析构函数调用顺序",
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9275,8 +9639,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "模板实例化",
-      "函数重载"
+      "自增自减与赋值重载",
+      "程序阅读与输出推导"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9296,8 +9660,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "纯虚函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9317,7 +9682,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "static成员"
+      "this指针",
+      "static成员",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9337,7 +9704,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9357,7 +9726,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9377,8 +9748,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "默认访问权限",
-      "struct与class区别"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9399,7 +9771,8 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "封装"
+      "static成员",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9419,9 +9792,9 @@
       "程序阅读与输出推导"
     ],
     "knowledgePointsNormalized": [
-      "构造函数调用顺序",
-      "析构函数调用顺序",
-      "动态内存管理"
+      "构造函数",
+      "析构函数",
+      "程序阅读与输出推导"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9442,7 +9815,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "初始化列表"
+      "析构函数",
+      "面向对象基本特征"
     ],
     "mergedFrom": [
       435
@@ -9465,8 +9839,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "struct与class区别",
-      "默认访问权限"
+      "类与对象定义",
+      "内联函数、重载与默认参数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9486,7 +9861,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9507,7 +9884,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "类模板"
+      "类模板",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9527,7 +9905,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "面向对象四大特征"
+      "自增自减与赋值重载",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9547,7 +9927,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "封装"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9589,7 +9971,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9609,8 +9993,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "成员运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9636,8 +10021,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
-      "const成员函数",
-      "this指针"
+      "this指针",
+      "const成员与常对象",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9665,7 +10051,7 @@
     "knowledgePointsNormalized": [
       "构造函数",
       "析构函数",
-      "初始化列表"
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9685,9 +10071,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "继承"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9707,8 +10093,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "继承"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9728,8 +10115,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "静态数据成员",
-      "作用域解析运算符"
+      "this指针",
+      "static成员",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9749,9 +10137,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "公有继承",
-      "静态联编"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9772,8 +10160,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "模板实例化",
-      "引用"
+      "类模板",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9793,9 +10181,9 @@
       "const成员与常对象"
     ],
     "knowledgePointsNormalized": [
-      "const成员函数",
-      "const对象",
-      "默认构造函数"
+      "this指针",
+      "static成员",
+      "const成员与常对象"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9838,8 +10226,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "默认构造函数",
-      "构造函数重载"
+      "析构函数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9859,9 +10247,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "面向对象四大特征",
-      "函数重载",
-      "引用"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9881,9 +10269,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "函数重载",
-      "引用",
-      "命名空间"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9903,7 +10291,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "自增自减与赋值重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9923,7 +10313,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9943,8 +10335,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "公有继承"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9964,7 +10357,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -9985,7 +10380,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "析构函数"
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10005,9 +10401,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承",
-      "构造函数调用顺序",
-      "构造函数"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10027,8 +10423,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "构造函数",
-      "动态内存管理"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10048,9 +10445,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
+      "this指针",
       "static成员",
-      "静态数据成员",
-      "作用域解析运算符"
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10070,9 +10467,9 @@
       "const成员与常对象"
     ],
     "knowledgePointsNormalized": [
-      "const成员函数",
-      "const对象",
-      "函数重载"
+      "this指针",
+      "static成员",
+      "const成员与常对象"
     ],
     "mergedFrom": [
       484
@@ -10103,7 +10500,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "析构函数"
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10129,7 +10527,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "引用"
+      "引用与函数参数",
+      "C++程序结构与命名空间",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10155,7 +10555,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "函数重载"
+      "内联函数、重载与默认参数",
+      "运算符重载规则",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10176,7 +10578,8 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员"
+      "const成员与常对象",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10196,8 +10599,9 @@
       "继承方式与访问权限"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "类与对象定义",
+      "继承基础",
+      "继承方式与访问权限"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10223,8 +10627,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "函数重载",
-      "运算符重载"
+      "内联函数、重载与默认参数",
+      "运算符重载规则",
+      "C++程序结构与命名空间"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10251,7 +10656,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "拷贝构造函数"
+      "析构函数",
+      "拷贝构造与赋值"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10277,7 +10683,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "派生类"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10304,7 +10712,8 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员"
+      "const成员与常对象",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10330,7 +10739,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "析构函数"
+      "析构函数",
+      "构造函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10356,7 +10767,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "访问控制"
+      "访问控制与封装",
+      "类与对象定义",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10382,7 +10795,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "多态"
+      "多态实现条件",
+      "虚函数与动态绑定",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10408,8 +10823,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "引用",
-      "标准输出"
+      "输入输出流",
+      "文件流与打开模式",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10435,8 +10851,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象关系",
-      "访问控制"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10463,7 +10880,8 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员"
+      "const成员与常对象",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10483,8 +10901,9 @@
       "输入输出运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "cin",
-      "cout"
+      "输入输出流",
+      "文件流与打开模式",
+      "输入输出运算符重载"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10504,9 +10923,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "派生类"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "继承基础"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10527,7 +10946,8 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员"
+      "const成员与常对象",
+      "static成员"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10553,7 +10973,9 @@
       "友元函数与友元类"
     ],
     "knowledgePointsNormalized": [
-      "友元函数"
+      "类与对象定义",
+      "访问控制与封装",
+      "友元函数与友元类"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10579,7 +11001,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "多态"
+      "多态实现条件",
+      "虚函数与动态绑定",
+      "引用与函数参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10599,7 +11023,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "访问控制"
+      "访问控制与封装",
+      "类与对象定义",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10619,7 +11045,9 @@
       "对象生命周期"
     ],
     "knowledgePointsNormalized": [
-      "构造函数"
+      "构造函数",
+      "析构函数",
+      "对象生命周期"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10639,7 +11067,9 @@
       "模板实例化与特化"
     ],
     "knowledgePointsNormalized": [
-      "模板"
+      "函数模板",
+      "类模板",
+      "模板实例化与特化"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10658,7 +11088,8 @@
       "STL算法与函数对象"
     ],
     "knowledgePointsNormalized": [
-      "STL"
+      "STL容器与迭代器",
+      "STL算法与函数对象"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10678,8 +11109,9 @@
       "输入输出流"
     ],
     "knowledgePointsNormalized": [
-      "命名空间",
-      "iostream"
+      "C++程序结构与命名空间",
+      "输入输出运算符重载",
+      "输入输出流"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10705,8 +11137,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象关系",
-      "访问控制"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10733,7 +11166,8 @@
     ],
     "knowledgePointsNormalized": [
       "类模板",
-      "模板参数"
+      "函数模板",
+      "面向对象基本特征"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10759,7 +11193,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "模板"
+      "函数模板",
+      "类模板",
+      "内联函数、重载与默认参数"
     ],
     "explanation_status": "done",
     "audit_status": "done",
@@ -10783,9 +11219,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "C++基础语法",
-      "命名空间",
-      "引用"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "自增自减与赋值重载"
     ],
     "explanation": "命名空间成员应使用作用域解析运算符访问。Student 是命名空间名，Num 是其中的变量，因此正确写法是 Student::Num；using namespace Num 把变量名误当命名空间，Num 在未引入时不可直接使用，Student.Num 是对象成员访问语法。",
     "explanation_status": "done",
@@ -10806,7 +11242,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "类模板"
+      "类模板",
+      "程序设计实现"
     ],
     "explanation": "类模板把数据类型参数化，使同一份类定义可以生成不同具体类型的类，例如 Array<int> 和 Array<double>。因此空白处应填“参数化”。",
     "explanation_status": "done",
@@ -10832,8 +11269,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "本题选 D（基类指针或引用）。题干考查虚函数的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
@@ -10853,8 +11291,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "this指针",
+      "static成员",
+      "const与指针"
     ],
     "explanation": "非静态成员函数被对象调用时，系统会隐含传入 this 指针，this 指向当前调用该函数的对象。静态成员函数没有 this 指针。",
     "explanation_status": "done",
@@ -10874,9 +11313,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "继承方式"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "应填“覆盖/重写”。题干考查虚函数的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -10897,7 +11336,8 @@
     ],
     "knowledgePointsNormalized": [
       "输入输出流",
-      "文件流"
+      "文件流与打开模式",
+      "程序阅读与输出推导"
     ],
     "explanation": "cin 是标准输入流对象，通常关联键盘；cout 是标准输出流对象，通常关联控制台屏幕。它们来自 iostream 库，而不是同一个所谓 iostream 类的普通成员。",
     "explanation_status": "done",
@@ -10917,8 +11357,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "应填“函数/操作”。题干考查类与对象的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -10938,8 +11379,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "应填“保护(protected)”。题干考查类与对象的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -10959,9 +11401,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "C++基础语法",
-      "命名空间",
-      "引用"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "内联函数、重载与默认参数"
     ],
     "explanation": "应填“参数类型”。题干考查C++基础语法的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -10982,7 +11424,7 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "应填“this指针”。题干考查this指针的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
@@ -11003,8 +11445,9 @@
       "const与指针"
     ],
     "knowledgePointsNormalized": [
-      "STL容器",
-      "STL迭代器"
+      "STL容器与迭代器",
+      "STL算法与函数对象",
+      "const与指针"
     ],
     "explanation": "应填“指针”。题干考查STL容器的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -11024,9 +11467,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "多重继承",
-      "虚基类",
-      "继承方式"
+      "多继承与二义性",
+      "虚基类与菱形继承",
+      "继承基础"
     ],
     "explanation": "应填“作用域运算符(::)”。题干考查多重继承的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -11046,9 +11489,9 @@
       "程序阅读与输出推导"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类",
-      "虚函数"
+      "继承基础",
+      "继承方式与访问权限",
+      "程序阅读与输出推导"
     ],
     "explanation": "基类 Shape 的 Draw() 不是虚函数，通过 Shape* 调用 p->Draw() 时采用静态绑定，调用的是 Shape::Draw()，因此输出 Shape。",
     "explanation_status": "done",
@@ -11069,7 +11512,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "类模板"
+      "类模板",
+      "C++程序结构与命名空间"
     ],
     "explanation": "应填“template<typename T> void Swap(T &a, T &b) { T temp=a; a=b; b=temp; }”。题干考查函数模板的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -11089,8 +11533,9 @@
       "程序阅读与输出推导"
     ],
     "knowledgePointsNormalized": [
-      "STL容器",
-      "STL迭代器"
+      "STL容器与迭代器",
+      "STL算法与函数对象",
+      "程序阅读与输出推导"
     ],
     "explanation": "v 是 vector<int> 类型容器，遍历它的迭代器类型应为 vector<int>::iterator。因此空白处应填写 vector<int>::iterator it;。",
     "explanation_status": "done",
@@ -11110,8 +11555,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "该说法正确。题干考查类与对象的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“对”。",
     "explanation_status": "done",
@@ -11132,7 +11578,7 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "该说法错误。题干考查this指针的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“错”。",
@@ -11153,9 +11599,9 @@
       "继承方式与访问权限"
     ],
     "knowledgePointsNormalized": [
-      "友元函数",
-      "友元类",
-      "继承方式"
+      "友元函数与友元类",
+      "继承基础",
+      "继承方式与访问权限"
     ],
     "explanation": "该说法错误。题干考查友元函数的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“错”。",
     "explanation_status": "done",
@@ -11176,7 +11622,7 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "该说法错误。题干考查this指针的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“错”。",
@@ -11197,8 +11643,9 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "STL容器",
-      "STL迭代器"
+      "STL容器与迭代器",
+      "STL算法与函数对象",
+      "引用与函数参数"
     ],
     "explanation": "迭代器变量可以先声明再赋值，此时可能未指向有效元素；真正解引用或访问元素前，必须让它等于容器的 begin、end 或算法返回的有效迭代器，否则可能产生未定义行为。",
     "explanation_status": "done",
@@ -11218,9 +11665,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "析构函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "该说法正确。题干考查虚函数的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“对”。",
     "explanation_status": "done",
@@ -11240,7 +11687,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation": "该说法正确。题干考查运算符重载的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“对”。",
     "explanation_status": "done",
@@ -11260,9 +11709,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "构造函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "该说法错误。题干考查虚函数的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“错”。",
     "explanation_status": "done",
@@ -11282,8 +11731,9 @@
       "成员函数与数据成员"
     ],
     "knowledgePointsNormalized": [
-      "友元函数",
-      "友元类"
+      "友元函数与友元类",
+      "面向对象基本特征",
+      "成员函数与数据成员"
     ],
     "explanation": "该说法正确。题干考查友元函数的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“对”。",
     "explanation_status": "done",
@@ -11303,9 +11753,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "析构函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "该说法正确。题干考查虚函数的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“对”。",
     "explanation_status": "done",
@@ -11332,7 +11782,8 @@
     ],
     "knowledgePointsNormalized": [
       "输入输出流",
-      "文件流"
+      "文件流与打开模式",
+      "C++程序结构与命名空间"
     ],
     "explanation": "本题选 C（ofstream infile(\"d:\\\\file.dat\", ios::out);）。题干考查输入输出流的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
@@ -11359,7 +11810,7 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "静态数据成员属于类本身，由该类所有对象共享，传统 C++ 中通常需要在类外定义并初始化。静态成员函数没有 this 指针，不能直接访问非静态数据成员；静态数据成员也不属于某个具体对象。",
@@ -11386,9 +11837,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "多重继承",
-      "虚基类",
-      "继承方式"
+      "多继承与二义性",
+      "虚基类与菱形继承",
+      "继承基础"
     ],
     "explanation": "本题选 A（解决二义性问题）。题干考查多重继承的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
@@ -11415,7 +11866,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "类模板"
+      "类模板",
+      "成员函数与数据成员"
     ],
     "explanation": "在类模板中，成员函数随类模板一起依赖模板参数，通常也按模板机制实例化；类模板可以有多个模板参数，实例化发生在编译期，模板参数也不一定只能是类型参数，因此本题选 A。",
     "explanation_status": "done",
@@ -11441,8 +11893,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "本题选 A（虚函数）。题干考查虚函数的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
@@ -11462,8 +11915,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "继承基础",
+      "继承方式与访问权限",
+      "C++程序结构与命名空间"
     ],
     "explanation": "main 函数中需要通过派生类对象 b 访问基类 A 的公有成员 x。只有 public 继承会保持 A::x 在 B 中仍为 public，因此应填 public。",
     "explanation_status": "done",
@@ -11483,8 +11937,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "main 函数属于类外代码，类外只能通过对象直接访问 public 成员。因此 x 必须声明在 public 访问权限下。",
     "explanation_status": "done",
@@ -11504,8 +11959,9 @@
       "继承基础"
     ],
     "knowledgePointsNormalized": [
-      "多重继承",
-      "虚基类"
+      "多继承与二义性",
+      "虚基类与菱形继承",
+      "继承基础"
     ],
     "explanation": "类 D 同时继承 B1::f() 和 B2::f()，直接调用 d.f() 时编译器无法判断调用哪一个。可使用作用域分辨符明确基类路径，例如 d.B1::f(); 或 d.B2::f();。",
     "explanation_status": "done",
@@ -11532,7 +11988,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "析构函数"
+      "析构函数",
+      "拷贝构造与赋值"
     ],
     "explanation": "本题选 C（构造函数可以有返回值）。题干考查构造函数的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
@@ -11558,8 +12015,9 @@
       "类与对象定义"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "继承基础",
+      "继承方式与访问权限",
+      "类与对象定义"
     ],
     "explanation": "用 class 定义派生类时，继承列表中省略 public、protected、private，则默认按 private 继承；若用 struct 定义派生类，默认继承方式才是 public。",
     "explanation_status": "done",
@@ -11585,8 +12043,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation": "派生类构造函数通常需要在初始化列表中调用基类构造函数，并初始化基类子对象成员和派生类对象成员；普通内置类型数据成员也可以在构造函数体内赋值，因此初始化列表中可以不包含派生类中一般数据成员的初始化。",
     "explanation_status": "done",
@@ -11607,7 +12066,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "析构函数"
+      "析构函数",
+      "拷贝构造与赋值"
     ],
     "explanation": "这段代码错误。类 A 只定义了带两个参数的构造函数 A(int,int)，编译器不会再自动生成无参构造函数，因此 A a; 试图调用不存在的默认构造函数，无法通过编译。",
     "explanation_status": "done",
@@ -11627,7 +12087,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "指针与引用"
+      "引用与函数参数",
+      "const与指针",
+      "C++程序结构与命名空间"
     ],
     "explanation": "该代码正确。ptr 是指针常量，表示 ptr 本身不能再指向其他地址，但可以通过 *ptr 修改其指向对象 a 的值。因此 (*ptr)++ 合法，执行后 a 的值变为 6。",
     "explanation_status": "done",
@@ -11648,7 +12110,7 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "这段代码错误。y 是普通非静态数据成员，必须通过具体对象访问，不能写成 A::y；只有静态成员才可以用类名加作用域解析运算符直接访问。",
@@ -11669,7 +12131,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "成员/友元运算符重载",
+      "内联函数、重载与默认参数"
     ],
     "explanation": "该说法正确。成员函数形式的 operator+ 要求左操作数 c1 是 Complex 对象；右操作数 8.9 可以通过 Complex(double) 之类的构造函数隐式转换为 Complex 临时对象，因此 c1 + 8.9 可以匹配成员运算符重载。",
     "explanation_status": "done",
@@ -11689,7 +12153,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "成员/友元运算符重载",
+      "内联函数、重载与默认参数"
     ],
     "explanation": "该说法正确。成员函数形式的二元 operator+ 等价于左操作数调用成员函数，如 c1.operator+(8.9)。当表达式写成 8.9 + c1 时，左操作数是 double，不是 Complex 对象，无法调用 Complex 的成员 operator+。若要支持 8.9 + c1，通常需要定义非成员或友元形式的 operator+。",
     "explanation_status": "done",
@@ -11709,9 +12175,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类",
-      "构造函数"
+      "继承基础",
+      "继承方式与访问权限",
+      "C++程序结构与命名空间"
     ],
     "explanation": "这段代码错误。基类 A 只有带参数构造函数 A(int)，没有默认构造函数；派生类 B 又没有定义构造函数显式调用 A(int)，因此创建 B b 时无法构造其 A 基类子对象。",
     "explanation_status": "done",
@@ -11732,7 +12198,7 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "这段代码正确。对象 a 是 const 对象，只能调用 const 成员函数；Print() 已在参数列表后声明 const，函数体只读取 x，不修改对象，因此 a.Print() 合法。",
@@ -11753,9 +12219,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "继承方式"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "该说法正确。Draw() 是虚函数，通过基类指针 c 调用 (*c).Draw() 时会发生动态绑定，实际对象类型是 Circle，因此调用 Circle::Draw() 并输出 Circle。虚析构函数还可保证通过基类指针释放派生类对象时析构顺序正确。",
     "explanation_status": "done",
@@ -11775,8 +12241,9 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "STL容器",
-      "STL迭代器"
+      "STL容器与迭代器",
+      "STL算法与函数对象",
+      "C++程序结构与命名空间"
     ],
     "explanation": "这段代码错误。std::set 默认按 std::less<Data> 排序，通常需要 Data 支持 operator<，或在声明 set 时提供自定义比较器；只重载输出运算符 operator<< 不能满足 set 的排序要求。",
     "explanation_status": "done",
@@ -11796,7 +12263,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation": "应填“类的成员”。题干考查运算符重载的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -11816,7 +12285,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation": "应填“operator+”。题干考查运算符重载的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -11842,7 +12313,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation": "本题选 A（private）。题干考查运算符重载的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
@@ -11868,8 +12341,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "本题选 D（不能声明其对象）。题干考查虚函数的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
@@ -11897,7 +12371,7 @@
     "knowledgePointsNormalized": [
       "构造函数",
       "析构函数",
-      "动态内存分配"
+      "对象生命周期"
     ],
     "explanation": "new C 会先构造基类 B，再构造派生类 C，所以输出 B_Con、C_Con。程序没有执行 delete pc，动态对象不会在 main 返回时自动析构，因此不会输出 C_Des 和 B_Des。",
     "explanation_status": "done",
@@ -11918,8 +12392,10 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "程序改错与错误定位",
+      "程序阅读与输出推导",
+      "类与对象定义",
+      "访问控制与封装"
     ],
     "explanation": "程序分析题，考查程序改错与错误定位+程序阅读与输出推导+类与对象定义+访问控制与封装相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -11940,9 +12416,10 @@
       "程序改错与错误定位"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "const成员"
+      "程序阅读与输出推导",
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "程序改错与错误定位"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+虚函数与动态绑定+多态实现条件+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -11963,8 +12440,10 @@
       "程序阅读与输出推导"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "程序改错与错误定位",
+      "类与对象定义",
+      "访问控制与封装",
+      "程序阅读与输出推导"
     ],
     "explanation": "程序分析题，考查程序改错与错误定位+类与对象定义+访问控制与封装+程序阅读与输出推导相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -11985,9 +12464,10 @@
       "引用与函数参数"
     ],
     "knowledgePointsNormalized": [
-      "C++基础语法",
-      "命名空间",
-      "引用"
+      "程序改错与错误定位",
+      "程序阅读与输出推导",
+      "C++程序结构与命名空间",
+      "引用与函数参数"
     ],
     "explanation": "程序分析题，考查程序改错与错误定位+程序阅读与输出推导+C++程序结构与命名空间+引用与函数参数相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -12008,7 +12488,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "析构函数"
+      "析构函数",
+      "拷贝构造与赋值"
     ],
     "explanation": "构造函数没有返回值类型，但构造函数体内可以使用不带表达式的 return; 提前结束函数体；只是不能写 return 某个值。因此“不能使用 return 语句”的说法过于绝对，是错误的。",
     "explanation_status": "done",
@@ -12028,9 +12509,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "继承方式"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "含有纯虚函数的类是抽象类。抽象类不能声明普通对象，主要用作基类，由派生类实现纯虚函数后再实例化具体对象。",
     "explanation_status": "done",
@@ -12050,9 +12531,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "C++基础语法",
-      "命名空间",
-      "引用"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "自增自减与赋值重载"
     ],
     "explanation": "该说法错误。题干考查C++基础语法的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“错”。",
     "explanation_status": "done",
@@ -12078,9 +12559,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "C++基础语法",
-      "命名空间",
-      "引用"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "自增自减与赋值重载"
     ],
     "explanation": "本题选 A（.cpp）。题干考查C++基础语法的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
@@ -12106,9 +12587,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "C++基础语法",
-      "命名空间",
-      "引用"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "自增自减与赋值重载"
     ],
     "explanation": "本题选 C（前缀0）。题干考查C++基础语法的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
@@ -12129,8 +12610,10 @@
       "程序阅读与输出推导"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "程序改错与错误定位",
+      "类与对象定义",
+      "访问控制与封装",
+      "程序阅读与输出推导"
     ],
     "explanation": "程序分析题，考查程序改错与错误定位+类与对象定义+访问控制与封装+程序阅读与输出推导相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -12151,9 +12634,10 @@
       "程序阅读与输出推导"
     ],
     "knowledgePointsNormalized": [
-      "C++基础语法",
-      "命名空间",
-      "引用"
+      "程序改错与错误定位",
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "程序阅读与输出推导"
     ],
     "explanation": "程序分析题，考查程序改错与错误定位+C++程序结构与命名空间+引用与函数参数+程序阅读与输出推导相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -12174,9 +12658,10 @@
       "程序阅读与输出推导"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类",
-      "const成员"
+      "程序改错与错误定位",
+      "继承基础",
+      "继承方式与访问权限",
+      "程序阅读与输出推导"
     ],
     "explanation": "程序分析题，考查程序改错与错误定位+继承基础+继承方式与访问权限+程序阅读与输出推导相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -12197,8 +12682,10 @@
       "程序阅读与输出推导"
     ],
     "knowledgePointsNormalized": [
-      "多重继承",
-      "虚基类"
+      "程序改错与错误定位",
+      "多继承与二义性",
+      "虚基类与菱形继承",
+      "程序阅读与输出推导"
     ],
     "explanation": "程序分析题，考查程序改错与错误定位+多继承与二义性+虚基类与菱形继承+程序阅读与输出推导相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -12218,9 +12705,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装",
-      "动态内存分配"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "该说法正确。题干考查类与对象的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“对”。",
     "explanation_status": "done",
@@ -12247,7 +12734,8 @@
     ],
     "knowledgePointsNormalized": [
       "构造函数",
-      "析构函数"
+      "析构函数",
+      "拷贝构造与赋值"
     ],
     "explanation": "本题选 B（创建对象）。题干考查构造函数的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
@@ -12267,9 +12755,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "C++基础语法",
-      "命名空间",
-      "引用"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "自增自减与赋值重载"
     ],
     "explanation": "C++ 可以建立数组的引用，例如 int a[3]; int (&r)[3] = a;。也可以建立指针的引用，例如 int *p; int *&rp = p;。因此“不能建立数组的引用”的说法错误。",
     "explanation_status": "done",
@@ -12289,9 +12777,9 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "C++基础语法",
-      "命名空间",
-      "引用"
+      "C++程序结构与命名空间",
+      "引用与函数参数",
+      "内联函数、重载与默认参数"
     ],
     "explanation": "该说法错误。题干考查C++基础语法的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“错”。",
     "explanation_status": "done",
@@ -12311,9 +12799,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装",
-      "继承方式"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "应填“成员函数; 友元函数; 派生类”。题干考查类与对象的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -12333,9 +12821,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装",
-      "构造函数"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "构造函数 A(int aa=0) 带默认参数，因此既可写 A b; 使用默认实参 0，也可写 A b(1); 传入实参 1。注意 A b(); 会被解析为函数声明，不是对象定义。",
     "explanation_status": "done",
@@ -12356,7 +12844,7 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "应填“static; 构造函数”。题干考查this指针的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
@@ -12378,7 +12866,7 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "常量数据成员必须在对象构造时完成初始化，通常只能写在构造函数初始化列表中，不能先默认初始化后在构造函数体内赋值。",
@@ -12399,8 +12887,9 @@
       "类与对象定义"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "继承基础",
+      "继承方式与访问权限",
+      "类与对象定义"
     ],
     "explanation": "应填“虚基类; 类作用域标识符”。题干考查继承方式的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -12420,8 +12909,9 @@
       "访问控制与封装"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "继承基础",
+      "继承方式与访问权限",
+      "访问控制与封装"
     ],
     "explanation": "应填“保护成员”。题干考查继承方式的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -12441,8 +12931,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation": "派生类对象包含基类子对象，构造派生类对象时必须先构造基类部分。派生类构造函数可以在初始化列表中显式调用基类构造函数来完成基类成员初始化。",
     "explanation_status": "done",
@@ -12462,8 +12953,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "继承基础",
+      "继承方式与访问权限",
+      "自增自减与赋值重载"
     ],
     "explanation": "派生类仍然可以作为新的基类继续派生出更多类，C++ 支持多层继承。因此“派生类不能再生成新的类”的说法错误。",
     "explanation_status": "done",
@@ -12489,8 +12981,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation": "本题选 C（派生类的对象可以直接访问基类中的成员）。题干考查继承方式的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
@@ -12510,7 +13003,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation": "应填“操作数个数、优先级和结合性”。题干考查运算符重载的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -12530,8 +13025,9 @@
       "友元函数与友元类"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载",
-      "友元函数"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "友元函数与友元类"
     ],
     "explanation": "应填“一; 两”。题干考查运算符重载的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -12551,9 +13047,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "构造函数"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "应填“不存在”。题干考查虚函数的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -12573,8 +13069,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "同一类作用域中不能同时存在函数签名完全相同、但一个声明为虚函数另一个声明为非虚函数的两个成员函数；签名相同会被视为同一个函数声明。",
     "explanation_status": "done",
@@ -12600,8 +13097,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "本题选 C（一个基类中声明有纯虚函数，则它的派生类一定不再是抽象类）。题干考查虚函数的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
@@ -12621,9 +13119,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "继承方式"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "派生类重写基类虚函数时，应保持函数名、参数列表、返回类型以及 const 等限定匹配。签名不一致通常不是重写，而是隐藏或重载。",
     "explanation_status": "done",
@@ -12644,7 +13142,7 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "常对象的 this 指针类型相当于指向 const 对象的指针，只能调用保证不修改对象状态的 const 成员函数，不能调用普通非 const 成员函数。",
@@ -12666,7 +13164,10 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "程序阅读与输出推导",
+      "运算符重载规则",
+      "程序改错与错误定位",
+      "内联函数、重载与默认参数"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+运算符重载规则+程序改错与错误定位+内联函数、重载与默认参数相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -12687,8 +13188,10 @@
       "程序改错与错误定位"
     ],
     "knowledgePointsNormalized": [
+      "程序阅读与输出推导",
       "函数模板",
-      "类模板"
+      "类模板",
+      "程序改错与错误定位"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+函数模板+类模板+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -12709,8 +13212,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
+      "程序阅读与输出推导",
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+this指针+const成员与常对象+static成员相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
@@ -12732,8 +13236,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
+      "程序阅读与输出推导",
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+this指针+const成员与常对象+static成员相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
@@ -12754,9 +13259,9 @@
       "纯虚函数与抽象类"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态",
-      "运算符重载"
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "纯虚函数与抽象类"
     ],
     "explanation": "应填“多态”。题干考查虚函数的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -12777,9 +13282,10 @@
       "程序改错与错误定位"
     ],
     "knowledgePointsNormalized": [
+      "程序阅读与输出推导",
       "构造函数",
       "析构函数",
-      "this指针"
+      "程序改错与错误定位"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+构造函数+析构函数+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -12806,7 +13312,7 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "静态成员函数属于类，没有 this 指针；它可以有返回值和参数，也可以通过类名调用。因此“this 指针可以指向静态成员函数”是错误描述。",
@@ -12833,9 +13339,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类",
-      "二义性"
+      "继承基础",
+      "继承方式与访问权限",
+      "面向对象基本特征"
     ],
     "explanation": "多重继承中的同名成员二义性可以用作用域分辨符明确访问路径，也可以通过虚基类解决共同基类产生的多份基类子对象问题，因此选 C。",
     "explanation_status": "done",
@@ -12856,7 +13362,7 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "声明静态成员函数时在成员函数声明前加 static。静态成员函数属于类本身，不依赖某个具体对象调用。",
@@ -12878,7 +13384,7 @@
     ],
     "knowledgePointsNormalized": [
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "类中用于统计对象数目的共享计数器应声明为静态数据成员，因此 count 前应填写 static，使所有对象共享同一个计数值。",
@@ -12900,7 +13406,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "类模板"
+      "类模板",
+      "C++程序结构与命名空间"
     ],
     "explanation": "模板类 A 的对象以字符串字面量 \"Hello, world!\" 初始化时，模板实参可写 const char*；若类设计为保存 std::string，也可使用 string。",
     "explanation_status": "done",
@@ -12921,7 +13428,10 @@
       "内联函数、重载与默认参数"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "程序阅读与输出推导",
+      "运算符重载规则",
+      "程序改错与错误定位",
+      "内联函数、重载与默认参数"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+运算符重载规则+程序改错与错误定位+内联函数、重载与默认参数相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -12942,8 +13452,10 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "程序阅读与输出推导",
+      "继承基础",
+      "继承方式与访问权限",
+      "C++程序结构与命名空间"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+继承基础+继承方式与访问权限+C++程序结构与命名空间相关知识。 创建局部对象 obj 时先构造基类 A 再构造派生类 B；new A 又输出一次构造A；delete p 立即析构动态创建的 A；main 结束时局部对象 obj 销毁，先析构 B 再析构其 A 基类子对象。",
     "explanation_status": "done",
@@ -12964,8 +13476,10 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
+      "程序阅读与输出推导",
       "函数模板",
-      "类模板"
+      "类模板",
+      "C++程序结构与命名空间"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+函数模板+类模板+C++程序结构与命名空间相关知识。 f(3.0) 实例化为 double 版本，返回 3.0*5.1，即 15.3。调用 f(1,2) 时 ElemType 为 int，x*1.1 和 y*1.1 的结果赋回 int 会截断为 1 和 2；调用 f(1.0,2.0) 时 ElemType 为 double，输出 1.1 和 2.2。",
     "explanation_status": "done",
@@ -12991,8 +13505,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "常对象只能调用 const 成员函数，因为 const 成员函数承诺不修改对象状态。选项 D 只说“实际不改变对象值”还不够，函数声明本身也必须带 const，编译器才能允许常对象调用。",
     "explanation_status": "done",
@@ -13012,9 +13527,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装",
-      "构造函数"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "构造函数初始化列表中应写成员名并用实参初始化。题干已给出形式 Test(int x): ____(x)，因此空白处填写数据成员名 a，完整写法是 Test(int x): a(x) {}。",
     "explanation_status": "done",
@@ -13034,7 +13549,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation": "类型转换函数的声明格式是 operator 目标类型()，不能写返回值类型，也不能带普通参数。目标类型为 int 时，函数头应写 operator int()。",
     "explanation_status": "done",
@@ -13054,7 +13571,9 @@
       "成员/友元运算符重载"
     ],
     "knowledgePointsNormalized": [
-      "运算符重载"
+      "运算符重载规则",
+      "内联函数、重载与默认参数",
+      "成员/友元运算符重载"
     ],
     "explanation": "复数相加应分别相加实部和虚部。当前对象的实部、虚部为 realPart 和 imagePart，参数对象 a 的实部、虚部为 a.realPart 和 a.imagePart，因此应填 realPart + a.realPart, imagePart + a.imagePart。",
     "explanation_status": "done",
@@ -13075,8 +13594,10 @@
       "程序改错与错误定位"
     ],
     "knowledgePointsNormalized": [
-      "虚函数",
-      "多态"
+      "程序阅读与输出推导",
+      "虚函数与动态绑定",
+      "多态实现条件",
+      "程序改错与错误定位"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+虚函数与动态绑定+多态实现条件+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -13097,8 +13618,10 @@
       "程序改错与错误定位"
     ],
     "knowledgePointsNormalized": [
+      "程序阅读与输出推导",
       "函数模板",
-      "类模板"
+      "类模板",
+      "程序改错与错误定位"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+函数模板+类模板+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -13119,8 +13642,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
+      "程序阅读与输出推导",
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+this指针+const成员与常对象+static成员相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
@@ -13142,9 +13666,10 @@
       "程序改错与错误定位"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类",
-      "虚函数"
+      "程序阅读与输出推导",
+      "继承基础",
+      "继承方式与访问权限",
+      "程序改错与错误定位"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+继承基础+继承方式与访问权限+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -13170,9 +13695,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装",
-      "析构函数"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "析构函数名由波浪号加类名组成，没有返回值类型，也不能带参数。Myclass 的析构函数应声明为 ~Myclass()，因此选 D。",
     "explanation_status": "done",
@@ -13198,8 +13723,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "该类定义有三处错误：类内直接写 int i=0 在旧标准下不合法；构造函数不能写返回类型 void；析构函数不能带参数 value。因此选 C。",
     "explanation_status": "done",
@@ -13225,8 +13751,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "使用 class 定义类时，成员默认访问权限为 private；使用 struct 定义时默认访问权限才是 public。",
     "explanation_status": "done",
@@ -13253,7 +13780,8 @@
     ],
     "knowledgePointsNormalized": [
       "函数模板",
-      "类模板"
+      "类模板",
+      "内联函数、重载与默认参数"
     ],
     "explanation": "定义函数模板或类模板都使用关键字 template，并在其后写模板参数列表，例如 template<class T>。",
     "explanation_status": "done",
@@ -13279,8 +13807,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "普通数据成员每个对象各有一份；静态数据成员属于类本身，被该类所有对象共享。因此类的对象共享的是静态数据成员。",
     "explanation_status": "done",
@@ -13306,8 +13835,9 @@
       "覆盖隐藏与同名成员"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "继承基础",
+      "继承方式与访问权限",
+      "覆盖隐藏与同名成员"
     ],
     "explanation": "多重继承同名成员造成二义性时，可用作用域分辨操作符明确访问哪个基类成员；菱形继承中的共同基类多份副本问题可用虚基类解决。因此选 C。",
     "explanation_status": "done",
@@ -13333,8 +13863,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "能够在类外写 CTest::f() 直接调用，说明 f 不依赖具体对象，是 CTest 的静态成员函数。普通非静态成员函数需要通过对象或对象指针调用。",
     "explanation_status": "done",
@@ -13354,9 +13885,9 @@
       "面向对象基本特征"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装",
-      "析构函数"
+      "类与对象定义",
+      "访问控制与封装",
+      "面向对象基本特征"
     ],
     "explanation": "析构函数在对象生命周期结束时自动调用，主要用于清理资源；对象初始化由构造函数负责。因此该说法错误。",
     "explanation_status": "done",
@@ -13377,7 +13908,8 @@
     ],
     "knowledgePointsNormalized": [
       "输入输出流",
-      "文件流"
+      "文件流与打开模式",
+      "程序阅读与输出推导"
     ],
     "explanation": "cout 默认输出到屏幕或控制台，cin 默认从键盘或标准输入读取。题干把二者的默认设备说反了，因此错误。",
     "explanation_status": "done",
@@ -13397,8 +13929,9 @@
       "自增自减与赋值重载"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "继承基础",
+      "继承方式与访问权限",
+      "自增自减与赋值重载"
     ],
     "explanation": "应填“继承”。题干考查继承方式的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
@@ -13419,8 +13952,10 @@
       "程序改错与错误定位"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "程序阅读与输出推导",
+      "继承基础",
+      "继承方式与访问权限",
+      "程序改错与错误定位"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+继承基础+继承方式与访问权限+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -13441,9 +13976,10 @@
       "程序改错与错误定位"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装",
-      "动态内存分配"
+      "程序阅读与输出推导",
+      "类与对象定义",
+      "访问控制与封装",
+      "程序改错与错误定位"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+类与对象定义+访问控制与封装+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -13464,8 +14000,9 @@
       "static成员"
     ],
     "knowledgePointsNormalized": [
+      "程序阅读与输出推导",
       "this指针",
-      "const成员",
+      "const成员与常对象",
       "static成员"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+this指针+const成员与常对象+static成员相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
@@ -13487,8 +14024,10 @@
       "C++程序结构与命名空间"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "程序阅读与输出推导",
+      "继承基础",
+      "继承方式与访问权限",
+      "C++程序结构与命名空间"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+继承基础+继承方式与访问权限+C++程序结构与命名空间相关知识。 Base::Fun 不是虚函数，Base* p 虽然指向 Derived 对象，但通过 (*p).Fun() 调用时按静态类型 Base 绑定，输出 1；a 是 Derived 对象，a.Fun() 调用派生类版本，输出 2。",
     "explanation_status": "done",
@@ -13509,9 +14048,10 @@
       "程序改错与错误定位"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装",
-      "const成员"
+      "程序阅读与输出推导",
+      "类与对象定义",
+      "访问控制与封装",
+      "程序改错与错误定位"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+类与对象定义+访问控制与封装+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -13532,8 +14072,10 @@
       "程序改错与错误定位"
     ],
     "knowledgePointsNormalized": [
-      "类与对象",
-      "封装"
+      "程序阅读与输出推导",
+      "类与对象定义",
+      "访问控制与封装",
+      "程序改错与错误定位"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+类与对象定义+访问控制与封装+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -13559,8 +14101,9 @@
       "类与对象定义"
     ],
     "knowledgePointsNormalized": [
-      "继承方式",
-      "派生类"
+      "继承基础",
+      "继承方式与访问权限",
+      "类与对象定义"
     ],
     "explanation": "本题选 A（k = i * j;）。题干考查继承方式的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
@@ -13581,8 +14124,10 @@
       "程序改错与错误定位"
     ],
     "knowledgePointsNormalized": [
+      "程序阅读与输出推导",
       "函数模板",
-      "类模板"
+      "类模板",
+      "程序改错与错误定位"
     ],
     "explanation": "程序分析题，考查程序阅读与输出推导+函数模板+类模板+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
@@ -13604,7 +14149,15 @@
       "对象生命周期"
     ],
     "source": "综合编程练习",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "knowledgePointsNormalized": [
+      "程序阅读与输出推导",
+      "构造函数",
+      "析构函数",
+      "对象生命周期"
+    ],
+    "explanation_status": "done",
+    "audit_status": "done"
   },
   {
     "id": 610,
@@ -13620,7 +14173,15 @@
       "对象生命周期"
     ],
     "source": "综合编程练习",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "knowledgePointsNormalized": [
+      "程序阅读与输出推导",
+      "构造函数",
+      "析构函数",
+      "对象生命周期"
+    ],
+    "explanation_status": "done",
+    "audit_status": "done"
   },
   {
     "id": 611,
@@ -13635,6 +14196,13 @@
       "C++程序结构与命名空间"
     ],
     "source": "复习提纲(2024春季)",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "knowledgePointsNormalized": [
+      "程序改错与错误定位",
+      "构造函数",
+      "C++程序结构与命名空间"
+    ],
+    "explanation_status": "done",
+    "audit_status": "done"
   }
 ]
