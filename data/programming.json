@@ -881,7 +881,7 @@
     "id": "P28",
     "chapter": "继承与派生",
     "title": "protected 成员访问改错",
-    "requirement": "指出下面错误，并说明原因。",
+    "requirement": "指出下面程序中的错误，并说明原因，然后给出正确访问 protected 成员的方法。\n\nclass Base {\nprotected:\n    int value;\npublic:\n    Base(int v = 0) : value(v) {}\n};\n\nclass Derived : public Base {\npublic:\n    Derived(int v = 0) : Base(v) {}\n};\n\nint main() {\n    Derived d(10);\n    d.value = 20;   // 错误语句\n    return 0;\n}",
     "answerCode": "#include <iostream>\nusing namespace std;\n\n// 题目：protected 成员访问改错\n// protected 成员：\n// 1. 类外不能通过对象直接访问；\n// 2. 派生类的成员函数可以访问从基类继承来的 protected 成员。\n\nclass Base {\nprotected:\n    int value;\n\npublic:\n    Base(int v = 0) : value(v) {}\n};\n\nclass Derived : public Base {\npublic:\n    Derived(int v = 0) : Base(v) {}\n\n    void setValue(int v) {\n        // 正确：派生类成员函数可以访问基类的 protected 成员\n        value = v;\n    }\n\n    void showValue() const {\n        cout << \"value = \" << value << endl;\n    }\n};\n\nint main() {\n    Derived d(10);\n\n    // 错误示例：\n    // d.value = 20;\n    // 原因：value 是 Base 的 protected 成员，不能在类外通过对象直接访问。\n\n    // 正确做法：通过派生类提供的 public 成员函数间接访问\n    d.setValue(20);\n    d.showValue();\n\n    cout << \"错误原因：protected 成员不能在类外直接访问，只能在本类、友元或派生类成员函数中访问。\" << endl;\n\n    return 0;\n}",
     "keyPoints": [
       "protected成员在派生类中可直接访问",
@@ -903,16 +903,16 @@
     "originalId": 29,
     "explanation_status": "done",
     "audit_status": "done",
-    "stem": "指出下面错误，并说明原因。",
+    "stem": "指出下面程序中的错误，并说明原因，然后给出正确访问 protected 成员的方法。\n\nclass Base {\nprotected:\n    int value;\npublic:\n    Base(int v = 0) : value(v) {}\n};\n\nclass Derived : public Base {\npublic:\n    Derived(int v = 0) : Base(v) {}\n};\n\nint main() {\n    Derived d(10);\n    d.value = 20;   // 错误语句\n    return 0;\n}",
     "answer": "#include <iostream>\nusing namespace std;\n\n// 题目：protected 成员访问改错\n// protected 成员：\n// 1. 类外不能通过对象直接访问；\n// 2. 派生类的成员函数可以访问从基类继承来的 protected 成员。\n\nclass Base {\nprotected:\n    int value;\n\npublic:\n    Base(int v = 0) : value(v) {}\n};\n\nclass Derived : public Base {\npublic:\n    Derived(int v = 0) : Base(v) {}\n\n    void setValue(int v) {\n        // 正确：派生类成员函数可以访问基类的 protected 成员\n        value = v;\n    }\n\n    void showValue() const {\n        cout << \"value = \" << value << endl;\n    }\n};\n\nint main() {\n    Derived d(10);\n\n    // 错误示例：\n    // d.value = 20;\n    // 原因：value 是 Base 的 protected 成员，不能在类外通过对象直接访问。\n\n    // 正确做法：通过派生类提供的 public 成员函数间接访问\n    d.setValue(20);\n    d.showValue();\n\n    cout << \"错误原因：protected 成员不能在类外直接访问，只能在本类、友元或派生类成员函数中访问。\" << endl;\n\n    return 0;\n}",
-    "source": "综合编程练习",
-    "difficulty": "hard"
+    "source": "综合改错练习",
+    "difficulty": "medium"
   },
   {
     "id": "P29",
     "chapter": "C++对C的扩充",
     "title": "引用变量改错",
-    "requirement": "指出下面错误，并说明原因。",
+    "requirement": "指出下面引用变量程序中的错误，并说明原因，然后给出正确写法。\n\nint main() {\n    int a = 10;\n    int b = 20;\n\n    int &r;       // 错误1：引用未初始化\n    r = a;\n\n    int &x = 100; // 错误2：非 const 引用绑定到常量\n\n    return 0;\n}",
     "answerCode": "#include <iostream>\nusing namespace std;\n\n// 题目：引用变量改错\n// 引用的基本规则：\n// 1. 引用定义时必须初始化；\n// 2. 引用一旦绑定到某个变量，就不能再改为引用其他变量；\n// 3. 普通引用不能绑定到常量或临时对象，const 引用可以。\n\nint main() {\n    int a = 10;\n    int b = 20;\n\n    // 错误示例 1：\n    // int &r;\n    // 原因：引用变量定义时必须初始化。\n\n    // 正确写法：\n    int &r = a;\n    cout << \"r = \" << r << endl;\n\n    r = b;\n    // 注意：这里不是让 r 改为引用 b，而是把 b 的值赋给 r 所引用的变量 a。\n    cout << \"a = \" << a << endl;\n    cout << \"r = \" << r << endl;\n\n    // 错误示例 2：\n    // int &x = 100;\n    // 原因：非 const 引用不能绑定到常量或临时对象。\n\n    // 正确写法：\n    const int &x = 100;\n    cout << \"x = \" << x << endl;\n\n    cout << \"错误原因：引用必须初始化，且初始化后不能重新绑定；非 const 引用不能引用常量。\" << endl;\n\n    return 0;\n}",
     "keyPoints": [
       "引用必须初始化",
@@ -933,16 +933,16 @@
     "originalId": 30,
     "explanation_status": "done",
     "audit_status": "done",
-    "stem": "指出下面错误，并说明原因。",
+    "stem": "指出下面引用变量程序中的错误，并说明原因，然后给出正确写法。\n\nint main() {\n    int a = 10;\n    int b = 20;\n\n    int &r;       // 错误1：引用未初始化\n    r = a;\n\n    int &x = 100; // 错误2：非 const 引用绑定到常量\n\n    return 0;\n}",
     "answer": "#include <iostream>\nusing namespace std;\n\n// 题目：引用变量改错\n// 引用的基本规则：\n// 1. 引用定义时必须初始化；\n// 2. 引用一旦绑定到某个变量，就不能再改为引用其他变量；\n// 3. 普通引用不能绑定到常量或临时对象，const 引用可以。\n\nint main() {\n    int a = 10;\n    int b = 20;\n\n    // 错误示例 1：\n    // int &r;\n    // 原因：引用变量定义时必须初始化。\n\n    // 正确写法：\n    int &r = a;\n    cout << \"r = \" << r << endl;\n\n    r = b;\n    // 注意：这里不是让 r 改为引用 b，而是把 b 的值赋给 r 所引用的变量 a。\n    cout << \"a = \" << a << endl;\n    cout << \"r = \" << r << endl;\n\n    // 错误示例 2：\n    // int &x = 100;\n    // 原因：非 const 引用不能绑定到常量或临时对象。\n\n    // 正确写法：\n    const int &x = 100;\n    cout << \"x = \" << x << endl;\n\n    cout << \"错误原因：引用必须初始化，且初始化后不能重新绑定；非 const 引用不能引用常量。\" << endl;\n\n    return 0;\n}",
-    "source": "综合编程练习",
-    "difficulty": "hard"
+    "source": "综合改错练习",
+    "difficulty": "medium"
   },
   {
     "id": "P30",
     "chapter": "继承与派生",
     "title": "派生类对象访问基类私有成员改错",
-    "requirement": "指出下面错误，并说明原因。",
+    "requirement": "指出下面程序中访问基类私有成员的错误，并说明原因，然后给出正确访问方式。\n\n#include <iostream>\nusing namespace std;\n\nclass Base {\nprivate:\n    int data;\npublic:\n    Base(int d = 0) : data(d) {}\n    void setData(int d) { data = d; }\n    int getData() const { return data; }\n};\n\nclass Derived : public Base {\npublic:\n    Derived(int d = 0) : Base(d) {}\n    void show() const {\n        cout << data << endl; // 错误：派生类不能直接访问基类 private 成员\n    }\n};\n\nint main() {\n    Derived d(100);\n    cout << d.data << endl; // 错误：类外不能访问 private 成员\n    return 0;\n}",
     "answerCode": "#include <iostream>\nusing namespace std;\n\n// 题目：派生类对象访问基类私有成员改错\n// private 成员只能在基类内部访问，派生类也不能直接访问。\n\nclass Base {\nprivate:\n    int data;\n\npublic:\n    Base(int d = 0) : data(d) {}\n\n    void setData(int d) {\n        data = d;\n    }\n\n    int getData() const {\n        return data;\n    }\n};\n\nclass Derived : public Base {\npublic:\n    Derived(int d = 0) : Base(d) {}\n\n    void show() const {\n        // 错误示例：\n        // cout << data << endl;\n        // 原因：data 是 Base 的 private 成员，派生类不能直接访问。\n\n        // 正确做法：通过基类提供的 public 成员函数访问\n        cout << \"data = \" << getData() << endl;\n    }\n};\n\nint main() {\n    Derived d(100);\n\n    // 错误示例：\n    // cout << d.data << endl;\n    // 原因：data 是基类 private 成员，类外更不能通过派生类对象直接访问。\n\n    d.show();\n    d.setData(200);\n    d.show();\n\n    cout << \"错误原因：基类 private 成员不能被派生类直接访问，也不能通过派生类对象在类外访问。\" << endl;\n\n    return 0;\n}",
     "keyPoints": [
       "派生类对象不能直接访问基类私有成员",
@@ -964,10 +964,10 @@
     "originalId": 31,
     "explanation_status": "done",
     "audit_status": "done",
-    "stem": "指出下面错误，并说明原因。",
+    "stem": "指出下面程序中访问基类私有成员的错误，并说明原因，然后给出正确访问方式。\n\n#include <iostream>\nusing namespace std;\n\nclass Base {\nprivate:\n    int data;\npublic:\n    Base(int d = 0) : data(d) {}\n    void setData(int d) { data = d; }\n    int getData() const { return data; }\n};\n\nclass Derived : public Base {\npublic:\n    Derived(int d = 0) : Base(d) {}\n    void show() const {\n        cout << data << endl; // 错误：派生类不能直接访问基类 private 成员\n    }\n};\n\nint main() {\n    Derived d(100);\n    cout << d.data << endl; // 错误：类外不能访问 private 成员\n    return 0;\n}",
     "answer": "#include <iostream>\nusing namespace std;\n\n// 题目：派生类对象访问基类私有成员改错\n// private 成员只能在基类内部访问，派生类也不能直接访问。\n\nclass Base {\nprivate:\n    int data;\n\npublic:\n    Base(int d = 0) : data(d) {}\n\n    void setData(int d) {\n        data = d;\n    }\n\n    int getData() const {\n        return data;\n    }\n};\n\nclass Derived : public Base {\npublic:\n    Derived(int d = 0) : Base(d) {}\n\n    void show() const {\n        // 错误示例：\n        // cout << data << endl;\n        // 原因：data 是 Base 的 private 成员，派生类不能直接访问。\n\n        // 正确做法：通过基类提供的 public 成员函数访问\n        cout << \"data = \" << getData() << endl;\n    }\n};\n\nint main() {\n    Derived d(100);\n\n    // 错误示例：\n    // cout << d.data << endl;\n    // 原因：data 是基类 private 成员，类外更不能通过派生类对象直接访问。\n\n    d.show();\n    d.setData(200);\n    d.show();\n\n    cout << \"错误原因：基类 private 成员不能被派生类直接访问，也不能通过派生类对象在类外访问。\" << endl;\n\n    return 0;\n}",
-    "source": "综合编程练习",
-    "difficulty": "hard"
+    "source": "综合改错练习",
+    "difficulty": "medium"
   },
   {
     "id": "P31",
@@ -1394,7 +1394,7 @@
     "audit_status": "done",
     "stem": "指出下面程序 main 函数中的错误，以及原因。\nclass A\n{\n    int a,b;\npublic:\n    A(int aa,int bb){a=aa;b=bb;}\n};\nvoid main()\n{\n    A x(2,3), y(4);\n}",
     "answer": "#include <iostream>\nusing namespace std;\n\nclass A\n{\nprivate:\n    int a, b;\n\npublic:\n    // 构造函数：必须提供两个 int 类型参数\n    A(int aa, int bb)\n    {\n        a = aa;\n        b = bb;\n    }\n\n    void show() const\n    {\n        cout << \"a = \" << a << \", b = \" << b << endl;\n    }\n};\n\nint main()\n{\n    /*\n        原程序 main 函数中的错误：\n\n        1. void main() 是错误的。\n           原因：标准 C++ 中 main 函数的返回类型必须是 int。\n\n        2. A y(4); 是错误的。\n           原因：类 A 中只定义了构造函数 A(int aa, int bb)，\n           创建对象时必须传入两个 int 类型参数。\n           A y(4) 只传入了一个参数，没有匹配的构造函数。\n    */\n\n    // 正确写法：创建对象时传入两个参数\n    A x(2, 3), y(4, 5);\n\n    x.show();\n    y.show();\n\n    return 0;\n}",
-    "source": "综合编程练习",
+    "source": "复习提纲(2024春季)",
     "difficulty": "hard"
   }
 ]

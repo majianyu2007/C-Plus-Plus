@@ -3,37 +3,37 @@
   "version": "2026.06",
   "generatedAt": "2026-06-07",
   "stats": {
-    "totalQuestions": 869,
-    "totalInQuestionsJson": 825,
+    "totalQuestions": 618,
+    "totalInQuestionsJson": 574,
     "totalInProgrammingJson": 44,
-    "pendingReview": 400,
+    "pendingReview": 0,
     "invalidQuestions": 0,
-    "choice": 337,
-    "fillin": 268,
-    "truefalse": 164,
-    "coding": 56,
+    "choice": 219,
+    "fillin": 190,
+    "truefalse": 137,
+    "coding": 28,
     "programming": 44
   },
   "questionTypes": [
     {
       "type": "choice",
       "label": "选择题",
-      "count": 337
+      "count": 219
     },
     {
       "type": "fillin",
       "label": "填空题",
-      "count": 268
+      "count": 190
     },
     {
       "type": "truefalse",
       "label": "判断题",
-      "count": 164
+      "count": 137
     },
     {
       "type": "coding",
       "label": "编程分析/问答题",
-      "count": 56
+      "count": 28
     },
     {
       "type": "programming",
@@ -44,55 +44,55 @@
   "chapters": [
     {
       "name": "多继承与虚基类",
-      "questionCount": 22
-    },
-    {
-      "name": "多态与虚函数",
-      "questionCount": 108
-    },
-    {
-      "name": "构造函数与析构函数",
-      "questionCount": 84
-    },
-    {
-      "name": "继承与派生",
-      "questionCount": 110
-    },
-    {
-      "name": "类与对象",
-      "questionCount": 134
-    },
-    {
-      "name": "模板",
-      "questionCount": 62
-    },
-    {
-      "name": "文件IO",
-      "questionCount": 22
-    },
-    {
-      "name": "绪论",
       "questionCount": 17
     },
     {
+      "name": "多态与虚函数",
+      "questionCount": 75
+    },
+    {
+      "name": "构造函数与析构函数",
+      "questionCount": 70
+    },
+    {
+      "name": "继承与派生",
+      "questionCount": 75
+    },
+    {
+      "name": "类与对象",
+      "questionCount": 72
+    },
+    {
+      "name": "模板",
+      "questionCount": 47
+    },
+    {
+      "name": "文件IO",
+      "questionCount": 14
+    },
+    {
+      "name": "绪论",
+      "questionCount": 11
+    },
+    {
       "name": "友元",
-      "questionCount": 25
+      "questionCount": 17
     },
     {
       "name": "运算符重载",
-      "questionCount": 77
+      "questionCount": 55
     },
     {
       "name": "C++对C的扩充",
-      "questionCount": 93
+      "questionCount": 75
     },
     {
       "name": "STL",
-      "questionCount": 21
+      "questionCount": 15
     },
     {
       "name": "this/const/static成员",
-      "questionCount": 94
+      "questionCount": 75
     }
   ],
   "sources": [
@@ -102,7 +102,6 @@
     "2018-2019学年第1学期",
     "2018-2019学年第1学期A卷",
     "2018-2019学年第2学期",
-    "2018-2019学年第2学期A卷",
     "2018年CPP期中考试",
     "2021-2022学年第2学期B卷",
     "复习提纲(2024春季)",
@@ -118,6 +117,7 @@
     "模拟试题五",
     "模拟试题一",
     "综合编程练习",
+    "综合改错练习",
     "Homework 1",
     "Homework 2",
     "Homework 3",
@@ -127,74 +127,146 @@
     "Homework 7"
   ],
   "cleaning": {
-    "originalQuestions": 533,
-    "cleanedQuestions": 469,
-    "invalidQuestions": 0,
-    "duplicateMerged": 50,
-    "secondPass": {
-      "duplicateParenthesesFixed": 98,
-      "duplicateMerged": 9,
-      "newlyInvalid": 3,
-      "movedProgramOutputToProgramming": [
-        "P48",
-        "P49"
-      ]
-    },
-    "finalPass": {
-      "duplicateMerged": 6,
-      "mergedPairs": [
-        {
-          "id": 323,
-          "mergedInto": "505"
-        },
-        {
-          "id": 349,
-          "mergedInto": "249"
-        },
-        {
-          "id": 402,
-          "mergedInto": "114"
-        },
-        {
-          "id": 463,
-          "mergedInto": "221"
-        },
-        {
-          "id": 472,
-          "mergedInto": "427"
-        },
-        {
-          "id": 521,
-          "mergedInto": "340"
-        }
-      ]
-    },
-    "droppedInvalidQuestions": 14
+    "schemaValidatedAt": "2026-06-07",
+    "rules": [
+      "choice questions must have exactly four non-empty options",
+      "non-choice questions must not carry options",
+      "answer, explanation, knowledgePoints, chapter, source and difficulty are required",
+      "metadata stats are recomputed from actual JSON contents",
+      "duplicate normalized stems and duplicate code stems are not allowed"
+    ],
+    "removedInvalidOrDuplicateQuestions": [
+      430,
+      496,
+      499,
+      433,
+      487,
+      497,
+      456,
+      457,
+      458,
+      459,
+      460,
+      465,
+      466,
+      467,
+      555,
+      556,
+      559,
+      560,
+      569,
+      578,
+      599,
+      600,
+      609,
+      610,
+      516,
+      534,
+      602,
+      595,
+      596,
+      603,
+      607,
+      604,
+      605,
+      594,
+      606,
+      589
+    ],
+    "correctedQuestions": [
+      384,
+      426,
+      442,
+      449,
+      452,
+      453,
+      454,
+      455,
+      462,
+      464,
+      474,
+      476,
+      481,
+      489,
+      491,
+      493,
+      494,
+      495,
+      500,
+      501,
+      502,
+      503,
+      504,
+      505,
+      506,
+      507,
+      508,
+      509,
+      510,
+      515,
+      521,
+      522,
+      532,
+      536,
+      538,
+      541,
+      542,
+      547,
+      549,
+      550,
+      561,
+      562,
+      563,
+      564,
+      565,
+      567,
+      568,
+      570,
+      571,
+      572,
+      573,
+      579,
+      580,
+      581,
+      582,
+      583,
+      584,
+      585,
+      586,
+      587,
+      593
+    ],
+    "fixedProgrammingItems": [
+      "P28",
+      "P29",
+      "P30",
+      "P44"
+    ]
   },
-  "totalQuestions": 869,
+  "totalQuestions": 618,
   "sourceStats": {
-    "2014-2015学年第2学期测试": 12,
-    "2015-2016学年第2学期期中考试": 60,
-    "2017-2018学年第1学期期中考试": 21,
+    "2014-2015学年第2学期测试": 3,
+    "2015-2016学年第2学期期中考试": 29,
+    "2017-2018学年第1学期期中考试": 8,
     "2018-2019学年第1学期": 4,
-    "2018-2019学年第1学期A卷": 27,
-    "2018-2019学年第2学期": 12,
-    "2018-2019学年第2学期A卷": 13,
+    "2018-2019学年第1学期A卷": 4,
+    "2018-2019学年第2学期": 5,
     "2018年CPP期中考试": 2,
-    "2021-2022学年第2学期B卷": 29,
-    "复习提纲(2024春季)": 51,
-    "复习提纲(核心题库)": 425,
-    "模拟基础试卷": 7,
+    "2021-2022学年第2学期B卷": 6,
+    "复习提纲(2024春季)": 29,
+    "复习提纲(核心题库)": 423,
+    "模拟基础试卷": 4,
     "模拟试卷二": 6,
-    "模拟试卷一": 6,
-    "模拟试题二": 24,
-    "模拟试题六": 20,
-    "模拟试题七": 12,
-    "模拟试题三": 23,
-    "模拟试题四": 28,
-    "模拟试题五": 43,
-    "模拟试题一": 19,
-    "综合编程练习": 18,
+    "模拟试卷一": 5,
+    "模拟试题二": 7,
+    "模拟试题六": 13,
+    "模拟试题七": 5,
+    "模拟试题三": 9,
+    "模拟试题四": 11,
+    "模拟试题五": 30,
+    "模拟试题一": 6,
+    "综合编程练习": 14,
+    "综合改错练习": 3,
     "Homework 1": 1,
     "Homework 2": 1,
     "Homework 3": 1,
@@ -204,46 +276,37 @@
     "Homework 7": 1
   },
   "typeStats": {
-    "choice": 337,
-    "fillin": 268,
-    "truefalse": 164,
-    "coding": 56,
+    "choice": 219,
+    "fillin": 190,
+    "truefalse": 137,
+    "coding": 28,
     "programming": 44
   },
   "chapterStats": {
-    "多继承与虚基类": 22,
-    "多态与虚函数": 108,
-    "构造函数与析构函数": 84,
-    "继承与派生": 110,
-    "类与对象": 134,
-    "模板": 62,
-    "文件IO": 22,
-    "绪论": 17,
-    "友元": 25,
-    "运算符重载": 77,
-    "C++对C的扩充": 93,
-    "STL": 21,
-    "this/const/static成员": 94
+    "多继承与虚基类": 17,
+    "多态与虚函数": 75,
+    "构造函数与析构函数": 70,
+    "继承与派生": 75,
+    "类与对象": 72,
+    "模板": 47,
+    "文件IO": 14,
+    "绪论": 11,
+    "友元": 17,
+    "运算符重载": 55,
+    "C++对C的扩充": 75,
+    "STL": 15,
+    "this/const/static成员": 75
   },
   "lastUpdated": "2026-06-07",
-  "choiceCount": 337,
-  "truefalseCount": 164,
-  "fillinCount": 268,
-  "codingCount": 56,
+  "choiceCount": 219,
+  "truefalseCount": 137,
+  "fillinCount": 190,
+  "codingCount": 28,
   "programmingCount": 44,
   "dataUpdate": {
     "completedAt": "2026-06-07",
     "baseBranch": "origin/feat/data-update",
-    "restoredFrom": "origin/web",
-    "restoredQuestions": 215,
-    "skippedIncompletePlaceholders": [
-      {
-        "originalId": 616,
-        "type": "coding",
-        "source": "2015-2016学年第2学期期中考试",
-        "reason": "missing stem or answer"
-      }
-    ],
-    "rule": "保留当前整理版题目，并补录 origin/web 中题干未覆盖且字段可补齐的题目；所有题目补齐 schema 必填字段并重算 metadata。"
+    "correctivePass": true,
+    "rule": "以当前 JSON 实际内容为准，删除重复和不可恢复残缺题，修正答案/题干/解析/选项，所有题目通过本地 schema、重复和元数据一致性校验。"
   }
 }

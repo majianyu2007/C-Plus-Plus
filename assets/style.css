@@ -256,6 +256,7 @@ body {
 .stat-dot.choice { background: var(--accent-primary); }
 .stat-dot.truefalse { background: var(--accent-secondary); }
 .stat-dot.fillin { background: var(--accent-warning); }
+.stat-dot.coding { background: var(--accent-info); }
 .stat-dot.programming { background: var(--accent-danger); }
 .stat-dot.mastered { background: var(--accent-success); }
 .stat-dot.review { background: var(--accent-warning); }
@@ -451,6 +452,7 @@ body {
 .question-card[data-type="choice"]::before { background: var(--accent-primary); }
 .question-card[data-type="truefalse"]::before { background: var(--accent-secondary); }
 .question-card[data-type="fillin"]::before { background: var(--accent-warning); }
+.question-card[data-type="coding"]::before { background: var(--accent-info); }
 .question-card[data-type="programming"]::before { background: var(--accent-danger); }
 
 .question-card:hover {
@@ -491,6 +493,7 @@ body {
 .badge-choice { background: rgba(108, 92, 231, 0.15); color: var(--accent-primary); }
 .badge-truefalse { background: rgba(0, 206, 201, 0.15); color: var(--accent-secondary); }
 .badge-fillin { background: rgba(253, 203, 110, 0.15); color: var(--accent-warning); }
+.badge-coding { background: rgba(116, 185, 255, 0.15); color: var(--accent-info); }
 .badge-programming { background: rgba(225, 112, 85, 0.15); color: var(--accent-danger); }
 .badge-chapter { background: rgba(116, 185, 255, 0.1); color: var(--accent-info); }
 .badge-index { background: rgba(148, 163, 184, 0.15); color: var(--text-secondary); }
@@ -1988,6 +1991,11 @@ textarea:focus-visible,
 .filter-group {
   min-width: 0;
   align-items: center;
+}
+
+#type-filters {
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
 }
 
 .mode-filter-group {
