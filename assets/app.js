@@ -1645,8 +1645,8 @@
 
   function renderQuestionCard(q, displayIndex) {
     const isProgramming = q.type === 'programming';
-    const typeLabel = { choice: '选择题', truefalse: '判断题', fillin: '填空题', programming: '程序题' };
-    const typeBadge = { choice: 'badge-choice', truefalse: 'badge-truefalse', fillin: 'badge-fillin', programming: 'badge-programming' };
+    const typeLabel = { choice: '选择题', truefalse: '判断题', fillin: '填空题', coding: '问答题', programming: '程序题' };
+    const typeBadge = { choice: 'badge-choice', truefalse: 'badge-truefalse', fillin: 'badge-fillin', coding: 'badge-coding', programming: 'badge-programming' };
     const status = getQuestionStatus(getProgressKeyForItem(q));
     const uniqueId = isProgramming ? `prog-${q.id}` : `q-${q.id}`;
     const safeUniqueId = escapeAttr(uniqueId);
@@ -2450,7 +2450,8 @@ ${userCode}
       promptContent = `请分析下面这道 C++ 程序设计复习题：\n题目：${q.title}\n功能要求：${q.requirement}\n参考代码实现：\n\`\`\`cpp\n${q.answerCode}\n\`\`\`\n核心知识点：${q.keyPoints.join(', ')}`;
     } else {
       const q = state.questions.find(item => String(item.id) === realId);
-      promptContent = `请分析下面这道 C++ 客观题：\n题型：${q.type === 'choice' ? '选择题' : q.type === 'truefalse' ? '判断题' : '填空题'}\n题目章节：${q.chapter}\n题干：${q.stem}\n${q.options ? '选项：\n' + q.options.join('\n') : ''}\n正确答案：${q.answer}\n原版答案解析：${q.explanation || '无'}`;
+      const typeName = { choice: '选择题', truefalse: '判断题', fillin: '填空题', coding: '问答/程序分析题' }[q.type] || q.type;
+      promptContent = `请分析下面这道 C++ 复习题：\n题型：${typeName}\n题目章节：${q.chapter}\n题干：${q.stem}\n${q.options ? '选项：\n' + q.options.join('\n') : ''}\n正确答案：${q.answer}\n原版答案解析：${q.explanation || '无'}`;
     }
 
     const systemPrompt = "你是一位精通 C++ 面向对象程序设计（OOP）的老师。请为学生提供深入浅出的解题步骤思路、该题关联的 C++ 核心机制解析（例如为什么不能写成某种错误的语法）、以及相关的核心代码小范例（如果有）。请使用 Markdown 语法排版，逻辑清晰，中文作答，保证 self-contained 完备性。";
@@ -2613,12 +2614,14 @@ ${userCode}
   // 统计
   // ============================================================
   function renderStats() {
-    const counts = { choice: 0, truefalse: 0, fillin: 0, programming: 0 };
+    const counts = { choice: 0, truefalse: 0, fillin: 0, coding: 0, programming: 0 };
     state.allItems.forEach(q => { if (counts[q.type] !== undefined) counts[q.type]++; });
 
     document.getElementById('stat-choice').textContent = counts.choice;
     document.getElementById('stat-truefalse').textContent = counts.truefalse;
     document.getElementById('stat-fillin').textContent = counts.fillin;
+    const codingEl = document.getElementById('stat-coding');
+    if (codingEl) codingEl.textContent = counts.coding;
     document.getElementById('stat-programming').textContent = counts.programming;
 
     // 进度统计
