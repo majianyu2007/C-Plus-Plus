@@ -4,15 +4,15 @@
   "generatedAt": "2026-06-07",
   "stats": {
     "totalQuestions": 618,
-    "totalInQuestionsJson": 574,
-    "totalInProgrammingJson": 44,
+    "totalInQuestionsJson": 577,
+    "totalInProgrammingJson": 41,
     "pendingReview": 0,
     "invalidQuestions": 0,
     "choice": 219,
     "fillin": 190,
     "truefalse": 137,
-    "coding": 28,
-    "programming": 44
+    "coding": 31,
+    "programming": 41
   },
   "questionTypes": [
     {
@@ -32,13 +32,13 @@
     },
     {
       "type": "coding",
-      "label": "编程分析/问答题",
-      "count": 28
+      "label": "程序分析题",
+      "count": 31
     },
     {
       "type": "programming",
-      "label": "编程题",
-      "count": 44
+      "label": "程序设计题",
+      "count": 41
     }
   ],
   "chapters": [
@@ -106,6 +106,12 @@
     "2021-2022学年第2学期B卷",
     "复习提纲(2024春季)",
     "复习提纲(核心题库)",
+    "复习提纲(核心题库)；2017-2018学年第1学期期中考试",
+    "复习提纲(核心题库)；复习提纲(2024春季)",
+    "复习提纲(核心题库)；模拟试题六",
+    "复习提纲(核心题库)；模拟试题四",
+    "复习提纲(核心题库)；模拟试题五",
+    "复习提纲(核心题库)；模拟试题五；模拟试题六",
     "模拟基础试卷",
     "模拟试卷二",
     "模拟试卷一",
@@ -115,6 +121,7 @@
     "模拟试题三",
     "模拟试题四",
     "模拟试题五",
+    "模拟试题五；模拟试题六",
     "模拟试题一",
     "综合编程练习",
     "综合改错练习",
@@ -241,29 +248,42 @@
       "P29",
       "P30",
       "P44"
-    ]
+    ],
+    "knowledgePointNormalization": {
+      "normalizedAt": "2026-06-07",
+      "controlledVocabularySize": 48,
+      "sourceBasis": "2025 面向对象程序设计 HS.pdf：C++复习纲要、历年真题题型与常见考点标注",
+      "rule": "每题knowledgePoints只允许使用kp_vocab.json中的受控词条。"
+    }
   },
   "totalQuestions": 618,
   "sourceStats": {
     "2014-2015学年第2学期测试": 3,
     "2015-2016学年第2学期期中考试": 29,
-    "2017-2018学年第1学期期中考试": 8,
+    "2017-2018学年第1学期期中考试": 7,
     "2018-2019学年第1学期": 4,
     "2018-2019学年第1学期A卷": 4,
     "2018-2019学年第2学期": 5,
     "2018年CPP期中考试": 2,
     "2021-2022学年第2学期B卷": 6,
-    "复习提纲(2024春季)": 29,
-    "复习提纲(核心题库)": 423,
+    "复习提纲(2024春季)": 26,
+    "复习提纲(核心题库)": 410,
+    "复习提纲(核心题库)；2017-2018学年第1学期期中考试": 1,
+    "复习提纲(核心题库)；复习提纲(2024春季)": 3,
+    "复习提纲(核心题库)；模拟试题六": 4,
+    "复习提纲(核心题库)；模拟试题四": 1,
+    "复习提纲(核心题库)；模拟试题五": 3,
+    "复习提纲(核心题库)；模拟试题五；模拟试题六": 1,
     "模拟基础试卷": 4,
     "模拟试卷二": 6,
     "模拟试卷一": 5,
     "模拟试题二": 7,
-    "模拟试题六": 13,
+    "模拟试题六": 7,
     "模拟试题七": 5,
     "模拟试题三": 9,
-    "模拟试题四": 11,
-    "模拟试题五": 30,
+    "模拟试题四": 10,
+    "模拟试题五": 25,
+    "模拟试题五；模拟试题六": 1,
     "模拟试题一": 6,
     "综合编程练习": 14,
     "综合改错练习": 3,
@@ -279,8 +299,8 @@
     "choice": 219,
     "fillin": 190,
     "truefalse": 137,
-    "coding": 28,
-    "programming": 44
+    "coding": 31,
+    "programming": 41
   },
   "chapterStats": {
     "多继承与虚基类": 17,
@@ -301,12 +321,26 @@
   "choiceCount": 219,
   "truefalseCount": 137,
   "fillinCount": 190,
-  "codingCount": 28,
-  "programmingCount": 44,
+  "codingCount": 31,
+  "programmingCount": 41,
   "dataUpdate": {
     "completedAt": "2026-06-07",
     "baseBranch": "origin/feat/data-update",
     "correctivePass": true,
-    "rule": "以当前 JSON 实际内容为准，删除重复和不可恢复残缺题，修正答案/题干/解析/选项，所有题目通过本地 schema、重复和元数据一致性校验。"
+    "rule": "以当前 JSON 实际内容为准，删除重复和不可恢复残缺题，修正答案/题干/解析/选项，所有题目通过本地 schema、重复和元数据一致性校验。",
+    "hsAlignedAt": "2026-06-07",
+    "hsQuestionTypeLabels": [
+      "选择题",
+      "填空题",
+      "判断题",
+      "程序分析题",
+      "程序设计题"
+    ],
+    "knowledgePointPolicy": "按HS复习纲要归并为48个考试导向标签，每题保留1-4个主标签，避免一次性散成上百个低频标签。",
+    "movedAnalysisItemsFromProgramming": [
+      "P40",
+      "P41",
+      "P44"
+    ]
   }
 }
