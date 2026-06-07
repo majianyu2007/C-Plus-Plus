@@ -1,96 +1,104 @@
 {
   "title": "面向对象程序设计期末复习题库",
   "version": "2026.06",
-  "generatedAt": "2026-06-04",
+  "generatedAt": "2026-06-06",
   "stats": {
-    "totalQuestions": 487,
-    "pendingReview": 62,
+    "totalQuestions": 688,
+    "totalInQuestionsJson": 644,
+    "totalInProgrammingJson": 44,
+    "pendingReview": 219,
     "invalidQuestions": 0,
-    "choice": 206,
-    "fillin": 171,
-    "truefalse": 110,
-    "programming": 0,
-    "program_output": 0
+    "choice": 252,
+    "fillin": 196,
+    "truefalse": 139,
+    "coding": 57,
+    "programming": 42,
+    "program_output": 2
   },
   "questionTypes": [
     {
       "type": "choice",
       "label": "选择题",
-      "count": 173
+      "count": 252
     },
     {
       "type": "fillin",
       "label": "填空题",
-      "count": 150
-    },
-    {
-      "type": "program_output",
-      "label": "输出结果题",
-      "count": 2
-    },
-    {
-      "type": "programming",
-      "label": "编程题",
-      "count": 44
+      "count": 196
     },
     {
       "type": "truefalse",
       "label": "判断题",
-      "count": 102
+      "count": 139
+    },
+    {
+      "type": "coding",
+      "label": "编程分析题",
+      "count": 57
+    },
+    {
+      "type": "programming",
+      "label": "编程题",
+      "count": 42
+    },
+    {
+      "type": "program_output",
+      "label": "程序输出题",
+      "count": 2
     }
   ],
   "chapters": [
     {
-      "chapter": "C++对C的扩充",
-      "count": 67
+      "name": "C++对C的扩充",
+      "questionCount": 77
     },
     {
-      "chapter": "STL",
-      "count": 12
+      "name": "STL",
+      "questionCount": 15
     },
     {
-      "chapter": "this/const/static成员",
-      "count": 56
+      "name": "this/const/static成员",
+      "questionCount": 80
     },
     {
-      "chapter": "友元",
-      "count": 16
+      "name": "友元",
+      "questionCount": 20
     },
     {
-      "chapter": "多态与虚函数",
-      "count": 57
+      "name": "多态与虚函数",
+      "questionCount": 84
     },
     {
-      "chapter": "多继承与虚基类",
-      "count": 13
+      "name": "多继承与虚基类",
+      "questionCount": 18
     },
     {
-      "chapter": "文件IO",
-      "count": 12
+      "name": "文件IO",
+      "questionCount": 17
     },
     {
-      "chapter": "构造函数与析构函数",
-      "count": 64
+      "name": "构造函数与析构函数",
+      "questionCount": 75
     },
     {
-      "chapter": "模板",
-      "count": 33
+      "name": "模板",
+      "questionCount": 50
     },
     {
-      "chapter": "类与对象",
-      "count": 50
+      "name": "类与对象",
+      "questionCount": 92
     },
     {
-      "chapter": "继承与派生",
-      "count": 57
+      "name": "继承与派生",
+      "questionCount": 84
     },
     {
-      "chapter": "绪论",
-      "count": 12
+      "name": "绪论",
+      "questionCount": 12
     },
     {
-      "chapter": "运算符重载",
-      "count": 38
+      "name": "运算符重载",
+      "questionCount": 64
     }
   ],
   "sources": [
@@ -158,7 +166,7 @@
     },
     "droppedInvalidQuestions": 14
   },
-  "totalQuestions": 799,
+  "totalQuestions": 654,
   "sourceStats": {
     "2021-2022学年第2学期B卷": 25,
     "2018-2019学年第2学期A卷": 13,
@@ -184,19 +192,24 @@
     "coding": 57
   },
   "chapterStats": {
-    "绪论": 17,
-    "C++对C的扩充": 89,
-    "类与对象": 125,
-    "构造函数与析构函数": 77,
-    "this/const/static成员": 83,
-    "继承与派生": 101,
-    "多继承与虚基类": 19,
-    "运算符重载": 71,
-    "多态与虚函数": 99,
-    "模板": 55,
-    "STL": 18,
-    "文件IO": 22,
-    "友元": 23
+    "绪论": 11,
+    "C++对C的扩充": 77,
+    "类与对象": 82,
+    "构造函数与析构函数": 71,
+    "this/const/static成员": 79,
+    "友元": 17,
+    "继承与派生": 81,
+    "多继承与虚基类": 18,
+    "多态与虚函数": 80,
+    "运算符重载": 60,
+    "模板": 49,
+    "STL": 15,
+    "文件IO": 14
   },
-  "lastUpdated": "2026-06-06"
+  "lastUpdated": "2026-06-06",
+  "choiceCount": 227,
+  "truefalseCount": 137,
+  "fillinCount": 191,
+  "codingCount": 55,
+  "programmingCount": 44
 }

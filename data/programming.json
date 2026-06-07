@@ -665,8 +665,16 @@
     "title": "输出圆面积错误原因",
     "requirement": "找出程序在输出半径为 2.5 的圆的面积时结果异常（如输出为 0 或其他错误值）的原因，并说明正确的成员初始化方式。",
     "answerCode": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nclass Circle {\nprivate:\n    double radius;\n\npublic:\n    // 正确写法：用成员初始化列表初始化成员变量\n    explicit Circle(double r) : radius(r) {}\n\n    double area() const {\n        const double PI = 3.141592653589793;\n        return PI * radius * radius;\n    }\n};\n\nint main() {\n    cout << \"题 25：输出圆面积错误原因\" << endl;\n    cout << \"圆半径为 2.5 时面积输出异常的常见原因：\" << endl;\n    cout << \"1. 构造函数中形参和成员变量同名，写成 radius = radius;\" << endl;\n    cout << \"   这实际上是形参给形参赋值，成员变量没有被正确初始化。\" << endl;\n    cout << \"   对于 double 成员，这会导致其值不确定，可能表现为 0，也可能是其他错误值。\" << endl;\n    cout << \"2. 应使用 this->radius = radius; 或成员初始化列表初始化成员变量。\" << endl;\n\n    Circle c(2.5);\n    cout << fixed << setprecision(2);\n    cout << \"修正后，半径为 2.5 的圆面积为：\" << c.area() << endl;\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "圆面积公式 S=πr²",
+      "常成员函数和静态数据成员的使用",
+      "cout格式化输出"
+    ],
+    "knowledgePoints": [
+      "类的定义",
+      "静态数据成员",
+      "常成员函数"
+    ],
     "knowledgePointsNormalized": [
       "构造函数",
       "初始化列表",
@@ -684,8 +692,16 @@
     "title": "类与对象常见错误提示",
     "requirement": "编写程序，定义一个简单的 Student 类，并输出 C++ 类与对象程序设计中常见的语法错误及注意事项。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\nclass Student {\nprivate:\n    int age;\n\npublic:\n    // 构造函数没有返回值类型\n    Student(int a) : age(a) {}\n\n    void show() const {\n        cout << \"age = \" << age << endl;\n    }\n};\n\nint main() {\n    cout << \"题 26：指出程序错误\" << endl;\n    cout << \"由于题目未给出原始程序，这里列出类与对象程序中的常见错误：\" << endl;\n    cout << \"1. 类定义结束后必须写分号。\" << endl;\n    cout << \"2. 构造函数不能写返回值类型，例如不能写 void Student()。\" << endl;\n    cout << \"3. private 成员不能在类外直接访问，应通过 public 成员函数访问。\" << endl;\n    cout << \"4. 非 static 成员函数必须通过对象调用。\" << endl;\n    cout << \"5. 对象定义时，如果类没有无参构造函数，就必须提供构造参数。\" << endl;\n\n    Student s(18);\n    cout << \"修正示例输出：\";\n    s.show();\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "类成员访问控制常见错误",
+      "private成员不能在类外直接访问",
+      "公有成员函数是访问私有数据的接口"
+    ],
+    "knowledgePoints": [
+      "访问控制",
+      "封装",
+      "编译错误分析"
+    ],
     "knowledgePointsNormalized": [
       "构造函数",
       "默认构造函数",
@@ -704,8 +720,16 @@
     "title": "指针与引用常见错误分析",
     "requirement": "列举 C++ 指针与引用程序中的常见错误，并说明产生错误的原因。要求至少说明指针未初始化、空指针解引用、悬空指针、动态内存释放不匹配以及引用初始化等问题，并给出简单的正确使用示例。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"题 27：指出指针程序错误\" << endl;\n    cout << \"由于题目未给出原始程序，这里列出指针与引用程序中的常见错误及原因：\" << endl;\n    cout << \"1. 指针未初始化就使用。\" << endl;\n    cout << \"   未初始化指针中存放的是不确定地址，解引用会导致未定义行为。\" << endl;\n    cout << \"2. 空指针不能解引用。\" << endl;\n    cout << \"   int* p = nullptr; *p = 10; 是错误的。\" << endl;\n    cout << \"3. 指针指向局部变量后返回，函数结束后该地址失效。\" << endl;\n    cout << \"4. new 与 delete 必须配对，new[] 与 delete[] 必须配对。\" << endl;\n    cout << \"5. 引用必须在定义时初始化，且初始化后不能再绑定到其他对象。\" << endl;\n\n    int value = 10;\n    int* p = &value;\n    cout << \"正确示例：value = \" << *p << endl;\n\n    int* arr = new int[3]{1, 2, 3};\n    cout << \"动态数组正确访问：\" << arr[0] << ' ' << arr[1] << ' ' << arr[2] << endl;\n    delete[] arr;\n    arr = nullptr;\n\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "引用必须在定义时初始化",
+      "不能重新绑定引用到其他对象",
+      "指针可以重新赋值"
+    ],
+    "knowledgePoints": [
+      "引用",
+      "指针",
+      "引用与指针的区别"
+    ],
     "knowledgePointsNormalized": [
       "引用",
       "动态内存管理",
@@ -724,8 +748,16 @@
     "title": "Date 类构造函数改错",
     "requirement": "指出下面代码中的错误，并说明原因，然后给出修改后的正确写法。\n\n错误代码示例：\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass Date {\nprivate:\n    int year;\n    int month;\n    int day;\n\npublic:\n    void Date(int year, int month, int day) {\n        year = year;\n        month = month;\n        day = day;\n    }\n\n    void show() const {\n        cout << year << '-' << month << '-' << day << endl;\n    }\n};\n\nint main() {\n    Date d(2024, 6, 1);\n    d.show();\n    return 0;\n}\n```\n\n要求说明：\n1. 指出构造函数定义中的错误；\n2. 说明形参与成员变量同名时直接赋值的问题；\n3. 给出正确的构造函数写法。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\nclass Date {\nprivate:\n    int year;\n    int month;\n    int day;\n\npublic:\n    // 构造函数不能有返回值类型，推荐使用成员初始化列表\n    Date(int y, int m, int d) : year(y), month(m), day(d) {\n        if (month < 1 || month > 12) {\n            month = 1;\n        }\n        if (day < 1 || day > 31) {\n            day = 1;\n        }\n    }\n\n    void show() const {\n        cout << year << '-' << month << '-' << day << endl;\n    }\n};\n\nint main() {\n    cout << \"题 28：Date 类构造函数改错\" << endl;\n    cout << \"Date 类构造函数中的常见错误：\" << endl;\n    cout << \"1. 构造函数不能写返回值类型。\" << endl;\n    cout << \"   错误示例：void Date(int y, int m, int d);\" << endl;\n    cout << \"2. 如果形参与成员变量同名，直接写 year = year; 会导致成员变量没有被正确赋值。\" << endl;\n    cout << \"   应使用 this->year = year; 或成员初始化列表。\" << endl;\n    cout << \"3. 构造函数名必须与类名完全相同。\" << endl;\n\n    Date d(2024, 6, 1);\n    cout << \"修正后的日期为：\";\n    d.show();\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "构造函数初始化列表的语法",
+      "const数据成员必须通过初始化列表初始化",
+      "默认参数的使用"
+    ],
+    "knowledgePoints": [
+      "构造函数",
+      "初始化列表",
+      "const成员"
+    ],
     "knowledgePointsNormalized": [
       "构造函数",
       "初始化列表",
@@ -743,8 +775,16 @@
     "title": "protected 成员访问改错",
     "requirement": "指出下面错误，并说明原因。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\n// 题目：protected 成员访问改错\n// protected 成员：\n// 1. 类外不能通过对象直接访问；\n// 2. 派生类的成员函数可以访问从基类继承来的 protected 成员。\n\nclass Base {\nprotected:\n    int value;\n\npublic:\n    Base(int v = 0) : value(v) {}\n};\n\nclass Derived : public Base {\npublic:\n    Derived(int v = 0) : Base(v) {}\n\n    void setValue(int v) {\n        // 正确：派生类成员函数可以访问基类的 protected 成员\n        value = v;\n    }\n\n    void showValue() const {\n        cout << \"value = \" << value << endl;\n    }\n};\n\nint main() {\n    Derived d(10);\n\n    // 错误示例：\n    // d.value = 20;\n    // 原因：value 是 Base 的 protected 成员，不能在类外通过对象直接访问。\n\n    // 正确做法：通过派生类提供的 public 成员函数间接访问\n    d.setValue(20);\n    d.showValue();\n\n    cout << \"错误原因：protected 成员不能在类外直接访问，只能在本类、友元或派生类成员函数中访问。\" << endl;\n\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "protected成员在派生类中可直接访问",
+      "私有继承后基类公有成员变为派生类私有",
+      "类外不能访问protected成员"
+    ],
+    "knowledgePoints": [
+      "继承方式",
+      "protected访问权限",
+      "访问控制"
+    ],
     "knowledgePointsNormalized": [
       "继承",
       "公有继承",
@@ -762,8 +802,16 @@
     "title": "引用变量改错",
     "requirement": "指出下面错误，并说明原因。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\n// 题目：引用变量改错\n// 引用的基本规则：\n// 1. 引用定义时必须初始化；\n// 2. 引用一旦绑定到某个变量，就不能再改为引用其他变量；\n// 3. 普通引用不能绑定到常量或临时对象，const 引用可以。\n\nint main() {\n    int a = 10;\n    int b = 20;\n\n    // 错误示例 1：\n    // int &r;\n    // 原因：引用变量定义时必须初始化。\n\n    // 正确写法：\n    int &r = a;\n    cout << \"r = \" << r << endl;\n\n    r = b;\n    // 注意：这里不是让 r 改为引用 b，而是把 b 的值赋给 r 所引用的变量 a。\n    cout << \"a = \" << a << endl;\n    cout << \"r = \" << r << endl;\n\n    // 错误示例 2：\n    // int &x = 100;\n    // 原因：非 const 引用不能绑定到常量或临时对象。\n\n    // 正确写法：\n    const int &x = 100;\n    cout << \"x = \" << x << endl;\n\n    cout << \"错误原因：引用必须初始化，且初始化后不能重新绑定；非 const 引用不能引用常量。\" << endl;\n\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "引用必须初始化",
+      "引用不能重新绑定",
+      "引用作为函数参数实现传址"
+    ],
+    "knowledgePoints": [
+      "引用",
+      "引用的初始化",
+      "引用与指针的区别"
+    ],
     "knowledgePointsNormalized": [
       "引用",
       "const引用"
@@ -780,8 +828,16 @@
     "title": "派生类对象访问基类私有成员改错",
     "requirement": "指出下面错误，并说明原因。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\n// 题目：派生类对象访问基类私有成员改错\n// private 成员只能在基类内部访问，派生类也不能直接访问。\n\nclass Base {\nprivate:\n    int data;\n\npublic:\n    Base(int d = 0) : data(d) {}\n\n    void setData(int d) {\n        data = d;\n    }\n\n    int getData() const {\n        return data;\n    }\n};\n\nclass Derived : public Base {\npublic:\n    Derived(int d = 0) : Base(d) {}\n\n    void show() const {\n        // 错误示例：\n        // cout << data << endl;\n        // 原因：data 是 Base 的 private 成员，派生类不能直接访问。\n\n        // 正确做法：通过基类提供的 public 成员函数访问\n        cout << \"data = \" << getData() << endl;\n    }\n};\n\nint main() {\n    Derived d(100);\n\n    // 错误示例：\n    // cout << d.data << endl;\n    // 原因：data 是基类 private 成员，类外更不能通过派生类对象直接访问。\n\n    d.show();\n    d.setData(200);\n    d.show();\n\n    cout << \"错误原因：基类 private 成员不能被派生类直接访问，也不能通过派生类对象在类外访问。\" << endl;\n\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "派生类对象不能直接访问基类私有成员",
+      "需要通过基类的公有成员函数间接访问",
+      "私有继承使基类公有成员变为派生类私有"
+    ],
+    "knowledgePoints": [
+      "继承方式",
+      "私有成员访问",
+      "访问控制"
+    ],
     "knowledgePointsNormalized": [
       "继承",
       "公有继承",
@@ -799,8 +855,16 @@
     "title": "多继承同名成员函数二义性改错",
     "requirement": "指出多继承中多个基类含有同名成员函数时，派生类对象直接调用该同名函数可能产生的错误，并说明原因；同时给出正确的改正方法。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\n// 题目：多继承同名成员函数二义性改错\n// 当多个基类中存在同名成员函数时，派生类对象直接调用该函数会产生二义性。\n\nclass Base1 {\npublic:\n    void show() const {\n        cout << \"Base1::show()\" << endl;\n    }\n};\n\nclass Base2 {\npublic:\n    void show() const {\n        cout << \"Base2::show()\" << endl;\n    }\n};\n\nclass Derived : public Base1, public Base2 {\npublic:\n    // 解决方法 1：在派生类中重新定义同名函数，明确调用哪个基类的函数\n    void show() const {\n        cout << \"Derived::show()\" << endl;\n        Base1::show();\n        Base2::show();\n    }\n};\n\nint main() {\n    Derived d;\n\n    // 错误示例：如果 Derived 中没有重新定义 show()，下面调用会产生二义性\n    // d.show();\n    // 原因：Base1 和 Base2 中都有 show()，编译器不知道调用哪一个。\n\n    // 正确做法 1：通过作用域限定符明确指定\n    d.Base1::show();\n    d.Base2::show();\n\n    // 正确做法 2：在派生类中重新定义 show()\n    d.show();\n\n    cout << \"错误原因：多继承中多个基类有同名成员函数时，派生类对象直接调用会产生二义性。\" << endl;\n\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "多继承中同名成员函数的二义性",
+      "使用作用域运算符::消除二义性",
+      "虚基类解决菱形继承问题"
+    ],
+    "knowledgePoints": [
+      "多继承",
+      "二义性问题",
+      "作用域运算符"
+    ],
     "knowledgePointsNormalized": [
       "多继承",
       "二义性问题",
@@ -818,8 +882,16 @@
     "title": "设计 Rect 类",
     "requirement": "设计 Rect 类，包含私有数据成员 length、width，默认值为 0；通过成员函数设置长和宽并保证范围在 (0,50)；实现 GetPerimeter() 求周长。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\nclass Rect\n{\nprivate:\n    double length, width;\npublic:\n    Rect(double l = 0, double w = 0): length(l), width(w) { }\n\n    void Set(double l, double w)\n    {\n        if (l <= 0 || l >= 50 || w <= 0 || w >= 50)\n            throw \"数据不在指定范围(0,50)!\";\n        length = l;\n        width = w;\n    }\n\n    double GetPerimeter()\n    {\n        return 2 * (length + width);\n    }\n};\n\nint main()\n{\n    try\n    {\n        Rect obj;\n        obj.Set(1, 8);\n        cout << \"周长:\" << obj.GetPerimeter() << endl;\n    }\n    catch (const char *str)\n    {\n        cout << \"异常信息:\" << str << endl;\n    }\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "类的定义与成员函数实现",
+      "构造函数初始化数据成员",
+      "成员函数计算面积和周长"
+    ],
+    "knowledgePoints": [
+      "类与对象",
+      "构造函数",
+      "成员函数"
+    ],
     "knowledgePointsNormalized": [
       "封装",
       "构造函数",
@@ -837,8 +909,16 @@
     "title": "定义二维坐标类 Vector2d",
     "requirement": "定义 Vector2d 类，私有 double 成员 x、y；定义构造函数、Show() 函数；以成员函数方式重载 +，实现两个对象 x、y 对应相加；编写测试程序。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\nclass Vector2d\n{\n    double x, y;\npublic:\n    Vector2d(double a, double b): x(a), y(b) { }\n    void Show() { cout << x << \" \" << y << endl; }\n    Vector2d operator+(Vector2d &obj);\n};\n\nVector2d Vector2d::operator+(Vector2d &obj)\n{\n    return Vector2d(x + obj.x, y + obj.y);\n}\n\nint main()\n{\n    Vector2d d1(3.5, 4.5), d2(2.5, 5.5), d3(0.0, 0.0);\n    d3 = d1 + d2;\n    d3.Show();\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "二维坐标类的设计",
+      "构造函数与析构函数",
+      "成员函数实现距离计算"
+    ],
+    "knowledgePoints": [
+      "类与对象",
+      "构造函数",
+      "成员函数"
+    ],
     "knowledgePointsNormalized": [
       "运算符重载",
       "构造函数",
@@ -856,8 +936,16 @@
     "title": "函数模板求绝对值",
     "requirement": "编写一个函数模板，用于求参数的绝对值，并编写测试程序进行测试。函数模板声明如下：template <class Type> Type Abs(Type tVar)",
     "answerCode": "#include <iostream>\nusing namespace std;\ntemplate <class Type>\nType Abs(Type tVar)\n{\n    if (tVar >= 0) return tVar;\n    else return -tVar;\n}\nint main()\n{\n    cout << Abs(5) << endl;\n    cout << Abs(-5) << endl;\n    cout << Abs(2.5) << endl;\n    cout << Abs(-2.5) << endl;\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "函数模板的定义和使用",
+      "template <class Type> 声明",
+      "绝对值的条件判断"
+    ],
+    "knowledgePoints": [
+      "函数模板",
+      "模板实例化",
+      "泛型编程"
+    ],
     "knowledgePointsNormalized": [
       "函数模板",
       "模板实例化"
@@ -874,8 +962,16 @@
     "title": "复数类与加法运算符重载",
     "requirement": "定义一个复数类 CComplex，定义带有 2 个参数（其中一个为缺省参数）的构造函数，显示复数值的函数 Show()，重载“+”运算符（用成员函数实现），并编写测试程序进行测试。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\nclass CComplex\n{\nprivate:\n    double m_dReal;\n    double m_dImage;\n\npublic:\n    CComplex(double dReal, double dImage = 0)\n    {\n        m_dReal = dReal;\n        m_dImage = dImage;\n    }\n\n    void Show()\n    {\n        cout << m_dReal;\n        if (m_dImage > 0)\n        {\n            cout << \"+\" << m_dImage << \"i\";\n        }\n        else if (m_dImage < 0)\n        {\n            cout << \"-\" << -m_dImage << \"i\";\n        }\n        cout << endl;\n    }\n\n    CComplex operator+(const CComplex &obj)\n    {\n        CComplex objTemp(m_dReal + obj.m_dReal,\n                         m_dImage + obj.m_dImage);\n        return objTemp;\n    }\n};\n\nint main()\n{\n    CComplex c1(3, 4);\n    CComplex c2(5, -2);\n    CComplex c3 = c1 + c2;\n\n    c1.Show();\n    c2.Show();\n    c3.Show();\n\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "复数类的定义",
+      "运算符重载为成员函数",
+      "重载+运算符实现复数加法"
+    ],
+    "knowledgePoints": [
+      "运算符重载",
+      "类与对象",
+      "成员函数"
+    ],
     "knowledgePointsNormalized": [
       "成员运算符重载",
       "默认参数",
@@ -893,8 +989,16 @@
     "title": "函数模板求数组元素之和",
     "requirement": "编写一个函数模板，用于求数组中各元素之和，并编写测试程序进行测试。函数模板声明为：template <class Type> Type Sum(Type tArray[], int iSize)",
     "answerCode": "#include <iostream>\nusing namespace std;\n\ntemplate <class Type>\nType Sum(Type tArray[], int iSize)\n{\n    Type tSum = 0;\n    for (int i = 0; i < iSize; i++)\n    {\n        tSum = tSum + tArray[i];\n    }\n    return tSum;\n}\n\nint main(void)\n{\n    int a[] = {1, 2, 3};\n    double b[] = {1.5, 2.8, 8.9, 8};\n\n    cout << Sum(a, 3) << endl;\n    cout << Sum(b, 4) << endl;\n\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "函数模板的定义和使用",
+      "数组作为模板参数传递",
+      "遍历数组求和"
+    ],
+    "knowledgePoints": [
+      "函数模板",
+      "数组操作",
+      "模板实例化"
+    ],
     "knowledgePointsNormalized": [
       "函数模板",
       "模板实例化"
@@ -911,8 +1015,16 @@
     "title": "抽象类 CShape 及派生类求图形周长（矩形与圆）",
     "requirement": "定义抽象类 CShape，包含纯虚函数 GetLength()；派生出矩形类 CRectangle 和圆类 CCircle，在派生类中重写 GetLength()，用于求图形的周长，并编写测试程序。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\nclass CShape\n{\npublic:\n    virtual double GetLength() const = 0;\n};\n\nclass CRectangle : public CShape\n{\npublic:\n    CRectangle(double dWidth, double dHeight)\n    {\n        m_dWidth = dWidth;\n        m_dHeight = dHeight;\n    }\n\n    double GetLength() const\n    {\n        return 2 * (m_dWidth + m_dHeight);\n    }\n\nprivate:\n    double m_dWidth, m_dHeight;\n};\n\nclass CCircle : public CShape\n{\npublic:\n    CCircle(double dRadius)\n    {\n        m_dRadius = dRadius;\n    }\n\n    double GetLength() const\n    {\n        return 2 * 3.1415926 * m_dRadius;\n    }\n\nprivate:\n    double m_dRadius;\n};\n\nint main(void)\n{\n    CRectangle oRectangle(2, 3);\n    cout << oRectangle.GetLength() << endl;\n\n    CCircle oCircle(10);\n    cout << oCircle.GetLength() << endl;\n\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "抽象类和纯虚函数的定义",
+      "派生类重写虚函数",
+      "多态实现图形周长计算"
+    ],
+    "knowledgePoints": [
+      "抽象类",
+      "纯虚函数",
+      "多态与虚函数"
+    ],
     "knowledgePointsNormalized": [
       "纯虚函数",
       "虚函数",
@@ -930,8 +1042,16 @@
     "title": "Shape 抽象基类及派生类 Circle、Rectangle",
     "requirement": "编写程序，定义抽象基类 Shape(形状)，由它派生出 2 个派生类：Circle(圆形) 和 Rectangle(矩形)；用函数 Show() 分别显示各种图形的相关信息；最后显示所有图形的总面积。",
     "answerCode": "#include <iostream>\n#include <vector>\n#include <memory>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\n// 抽象基类 Shape\nclass Shape {\npublic:\n    virtual ~Shape() = default;\n\n    // 纯虚函数：计算面积\n    virtual double Area() const = 0;\n\n    // 纯虚函数：显示图形信息\n    virtual void Show() const = 0;\n};\n\n// 圆形类\nclass Circle : public Shape {\nprivate:\n    double radius;\n\npublic:\n    explicit Circle(double r) : radius(r) {}\n\n    double Area() const override {\n        const double PI = acos(-1.0);\n        return PI * radius * radius;\n    }\n\n    void Show() const override {\n        cout << \"Circle: radius = \" << radius\n             << \", area = \" << Area() << endl;\n    }\n};\n\n// 矩形类\nclass Rectangle : public Shape {\nprivate:\n    double length;\n    double width;\n\npublic:\n    Rectangle(double l, double w) : length(l), width(w) {}\n\n    double Area() const override {\n        return length * width;\n    }\n\n    void Show() const override {\n        cout << \"Rectangle: length = \" << length\n             << \", width = \" << width\n             << \", area = \" << Area() << endl;\n    }\n};\n\nint main() {\n    cout << fixed << setprecision(2);\n\n    vector<unique_ptr<Shape>> shapes;\n\n    // 创建不同图形对象\n    shapes.push_back(make_unique<Circle>(3.0));\n    shapes.push_back(make_unique<Rectangle>(4.0, 5.0));\n    shapes.push_back(make_unique<Circle>(2.5));\n    shapes.push_back(make_unique<Rectangle>(6.0, 2.0));\n\n    double totalArea = 0.0;\n\n    cout << \"各图形信息如下：\" << endl;\n    for (const auto &shape : shapes) {\n        shape->Show();\n        totalArea += shape->Area();\n    }\n\n    cout << \"所有图形的总面积 = \" << totalArea << endl;\n\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "Shape抽象基类定义",
+      "派生类Circle和Rectangle实现area()",
+      "基类指针实现多态调用"
+    ],
+    "knowledgePoints": [
+      "抽象类",
+      "多态与虚函数",
+      "继承与派生"
+    ],
     "knowledgePointsNormalized": [
       "抽象类",
       "纯虚函数",
@@ -949,8 +1069,16 @@
     "title": "Shape 抽象基类及派生类面积计算",
     "requirement": "定义抽象基类 Shape，由它派生 Circle、Rectangle、Square，用虚函数 ShowArea() 分别显示各种图形面积，并显示所有图形总面积。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\nconst double PI = 3.1415926;\n\nclass Shape\n{\npublic:\n    Shape() { }\n    virtual ~Shape() { }\n    virtual void ShowArea() = 0;\n    static double totalArea;\n    static void ShowTotalArea()\n    {\n        cout << \"总面积:\" << totalArea << endl;\n    }\n};\n\ndouble Shape::totalArea = 0;\n\nclass Circle : public Shape\n{\nprivate:\n    double radius;\n\npublic:\n    Circle(double r) : radius(r)\n    {\n        totalArea += PI * r * r;\n    }\n\n    ~Circle() { }\n\n    virtual void ShowArea()\n    {\n        cout << \"圆面积:\" << PI * radius * radius << endl;\n    }\n};\n\nclass Rectangle : public Shape\n{\nprivate:\n    double length;\n    double width;\n\npublic:\n    Rectangle(double l, double w) : length(l), width(w)\n    {\n        totalArea += l * w;\n    }\n\n    ~Rectangle() { }\n\n    virtual void ShowArea()\n    {\n        cout << \"矩形面积:\" << length * width << endl;\n    }\n};\n\nclass Square : public Shape\n{\nprivate:\n    double side;\n\npublic:\n    Square(double s) : side(s)\n    {\n        totalArea += s * s;\n    }\n\n    ~Square() { }\n\n    virtual void ShowArea()\n    {\n        cout << \"正方形面积:\" << side * side << endl;\n    }\n};\n\nint main()\n{\n    Shape* p[3];\n\n    p[0] = new Circle(2.0);\n    p[1] = new Rectangle(3.0, 4.0);\n    p[2] = new Square(5.0);\n\n    for (int i = 0; i < 3; ++i)\n    {\n        p[i]->ShowArea();\n    }\n\n    Shape::ShowTotalArea();\n\n    for (int i = 0; i < 3; ++i)\n    {\n        delete p[i];\n    }\n\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "Shape抽象基类与纯虚函数",
+      "派生类Circle和Rectangle",
+      "多态实现不同图形面积计算"
+    ],
+    "knowledgePoints": [
+      "抽象类",
+      "纯虚函数",
+      "多态"
+    ],
     "knowledgePointsNormalized": [
       "纯虚函数",
       "抽象类",
@@ -967,38 +1095,55 @@
     "chapter": "构造函数与析构函数",
     "title": "程序分析题7",
     "requirement": "阅读下列程序，写出输出结果。\n\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int i;\npublic:\n    A() {\n        i = 0;\n        cout << \"constructor,i=\" << i << \",\";\n    }\n\n    ~A() {\n        cout << \"destructor\";\n    }\n};\n\nint main() {\n    A obj;\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "构造函数在对象创建时自动调用",
+      "析构函数在对象销毁时自动调用",
+      "构造函数中输出i的值"
+    ],
+    "knowledgePoints": [
+      "构造函数",
+      "析构函数",
+      "对象生命周期"
+    ],
     "knowledgePointsNormalized": [
       "构造函数",
       "析构函数",
       "对象生命周期"
     ],
     "explanation": "## 1. **设计思路与要点**\n\n本题考查的是 **构造函数与析构函数的调用时机**，属于 C++ 面向对象程序设计中非常基础但重要的知识点。\n\n程序如下：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int i;\npublic:\n    A() {\n        i = 0;\n        cout << \"constructor,i=\" << i << \",\";\n    }\n\n    ~A() {\n        cout << \"destructor\";\n    }\n};\n\nint main() {\n    A obj;\n    return 0;\n}\n```\n\n---\n\n### 1.1 类 `A` 的结构分析\n\n类 `A` 中包含：\n\n```cpp\nprivate:\n    int i;\n```\n\n这是一个私有成员变量，只能在类的成员函数内部访问。\n\n类中定义了两个特殊成员函数：\n\n```cpp\nA()\n```\n\n这是 **默认构造函数**，对象创建时自动调用。\n\n```cpp\n~A()\n```\n\n这是 **析构函数**，对象生命周期结束时自动调用。\n\n---\n\n### 1.2 构造函数的作用\n\n构造函数用于对象初始化。\n\n在本题中：\n\n```cpp\nA() {\n    i = 0;\n    cout << \"constructor,i=\" << i << \",\";\n}\n```\n\n当执行：\n\n```cpp\nA obj;\n```\n\n时，会自动调用构造函数 `A()`。\n\n构造函数完成两件事情：\n\n1. 将成员变量 `i` 赋值为 `0`\n2. 输出：\n\n```cpp\nconstructor,i=0,\n```\n\n注意，输出内容末尾有一个逗号 `,`。\n\n---\n\n### 1.3 析构函数的作用\n\n析构函数用于对象销毁前的清理工作。\n\n本题中的析构函数为：\n\n```cpp\n~A() {\n    cout << \"destructor\";\n}\n```\n\n当对象 `obj` 生命周期结束时，会自动调用析构函数。\n\n由于 `obj` 是 `main` 函数中的局部自动对象，其生命周期从定义处开始，到所在作用域结束时结束。\n\n也就是说，程序执行到：\n\n```cpp\nreturn 0;\n```\n\n之前或 `main` 函数即将结束时，`obj` 会被销毁，从而自动调用析构函数。\n\n析构函数输出：\n\n```cpp\ndestructor\n```\n\n---\n\n### 1.4 对象生命周期分析\n\n在 `main` 函数中：\n\n```cpp\nint main() {\n    A obj;\n    return 0;\n}\n```\n\n执行过程如下：\n\n1. 进入 `main` 函数\n2. 执行 `A obj;`\n3. 创建局部对象 `obj`\n4. 自动调用构造函数 `A()`\n5. 输出：\n\n   ```cpp\n   constructor,i=0,\n   ```\n\n6. 执行 `return 0;`\n7. `main` 函数结束前，局部对象 `obj` 生命周期结束\n8. 自动调用析构函数 `~A()`\n9. 输出：\n\n   ```cpp\n   destructor\n   ```\n\n因此最终输出为：\n\n```cpp\nconstructor,i=0,destructor\n```\n\n---\n\n## 2. **参考代码深度解读**\n\n虽然题目中的“参考代码实现”为空，但原程序本身就是需要分析的代码。下面对关键代码进行逐段解析。\n\n---\n\n### 2.1 成员变量 `i`\n\n```cpp\nprivate:\n    int i;\n```\n\n`i` 是类 `A` 的私有数据成员。\n\n由于使用了 `private` 访问权限，类外代码不能直接访问 `i`，例如下面代码是非法的：\n\n```cpp\nA obj;\nobj.i = 10;   // 错误，i 是 private 成员\n```\n\n只能通过类的成员函数访问或修改它。\n\n在本题中，构造函数内部可以访问 `i`：\n\n```cpp\ni = 0;\n```\n\n这是合法的，因为构造函数是类 `A` 的成员函数。\n\n---\n\n### 2.2 默认构造函数 `A()`\n\n```cpp\nA() {\n    i = 0;\n    cout << \"constructor,i=\" << i << \",\";\n}\n```\n\n这是一个无参构造函数，也称为默认构造函数。\n\n当定义对象时：\n\n```cpp\nA obj;\n```\n\n编译器会自动调用：\n\n```cpp\nA::A()\n```\n\n因此输出：\n\n```cpp\nconstructor,i=0,\n```\n\n这里需要注意，构造函数没有返回值，连 `void` 也不能写。\n\n下面这种写法是错误的：\n\n```cpp\nvoid A() {\n    // 错误，这不是构造函数\n}\n```\n\n如果写成 `void A()`，它会被视为普通成员函数，而不是构造函数。\n\n---\n\n### 2.3 析构函数 `~A()`\n\n```cpp\n~A() {\n    cout << \"destructor\";\n}\n```\n\n析构函数的特点：\n\n1. 名称为类名前加 `~`\n2. 没有返回值\n3. 不能带参数\n4. 一个类只能有一个析构函数\n5. 对象销毁时自动调用\n\n本题中，`obj` 是局部变量，存储期为自动存储期。\n\n当 `main` 函数结束时，`obj` 被销毁，析构函数自动执行。\n\n---\n\n### 2.4 `main` 函数中的对象创建与销毁\n\n```cpp\nint main() {\n    A obj;\n    return 0;\n}\n```\n\n这里的 `A obj;` 表示创建一个 `A` 类型的对象。\n\n它不是指针，不需要手动 `delete`，也不是动态分配对象。\n\n因此，对象的构造和析构完全由编译器自动管理：\n\n```cpp\nA obj;  // 自动调用构造函数\n```\n\n当离开作用域时：\n\n```cpp\n}       // 自动调用析构函数\n```\n\n所以该程序的调用顺序是：\n\n```cpp\nA::A()\nA::~A()\n```\n\n对应输出顺序是：\n\n```cpp\nconstructor,i=0,\ndestructor\n```\n\n由于构造函数的输出末尾已经有逗号，因此两个输出连接起来后为：\n\n```cpp\nconstructor,i=0,destructor\n```\n\n---\n\n### 2.5 输出结果\n\n最终输出结果为：\n\n```cpp\nconstructor,i=0,destructor\n```\n\n需要注意，程序中没有输出换行符 `endl` 或 `'\\n'`，因此实际输出不会主动换行。\n\n---\n\n## 3. **避坑指南与最佳实践**\n\n---\n\n### 3.1 不要忘记构造函数会在对象创建时自动调用\n\n很多初学者容易忽略：\n\n```cpp\nA obj;\n```\n\n这行代码不仅仅是声明变量，还会真正创建对象，并自动调用构造函数。\n\n因此，程序刚执行到这一行时，就会输出：\n\n```cpp\nconstructor,i=0,\n```\n\n---\n\n### 3.2 析构函数在对象生命周期结束时自动调用\n\n局部对象的析构时间点是离开其作用域时。\n\n例如：\n\n```cpp\nint main() {\n    {\n        A obj;\n    } // 这里 obj 生命周期结束，析构函数被调用\n\n    return 0;\n}\n```\n\n如果是这种写法，析构函数会在内部代码块结束时调用，而不是等到 `main` 结束。\n\n本题中 `obj` 定义在 `main` 函数体内，因此它在 `main` 函数结束时析构。\n\n---\n\n### 3.3 注意输出中没有换行\n\n本题中构造函数和析构函数的输出代码分别是：\n\n```cpp\ncout << \"constructor,i=\" << i << \",\";\n```\n\n和：\n\n```cpp\ncout << \"destructor\";\n```\n\n二者都没有使用 `endl` 或 `'\\n'`。\n\n所以输出会连在一起：\n\n```cpp\nconstructor,i=0,destructor\n```\n\n而不是：\n\n```cpp\nconstructor,i=0,\ndestructor\n```\n\n---\n\n### 3.4 不要把 `A obj;` 误认为函数声明\n\n本题中：\n\n```cpp\nA obj;\n```\n\n是对象定义，会调用构造函数。\n\n但是 C++ 中存在一种常见陷阱，叫作“最令人困惑的解析”。\n\n例如：\n\n```cpp\nA obj();\n```\n\n这不是创建对象，而是声明了一个函数 `obj`，该函数无参数，返回值类型为 `A`。\n\n因此：\n\n```cpp\nA obj();\n```\n\n不会调用构造函数。\n\n如果想创建对象，应写：\n\n```cpp\nA obj;\n```\n\n或者在现代 C++ 中写：\n\n```cpp\nA obj{};\n```\n\n---\n\n### 3.5 构造函数中更推荐使用初始化列表\n\n本题代码中使用的是赋值方式：\n\n```cpp\nA() {\n    i = 0;\n}\n```\n\n对于 `int` 类型成员，这样写没有明显问题。\n\n但在 C++ 中，更推荐使用成员初始化列表：\n\n```cpp\nA() : i(0) {\n    cout << \"constructor,i=\" << i << \",\";\n}\n```\n\n原因是：\n\n1. 初始化列表是真正的初始化\n2. 构造函数体内赋值是先默认初始化再赋值\n3. 对于 `const` 成员、引用成员、没有默认构造函数的成员对象，必须使用初始化列表\n\n例如：\n\n```cpp\nclass B {\nprivate:\n    const int x;\npublic:\n    B() : x(10) {\n    }\n};\n```\n\n如果写成：\n\n```cpp\nclass B {\nprivate:\n    const int x;\npublic:\n    B() {\n        x = 10; // 错误，const 成员不能在构造函数体内赋值\n    }\n};\n```\n\n会编译失败。\n\n因此，本题可以改写为：\n\n```cpp\nclass A {\nprivate:\n    int i;\npublic:\n    A() : i(0) {\n        cout << \"constructor,i=\" << i << \",\";\n    }\n\n    ~A() {\n        cout << \"destructor\";\n    }\n};\n```\n\n输出结果不变，仍然是：\n\n```cpp\nconstructor,i=0,destructor\n```\n\n---\n\n### 3.6 析构函数中通常用于释放资源\n\n本题的析构函数只是输出信息：\n\n```cpp\n~A() {\n    cout << \"destructor\";\n}\n```\n\n实际开发中，析构函数通常用于释放对象持有的资源，例如：\n\n1. 动态分配的内存\n2. 文件句柄\n3. 网络连接\n4. 互斥锁\n5. 数据库连接\n\n例如：\n\n```cpp\nclass Buffer {\nprivate:\n    int* data;\npublic:\n    Buffer() {\n        data = new int[100];\n    }\n\n    ~Buffer() {\n        delete[] data;\n    }\n};\n```\n\n不过现代 C++ 中更推荐使用 RAII 类型和智能指针，例如：\n\n```cpp\n#include <memory>\n\nclass Buffer {\nprivate:\n    std::unique_ptr<int[]> data;\npublic:\n    Buffer() : data(std::make_unique<int[]>(100)) {\n    }\n};\n```\n\n这样可以减少手动 `new` / `delete` 带来的内存泄漏风险。\n\n---\n\n### 3.7 本题不涉及虚析构函数，但要理解其适用场景\n\n本题中没有继承和多态，因此析构函数不需要写成 `virtual`。\n\n但是如果类被设计为基类，并且可能通过基类指针删除派生类对象，则基类析构函数应声明为虚析构函数：\n\n```cpp\nclass Base {\npublic:\n    virtual ~Base() {\n    }\n};\n```\n\n否则下面代码可能导致派生类析构函数不被调用：\n\n```cpp\nBase* p = new Derived;\ndelete p;  // 如果 Base 析构函数不是 virtual，可能只调用 Base 析构函数\n```\n\n本题中：\n\n```cpp\nA obj;\n```\n\n是直接定义对象，不涉及基类指针，也不涉及动态删除，因此普通析构函数即可。\n\n---\n\n### 3.8 本题的核心结论\n\n本题程序的执行顺序为：\n\n```cpp\n进入 main\n创建 obj\n调用构造函数 A()\n输出 constructor,i=0,\nmain 结束\n调用析构函数 ~A()\n输出 destructor\n```\n\n最终输出结果：\n\n```cpp\nconstructor,i=0,destructor\n```",
-    "type": "program_output",
+    "type": "programming",
     "expectedOutput": "constructor,i=0,destructor",
     "originalId": 48,
     "stem": "",
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "answerCode": "#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int i;\npublic:\n    A() {\n        i = 0;\n        cout << \"constructor,i=\" << i << \",\";\n    }\n\n    ~A() {\n        cout << \"destructor\";\n    }\n};\n\nint main() {\n    A obj;\n    return 0;\n}\n"
   },
   {
     "id": "P41",
     "chapter": "构造函数与析构函数",
     "title": "程序分析题8",
     "requirement": "阅读下列程序，写出输出结果。\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x;\n    int y;\npublic:\n    A(int a, int b) {\n        x = a;\n        y = b;\n    }\n\n    void show() {\n        cout << x << \" \" << y << endl;\n    }\n};\n\nint main() {\n    A obj(2, 3);\n    obj.show();\n    return 0;\n}\n```",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "带参数的构造函数初始化对象",
+      "成员函数输出数据成员的值"
+    ],
+    "knowledgePoints": [
+      "构造函数",
+      "成员函数",
+      "类的数据成员"
+    ],
     "knowledgePointsNormalized": [
       "构造函数"
     ],
     "explanation": "## 1. **设计思路与要点**\n\n本题考查的是 **构造函数的调用过程** 以及 **对象成员初始化后的输出结果分析**。\n\n程序定义了一个类 `A`：\n\n```cpp\nclass A {\nprivate:\n    int x;\n    int y;\npublic:\n    A(int a, int b) {\n        x = a;\n        y = b;\n    }\n\n    void show() {\n        cout << x << \" \" << y << endl;\n    }\n};\n```\n\n类中包含两个私有数据成员：\n\n```cpp\nint x;\nint y;\n```\n\n由于它们被声明为 `private`，因此在类外部不能直接访问：\n\n```cpp\nobj.x; // 错误，x 是私有成员\nobj.y; // 错误，y 是私有成员\n```\n\n外部只能通过类提供的公有成员函数进行访问或操作，例如本题中的：\n\n```cpp\nshow()\n```\n\n---\n\n### 构造函数的作用\n\n类 `A` 定义了一个带两个参数的构造函数：\n\n```cpp\nA(int a, int b) {\n    x = a;\n    y = b;\n}\n```\n\n构造函数具有以下特点：\n\n1. **函数名与类名相同**\n2. **没有返回值类型**\n3. **在对象创建时自动调用**\n4. 通常用于初始化对象的数据成员\n\n在 `main()` 函数中：\n\n```cpp\nA obj(2, 3);\n```\n\n这条语句创建了一个 `A` 类对象 `obj`，并自动调用构造函数：\n\n```cpp\nA(int a, int b)\n```\n\n其中：\n\n```cpp\na = 2\nb = 3\n```\n\n于是构造函数体内执行：\n\n```cpp\nx = a; // x = 2\ny = b; // y = 3\n```\n\n因此对象 `obj` 内部成员的状态为：\n\n```cpp\nx = 2\ny = 3\n```\n\n---\n\n### 成员函数 `show()` 的作用\n\n成员函数：\n\n```cpp\nvoid show() {\n    cout << x << \" \" << y << endl;\n}\n```\n\n用于输出当前对象的数据成员 `x` 和 `y`。\n\n由于 `show()` 是类 `A` 的成员函数，所以它可以直接访问私有成员 `x` 和 `y`。\n\n执行：\n\n```cpp\nobj.show();\n```\n\n时，会输出：\n\n```cpp\n2 3\n```\n\n其中：\n\n- `cout << x` 输出 `2`\n- `cout << \" \"` 输出一个空格\n- `cout << y` 输出 `3`\n- `endl` 换行并刷新输出缓冲区\n\n---\n\n## 2. **参考代码深度解读**\n\n完整程序如下：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x;\n    int y;\npublic:\n    A(int a, int b) {\n        x = a;\n        y = b;\n    }\n\n    void show() {\n        cout << x << \" \" << y << endl;\n    }\n};\n\nint main() {\n    A obj(2, 3);\n    obj.show();\n    return 0;\n}\n```\n\n---\n\n### 头文件与命名空间\n\n```cpp\n#include <iostream>\nusing namespace std;\n```\n\n`#include <iostream>` 引入标准输入输出流库，使程序可以使用 `cout` 和 `endl`。\n\n`using namespace std;` 表示使用标准命名空间中的名称，因此可以直接写：\n\n```cpp\ncout\nendl\n```\n\n如果不使用 `using namespace std;`，则需要写成：\n\n```cpp\nstd::cout\nstd::endl\n```\n\n---\n\n### 类的定义\n\n```cpp\nclass A {\nprivate:\n    int x;\n    int y;\npublic:\n    A(int a, int b) {\n        x = a;\n        y = b;\n    }\n\n    void show() {\n        cout << x << \" \" << y << endl;\n    }\n};\n```\n\n`class A` 定义了一个类类型。\n\n在 C++ 中，`class` 默认访问权限是 `private`，所以即使省略：\n\n```cpp\nprivate:\n```\n\n下面的成员默认也是私有的。但本题显式写出 `private`，代码含义更加清晰。\n\n---\n\n### 私有成员变量\n\n```cpp\nprivate:\n    int x;\n    int y;\n```\n\n`x` 和 `y` 是对象的内部数据。\n\n每创建一个 `A` 类对象，该对象都会拥有自己独立的一份 `x` 和 `y`。\n\n例如：\n\n```cpp\nA obj1(2, 3);\nA obj2(5, 6);\n```\n\n则：\n\n```cpp\nobj1.x = 2, obj1.y = 3\nobj2.x = 5, obj2.y = 6\n```\n\n两者互不影响。\n\n---\n\n### 构造函数分析\n\n```cpp\nA(int a, int b) {\n    x = a;\n    y = b;\n}\n```\n\n当执行：\n\n```cpp\nA obj(2, 3);\n```\n\n时，相当于调用：\n\n```cpp\nA::A(2, 3)\n```\n\n构造函数参数对应关系如下：\n\n| 形参 | 实参 | 赋值结果 |\n|---|---|---|\n| `a` | `2` | `x = 2` |\n| `b` | `3` | `y = 3` |\n\n所以对象构造完成后：\n\n```cpp\nobj.x == 2\nobj.y == 3\n```\n\n当然，由于 `x` 和 `y` 是私有成员，这里只是从逻辑上说明，不能在类外直接写 `obj.x` 或 `obj.y`。\n\n---\n\n### 关于初始化列表的说明\n\n本题构造函数中使用的是函数体内赋值：\n\n```cpp\nA(int a, int b) {\n    x = a;\n    y = b;\n}\n```\n\n对于 `int` 这样的基础类型，这种写法在本题中完全可以正常工作。\n\n不过在 C++ 面向对象编程中，更推荐使用 **成员初始化列表**：\n\n```cpp\nA(int a, int b) : x(a), y(b) {\n}\n```\n\n原因是：\n\n1. 初始化列表是在对象成员创建时直接初始化；\n2. 函数体内赋值是对象成员已经创建之后再赋值；\n3. 对于 `const` 成员、引用成员、没有默认构造函数的成员对象，必须使用初始化列表；\n4. 初始化列表通常更加高效，也更符合 C++ 构造对象的语义。\n\n例如：\n\n```cpp\nclass A {\nprivate:\n    int x;\n    int y;\npublic:\n    A(int a, int b) : x(a), y(b) {}\n\n    void show() {\n        cout << x << \" \" << y << endl;\n    }\n};\n```\n\n该写法与本题输出结果完全相同。\n\n---\n\n### 成员函数 `show()` 分析\n\n```cpp\nvoid show() {\n    cout << x << \" \" << y << endl;\n}\n```\n\n成员函数可以直接访问本类对象的私有数据成员。\n\n当执行：\n\n```cpp\nobj.show();\n```\n\n时，实际上是通过对象 `obj` 调用成员函数。\n\n可以理解为：\n\n```cpp\nshow() 函数作用在 obj 这个对象上\n```\n\n因此 `show()` 中的 `x` 和 `y` 指的是 `obj` 对象内部的 `x` 和 `y`。\n\n输出过程为：\n\n```cpp\ncout << x      // 输出 2\ncout << \" \"    // 输出空格\ncout << y      // 输出 3\ncout << endl   // 输出换行\n```\n\n所以最终显示结果是：\n\n```cpp\n2 3\n```\n\n---\n\n### `main()` 函数执行流程\n\n```cpp\nint main() {\n    A obj(2, 3);\n    obj.show();\n    return 0;\n}\n```\n\n执行顺序如下：\n\n1. 进入 `main()` 函数；\n2. 执行 `A obj(2, 3);`；\n3. 创建对象 `obj`；\n4. 自动调用构造函数 `A(int a, int b)`；\n5. 将 `x` 设置为 `2`，将 `y` 设置为 `3`；\n6. 执行 `obj.show();`；\n7. 输出 `x` 和 `y`；\n8. 输出换行；\n9. 执行 `return 0;`，程序结束。\n\n---\n\n### 输出结果\n\n因此，程序最终输出为：\n\n```cpp\n2 3\n```\n\n注意：`2` 和 `3` 中间有一个空格，末尾有换行。\n\n---\n\n## 3. **避坑指南与最佳实践**\n\n### 坑点一：误以为构造函数需要手动调用\n\n错误理解：\n\n```cpp\nA obj;\nobj.A(2, 3); // 错误\n```\n\n构造函数不能像普通成员函数一样在对象创建后手动调用。\n\n正确写法是：\n\n```cpp\nA obj(2, 3);\n```\n\n或者：\n\n```cpp\nA obj = A(2, 3);\n```\n\n构造函数会在对象创建时自动执行。\n\n---\n\n### 坑点二：忘记传入构造函数参数\n\n本题类 `A` 只定义了带两个参数的构造函数：\n\n```cpp\nA(int a, int b)\n```\n\n因此下面写法是错误的：\n\n```cpp\nA obj;\n```\n\n原因是：一旦程序员自定义了有参构造函数，编译器就不会再自动生成默认无参构造函数。\n\n如果希望允许无参创建对象，需要额外定义默认构造函数：\n\n```cpp\nA() : x(0), y(0) {}\n```\n\n或者给构造函数参数设置默认值：\n\n```cpp\nA(int a = 0, int b = 0) : x(a), y(b) {}\n```\n\n---\n\n### 坑点三：在类外直接访问私有成员\n\n错误写法：\n\n```cpp\nint main() {\n    A obj(2, 3);\n    cout << obj.x << \" \" << obj.y << endl; // 错误\n    return 0;\n}\n```\n\n因为 `x` 和 `y` 是 `private` 成员，类外不能直接访问。\n\n正确做法是通过公有成员函数访问：\n\n```cpp\nobj.show();\n```\n\n或者提供公有接口：\n\n```cpp\nint getX() const {\n    return x;\n}\n\nint getY() const {\n    return y;\n}\n```\n\n---\n\n### 坑点四：误认为 `show()` 会改变对象状态\n\n本题中：\n\n```cpp\nvoid show() {\n    cout << x << \" \" << y << endl;\n}\n```\n\n只是输出成员变量，不修改 `x` 和 `y`。\n\n更规范的写法可以加上 `const`：\n\n```cpp\nvoid show() const {\n    cout << x << \" \" << y << endl;\n}\n```\n\n这表示 `show()` 不会修改对象状态，也允许通过常对象调用：\n\n```cpp\nconst A obj(2, 3);\nobj.show();\n```\n\n如果没有 `const`，上述常对象调用会报错。\n\n---\n\n### 坑点五：忽略初始化列表的重要性\n\n本题写法：\n\n```cpp\nA(int a, int b) {\n    x = a;\n    y = b;\n}\n```\n\n可以正常运行，但最佳实践是：\n\n```cpp\nA(int a, int b) : x(a), y(b) {}\n```\n\n特别是在以下场景中，初始化列表是必须的：\n\n#### 1. 初始化 `const` 成员\n\n```cpp\nclass A {\nprivate:\n    const int x;\npublic:\n    A(int a) : x(a) {}\n};\n```\n\n如果写成：\n\n```cpp\nA(int a) {\n    x = a; // 错误，const 成员不能赋值\n}\n```\n\n会编译失败。\n\n#### 2. 初始化引用成员\n\n```cpp\nclass A {\nprivate:\n    int& ref;\npublic:\n    A(int& r) : ref(r) {}\n};\n```\n\n引用成员必须在创建时绑定，不能在构造函数体中再赋值。\n\n#### 3. 初始化没有默认构造函数的成员对象\n\n```cpp\nclass B {\npublic:\n    B(int n) {}\n};\n\nclass A {\nprivate:\n    B b;\npublic:\n    A(int n) : b(n) {}\n};\n```\n\n如果不使用初始化列表，成员对象 `b` 需要先默认构造，但 `B` 没有默认构造函数，因此会出错。\n\n---\n\n### 坑点六：误解输出格式\n\n程序中：\n\n```cpp\ncout << x << \" \" << y << endl;\n```\n\n输出的是：\n\n```cpp\n2 3\n```\n\n不是：\n\n```cpp\n23\n```\n\n也不是：\n\n```cpp\n2,3\n```\n\n因为中间明确输出了一个字符串空格：\n\n```cpp\n\" \"\n```\n\n`endl` 会输出换行，因此最终输出占一行。\n\n---\n\n### 最佳实践改写版本\n\n如果从现代 C++ 编程风格角度优化，本题可以写为：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x;\n    int y;\n\npublic:\n    A(int a, int b) : x(a), y(b) {}\n\n    void show() const {\n        cout << x << \" \" << y << endl;\n    }\n};\n\nint main() {\n    A obj(2, 3);\n    obj.show();\n    return 0;\n}\n```\n\n该版本具有以下优点：\n\n1. 使用成员初始化列表初始化 `x` 和 `y`；\n2. `show()` 使用 `const` 修饰，表达“不修改对象状态”；\n3. 封装性良好，外部仍然不能直接访问私有成员；\n4. 输出结果与原程序完全一致。\n\n输出仍为：\n\n```cpp\n2 3\n```",
-    "type": "program_output",
+    "type": "programming",
     "expectedOutput": "2 3",
     "originalId": 49,
     "stem": "",
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "answerCode": "#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x;\n    int y;\npublic:\n    A(int a, int b) {\n        x = a;\n        y = b;\n    }\n\n    void show() {\n        cout << x << \" \" << y << endl;\n    }\n};\n\nint main() {\n    A obj(2, 3);\n    obj.show();\n    return 0;\n}\n"
   },
   {
     "id": "P42",
@@ -1006,8 +1151,16 @@
     "title": "DateInfo 类设计",
     "requirement": "设计 DateInfo 类，包含无参构造函数、带参构造函数、日期设置成员函数、日期输出成员函数和日期获取成员函数。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\nclass DateInfo\n{\nprivate:\n    int year, month, day;\n\npublic:\n    DateInfo(): year(2010), month(6), day(8) { }\n    DateInfo(int y, int m, int d): year(y), month(m), day(d) { }\n\n    void Set(int y, int m, int d)\n    {\n        year = y;\n        month = m;\n        day = d;\n    }\n\n    void Get(int &y, int &m, int &d) const\n    {\n        y = year;\n        m = month;\n        d = day;\n    }\n\n    void Show() const\n    {\n        cout << year << \"年\" << month << \"月\" << day << \"日\" << endl;\n    }\n};\n\nint main()\n{\n    DateInfo d1, d2(1988, 8, 18);\n    d1.Show();\n    d2.Show();\n\n    d2.Set(1999, 9, 19);\n    d2.Show();\n\n    int y, m, d;\n    d2.Get(y, m, d);\n    cout << \"获取到的日期：\" << y << \"年\" << m << \"月\" << d << \"日\" << endl;\n\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "DateInfo类的定义",
+      "构造函数初始化年月日",
+      "日期合法性检查与输出"
+    ],
+    "knowledgePoints": [
+      "类与对象",
+      "构造函数",
+      "成员函数"
+    ],
     "knowledgePointsNormalized": [
       "默认构造函数",
       "构造函数",
@@ -1025,8 +1178,16 @@
     "title": "Complex 复数类与加法运算符重载",
     "requirement": "定义 Complex 类，私有数据成员 r、i；提供带两个参数的构造函数、Show() 函数，并以成员函数形式重载运算符 +，实现两个复数对象对应成员相加；编写测试程序。",
     "answerCode": "#include <iostream>\nusing namespace std;\n\nclass Complex\n{\nprivate:\n    double r, i;\n\npublic:\n    Complex(double a, double b): r(a), i(b) { }\n    void Show() { cout << r << \" \" << i << endl; }\n    Complex operator +(Complex obj)\n    {\n        return Complex(r + obj.r, i + obj.i);\n    }\n};\n\nint main()\n{\n    Complex c1(3.5, 4.5), c2(2.5, 5.5), c3(0.0, 0.0);\n    c3 = c1 + c2;\n    c3.Show();\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "复数类定义与构造函数",
+      "运算符重载实现复数加法",
+      "友元函数或成员函数重载"
+    ],
+    "knowledgePoints": [
+      "运算符重载",
+      "类与对象",
+      "构造函数"
+    ],
     "knowledgePointsNormalized": [
       "运算符重载",
       "构造函数"
@@ -1043,8 +1204,16 @@
     "title": "编程题 52",
     "requirement": "指出下面程序 main 函数中的错误，以及原因。\nclass A\n{\n    int a,b;\npublic:\n    A(int aa,int bb){a=aa;b=bb;}\n};\nvoid main()\n{\n    A x(2,3), y(4);\n}",
     "answerCode": "#include <iostream>\nusing namespace std;\n\nclass A\n{\nprivate:\n    int a, b;\n\npublic:\n    // 构造函数：必须提供两个 int 类型参数\n    A(int aa, int bb)\n    {\n        a = aa;\n        b = bb;\n    }\n\n    void show() const\n    {\n        cout << \"a = \" << a << \", b = \" << b << endl;\n    }\n};\n\nint main()\n{\n    /*\n        原程序 main 函数中的错误：\n\n        1. void main() 是错误的。\n           原因：标准 C++ 中 main 函数的返回类型必须是 int。\n\n        2. A y(4); 是错误的。\n           原因：类 A 中只定义了构造函数 A(int aa, int bb)，\n           创建对象时必须传入两个 int 类型参数。\n           A y(4) 只传入了一个参数，没有匹配的构造函数。\n    */\n\n    // 正确写法：创建对象时传入两个参数\n    A x(2, 3), y(4, 5);\n\n    x.show();\n    y.show();\n\n    return 0;\n}",
-    "keyPoints": [],
-    "knowledgePoints": [],
+    "keyPoints": [
+      "编程题综合练习",
+      "类的设计与实现",
+      "构造函数与成员函数设计"
+    ],
+    "knowledgePoints": [
+      "类与对象",
+      "构造函数",
+      "成员函数"
+    ],
     "knowledgePointsNormalized": [
       "构造函数"
     ],
