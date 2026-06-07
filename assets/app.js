@@ -322,6 +322,10 @@
   }
 
   function restoreScrollOrFocusIndex() {
+    if (onboardingStarted) {
+      state.isReadyForScrollSave = false;
+      return;
+    }
     const activePage = localStorage.getItem('oop_active_page') || 'quiz';
     
     if (activePage === 'quiz') {
@@ -1033,7 +1037,7 @@
     {
       title: '分章进度与复习建议',
       text: '页面下方会根据你的答题记录自动生成复习建议与错题负荷提示，并按章节展示你的掌握进度条，助你查漏补缺。',
-      selector: '#page-progress #chapter-progress',
+      selector: '#page-progress #review-insights',
       before: () => window._goToPage('progress')
     },
     {
