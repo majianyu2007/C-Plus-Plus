@@ -26,7 +26,11 @@
     "type": "programming",
     "originalId": 1,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（2021-2022学年第2学期B卷）定义一个椭球(Ellipsoid)类，具体要求如下：\n(1) 数据成员包含三个轴的半径r1, r2, r3和圆周率PI，其中圆周率为常静态数据成员且初始值为3.1416；\n(2) 构造函数：给椭球中的数据成员赋初值。如果不给定任何初始值，则默认椭球三个半径r1=r2=r3=1.0；\n(3) 重载运算符\"==\"：判断两个椭球是否完全相同，返回值为布尔类型；\n(4) 成员函数double GetVolume()用于计算椭球的体积。(注：椭球的体积公式为4πr1r2r3/3)。\n\n输入描述：第一个椭球的半径；第二个椭球的半径。\n输出描述：第一个椭球的体积，第二个椭球的体积；判断第一个椭球与第二个椭球大小是否一致，若一致输出\"The 1st ellipsoid is exactly the same as the 2nd one\"，否则输出\"The 1st ellipsoid is different from the 2nd one\"。\n\n样例输入：\n2 3 4\n3 4 5\n样例输出：\n100.531, 251.328\nThe 1st ellipsoid is different from the 2nd one",
+    "answer": "#include <iostream>\n#include <iomanip>\n\nclass Ellipsoid {\nprivate:\n    double r1, r2, r3;\n    static const double PI;\npublic:\n    // 构造函数，带默认值\n    Ellipsoid(double r1 = 1.0, double r2 = 1.0, double r3 = 1.0)\n        : r1(r1), r2(r2), r3(r3) {}\n\n    // 重载==运算符\n    bool operator==(const Ellipsoid &other) const {\n        return (r1 == other.r1 && r2 == other.r2 && r3 == other.r3);\n    }\n\n    // 计算体积 V = 4*PI*r1*r2*r3/3\n    double GetVolume() const {\n        return 4.0 * PI * r1 * r2 * r3 / 3.0;\n    }\n};\n\n// 类外初始化静态常量成员\nconst double Ellipsoid::PI = 3.1416;\n\nint main() {\n    double a1, a2, a3, b1, b2, b3;\n    std::cin >> a1 >> a2 >> a3;\n    std::cin >> b1 >> b2 >> b3;\n\n    Ellipsoid e1(a1, a2, a3);\n    Ellipsoid e2(b1, b2, b3);\n\n    // 输出体积，保留3位小数\n    std::cout << std::fixed << std::setprecision(3);\n    std::cout << e1.GetVolume() << \", \" << e2.GetVolume() << std::endl;\n\n    // 判断是否相同\n    if (e1 == e2) {\n        std::cout << \"The 1st ellipsoid is exactly the same as the 2nd one\" << std::endl;\n    } else {\n        std::cout << \"The 1st ellipsoid is different from the 2nd one\" << std::endl;\n    }\n\n    return 0;\n}",
+    "source": "2021-2022学年第2学期B卷",
+    "difficulty": "hard"
   },
   {
     "id": "P2",
@@ -57,7 +61,11 @@
     "type": "programming",
     "originalId": 2,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（2021-2022学年第2学期B卷）设计一个简易魔兽世界游戏框架，定义表示人形类的抽象类Humanoid及其派生类，并实现多态操作，要求如下：\n(1) 定义抽象类Humanoid；添加公有成员函数void SayHello()，并将其定义为纯虚函数；\n(2) 从Humanoid类公有派生矮人类Dwarf，覆盖基类纯虚函数void SayHello()，实现输出\"Hi, I am a dwarf.\"功能；\n(3) 从Humanoid类公有派生精灵类Elf，覆盖基类纯虚函数void SayHello()，实现输出\"Hi, I am an elf.\"功能；\n(4) 从Humanoid类公有派生兽人类Orc，覆盖基类纯虚函数void SayHello()，实现输出\"Hi, I am an orc.\"功能。\n在main主函数中，首先根据输入的整数创建相应大小的Humanoid类类型指针数组，再根据输入的字符动态创建相应派生类对象，并将其地址赋予基类类型指针数组元素。\n\n输入描述：对象指针数组长度；动态创建对象类型标记字符(D/E/O)\n输出描述：依次输出Humanoid类对象指针数组的每一个元素调用SayHello函数的结果。\n\n样例输入：\n4\nD\nO\nD\nE\n样例输出：\nHi, I am a dwarf.\nHi, I am an orc.\nHi, I am a dwarf.\nHi, I am an elf.",
+    "answer": "#include <iostream>\n\n// 抽象基类\nclass Humanoid {\npublic:\n    virtual void SayHello() = 0; // 纯虚函数\n    virtual ~Humanoid() {}       // 虚析构函数\n};\n\n// 矮人类\nclass Dwarf : public Humanoid {\npublic:\n    void SayHello() override {\n        std::cout << \"Hi, I am a dwarf.\" << std::endl;\n    }\n};\n\n// 精灵类\nclass Elf : public Humanoid {\npublic:\n    void SayHello() override {\n        std::cout << \"Hi, I am an elf.\" << std::endl;\n    }\n};\n\n// 兽人类\nclass Orc : public Humanoid {\npublic:\n    void SayHello() override {\n        std::cout << \"Hi, I am an orc.\" << std::endl;\n    }\n};\n\nint main() {\n    int n;\n    std::cin >> n;\n\n    // 动态分配基类指针数组\n    Humanoid **arr = new Humanoid*[n];\n\n    for (int i = 0; i < n; i++) {\n        char type;\n        std::cin >> type;\n        if (type == 'D') {\n            arr[i] = new Dwarf();\n        } else if (type == 'E') {\n            arr[i] = new Elf();\n        } else if (type == 'O') {\n            arr[i] = new Orc();\n        }\n    }\n\n    // 多态调用\n    for (int i = 0; i < n; i++) {\n        arr[i]->SayHello();\n    }\n\n    // 释放内存\n    for (int i = 0; i < n; i++) {\n        delete arr[i];\n    }\n    delete[] arr;\n\n    return 0;\n}",
+    "source": "2021-2022学年第2学期B卷",
+    "difficulty": "hard"
   },
   {
     "id": "P3",
@@ -86,7 +94,11 @@
     "type": "programming",
     "originalId": 3,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（2018-2019学年第1学期）设计一个Circle类，具体要求为：\n1）定义两个私有数据成员，圆形的中心点坐标(x,y)和半径r；\n2）定义公有静态常量数据成员：PI（其值初始化为3.1416）；\n3）定义构造函数：给圆心坐标和半径赋初值，默认构造原点圆心的单位圆；\n4）定义成员函数perimeter()和area()分别计算圆的周长和面积。\n\n输入描述：输入圆心坐标和半径\n输出描述：输出圆的基本信息包括圆心坐标和半径，圆的周长和圆的面积\n\n输入样例：\n1.0 2.0 1.0",
+    "answer": "#include <iostream>\n\nclass Circle {\nprivate:\n    double x, y; // 圆心坐标\n    double r;    // 半径\npublic:\n    static const double PI; // 公有静态常量\n\n    // 构造函数，默认原点单位圆\n    Circle(double x = 0.0, double y = 0.0, double r = 1.0)\n        : x(x), y(y), r(r) {}\n\n    // 计算周长\n    double perimeter() const {\n        return 2 * PI * r;\n    }\n\n    // 计算面积\n    double area() const {\n        return PI * r * r;\n    }\n\n    // 输出信息\n    void print() const {\n        std::cout << \"Center: (\" << x << \", \" << y << \")\" << std::endl;\n        std::cout << \"Radius: \" << r << std::endl;\n        std::cout << \"Perimeter: \" << perimeter() << std::endl;\n        std::cout << \"Area: \" << area() << std::endl;\n    }\n};\n\n// 类外初始化静态常量\nconst double Circle::PI = 3.1416;\n\nint main() {\n    double x, y, r;\n    std::cin >> x >> y >> r;\n\n    Circle c(x, y, r);\n    c.print();\n\n    return 0;\n}",
+    "source": "2018-2019学年第1学期",
+    "difficulty": "hard"
   },
   {
     "id": "P4",
@@ -115,7 +127,11 @@
     "type": "programming",
     "originalId": 4,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（2018-2019学年第1学期）设计一个节日类Holiday，其中包含数据成员年、月、日。年月日格式如：1949-10-1，构建三个Holiday类对象myHoliday, nationalDay, partyBirthday，具体要求如下：\n1）重载\"==\"，实现当前节日对象表示的时间等于某个节日对象的时间；\n2）重载\">>\"，实现按“年-月-日”格式输入；\n3）重载\"<<\"，实现按“年-月-日”格式输出；\n4）对象myHoliday和partyBirthday的数据成员由键盘输入，对象nationalDay为国庆节（1949年10月1日），分别判断对象myHoliday和partyBirthday是否为国庆节。",
+    "answer": "#include <iostream>\n\nclass Holiday {\nprivate:\n    int year, month, day;\npublic:\n    Holiday(int y = 0, int m = 0, int d = 0)\n        : year(y), month(m), day(d) {}\n\n    // 重载 ==\n    bool operator==(const Holiday &other) const {\n        return year == other.year && month == other.month && day == other.day;\n    }\n\n    // 重载 >>，输入格式：年-月-日，如 1949-10-1\n    friend std::istream &operator>>(std::istream &is, Holiday &h) {\n        char ch1, ch2;\n        is >> h.year >> ch1 >> h.month >> ch2 >> h.day;\n        return is;\n    }\n\n    // 重载 <<，输出格式：年-月-日\n    friend std::ostream &operator<<(std::ostream &os, const Holiday &h) {\n        os << h.year << \"-\" << h.month << \"-\" << h.day;\n        return os;\n    }\n};\n\nint main() {\n    Holiday myHoliday, partyBirthday;\n    Holiday nationalDay(1949, 10, 1); // 国庆节\n\n    std::cout << \"Enter myHoliday (year-month-day): \";\n    std::cin >> myHoliday;\n\n    std::cout << \"Enter partyBirthday (year-month-day): \";\n    std::cin >> partyBirthday;\n\n    std::cout << \"myHoliday: \" << myHoliday << std::endl;\n    std::cout << \"partyBirthday: \" << partyBirthday << std::endl;\n    std::cout << \"nationalDay: \" << nationalDay << std::endl;\n\n    if (myHoliday == nationalDay) {\n        std::cout << \"myHoliday is National Day.\" << std::endl;\n    } else {\n        std::cout << \"myHoliday is not National Day.\" << std::endl;\n    }\n\n    if (partyBirthday == nationalDay) {\n        std::cout << \"partyBirthday is National Day.\" << std::endl;\n    } else {\n        std::cout << \"partyBirthday is not National Day.\" << std::endl;\n    }\n\n    return 0;\n}",
+    "source": "2018-2019学年第1学期",
+    "difficulty": "hard"
   },
   {
     "id": "P5",
@@ -146,7 +162,11 @@
     "type": "programming",
     "originalId": 5,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（2018-2019学年第1学期）定义基类Person类，包含保护数据成员string szName和公有成员虚函数print()，输出为：\"Person 姓名\"。从Person类派生Student类，添加表示学号的保护数据成员int iNumber，并实现print()，输出为：\"Student 姓名 学号\"；从Student类派生Graduate类，添加表示研究方向的保护数据成员string szResearch，并实现print()，输出为：\"Graduate 姓名 学号 研究方向\"。\n\n输入描述：由键盘依次输入Person类、Student类、Graduate类对象的信息。\nPerson类对象的输入格式：对象的姓名\nStudent类对象的输入格式：对象的姓名、学号\nGraduate类对象的输入格式：对象的姓名、学号、研究方向\n\n输出描述：通过定义基类Person的指针数组，通过基类指针调用虚函数print()，依次输出各对象信息。",
+    "answer": "#include <iostream>\n#include <string>\n\nclass Person {\nprotected:\n    std::string szName;\npublic:\n    Person(const std::string &name = \"\") : szName(name) {}\n\n    virtual void print() const {\n        std::cout << \"Person \" << szName << std::endl;\n    }\n\n    virtual ~Person() {}\n};\n\nclass Student : public Person {\nprotected:\n    int iNumber;\npublic:\n    Student(const std::string &name = \"\", int num = 0)\n        : Person(name), iNumber(num) {}\n\n    void print() const override {\n        std::cout << \"Student \" << szName << \" \" << iNumber << std::endl;\n    }\n};\n\nclass Graduate : public Student {\nprotected:\n    std::string szResearch;\npublic:\n    Graduate(const std::string &name = \"\", int num = 0,\n             const std::string &research = \"\")\n        : Student(name, num), szResearch(research) {}\n\n    void print() const override {\n        std::cout << \"Graduate \" << szName << \" \" << iNumber\n                  << \" \" << szResearch << std::endl;\n    }\n};\n\nint main() {\n    std::string name, research;\n    int number;\n\n    // 输入Person\n    std::cin >> name;\n    Person *p = new Person(name);\n\n    // 输入Student\n    std::cin >> name >> number;\n    Person *s = new Student(name, number);\n\n    // 输入Graduate\n    std::cin >> name >> number >> research;\n    Person *g = new Graduate(name, number, research);\n\n    // 基类指针数组\n    Person *arr[3] = {p, s, g};\n\n    // 多态调用\n    for (int i = 0; i < 3; i++) {\n        arr[i]->print();\n    }\n\n    // 释放内存\n    for (int i = 0; i < 3; i++) {\n        delete arr[i];\n    }\n\n    return 0;\n}",
+    "source": "2018-2019学年第1学期",
+    "difficulty": "hard"
   },
   {
     "id": "P6",
@@ -175,7 +195,11 @@
     "type": "programming",
     "originalId": 6,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（2018年CPP期中考试）设计一个分数类CFraction，在其中实现运算符+、-、>、<、>>、<<的重载，并在main函数中进行测试输出。\n\n分数类包含分子num和分母den两个数据成员。\n+运算：分数相加\n-运算：分数相减\n>运算：判断分数大小\n<运算：判断分数大小\n>>运算：输入分数\n<<运算：输出分数（格式为 分子/分母）\n\n其中，>>和<<可采用友元全局函数的方式重载。",
+    "answer": "#include <iostream>\n\nclass CFraction {\n    int num; // 分子\n    int den; // 分母\npublic:\n    CFraction(int n = 0, int d = 1) : num(n), den(d) {}\n\n    // 重载>>\n    friend std::istream &operator>>(std::istream &in, CFraction &fr) {\n        in >> fr.num >> fr.den;\n        return in;\n    }\n\n    // 重载<<\n    friend std::ostream &operator<<(std::ostream &out, const CFraction &fr) {\n        out << fr.num << \"/\" << fr.den;\n        return out;\n    }\n\n    // 重载+\n    CFraction operator+(const CFraction &other) const {\n        return CFraction(num * other.den + den * other.num, den * other.den);\n    }\n\n    // 重载-\n    CFraction operator-(const CFraction &other) const {\n        return CFraction(num * other.den - den * other.num, den * other.den);\n    }\n\n    // 重载>\n    bool operator>(const CFraction &other) const {\n        CFraction tmp = *this - other;\n        return (tmp.num * tmp.den > 0);\n    }\n\n    // 重载<\n    bool operator<(const CFraction &other) const {\n        CFraction tmp = *this - other;\n        return (tmp.num * tmp.den < 0);\n    }\n};\n\nint main() {\n    CFraction f1, f2;\n    std::cin >> f1 >> f2;\n    std::cout << \"A+B:\" << (f1 + f2) << std::endl;\n    std::cout << \"A-B:\" << (f1 - f2) << std::endl;\n    std::cout << \"A>B:\" << std::boolalpha << (f1 > f2) << std::endl;\n    std::cout << \"A<B:\" << std::boolalpha << (f1 < f2) << std::endl;\n    return 0;\n}",
+    "source": "2018年CPP期中考试",
+    "difficulty": "hard"
   },
   {
     "id": "P7",
@@ -202,7 +226,11 @@
     "type": "programming",
     "originalId": 7,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "设计一个函数模板 Swap，实现两个同类型变量值的交换。在 main 函数中先输入两个字符并交换输出，再输入两个 double 类型数据并交换输出。输出时每组结果用空格分隔。",
+    "answer": "#include <iostream>\nusing namespace std;\n\n// 函数模板：交换两个变量的值\ntemplate <class T>\nvoid Swap(T &a, T &b) {\n    T tmp = a;\n    a = b;\n    b = tmp;\n}\n\nint main() {\n    char x, y;\n    double d1, d2;\n\n    cin >> x >> y;\n    Swap(x, y);\n    cout << x << \" \" << y << endl;\n\n    cin >> d1 >> d2;\n    Swap(d1, d2);\n    cout << d1 << \" \" << d2 << endl;\n\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P8",
@@ -231,7 +259,11 @@
     "type": "programming",
     "originalId": 8,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（2018年CPP期中考试）设计一个CCircle类，在其中实现静态成员PI的创建，以及圆心的获取和返回CCircle面积的函数，在main函数中运行并检验。\n\n要求：\n- CPoint类包含x,y坐标\n- CCircle类组合CPoint作为圆心\n- CCircle包含静态常量成员PI=3.14\n- 提供GetRadius(), GetCenter(), GetArea()成员函数",
+    "answer": "#include <iostream>\n\nclass CPoint {\n    float x;\n    float y;\npublic:\n    CPoint(float _x = 0, float _y = 0) : x(_x), y(_y) {}\n    friend class CCircle; // CCircle为CPoint的友元\n};\n\nclass CCircle {\n    CPoint center;           // 组合CPoint对象\n    float radius;\n    static const float PI;   // 静态常量成员\npublic:\n    CCircle(float _x, float _y, float r)\n        : center(_x, _y), radius(r) {}\n\n    float GetRadius() const {\n        return radius;\n    }\n\n    void GetCenter(float &x, float &y) const {\n        x = center.x;\n        y = center.y;\n    }\n\n    float GetArea() const {\n        return PI * radius * radius;\n    }\n};\n\n// 类外初始化静态常量\nconst float CCircle::PI = 3.14;\n\nint main() {\n    float x, y, r;\n    std::cin >> x >> y >> r;\n    CCircle c(x, y, r);\n\n    c.GetCenter(x, y);\n    std::cout << \"center: (\" << x << \",\" << y << \")\" << std::endl;\n    std::cout << \"radius: \" << c.GetRadius() << std::endl;\n    std::cout << \"area: \" << c.GetArea() << std::endl;\n\n    return 0;\n}",
+    "source": "2018年CPP期中考试",
+    "difficulty": "hard"
   },
   {
     "id": "P9",
@@ -261,7 +293,11 @@
     "type": "programming",
     "originalId": 9,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（2018-2019学年第2学期）设计一个CRectangle类，具体要求为：\n(1) 定义两个私有数据成员：宽w和高h；\n(2) 定义私有静态数据成员totalNumber和totalArea，用以记录当前矩形对象的总个数和总面积；\n(3) 定义带参构造函数，可根据给定的宽和高构造矩形对象；\n(4) 定义析构函数，对象消亡时减少总个数并减少总面积；\n(5) 定义静态成员函数PrintTotal()，用于输出矩形的总个数和总面积。\n\n输入描述：输入两组整数，分别表示两个CRectangle对象的宽和高。\n输出描述：输出这两个矩形对象创建后系统中的矩形总个数和总面积。",
+    "answer": "#include <iostream>\n\nclass CRectangle {\nprivate:\n    int w, h;\n    static int totalNumber;   // 总个数\n    static int totalArea;     // 总面积\npublic:\n    // 带参构造函数\n    CRectangle(int w, int h) : w(w), h(h) {\n        totalNumber++;\n        totalArea += w * h;\n    }\n\n    // 析构函数\n    ~CRectangle() {\n        totalNumber--;\n        totalArea -= w * h;\n    }\n\n    // 静态成员函数输出统计信息\n    static void PrintTotal() {\n        std::cout << \"totalNumber: \" << totalNumber << std::endl;\n        std::cout << \"totalArea: \" << totalArea << std::endl;\n    }\n};\n\n// 类外初始化静态成员\nint CRectangle::totalNumber = 0;\nint CRectangle::totalArea = 0;\n\nint main() {\n    int w1, h1, w2, h2;\n    std::cin >> w1 >> h1;\n    std::cin >> w2 >> h2;\n\n    CRectangle r1(w1, h1);\n    CRectangle r2(w2, h2);\n\n    CRectangle::PrintTotal();\n\n    return 0;\n}",
+    "source": "2018-2019学年第2学期",
+    "difficulty": "hard"
   },
   {
     "id": "P10",
@@ -290,7 +326,11 @@
     "type": "programming",
     "originalId": 10,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（2018-2019学年第2学期）定义复数类myComplex，数据成员包含实部real和虚部imag，定义构造函数实现数据成员初始化，并实现相应运算符的重载：\n(1) 重载\"+\"、\"-\"，实现两个myComplex类对象相加、相减的操作；\n(2) 重载\">>\"，实现myComplex类的输入；\n(3) 重载\"<<\"，实现myComplex类的输出；\n(4) 在main()函数中，根据输入的实部和虚部，分别创建两个复数对象a和b；再定义两个复数对象分别表示a加b、a减b的运算结果，并以\"实部+虚部i\"的形式输出。\n\n输入描述：分别输入两个复数的实部和虚部。\n输出描述：两个复数相加的结果，两个复数相减的结果。\n输入样例：\n3 2\n5 9\n输出样例：\n8+11i\n-2-7i",
+    "answer": "#include <iostream>\n\nclass myComplex {\nprivate:\n    double real, imag;\npublic:\n    myComplex(double r = 0, double i = 0) : real(r), imag(i) {}\n\n    // 重载+\n    myComplex operator+(const myComplex &other) const {\n        return myComplex(real + other.real, imag + other.imag);\n    }\n\n    // 重载-\n    myComplex operator-(const myComplex &other) const {\n        return myComplex(real - other.real, imag - other.imag);\n    }\n\n    // 重载>>\n    friend std::istream &operator>>(std::istream &is, myComplex &c) {\n        is >> c.real >> c.imag;\n        return is;\n    }\n\n    // 重载<<\n    friend std::ostream &operator<<(std::ostream &os, const myComplex &c) {\n        os << c.real;\n        if (c.imag >= 0) {\n            os << \"+\" << c.imag << \"i\";\n        } else {\n            os << c.imag << \"i\"; // 负号自动带出\n        }\n        return os;\n    }\n};\n\nint main() {\n    myComplex a, b;\n    std::cin >> a >> b;\n\n    myComplex sum = a + b;\n    myComplex diff = a - b;\n\n    std::cout << sum << std::endl;\n    std::cout << diff << std::endl;\n\n    return 0;\n}",
+    "source": "2018-2019学年第2学期",
+    "difficulty": "hard"
   },
   {
     "id": "P11",
@@ -321,7 +361,11 @@
     "type": "programming",
     "originalId": 11,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（2018-2019学年第2学期）定义基类Animal，包含保护数据成员name和纯虚函数talk()。定义猫类Cat，继承Animal类，实现talk()方法，输出为：cout<<name<<\" MiaoMiao\"<<endl；定义狗类Dog，继承Animal类，实现talk()方法，输出为：cout<<name<<\" WangWang\"<<endl。\n\n输入描述：由键盘输入动物个数和每种动物的信息，包括动物类型（其中C表示猫类，D表示狗类）及其相应名称。\n猫的输入格式为：C 名字\n狗的输入格式为：D 名字\n输出描述：通过Animal类的对象指针调用虚函数talk()，依次输出每种动物的叫的动作。\n\n输入样例：\n4\nD 汪汪\nC 皮皮\nD 阿黄\nC 小花\n输出样例：\n汪汪 WangWang\n皮皮 MiaoMiao\n阿黄 WangWang\n小花 MiaoMiao",
+    "answer": "#include <iostream>\n#include <string>\n\n// 抽象基类\nclass Animal {\nprotected:\n    std::string name;\npublic:\n    Animal(const std::string &n = \"\") : name(n) {}\n    virtual void talk() = 0; // 纯虚函数\n    virtual ~Animal() {}\n};\n\n// 猫类\nclass Cat : public Animal {\npublic:\n    Cat(const std::string &n) : Animal(n) {}\n    void talk() override {\n        std::cout << name << \" MiaoMiao\" << std::endl;\n    }\n};\n\n// 狗类\nclass Dog : public Animal {\npublic:\n    Dog(const std::string &n) : Animal(n) {}\n    void talk() override {\n        std::cout << name << \" WangWang\" << std::endl;\n    }\n};\n\nint main() {\n    int n;\n    std::cin >> n;\n\n    Animal **arr = new Animal*[n];\n\n    for (int i = 0; i < n; i++) {\n        char type;\n        std::string name;\n        std::cin >> type >> name;\n        if (type == 'C') {\n            arr[i] = new Cat(name);\n        } else if (type == 'D') {\n            arr[i] = new Dog(name);\n        }\n    }\n\n    // 多态调用\n    for (int i = 0; i < n; i++) {\n        arr[i]->talk();\n    }\n\n    // 释放内存\n    for (int i = 0; i < n; i++) {\n        delete arr[i];\n    }\n    delete[] arr;\n\n    return 0;\n}",
+    "source": "2018-2019学年第2学期",
+    "difficulty": "hard"
   },
   {
     "id": "P12",
@@ -350,7 +394,11 @@
     "type": "programming",
     "originalId": 12,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "定义一个抽象类CShape，其中包含纯虚函数GetLength()。派生出CSquare和CCircle两个类，并分别重写GetLength()函数以计算周长。其中，CSquare按矩形处理，构造函数接受宽和高两个参数；CCircle构造函数接受半径参数。编写测试程序，使用基类指针实现多态调用。",
+    "answer": "#include <iostream>\n\n// 抽象基类\nclass CShape {\npublic:\n    virtual double GetLength() const = 0; // 纯虚函数\n    virtual ~CShape() {}\n};\n\n// 四边形类（矩形）\nclass CSquare : public CShape {\nprivate:\n    double m_dWidth, m_dHeight;\npublic:\n    CSquare(double dWidth, double dHeight)\n        : m_dWidth(dWidth), m_dHeight(dHeight) {}\n\n    double GetLength() const override {\n        return 2 * (m_dWidth + m_dHeight);\n    }\n};\n\n// 圆类\nclass CCircle : public CShape {\nprivate:\n    double m_dRadius;\n    static const double PI;\npublic:\n    CCircle(double dRadius) : m_dRadius(dRadius) {}\n\n    double GetLength() const override {\n        return 2 * PI * m_dRadius;\n    }\n};\n\nconst double CCircle::PI = 3.1416;\n\nint main() {\n    CSquare sq(3.0, 4.0);\n    CCircle ci(5.0);\n\n    // 基类指针实现多态\n    CShape *shapes[2] = {&sq, &ci};\n\n    for (int i = 0; i < 2; i++) {\n        std::cout << \"Perimeter: \" << shapes[i]->GetLength() << std::endl;\n    }\n\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P13",
@@ -377,7 +425,11 @@
     "type": "programming",
     "originalId": 13,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（模拟试卷二）编写一个函数模板，用于求数组中各元素之和，并编写测试程序进行测试。\n函数模板声明如下：\ntemplate <class Type>\nType Sum(Type tArray[], int iSize)",
+    "answer": "#include <iostream>\n\n// 函数模板：求数组元素之和\ntemplate <class Type>\nType Sum(Type tArray[], int iSize) {\n    Type tSum = 0;\n    for (int i = 0; i < iSize; i++) {\n        tSum = tSum + tArray[i];\n    }\n    return tSum;\n}\n\nint main() {\n    int a[] = {1, 2, 3};\n    double b[] = {1.5, 2.8, 8.9, 8.0};\n\n    std::cout << Sum(a, 3) << std::endl;    // 输出6\n    std::cout << Sum(b, 4) << std::endl;    // 输出21.2\n\n    return 0;\n}",
+    "source": "模拟试卷二",
+    "difficulty": "hard"
   },
   {
     "id": "P14",
@@ -406,7 +458,11 @@
     "type": "programming",
     "originalId": 14,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（模拟试卷二·程序分析题）CPosition位置类，包含X坐标和Y坐标两个私有成员，展示const成员函数和常对象的用法。\n\n要求：\n- 构造函数带默认参数(0,0)\n- GetPositionX()和GetPositionY()为const成员函数\n- SetPositionX()和SetPositionY()为非const成员函数\n- 演示常对象只能调用const成员函数",
+    "answer": "#include <iostream>\n\nclass CPosition {\npublic:\n    CPosition(int iPositionX = 0, int iPositionY = 0)\n        : m_iPositionX(iPositionX) {\n        m_iPositionY = iPositionY;\n    }\n\n    // const成员函数，常对象和非常对象都可调用\n    int GetPositionX() const {\n        return m_iPositionX;\n    }\n\n    int GetPositionY() const {\n        return m_iPositionY;\n    }\n\n    // 非const成员函数，只有非常对象可调用\n    void SetPositionX(int iPositionX) {\n        m_iPositionX = iPositionX;\n    }\n\n    void SetPositionY(int iPositionY) {\n        m_iPositionY = iPositionY;\n    }\n\nprivate:\n    int m_iPositionX;\n    int m_iPositionY;\n};\n\nint main() {\n    CPosition oPosition1;                  // 非常对象\n    const CPosition oPosition2(6, 8);      // 常对象\n\n    // 非常对象可调用所有成员函数\n    std::cout << oPosition1.GetPositionX() << std::endl;  // 0\n    oPosition1.SetPositionX(16);\n    std::cout << oPosition1.GetPositionX() << std::endl;  // 16\n    oPosition1.SetPositionY(18);\n    std::cout << oPosition1.GetPositionY() << std::endl;  // 18\n\n    // 常对象只能调用const成员函数\n    std::cout << oPosition2.GetPositionX() << std::endl;  // 6\n    std::cout << oPosition2.GetPositionY() << std::endl;  // 8\n\n    return 0;\n}",
+    "source": "模拟试卷二",
+    "difficulty": "hard"
   },
   {
     "id": "P15",
@@ -436,7 +492,11 @@
     "type": "programming",
     "originalId": 15,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（模拟试卷二·程序分析题）CGoods商品类，展示静态数据成员和拷贝构造函数的用法。\n\n要求：\n- 私有成员m_iWeight表示重量\n- 静态成员m_iTotalWeight记录所有商品总重量（初始值为8）\n- 构造函数接受重量参数，增加总重量\n- 拷贝构造函数复制重量并增加总重量\n- 析构函数减少总重量\n- 静态成员函数GetTotalWeight()返回总重量",
+    "answer": "#include <iostream>\n\nclass CGoods {\npublic:\n    // 构造函数\n    CGoods(int iWeight) : m_iWeight(iWeight) {\n        m_iTotalWeight += iWeight;\n    }\n\n    // 拷贝构造函数\n    CGoods(const CGoods &oGood) : m_iWeight(oGood.m_iWeight) {\n        m_iTotalWeight += m_iWeight;\n    }\n\n    // 析构函数\n    ~CGoods() {\n        m_iTotalWeight -= m_iWeight;\n    }\n\n    void Print() const {\n        std::cout << m_iWeight << \" \" << m_iTotalWeight << \" \";\n    }\n\n    static int GetTotalWeight() {\n        return m_iTotalWeight;\n    }\n\nprivate:\n    int m_iWeight;\n    static int m_iTotalWeight;\n};\n\n// 静态成员初始化\nint CGoods::m_iTotalWeight = 8;\n\nint main() {\n    CGoods oGood1(6);       // m_iTotalWeight = 8+6 = 14\n    oGood1.Print();          // 输出: 6 14\n\n    CGoods oGood2(oGood1);  // 拷贝构造, m_iTotalWeight = 14+6 = 20\n    oGood2.Print();          // 输出: 6 20\n\n    std::cout << CGoods::GetTotalWeight();  // 输出: 20\n    std::cout << std::endl;\n\n    return 0;\n}",
+    "source": "模拟试卷二",
+    "difficulty": "hard"
   },
   {
     "id": "P16",
@@ -466,7 +526,11 @@
     "type": "programming",
     "originalId": 16,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "（模拟试卷二·程序分析题）CTest模板类，展示类模板中const数据成员和常对象的用法。\n\n要求：\n- 类模板CTest有模板参数Type\n- 私有成员m_tA, m_tB为普通成员，m_tC为const数据成员\n- 构造函数使用参数初始化列表初始化const成员m_tC\n- Print()为非const成员函数，输出m_tA和m_tB\n- Print() const为const成员函数，输出m_tC\n- const对象只能调用const版本的Print()\n\n输出结果：0 0 1 9 1.8",
+    "answer": "#include <iostream>\n\ntemplate <class Type>\nclass CTest {\npublic:\n    CTest(Type tA = 0, Type tB = 0, Type tC = 0)\n        : m_tC(tC) {  // const成员必须用初始化列表\n        m_tA = tA;\n        m_tB = tB;\n    }\n\n    // 非const版本Print\n    void Print() {\n        std::cout << m_tA << std::endl;\n        std::cout << m_tB << std::endl;\n    }\n\n    // const版本Print\n    void Print() const {\n        std::cout << m_tC << std::endl;\n    }\n\nprivate:\n    Type m_tA, m_tB;\n    const Type m_tC;  // const数据成员\n};\n\nint main() {\n    CTest<float> oTest1;\n    oTest1.Print();                  // 调用非const版本，输出 0 0\n\n    CTest<int> oTest2(1, 9, 6);\n    oTest2.Print();                  // 调用非const版本，输出 1 9\n\n    const CTest<double> oTest3(0, 6, 1.8);  // const对象\n    oTest3.Print();                  // 只能调用const版本，输出 1.8\n\n    std::cout << std::endl;\n\n    return 0;\n}",
+    "source": "模拟试卷二",
+    "difficulty": "hard"
   },
   {
     "id": "P17",
@@ -492,7 +556,11 @@
     "type": "programming",
     "originalId": 17,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "从控制台读取三角形的三条边长（均为正整数），判断这三条边长能否构成一个合法的三角形。如果能构成三角形，则输出其周长；如果不能构成三角形，则输出“输入不合法”。\n\n输入描述：在一行中输入三个正整数，以空格分隔。\n输出描述：如果是合法三角形，输出其周长（正整数）；如果不是合法三角形，输出“输入不合法”。\n样例输入：3 4 5\n样例输出：周长为：12\n样例输入2：1 2 3\n样例输出2：输入不合法",
+    "answer": "#include <iostream>\n\nusing std::cin;\nusing std::cout;\nusing std::endl;\n\nint main() {\n    int a = 0, b = 0, c = 0;\n    if (cin >> a >> b >> c) {\n        // 三角形三边有效性条件：任意两边之和大于第三边，且各边大于0\n        if (a > 0 && b > 0 && c > 0 && (a + b > c) && (a + c > b) && (b + c > a)) {\n            cout << \"周长为：\" << (a + b + c) << endl;\n        } else {\n            cout << \"输入不合法\" << endl;\n        }\n    }\n    return 0;\n}",
+    "source": "Homework 1",
+    "difficulty": "hard"
   },
   {
     "id": "P18",
@@ -518,7 +586,11 @@
     "type": "programming",
     "originalId": 18,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "编写一个冒泡排序函数，能够接收一个整型数组和数组大小，对其进行升序排序。在排序过程中，统计元素的比较次数（number_compare）和移动次数（number_move，即元素交换次数）。排序结束后，输出排序后的数组、比较次数和移动次数。要求将排序算法推广为函数模板，以支持不同数据类型的排序并能够统计交换和比较指标。\n\n输入描述：无\n输出描述：输出排序后的数组，比较次数以及数据移动（交换）次数。\n样例输出：\n排序后的数组：1 2 3 4 5\n比较次数：10\n移动次数：7",
+    "answer": "#include <iostream>\n\nusing std::cout;\nusing std::endl;\n\n// 冒泡排序函数模板，增加了对比较次数和数据移动次数的统计\ntemplate <typename T>\nvoid bubble_sort(T *items, int count, int &number_compare, int &number_move) {\n    number_compare = 0;\n    number_move = 0;\n    T t;\n    for (int a = 1; a < count; a++) {\n        for (int b = count - 1; b >= a; b--) {\n            number_compare++;\n            if (items[b - 1] > items[b]) {\n                number_move++;\n                t = items[b - 1];\n                items[b - 1] = items[b];\n                items[b] = t;\n            }\n        }\n    }\n}\n\nint main() {\n    int arr[] = {5, 3, 1, 4, 2};\n    int n = sizeof(arr) / sizeof(arr[0]);\n    int number_compare = 0;\n    int number_move = 0;\n\n    bubble_sort(arr, n, number_compare, number_move);\n\n    cout << \"排序后的数组：\";\n    for (int i = 0; i < n; i++) {\n        cout << arr[i] << \" \";\n    }\n    cout << endl;\n    cout << \"比较次数：\" << number_compare << endl;\n    cout << \"移动次数：\" << number_move << endl;\n\n    return 0;\n}",
+    "source": "Homework 2",
+    "difficulty": "hard"
   },
   {
     "id": "P19",
@@ -546,7 +618,11 @@
     "type": "programming",
     "originalId": 19,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "设计一个表示长方体的类 Cuboid，其数据成员包括长度 L、宽度 W、高度 H（均为 double 类型）。\n要求：\n（1）实现构造函数，支持为数据成员设定初始值，默认值为 L = W = H = 1.0；\n（2）实现成员函数 bool IsEqual(const Cuboid &other) 判断两个长方体是否完全相同（长、宽、高分别相等）；\n（3）实现成员函数 double GetVolume() 计算并返回长方体的体积。",
+    "answer": "#include <iostream>\n\nusing std::cout;\nusing std::endl;\n\nclass Cuboid {\nprivate:\n    double L, W, H;\npublic:\n    // 构造函数，使用初始化列表和默认参数\n    Cuboid(double l = 1.0, double w = 1.0, double h = 1.0) : L(l), W(w), H(h) {}\n    \n    // 获取体积\n    double GetVolume() const {\n        return L * W * H;\n    }\n    \n    // 判断两个长方体是否完全相同：长、宽、高分别相等\n    bool IsEqual(const Cuboid &other) const {\n        return L == other.L && W == other.W && H == other.H;\n    }\n};\n\nint main() {\n    Cuboid c1; // 默认值 1, 1, 1\n    Cuboid c2(2.0, 3.0, 4.0);\n    Cuboid c3(2.0, 3.0, 4.0);\n    \n    cout << \"c1的体积：\" << c1.GetVolume() << endl; // 1.0\n    cout << \"c2的体积：\" << c2.GetVolume() << endl; // 24.0\n    cout << \"c2与c3是否相同：\" << (c2.IsEqual(c3) ? \"相同\" : \"不同\") << endl; // 相同\n    cout << \"c1与c2是否相同：\" << (c1.IsEqual(c2) ? \"相同\" : \"不同\") << endl; // 不同\n    return 0;\n}",
+    "source": "Homework 3",
+    "difficulty": "hard"
   },
   {
     "id": "P20",
@@ -573,7 +649,11 @@
     "type": "programming",
     "originalId": 20,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "声明基类 Chair（座椅，包含无参构造、拷贝构造和析构）和 Person（人，包含包含一个 string 成员变量 name 的含参构造、拷贝构造和析构）。定义派生类 ChairofSuzume，同时继承 Chair 和 Person，在 main 函数中创建对象并执行拷贝构造，追踪并打印各个类的构造、拷贝构造和析构函数的执行顺序。",
+    "answer": "#include <iostream>\n#include <string>\n\nusing std::cout;\nusing std::endl;\nusing std::string;\n\nclass Chair {\npublic:\n    Chair() { cout << \"Chair\" << endl; }\n    Chair(const Chair&) { cout << \"CopyChair\" << endl; }\n    ~Chair() { cout << \"~Chair\" << endl; }\n};\n\nclass Person {\nprivate:\n    string name;\npublic:\n    Person(string n) : name(n) { cout << \"Person\" << endl; }\n    Person(const Person& p) : name(p.name) { cout << \"CopyPerson\" << endl; }\n    ~Person() { cout << \"~Person\" << endl; }\n};\n\n// 多重继承派生类\nclass ChairofSuzume : public Chair, public Person {\npublic:\n    // 初始化列表中必须显式调用无默认构造的基类 Person 的构造函数\n    ChairofSuzume(string name) : Chair(), Person(name) {\n        cout << \"ChairofSuzume\" << endl;\n    }\n\n    // 显式定义派生类拷贝构造函数，以便追踪派生类自身的拷贝构造过程\n    ChairofSuzume(const ChairofSuzume& other) : Chair(other), Person(other) {\n        cout << \"CopyChairofSuzume\" << endl;\n    }\n\n    ~ChairofSuzume() {\n        cout << \"~ChairofSuzume\" << endl;\n    }\n};\n\nint main() {\n    cout << \"--- 构造 broken_chair ---\" << endl;\n    ChairofSuzume broken_chair(\"Suzume\");\n\n    cout << \"--- 拷贝构造 Souta ---\" << endl;\n    ChairofSuzume Souta(broken_chair);\n\n    cout << \"--- main 结束，销毁对象 ---\" << endl;\n    return 0;\n}",
+    "source": "Homework 4",
+    "difficulty": "hard"
   },
   {
     "id": "P21",
@@ -601,7 +681,11 @@
     "type": "programming",
     "originalId": 21,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "设计一个植物大战僵尸（PvZ）的僵尸抽象类 Zombie，包含生命值 hp、速度 speed 等数据成员，以及纯虚函数 talk()、freeze()。实现派生类 OrdinaryZombie、RoadblockZombie、MetalBucketZombie、NewspaperZombie，重写虚函数以实现不同的说话和受冻减速（速度减半或乘以特定比例）行为，并在主函数中使用基类指针数组多态调用这些函数。",
+    "answer": "#include <iostream>\n#include <vector>\n#include <string>\n\nusing std::cout;\nusing std::endl;\nusing std::string;\n\n// 抽象基类 Zombie\nclass Zombie {\nprotected:\n    int hp;\n    double speed;\n    string name;\npublic:\n    Zombie(int h, double s, string n) : hp(h), speed(s), name(n) {}\n    virtual ~Zombie() { cout << \"~Zombie \" << name << endl; } // 必须包含虚析构函数\n    \n    virtual void talk() = 0;   // 纯虚函数\n    virtual void freeze() = 0; // 纯虚函数\n    \n    void ShowInfo() const {\n        cout << name << \" - 生命值: \" << hp << \", 速度: \" << speed << endl;\n    }\n};\n\nclass OrdinaryZombie : public Zombie {\npublic:\n    OrdinaryZombie(int h, double s) : Zombie(h, s, \"普通僵尸\") {}\n    void talk() override { cout << \"brains~~~\" << endl; }\n    void freeze() override { speed *= 0.5; cout << \"普通僵尸被冻结，速度减半\" << endl; }\n};\n\nclass RoadblockZombie : public Zombie {\npublic:\n    RoadblockZombie(int h, double s) : Zombie(h, s, \"路障僵尸\") {}\n    void talk() override { cout << \"brains~~~ 有个路障在头上！\" << endl; }\n    void freeze() override { speed *= 0.8; cout << \"路障僵尸减速20%\" << endl; }\n};\n\nclass MetalBucketZombie : public Zombie {\npublic:\n    MetalBucketZombie(int h, double s) : Zombie(h, s, \"铁桶僵尸\") {}\n    void talk() override { cout << \"brains~~~ 头顶上有个铁桶！\" << endl; }\n    void freeze() override { speed *= 0.4; cout << \"铁桶僵尸减速60%\" << endl; }\n};\n\nclass NewspaperZombie : public Zombie {\npublic:\n    NewspaperZombie(int h, double s) : Zombie(h, s, \"读报僵尸\") {}\n    void talk() override { cout << \"我在读报纸...\" << endl; }\n    void freeze() override { speed *= 0.5; cout << \"读报僵尸减速50%\" << endl; }\n};\n\nint main() {\n    OrdinaryZombie Z1(100, 10.0);\n    RoadblockZombie Z2(150, 8.0);\n    MetalBucketZombie Z3(200, 6.0);\n    NewspaperZombie Z4(120, 12.0);\n\n    Zombie* zombies[] = { &Z1, &Z2, &Z3, &Z4 };\n    int n = sizeof(zombies) / sizeof(zombies[0]);\n\n    cout << \"--- 僵尸群正在逼近 ---\" << endl;\n    for (int i = 0; i < n; i++) {\n        zombies[i]->ShowInfo();\n        zombies[i]->talk();\n    }\n\n    cout << \"--- 寒冰射手发动攻击，僵尸群受冻 ---\" << endl;\n    for (int i = 0; i < n; i++) {\n        zombies[i]->freeze();\n        zombies[i]->ShowInfo();\n    }\n    return 0;\n}",
+    "source": "Homework 5",
+    "difficulty": "hard"
   },
   {
     "id": "P22",
@@ -627,7 +711,11 @@
     "type": "programming",
     "originalId": 22,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "设计一个模板类 Data，包含一个大小为 3 的泛型数据成员数据数组 `T data[3]`。\n要求：\n（1）实现无参构造函数，并在构造函数中通过键盘输入为该数组的 3 个成员赋值；\n（2）实现成员函数 `T getMin()` 计算并返回这 3 个数据的最小值。可在类体内声明，在类体外进行定义。",
+    "answer": "#include <iostream>\n\nusing std::cin;\nusing std::cout;\nusing std::endl;\n\ntemplate <typename T>\nclass Data {\nprivate:\n    T data[3];\npublic:\n    Data() {\n        cout << \"请输入3个数据：\" << endl;\n        for (int i = 0; i < 3; i++) {\n            cin >> data[i];\n        }\n    }\n    T getMin() const; // 类体内声明\n};\n\n// 类外定义类模板的成员函数\ntemplate <typename T>\nT Data<T>::getMin() const {\n    T min_val = data[0];\n    for (int i = 1; i < 3; i++) {\n        if (data[i] < min_val) {\n            min_val = data[i];\n        }\n    }\n    return min_val;\n}\n\nint main() {\n    Data<int> intData;\n    cout << \"最小值是：\" << intData.getMin() << endl;\n    \n    Data<double> doubleData;\n    cout << \"极小值是：\" << doubleData.getMin() << endl;\n    return 0;\n}",
+    "source": "Homework 6",
+    "difficulty": "hard"
   },
   {
     "id": "P23",
@@ -657,7 +745,11 @@
     "type": "programming",
     "originalId": 23,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "使用 `std::vector` 存储三个商品价格（如 10.0, 20.0, 30.0）。使用 STL 算法 `std::for_each` 和 Lambda 表达式计算每个商品加上 5% 税率后的实付价格，计算总实付款，并将每件商品原价、实付价格、以及最终的总实付款格式化输出到控制台，同时使用 `std::ofstream` 将相同的内容保存到文本文件 `price.txt` 中。",
+    "answer": "#include <iostream>\n#include <fstream>\n#include <vector>\n#include <algorithm>\n#include <sstream>\n#include <iomanip>\n\nusing std::cout;\nusing std::endl;\nusing std::vector;\nusing std::ofstream;\nusing std::ostringstream;\nusing std::fixed;\nusing std::setprecision;\n\nint main() {\n    vector<double> prices = {10.0, 20.0, 30.0};\n    const double taxRate = 0.05;\n    double total = 0.0;\n    ostringstream oss; // 使用 ostringstream 格式化拼接数据\n\n    oss << fixed << setprecision(2);\n    oss << \"商品价格列表（加收 5% 税率）：\" << endl;\n    \n    // 使用 std::for_each 与 Lambda 表达式，按引用捕获外部变量\n    std::for_each(prices.begin(), prices.end(), [&total, taxRate, &oss](double price) {\n        double taxedPrice = price * (1.0 + taxRate);\n        total += taxedPrice;\n        oss << \"商品原价: \" << price << \" 元 -> 实付价格: \" << taxedPrice << \" 元\" << endl;\n    });\n    \n    oss << \"总计实付金额：\" << total << \" 元\" << endl;\n    \n    // 输出到控制台\n    cout << oss.str();\n    \n    // 输出到文件 price.txt\n    ofstream outFile(\"price.txt\");\n    if (outFile) {\n        outFile << oss.str();\n        outFile.close();\n        cout << \"数据已成功保存到 price.txt\" << endl;\n    } else {\n        std::cerr << \"打开文件 price.txt 失败！\" << endl;\n    }\n    return 0;\n}",
+    "source": "Homework 7",
+    "difficulty": "hard"
   },
   {
     "id": "P24",
@@ -684,7 +776,11 @@
     "type": "programming",
     "originalId": 25,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "找出程序在输出半径为 2.5 的圆的面积时结果异常（如输出为 0 或其他错误值）的原因，并说明正确的成员初始化方式。",
+    "answer": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nclass Circle {\nprivate:\n    double radius;\n\npublic:\n    // 正确写法：用成员初始化列表初始化成员变量\n    explicit Circle(double r) : radius(r) {}\n\n    double area() const {\n        const double PI = 3.141592653589793;\n        return PI * radius * radius;\n    }\n};\n\nint main() {\n    cout << \"题 25：输出圆面积错误原因\" << endl;\n    cout << \"圆半径为 2.5 时面积输出异常的常见原因：\" << endl;\n    cout << \"1. 构造函数中形参和成员变量同名，写成 radius = radius;\" << endl;\n    cout << \"   这实际上是形参给形参赋值，成员变量没有被正确初始化。\" << endl;\n    cout << \"   对于 double 成员，这会导致其值不确定，可能表现为 0，也可能是其他错误值。\" << endl;\n    cout << \"2. 应使用 this->radius = radius; 或成员初始化列表初始化成员变量。\" << endl;\n\n    Circle c(2.5);\n    cout << fixed << setprecision(2);\n    cout << \"修正后，半径为 2.5 的圆面积为：\" << c.area() << endl;\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P25",
@@ -712,7 +808,11 @@
     "generated": true,
     "originalId": 26,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "编写程序，定义一个简单的 Student 类，并输出 C++ 类与对象程序设计中常见的语法错误及注意事项。",
+    "answer": "#include <iostream>\nusing namespace std;\n\nclass Student {\nprivate:\n    int age;\n\npublic:\n    // 构造函数没有返回值类型\n    Student(int a) : age(a) {}\n\n    void show() const {\n        cout << \"age = \" << age << endl;\n    }\n};\n\nint main() {\n    cout << \"题 26：指出程序错误\" << endl;\n    cout << \"由于题目未给出原始程序，这里列出类与对象程序中的常见错误：\" << endl;\n    cout << \"1. 类定义结束后必须写分号。\" << endl;\n    cout << \"2. 构造函数不能写返回值类型，例如不能写 void Student()。\" << endl;\n    cout << \"3. private 成员不能在类外直接访问，应通过 public 成员函数访问。\" << endl;\n    cout << \"4. 非 static 成员函数必须通过对象调用。\" << endl;\n    cout << \"5. 对象定义时，如果类没有无参构造函数，就必须提供构造参数。\" << endl;\n\n    Student s(18);\n    cout << \"修正示例输出：\";\n    s.show();\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P26",
@@ -740,7 +840,11 @@
     "generated": true,
     "originalId": 27,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "列举 C++ 指针与引用程序中的常见错误，并说明产生错误的原因。要求至少说明指针未初始化、空指针解引用、悬空指针、动态内存释放不匹配以及引用初始化等问题，并给出简单的正确使用示例。",
+    "answer": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"题 27：指出指针程序错误\" << endl;\n    cout << \"由于题目未给出原始程序，这里列出指针与引用程序中的常见错误及原因：\" << endl;\n    cout << \"1. 指针未初始化就使用。\" << endl;\n    cout << \"   未初始化指针中存放的是不确定地址，解引用会导致未定义行为。\" << endl;\n    cout << \"2. 空指针不能解引用。\" << endl;\n    cout << \"   int* p = nullptr; *p = 10; 是错误的。\" << endl;\n    cout << \"3. 指针指向局部变量后返回，函数结束后该地址失效。\" << endl;\n    cout << \"4. new 与 delete 必须配对，new[] 与 delete[] 必须配对。\" << endl;\n    cout << \"5. 引用必须在定义时初始化，且初始化后不能再绑定到其他对象。\" << endl;\n\n    int value = 10;\n    int* p = &value;\n    cout << \"正确示例：value = \" << *p << endl;\n\n    int* arr = new int[3]{1, 2, 3};\n    cout << \"动态数组正确访问：\" << arr[0] << ' ' << arr[1] << ' ' << arr[2] << endl;\n    delete[] arr;\n    arr = nullptr;\n\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P27",
@@ -767,7 +871,11 @@
     "type": "programming",
     "originalId": 28,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "指出下面代码中的错误，并说明原因，然后给出修改后的正确写法。\n\n错误代码示例：\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass Date {\nprivate:\n    int year;\n    int month;\n    int day;\n\npublic:\n    void Date(int year, int month, int day) {\n        year = year;\n        month = month;\n        day = day;\n    }\n\n    void show() const {\n        cout << year << '-' << month << '-' << day << endl;\n    }\n};\n\nint main() {\n    Date d(2024, 6, 1);\n    d.show();\n    return 0;\n}\n```\n\n要求说明：\n1. 指出构造函数定义中的错误；\n2. 说明形参与成员变量同名时直接赋值的问题；\n3. 给出正确的构造函数写法。",
+    "answer": "#include <iostream>\nusing namespace std;\n\nclass Date {\nprivate:\n    int year;\n    int month;\n    int day;\n\npublic:\n    // 构造函数不能有返回值类型，推荐使用成员初始化列表\n    Date(int y, int m, int d) : year(y), month(m), day(d) {\n        if (month < 1 || month > 12) {\n            month = 1;\n        }\n        if (day < 1 || day > 31) {\n            day = 1;\n        }\n    }\n\n    void show() const {\n        cout << year << '-' << month << '-' << day << endl;\n    }\n};\n\nint main() {\n    cout << \"题 28：Date 类构造函数改错\" << endl;\n    cout << \"Date 类构造函数中的常见错误：\" << endl;\n    cout << \"1. 构造函数不能写返回值类型。\" << endl;\n    cout << \"   错误示例：void Date(int y, int m, int d);\" << endl;\n    cout << \"2. 如果形参与成员变量同名，直接写 year = year; 会导致成员变量没有被正确赋值。\" << endl;\n    cout << \"   应使用 this->year = year; 或成员初始化列表。\" << endl;\n    cout << \"3. 构造函数名必须与类名完全相同。\" << endl;\n\n    Date d(2024, 6, 1);\n    cout << \"修正后的日期为：\";\n    d.show();\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P28",
@@ -794,7 +902,11 @@
     "type": "programming",
     "originalId": 29,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "指出下面错误，并说明原因。",
+    "answer": "#include <iostream>\nusing namespace std;\n\n// 题目：protected 成员访问改错\n// protected 成员：\n// 1. 类外不能通过对象直接访问；\n// 2. 派生类的成员函数可以访问从基类继承来的 protected 成员。\n\nclass Base {\nprotected:\n    int value;\n\npublic:\n    Base(int v = 0) : value(v) {}\n};\n\nclass Derived : public Base {\npublic:\n    Derived(int v = 0) : Base(v) {}\n\n    void setValue(int v) {\n        // 正确：派生类成员函数可以访问基类的 protected 成员\n        value = v;\n    }\n\n    void showValue() const {\n        cout << \"value = \" << value << endl;\n    }\n};\n\nint main() {\n    Derived d(10);\n\n    // 错误示例：\n    // d.value = 20;\n    // 原因：value 是 Base 的 protected 成员，不能在类外通过对象直接访问。\n\n    // 正确做法：通过派生类提供的 public 成员函数间接访问\n    d.setValue(20);\n    d.showValue();\n\n    cout << \"错误原因：protected 成员不能在类外直接访问，只能在本类、友元或派生类成员函数中访问。\" << endl;\n\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P29",
@@ -820,7 +932,11 @@
     "type": "programming",
     "originalId": 30,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "指出下面错误，并说明原因。",
+    "answer": "#include <iostream>\nusing namespace std;\n\n// 题目：引用变量改错\n// 引用的基本规则：\n// 1. 引用定义时必须初始化；\n// 2. 引用一旦绑定到某个变量，就不能再改为引用其他变量；\n// 3. 普通引用不能绑定到常量或临时对象，const 引用可以。\n\nint main() {\n    int a = 10;\n    int b = 20;\n\n    // 错误示例 1：\n    // int &r;\n    // 原因：引用变量定义时必须初始化。\n\n    // 正确写法：\n    int &r = a;\n    cout << \"r = \" << r << endl;\n\n    r = b;\n    // 注意：这里不是让 r 改为引用 b，而是把 b 的值赋给 r 所引用的变量 a。\n    cout << \"a = \" << a << endl;\n    cout << \"r = \" << r << endl;\n\n    // 错误示例 2：\n    // int &x = 100;\n    // 原因：非 const 引用不能绑定到常量或临时对象。\n\n    // 正确写法：\n    const int &x = 100;\n    cout << \"x = \" << x << endl;\n\n    cout << \"错误原因：引用必须初始化，且初始化后不能重新绑定；非 const 引用不能引用常量。\" << endl;\n\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P30",
@@ -847,7 +963,11 @@
     "type": "programming",
     "originalId": 31,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "指出下面错误，并说明原因。",
+    "answer": "#include <iostream>\nusing namespace std;\n\n// 题目：派生类对象访问基类私有成员改错\n// private 成员只能在基类内部访问，派生类也不能直接访问。\n\nclass Base {\nprivate:\n    int data;\n\npublic:\n    Base(int d = 0) : data(d) {}\n\n    void setData(int d) {\n        data = d;\n    }\n\n    int getData() const {\n        return data;\n    }\n};\n\nclass Derived : public Base {\npublic:\n    Derived(int d = 0) : Base(d) {}\n\n    void show() const {\n        // 错误示例：\n        // cout << data << endl;\n        // 原因：data 是 Base 的 private 成员，派生类不能直接访问。\n\n        // 正确做法：通过基类提供的 public 成员函数访问\n        cout << \"data = \" << getData() << endl;\n    }\n};\n\nint main() {\n    Derived d(100);\n\n    // 错误示例：\n    // cout << d.data << endl;\n    // 原因：data 是基类 private 成员，类外更不能通过派生类对象直接访问。\n\n    d.show();\n    d.setData(200);\n    d.show();\n\n    cout << \"错误原因：基类 private 成员不能被派生类直接访问，也不能通过派生类对象在类外访问。\" << endl;\n\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P31",
@@ -874,7 +994,11 @@
     "type": "programming",
     "originalId": 32,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "指出多继承中多个基类含有同名成员函数时，派生类对象直接调用该同名函数可能产生的错误，并说明原因；同时给出正确的改正方法。",
+    "answer": "#include <iostream>\nusing namespace std;\n\n// 题目：多继承同名成员函数二义性改错\n// 当多个基类中存在同名成员函数时，派生类对象直接调用该函数会产生二义性。\n\nclass Base1 {\npublic:\n    void show() const {\n        cout << \"Base1::show()\" << endl;\n    }\n};\n\nclass Base2 {\npublic:\n    void show() const {\n        cout << \"Base2::show()\" << endl;\n    }\n};\n\nclass Derived : public Base1, public Base2 {\npublic:\n    // 解决方法 1：在派生类中重新定义同名函数，明确调用哪个基类的函数\n    void show() const {\n        cout << \"Derived::show()\" << endl;\n        Base1::show();\n        Base2::show();\n    }\n};\n\nint main() {\n    Derived d;\n\n    // 错误示例：如果 Derived 中没有重新定义 show()，下面调用会产生二义性\n    // d.show();\n    // 原因：Base1 和 Base2 中都有 show()，编译器不知道调用哪一个。\n\n    // 正确做法 1：通过作用域限定符明确指定\n    d.Base1::show();\n    d.Base2::show();\n\n    // 正确做法 2：在派生类中重新定义 show()\n    d.show();\n\n    cout << \"错误原因：多继承中多个基类有同名成员函数时，派生类对象直接调用会产生二义性。\" << endl;\n\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P32",
@@ -901,7 +1025,11 @@
     "type": "programming",
     "originalId": 33,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "设计 Rect 类，包含私有数据成员 length、width，默认值为 0；通过成员函数设置长和宽并保证范围在 (0,50)；实现 GetPerimeter() 求周长。",
+    "answer": "#include <iostream>\nusing namespace std;\n\nclass Rect\n{\nprivate:\n    double length, width;\npublic:\n    Rect(double l = 0, double w = 0): length(l), width(w) { }\n\n    void Set(double l, double w)\n    {\n        if (l <= 0 || l >= 50 || w <= 0 || w >= 50)\n            throw \"数据不在指定范围(0,50)!\";\n        length = l;\n        width = w;\n    }\n\n    double GetPerimeter()\n    {\n        return 2 * (length + width);\n    }\n};\n\nint main()\n{\n    try\n    {\n        Rect obj;\n        obj.Set(1, 8);\n        cout << \"周长:\" << obj.GetPerimeter() << endl;\n    }\n    catch (const char *str)\n    {\n        cout << \"异常信息:\" << str << endl;\n    }\n    return 0;\n}",
+    "source": "模拟试题六",
+    "difficulty": "hard"
   },
   {
     "id": "P33",
@@ -928,7 +1056,11 @@
     "type": "programming",
     "originalId": 34,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "定义 Vector2d 类，私有 double 成员 x、y；定义构造函数、Show() 函数；以成员函数方式重载 +，实现两个对象 x、y 对应相加；编写测试程序。",
+    "answer": "#include <iostream>\nusing namespace std;\n\nclass Vector2d\n{\n    double x, y;\npublic:\n    Vector2d(double a, double b): x(a), y(b) { }\n    void Show() { cout << x << \" \" << y << endl; }\n    Vector2d operator+(Vector2d &obj);\n};\n\nVector2d Vector2d::operator+(Vector2d &obj)\n{\n    return Vector2d(x + obj.x, y + obj.y);\n}\n\nint main()\n{\n    Vector2d d1(3.5, 4.5), d2(2.5, 5.5), d3(0.0, 0.0);\n    d3 = d1 + d2;\n    d3.Show();\n    return 0;\n}",
+    "source": "模拟试题六",
+    "difficulty": "hard"
   },
   {
     "id": "P34",
@@ -954,7 +1086,11 @@
     "type": "programming",
     "originalId": 39,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "编写一个函数模板，用于求参数的绝对值，并编写测试程序进行测试。函数模板声明如下：template <class Type> Type Abs(Type tVar)",
+    "answer": "#include <iostream>\nusing namespace std;\ntemplate <class Type>\nType Abs(Type tVar)\n{\n    if (tVar >= 0) return tVar;\n    else return -tVar;\n}\nint main()\n{\n    cout << Abs(5) << endl;\n    cout << Abs(-5) << endl;\n    cout << Abs(2.5) << endl;\n    cout << Abs(-2.5) << endl;\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P35",
@@ -981,7 +1117,11 @@
     "type": "programming",
     "originalId": 40,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "定义一个复数类 CComplex，定义带有 2 个参数（其中一个为缺省参数）的构造函数，显示复数值的函数 Show()，重载“+”运算符（用成员函数实现），并编写测试程序进行测试。",
+    "answer": "#include <iostream>\nusing namespace std;\n\nclass CComplex\n{\nprivate:\n    double m_dReal;\n    double m_dImage;\n\npublic:\n    CComplex(double dReal, double dImage = 0)\n    {\n        m_dReal = dReal;\n        m_dImage = dImage;\n    }\n\n    void Show()\n    {\n        cout << m_dReal;\n        if (m_dImage > 0)\n        {\n            cout << \"+\" << m_dImage << \"i\";\n        }\n        else if (m_dImage < 0)\n        {\n            cout << \"-\" << -m_dImage << \"i\";\n        }\n        cout << endl;\n    }\n\n    CComplex operator+(const CComplex &obj)\n    {\n        CComplex objTemp(m_dReal + obj.m_dReal,\n                         m_dImage + obj.m_dImage);\n        return objTemp;\n    }\n};\n\nint main()\n{\n    CComplex c1(3, 4);\n    CComplex c2(5, -2);\n    CComplex c3 = c1 + c2;\n\n    c1.Show();\n    c2.Show();\n    c3.Show();\n\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P36",
@@ -1007,7 +1147,11 @@
     "type": "programming",
     "originalId": 41,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "编写一个函数模板，用于求数组中各元素之和，并编写测试程序进行测试。函数模板声明为：template <class Type> Type Sum(Type tArray[], int iSize)",
+    "answer": "#include <iostream>\nusing namespace std;\n\ntemplate <class Type>\nType Sum(Type tArray[], int iSize)\n{\n    Type tSum = 0;\n    for (int i = 0; i < iSize; i++)\n    {\n        tSum = tSum + tArray[i];\n    }\n    return tSum;\n}\n\nint main(void)\n{\n    int a[] = {1, 2, 3};\n    double b[] = {1.5, 2.8, 8.9, 8};\n\n    cout << Sum(a, 3) << endl;\n    cout << Sum(b, 4) << endl;\n\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P37",
@@ -1034,7 +1178,11 @@
     "type": "programming",
     "originalId": 42,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "定义抽象类 CShape，包含纯虚函数 GetLength()；派生出矩形类 CRectangle 和圆类 CCircle，在派生类中重写 GetLength()，用于求图形的周长，并编写测试程序。",
+    "answer": "#include <iostream>\nusing namespace std;\n\nclass CShape\n{\npublic:\n    virtual double GetLength() const = 0;\n};\n\nclass CRectangle : public CShape\n{\npublic:\n    CRectangle(double dWidth, double dHeight)\n    {\n        m_dWidth = dWidth;\n        m_dHeight = dHeight;\n    }\n\n    double GetLength() const\n    {\n        return 2 * (m_dWidth + m_dHeight);\n    }\n\nprivate:\n    double m_dWidth, m_dHeight;\n};\n\nclass CCircle : public CShape\n{\npublic:\n    CCircle(double dRadius)\n    {\n        m_dRadius = dRadius;\n    }\n\n    double GetLength() const\n    {\n        return 2 * 3.1415926 * m_dRadius;\n    }\n\nprivate:\n    double m_dRadius;\n};\n\nint main(void)\n{\n    CRectangle oRectangle(2, 3);\n    cout << oRectangle.GetLength() << endl;\n\n    CCircle oCircle(10);\n    cout << oCircle.GetLength() << endl;\n\n    return 0;\n}",
+    "source": "模拟试题六",
+    "difficulty": "hard"
   },
   {
     "id": "P38",
@@ -1061,7 +1209,11 @@
     "type": "programming",
     "originalId": 44,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "编写程序，定义抽象基类 Shape(形状)，由它派生出 2 个派生类：Circle(圆形) 和 Rectangle(矩形)；用函数 Show() 分别显示各种图形的相关信息；最后显示所有图形的总面积。",
+    "answer": "#include <iostream>\n#include <vector>\n#include <memory>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\n// 抽象基类 Shape\nclass Shape {\npublic:\n    virtual ~Shape() = default;\n\n    // 纯虚函数：计算面积\n    virtual double Area() const = 0;\n\n    // 纯虚函数：显示图形信息\n    virtual void Show() const = 0;\n};\n\n// 圆形类\nclass Circle : public Shape {\nprivate:\n    double radius;\n\npublic:\n    explicit Circle(double r) : radius(r) {}\n\n    double Area() const override {\n        const double PI = acos(-1.0);\n        return PI * radius * radius;\n    }\n\n    void Show() const override {\n        cout << \"Circle: radius = \" << radius\n             << \", area = \" << Area() << endl;\n    }\n};\n\n// 矩形类\nclass Rectangle : public Shape {\nprivate:\n    double length;\n    double width;\n\npublic:\n    Rectangle(double l, double w) : length(l), width(w) {}\n\n    double Area() const override {\n        return length * width;\n    }\n\n    void Show() const override {\n        cout << \"Rectangle: length = \" << length\n             << \", width = \" << width\n             << \", area = \" << Area() << endl;\n    }\n};\n\nint main() {\n    cout << fixed << setprecision(2);\n\n    vector<unique_ptr<Shape>> shapes;\n\n    // 创建不同图形对象\n    shapes.push_back(make_unique<Circle>(3.0));\n    shapes.push_back(make_unique<Rectangle>(4.0, 5.0));\n    shapes.push_back(make_unique<Circle>(2.5));\n    shapes.push_back(make_unique<Rectangle>(6.0, 2.0));\n\n    double totalArea = 0.0;\n\n    cout << \"各图形信息如下：\" << endl;\n    for (const auto &shape : shapes) {\n        shape->Show();\n        totalArea += shape->Area();\n    }\n\n    cout << \"所有图形的总面积 = \" << totalArea << endl;\n\n    return 0;\n}",
+    "source": "模拟试题六",
+    "difficulty": "hard"
   },
   {
     "id": "P39",
@@ -1088,7 +1240,11 @@
     "type": "programming",
     "originalId": 45,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "定义抽象基类 Shape，由它派生 Circle、Rectangle、Square，用虚函数 ShowArea() 分别显示各种图形面积，并显示所有图形总面积。",
+    "answer": "#include <iostream>\nusing namespace std;\n\nconst double PI = 3.1415926;\n\nclass Shape\n{\npublic:\n    Shape() { }\n    virtual ~Shape() { }\n    virtual void ShowArea() = 0;\n    static double totalArea;\n    static void ShowTotalArea()\n    {\n        cout << \"总面积:\" << totalArea << endl;\n    }\n};\n\ndouble Shape::totalArea = 0;\n\nclass Circle : public Shape\n{\nprivate:\n    double radius;\n\npublic:\n    Circle(double r) : radius(r)\n    {\n        totalArea += PI * r * r;\n    }\n\n    ~Circle() { }\n\n    virtual void ShowArea()\n    {\n        cout << \"圆面积:\" << PI * radius * radius << endl;\n    }\n};\n\nclass Rectangle : public Shape\n{\nprivate:\n    double length;\n    double width;\n\npublic:\n    Rectangle(double l, double w) : length(l), width(w)\n    {\n        totalArea += l * w;\n    }\n\n    ~Rectangle() { }\n\n    virtual void ShowArea()\n    {\n        cout << \"矩形面积:\" << length * width << endl;\n    }\n};\n\nclass Square : public Shape\n{\nprivate:\n    double side;\n\npublic:\n    Square(double s) : side(s)\n    {\n        totalArea += s * s;\n    }\n\n    ~Square() { }\n\n    virtual void ShowArea()\n    {\n        cout << \"正方形面积:\" << side * side << endl;\n    }\n};\n\nint main()\n{\n    Shape* p[3];\n\n    p[0] = new Circle(2.0);\n    p[1] = new Rectangle(3.0, 4.0);\n    p[2] = new Square(5.0);\n\n    for (int i = 0; i < 3; ++i)\n    {\n        p[i]->ShowArea();\n    }\n\n    Shape::ShowTotalArea();\n\n    for (int i = 0; i < 3; ++i)\n    {\n        delete p[i];\n    }\n\n    return 0;\n}",
+    "source": "模拟试题六",
+    "difficulty": "hard"
   },
   {
     "id": "P40",
@@ -1114,10 +1270,13 @@
     "type": "programming",
     "expectedOutput": "constructor,i=0,destructor",
     "originalId": 48,
-    "stem": "",
+    "stem": "阅读下列程序，写出输出结果。\n\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int i;\npublic:\n    A() {\n        i = 0;\n        cout << \"constructor,i=\" << i << \",\";\n    }\n\n    ~A() {\n        cout << \"destructor\";\n    }\n};\n\nint main() {\n    A obj;\n    return 0;\n}",
     "explanation_status": "done",
     "audit_status": "done",
-    "answerCode": "#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int i;\npublic:\n    A() {\n        i = 0;\n        cout << \"constructor,i=\" << i << \",\";\n    }\n\n    ~A() {\n        cout << \"destructor\";\n    }\n};\n\nint main() {\n    A obj;\n    return 0;\n}\n"
+    "answerCode": "#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int i;\npublic:\n    A() {\n        i = 0;\n        cout << \"constructor,i=\" << i << \",\";\n    }\n\n    ~A() {\n        cout << \"destructor\";\n    }\n};\n\nint main() {\n    A obj;\n    return 0;\n}\n",
+    "answer": "#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int i;\npublic:\n    A() {\n        i = 0;\n        cout << \"constructor,i=\" << i << \",\";\n    }\n\n    ~A() {\n        cout << \"destructor\";\n    }\n};\n\nint main() {\n    A obj;\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P41",
@@ -1140,10 +1299,13 @@
     "type": "programming",
     "expectedOutput": "2 3",
     "originalId": 49,
-    "stem": "",
+    "stem": "阅读下列程序，写出输出结果。\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x;\n    int y;\npublic:\n    A(int a, int b) {\n        x = a;\n        y = b;\n    }\n\n    void show() {\n        cout << x << \" \" << y << endl;\n    }\n};\n\nint main() {\n    A obj(2, 3);\n    obj.show();\n    return 0;\n}\n```",
     "explanation_status": "done",
     "audit_status": "done",
-    "answerCode": "#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x;\n    int y;\npublic:\n    A(int a, int b) {\n        x = a;\n        y = b;\n    }\n\n    void show() {\n        cout << x << \" \" << y << endl;\n    }\n};\n\nint main() {\n    A obj(2, 3);\n    obj.show();\n    return 0;\n}\n"
+    "answerCode": "#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x;\n    int y;\npublic:\n    A(int a, int b) {\n        x = a;\n        y = b;\n    }\n\n    void show() {\n        cout << x << \" \" << y << endl;\n    }\n};\n\nint main() {\n    A obj(2, 3);\n    obj.show();\n    return 0;\n}\n",
+    "answer": "#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x;\n    int y;\npublic:\n    A(int a, int b) {\n        x = a;\n        y = b;\n    }\n\n    void show() {\n        cout << x << \" \" << y << endl;\n    }\n};\n\nint main() {\n    A obj(2, 3);\n    obj.show();\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P42",
@@ -1170,7 +1332,11 @@
     "type": "programming",
     "originalId": 50,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "设计 DateInfo 类，包含无参构造函数、带参构造函数、日期设置成员函数、日期输出成员函数和日期获取成员函数。",
+    "answer": "#include <iostream>\nusing namespace std;\n\nclass DateInfo\n{\nprivate:\n    int year, month, day;\n\npublic:\n    DateInfo(): year(2010), month(6), day(8) { }\n    DateInfo(int y, int m, int d): year(y), month(m), day(d) { }\n\n    void Set(int y, int m, int d)\n    {\n        year = y;\n        month = m;\n        day = d;\n    }\n\n    void Get(int &y, int &m, int &d) const\n    {\n        y = year;\n        m = month;\n        d = day;\n    }\n\n    void Show() const\n    {\n        cout << year << \"年\" << month << \"月\" << day << \"日\" << endl;\n    }\n};\n\nint main()\n{\n    DateInfo d1, d2(1988, 8, 18);\n    d1.Show();\n    d2.Show();\n\n    d2.Set(1999, 9, 19);\n    d2.Show();\n\n    int y, m, d;\n    d2.Get(y, m, d);\n    cout << \"获取到的日期：\" << y << \"年\" << m << \"月\" << d << \"日\" << endl;\n\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P43",
@@ -1196,7 +1362,11 @@
     "type": "programming",
     "originalId": 51,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "定义 Complex 类，私有数据成员 r、i；提供带两个参数的构造函数、Show() 函数，并以成员函数形式重载运算符 +，实现两个复数对象对应成员相加；编写测试程序。",
+    "answer": "#include <iostream>\nusing namespace std;\n\nclass Complex\n{\nprivate:\n    double r, i;\n\npublic:\n    Complex(double a, double b): r(a), i(b) { }\n    void Show() { cout << r << \" \" << i << endl; }\n    Complex operator +(Complex obj)\n    {\n        return Complex(r + obj.r, i + obj.i);\n    }\n};\n\nint main()\n{\n    Complex c1(3.5, 4.5), c2(2.5, 5.5), c3(0.0, 0.0);\n    c3 = c1 + c2;\n    c3.Show();\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   },
   {
     "id": "P44",
@@ -1221,6 +1391,10 @@
     "type": "programming",
     "originalId": 52,
     "explanation_status": "done",
-    "audit_status": "done"
+    "audit_status": "done",
+    "stem": "指出下面程序 main 函数中的错误，以及原因。\nclass A\n{\n    int a,b;\npublic:\n    A(int aa,int bb){a=aa;b=bb;}\n};\nvoid main()\n{\n    A x(2,3), y(4);\n}",
+    "answer": "#include <iostream>\nusing namespace std;\n\nclass A\n{\nprivate:\n    int a, b;\n\npublic:\n    // 构造函数：必须提供两个 int 类型参数\n    A(int aa, int bb)\n    {\n        a = aa;\n        b = bb;\n    }\n\n    void show() const\n    {\n        cout << \"a = \" << a << \", b = \" << b << endl;\n    }\n};\n\nint main()\n{\n    /*\n        原程序 main 函数中的错误：\n\n        1. void main() 是错误的。\n           原因：标准 C++ 中 main 函数的返回类型必须是 int。\n\n        2. A y(4); 是错误的。\n           原因：类 A 中只定义了构造函数 A(int aa, int bb)，\n           创建对象时必须传入两个 int 类型参数。\n           A y(4) 只传入了一个参数，没有匹配的构造函数。\n    */\n\n    // 正确写法：创建对象时传入两个参数\n    A x(2, 3), y(4, 5);\n\n    x.show();\n    y.show();\n\n    return 0;\n}",
+    "source": "综合编程练习",
+    "difficulty": "hard"
   }
 ]

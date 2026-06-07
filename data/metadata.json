@@ -1,125 +1,130 @@
 {
   "title": "面向对象程序设计期末复习题库",
   "version": "2026.06",
-  "generatedAt": "2026-06-06",
+  "generatedAt": "2026-06-07",
   "stats": {
-    "totalQuestions": 688,
-    "totalInQuestionsJson": 644,
+    "totalQuestions": 869,
+    "totalInQuestionsJson": 825,
     "totalInProgrammingJson": 44,
-    "pendingReview": 219,
+    "pendingReview": 400,
     "invalidQuestions": 0,
-    "choice": 252,
-    "fillin": 196,
-    "truefalse": 139,
-    "coding": 57,
-    "programming": 42,
-    "program_output": 2
+    "choice": 337,
+    "fillin": 268,
+    "truefalse": 164,
+    "coding": 56,
+    "programming": 44
   },
   "questionTypes": [
     {
       "type": "choice",
       "label": "选择题",
-      "count": 252
+      "count": 337
     },
     {
       "type": "fillin",
       "label": "填空题",
-      "count": 196
+      "count": 268
     },
     {
       "type": "truefalse",
       "label": "判断题",
-      "count": 139
+      "count": 164
     },
     {
       "type": "coding",
-      "label": "编程分析题",
-      "count": 57
+      "label": "编程分析/问答题",
+      "count": 56
     },
     {
       "type": "programming",
       "label": "编程题",
-      "count": 42
-    },
-    {
-      "type": "program_output",
-      "label": "程序输出题",
-      "count": 2
+      "count": 44
     }
   ],
   "chapters": [
     {
-      "name": "C++对C的扩充",
-      "questionCount": 77
-    },
-    {
-      "name": "STL",
-      "questionCount": 15
-    },
-    {
-      "name": "this/const/static成员",
-      "questionCount": 80
-    },
-    {
-      "name": "友元",
-      "questionCount": 20
+      "name": "多继承与虚基类",
+      "questionCount": 22
     },
     {
       "name": "多态与虚函数",
-      "questionCount": 84
-    },
-    {
-      "name": "多继承与虚基类",
-      "questionCount": 18
-    },
-    {
-      "name": "文件IO",
-      "questionCount": 17
+      "questionCount": 108
     },
     {
       "name": "构造函数与析构函数",
-      "questionCount": 75
-    },
-    {
-      "name": "模板",
-      "questionCount": 50
-    },
-    {
-      "name": "类与对象",
-      "questionCount": 92
-    },
-    {
-      "name": "继承与派生",
       "questionCount": 84
     },
     {
+      "name": "继承与派生",
+      "questionCount": 110
+    },
+    {
+      "name": "类与对象",
+      "questionCount": 134
+    },
+    {
+      "name": "模板",
+      "questionCount": 62
+    },
+    {
+      "name": "文件IO",
+      "questionCount": 22
+    },
+    {
       "name": "绪论",
-      "questionCount": 12
+      "questionCount": 17
+    },
+    {
+      "name": "友元",
+      "questionCount": 25
     },
     {
       "name": "运算符重载",
-      "questionCount": 64
+      "questionCount": 77
+    },
+    {
+      "name": "C++对C的扩充",
+      "questionCount": 93
+    },
+    {
+      "name": "STL",
+      "questionCount": 21
+    },
+    {
+      "name": "this/const/static成员",
+      "questionCount": 94
     }
   ],
   "sources": [
-    "2021-2022学年第2学期B卷",
-    "2018-2019学年第2学期",
+    "2014-2015学年第2学期测试",
+    "2015-2016学年第2学期期中考试",
+    "2017-2018学年第1学期期中考试",
     "2018-2019学年第1学期",
-    "2018年期中考试",
-    "2017-2018学年第1学期",
-    "2015-2016学年第2学期",
-    "2014-2015学年第2学期",
-    "模拟试卷一",
+    "2018-2019学年第1学期A卷",
+    "2018-2019学年第2学期",
+    "2018-2019学年第2学期A卷",
+    "2018年CPP期中考试",
+    "2021-2022学年第2学期B卷",
+    "复习提纲(2024春季)",
+    "复习提纲(核心题库)",
+    "模拟基础试卷",
     "模拟试卷二",
-    "C++基础模拟",
-    "模拟试题一至六",
-    "book.pdf 视觉提取",
+    "模拟试卷一",
     "模拟试题二",
+    "模拟试题六",
+    "模拟试题七",
     "模拟试题三",
     "模拟试题四",
     "模拟试题五",
-    "模拟试题七",
-    "2018-2019学年第2学期(填空)"
+    "模拟试题一",
+    "综合编程练习",
+    "Homework 1",
+    "Homework 2",
+    "Homework 3",
+    "Homework 4",
+    "Homework 5",
+    "Homework 6",
+    "Homework 7"
   ],
   "cleaning": {
     "originalQuestions": 533,
@@ -166,50 +171,79 @@
     },
     "droppedInvalidQuestions": 14
   },
-  "totalQuestions": 654,
+  "totalQuestions": 869,
   "sourceStats": {
-    "2021-2022学年第2学期B卷": 25,
-    "2018-2019学年第2学期A卷": 13,
-    "2018-2019学年第1学期A卷": 27,
-    "2015-2016学年第2学期期中考试": 33,
-    "2017-2018学年第1学期期中考试": 15,
-    "复习提纲(2024春季)": 46,
     "2014-2015学年第2学期测试": 12,
-    "模拟试卷一": 6,
-    "模拟试卷二": 2,
+    "2015-2016学年第2学期期中考试": 60,
+    "2017-2018学年第1学期期中考试": 21,
+    "2018-2019学年第1学期": 4,
+    "2018-2019学年第1学期A卷": 27,
+    "2018-2019学年第2学期": 12,
+    "2018-2019学年第2学期A卷": 13,
+    "2018年CPP期中考试": 2,
+    "2021-2022学年第2学期B卷": 29,
+    "复习提纲(2024春季)": 51,
+    "复习提纲(核心题库)": 425,
     "模拟基础试卷": 7,
-    "模拟试题一": 20,
-    "模拟试题二": 17,
-    "模拟试题三": 22,
-    "模拟试题四": 23,
-    "模拟试题五": 27,
-    "模拟试题六": 17
+    "模拟试卷二": 6,
+    "模拟试卷一": 6,
+    "模拟试题二": 24,
+    "模拟试题六": 20,
+    "模拟试题七": 12,
+    "模拟试题三": 23,
+    "模拟试题四": 28,
+    "模拟试题五": 43,
+    "模拟试题一": 19,
+    "综合编程练习": 18,
+    "Homework 1": 1,
+    "Homework 2": 1,
+    "Homework 3": 1,
+    "Homework 4": 1,
+    "Homework 5": 1,
+    "Homework 6": 1,
+    "Homework 7": 1
   },
   "typeStats": {
-    "choice": 331,
-    "fillin": 265,
-    "truefalse": 146,
-    "coding": 57
+    "choice": 337,
+    "fillin": 268,
+    "truefalse": 164,
+    "coding": 56,
+    "programming": 44
   },
   "chapterStats": {
-    "绪论": 11,
-    "C++对C的扩充": 77,
-    "类与对象": 82,
-    "构造函数与析构函数": 71,
-    "this/const/static成员": 79,
-    "友元": 17,
-    "继承与派生": 81,
-    "多继承与虚基类": 18,
-    "多态与虚函数": 80,
-    "运算符重载": 60,
-    "模板": 49,
-    "STL": 15,
-    "文件IO": 14
+    "多继承与虚基类": 22,
+    "多态与虚函数": 108,
+    "构造函数与析构函数": 84,
+    "继承与派生": 110,
+    "类与对象": 134,
+    "模板": 62,
+    "文件IO": 22,
+    "绪论": 17,
+    "友元": 25,
+    "运算符重载": 77,
+    "C++对C的扩充": 93,
+    "STL": 21,
+    "this/const/static成员": 94
   },
-  "lastUpdated": "2026-06-06",
-  "choiceCount": 227,
-  "truefalseCount": 137,
-  "fillinCount": 191,
-  "codingCount": 55,
-  "programmingCount": 44
+  "lastUpdated": "2026-06-07",
+  "choiceCount": 337,
+  "truefalseCount": 164,
+  "fillinCount": 268,
+  "codingCount": 56,
+  "programmingCount": 44,
+  "dataUpdate": {
+    "completedAt": "2026-06-07",
+    "baseBranch": "origin/feat/data-update",
+    "restoredFrom": "origin/web",
+    "restoredQuestions": 215,
+    "skippedIncompletePlaceholders": [
+      {
+        "originalId": 616,
+        "type": "coding",
+        "source": "2015-2016学年第2学期期中考试",
+        "reason": "missing stem or answer"
+      }
+    ],
+    "rule": "保留当前整理版题目，并补录 origin/web 中题干未覆盖且字段可补齐的题目；所有题目补齐 schema 必填字段并重算 metadata。"
+  }
 }
