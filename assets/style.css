@@ -3761,12 +3761,26 @@ h4,
 .onboarding-btn {
   background: var(--surface-dark-elevated);
   border-color: rgba(250, 249, 245, 0.12);
-  color: var(--on-dark);
+  color: var(--on-dark) !important;
 }
 
 .onboarding-btn.primary {
   background: var(--accent-primary);
   border-color: var(--accent-primary);
+  color: white !important;
+}
+
+.onboarding-btn.ghost,
+.onboarding-btn.subtle {
+  background: transparent;
+  border-color: transparent;
+  color: var(--on-dark-soft) !important;
+}
+
+.onboarding-btn.ghost:hover,
+.onboarding-btn.subtle:hover {
+  background: rgba(250, 249, 245, 0.08);
+  color: var(--on-dark) !important;
 }
 
 .onboarding-target-active {
