@@ -1,9 +1,9 @@
-const CACHE_NAME = 'oop-review-v1.5.5';
+const CACHE_NAME = 'oop-review-v1.5.6';
 const ASSETS_TO_CACHE = [
   './',
-  './index.html?v=1.5.5',
-  './assets/style.css?v=1.5.5',
-  './assets/app.js?v=1.5.5',
+  './index.html?v=1.5.6',
+  './assets/style.css?v=1.5.6',
+  './assets/app.js?v=1.5.6',
   './assets/icon.svg',
   './data/questions.json',
   './data/programming.json',

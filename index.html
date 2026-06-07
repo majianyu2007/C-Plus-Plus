@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=1.5.5">
+  <link rel="stylesheet" href="assets/style.css?v=1.5.6">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#cc785c">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -333,14 +333,14 @@
         <div class="form-group" id="seed-group" style="margin-bottom: 16px; display: none;">
           <label for="setting-seed" style="font-weight: 500; margin-bottom: 6px; display: block; font-size: 0.9rem;">当前随机种子 (Seed)</label>
           <div style="display: flex; gap: 8px;">
-            <input type="number" id="setting-seed" style="flex: 1; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); outline: none; padding-inline: 10px;" placeholder="输入数字种子" />
-            <button class="show-answer-btn" id="regenerate-seed" style="border-color: var(--accent-secondary); color: var(--accent-secondary); margin: 0; white-space: nowrap; font-size: 0.85rem;" type="button">随机生成</button>
+            <input type="number" id="setting-seed" class="settings-seed-input" placeholder="输入数字种子" />
+            <button class="show-answer-btn settings-btn-seed" id="regenerate-seed" type="button">随机生成</button>
           </div>
           <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">设置相同种子可以使题目顺序完全一致。</p>
         </div>
         <div class="form-group" style="margin-bottom: 16px;">
           <label for="setting-font-family" style="font-weight: 500; margin-bottom: 6px; display: block; font-size: 0.9rem;">界面字体</label>
-          <select id="setting-font-family" class="chapter-select" style="width: 100%; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); outline: none; padding-inline: 10px;">
+          <select id="setting-font-family" class="chapter-select settings-select">
             <option value="inter">默认高级雅致 (Inter / 华文细黑)</option>
             <option value="system">系统默认无衬线 (System Sans-serif)</option>
             <option value="serif">学术风衬线体 (Georgia / 宋体)</option>
@@ -349,7 +349,7 @@
         </div>
         <div class="form-group" style="margin-bottom: 20px;">
           <label for="setting-font-size" style="font-weight: 500; margin-bottom: 6px; display: block; font-size: 0.9rem;">基准字号</label>
-          <select id="setting-font-size" class="chapter-select" style="width: 100%; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); outline: none; padding-inline: 10px;">
+          <select id="setting-font-size" class="chapter-select settings-select">
             <option value="small">小 (14px)</option>
             <option value="normal">中 / 默认 (16px)</option>
             <option value="large">大 (18px)</option>
@@ -357,14 +357,14 @@
           </select>
         </div>
         <div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;">
-          <button class="show-answer-btn" id="settings-reopen-onboarding" type="button" style="flex: 1; border-color: var(--accent-info); color: var(--accent-info);">重新查看新手引导</button>
-          <button class="show-answer-btn" id="settings-save" style="flex: 1; background: var(--accent-primary); border-color: var(--accent-primary); color: white;">保存设置</button>
+          <button class="show-answer-btn settings-btn-onboarding" id="settings-reopen-onboarding" type="button">重新查看新手引导</button>
+          <button class="show-answer-btn settings-btn-save" id="settings-save" type="button">保存设置</button>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="assets/app.js?v=1.5.5"></script>
+  <script src="assets/app.js?v=1.5.6"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
