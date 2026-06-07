@@ -605,7 +605,7 @@
         "unique_ptr",
         "weak_ptr"
       ],
-      "lectureChapterHint": "C++新标准",
+      "lectureChapterHint": "C++新标准特性",
       "description": "C++11引入的自动管理动态内存的指针类，避免手动new/delete。"
     },
     {
@@ -615,7 +615,7 @@
         "&&",
         "move语义"
       ],
-      "lectureChapterHint": "C++新标准",
+      "lectureChapterHint": "C++新标准特性",
       "description": "用于绑定到右值的引用，实现移动语义和完美转发。"
     },
     {
@@ -624,7 +624,7 @@
       "aliases": [
         "move constructor"
       ],
-      "lectureChapterHint": "C++新标准",
+      "lectureChapterHint": "C++新标准特性",
       "description": "以右值引用为参数的构造函数，转移资源所有权而非复制。"
     },
     {
@@ -633,7 +633,7 @@
       "aliases": [
         "自动类型"
       ],
-      "lectureChapterHint": "C++新标准",
+      "lectureChapterHint": "C++新标准特性",
       "description": "让编译器根据初始化表达式自动推断变量类型。"
     },
     {
@@ -642,7 +642,7 @@
       "aliases": [
         "range-based for"
       ],
-      "lectureChapterHint": "C++新标准",
+      "lectureChapterHint": "C++新标准特性",
       "description": "简洁遍历容器或数组的循环语法。"
     },
     {
@@ -652,7 +652,7 @@
         "匿名函数",
         "lambda"
       ],
-      "lectureChapterHint": "C++新标准",
+      "lectureChapterHint": "C++新标准特性",
       "description": "定义匿名函数对象，可用于STL算法。"
     },
     {
