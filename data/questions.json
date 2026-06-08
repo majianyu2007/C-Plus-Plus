@@ -3993,34 +3993,6 @@
   {
     "id": 160,
     "type": "choice",
-    "chapter": "友元",
-    "stem": "不属于类的成员函数的是（ ）。",
-    "options": [
-      "A. 静态成员函数",
-      "B. 友元函数",
-      "C. 构造函数",
-      "D. 析构函数"
-    ],
-    "answer": "B",
-    "explanation": "## 1. **核心概念与机制**\n\n本题考查 C++ 中**类的成员函数**与**友元函数**的区别。\n\n题目问：\n\n> 不属于类的成员函数的是（ ）。\n\n正确答案是：\n\n> **B. 友元函数**\n\n---\n\n### 1.1 什么是类的成员函数？\n\n**成员函数**是定义在类作用域中的函数，属于类的一部分。\n\n常见的类成员函数包括：\n\n- 普通成员函数；\n- 静态成员函数；\n- 构造函数；\n- 析构函数；\n- 拷贝构造函数；\n- 移动构造函数；\n- 赋值运算符函数等。\n\n例如：\n\n```cpp\nclass A {\npublic:\n    void show();        // 普通成员函数\n    static void func(); // 静态成员函数\n    A();                // 构造函数\n    ~A();               // 析构函数\n};\n```\n\n其中，`show()`、`func()`、`A()`、`~A()` 都是类 `A` 的成员函数。\n\n---\n\n### 1.2 成员函数的主要特点\n\n一般成员函数具有以下特点：\n\n1. **属于类的作用域**\n\n   成员函数可以通过类作用域限定符访问：\n\n   ```cpp\n   A::show();\n   ```\n\n   当然，普通非静态成员函数通常需要对象才能调用。\n\n2. **可以通过对象调用**\n\n   ```cpp\n   A a;\n   a.show();\n   ```\n\n3. **通常拥有隐含的 `this` 指针**\n\n   非静态成员函数内部有一个隐含的 `this` 指针，指向调用该函数的对象：\n\n   ```cpp\n   class A {\n   private:\n       int x;\n\n   public:\n       void setX(int x) {\n           this->x = x;\n       }\n   };\n   ```\n\n4. **受类的访问控制影响**\n\n   成员函数可以被声明为 `public`、`protected` 或 `private`。\n\n5. **可以直接访问本类的成员**\n\n   成员函数可以直接访问本类对象的私有成员和保护成员。\n\n需要注意：**静态成员函数虽然没有 `this` 指针，但它仍然是类的成员函数。**\n\n---\n\n### 1.3 什么是友元函数？\n\n**友元函数**是用关键字 `friend` 在类中声明的非成员函数。\n\n它的作用是：\n\n> 允许一个类外部的普通函数访问该类的 `private` 和 `protected` 成员。\n\n例如：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x;\n\npublic:\n    A(int value) : x(value) {}\n\n    friend void print(A obj);\n};\n\nvoid print(A obj) {\n    cout << obj.x << endl; // 可以访问 A 的私有成员 x\n}\n```\n\n这里的 `print()` 虽然在类 `A` 中被声明为 `friend`，但它**不是类 `A` 的成员函数**。\n\n它只是一个普通的全局函数，被类 `A` 授予了访问私有成员和保护成员的权限。\n\n---\n\n### 1.4 友元函数与成员函数的关键区别\n\n可以通过以下几点区分友元函数和成员函数：\n\n| 对比点 | 成员函数 | 友元函数 |\n|---|---|---|\n| 是否属于类 | 属于类 | 不属于类 |\n| 是否有 `this` 指针 | 非静态成员函数有 | 没有 |\n| 是否可通过对象调用 | 可以，如 `a.fun()` | 不可以，如 `a.fun()` 错误 |\n| 是否受类作用域限定 | 是，如 `A::fun()` | 通常不是 |\n| 是否可访问私有成员 | 可以 | 可以，但依靠 `friend` 授权 |\n| 本质 | 类的一部分 | 类外普通函数 |\n\n示例：\n\n```cpp\nclass A {\nprivate:\n    int x = 10;\n\npublic:\n    void memberFunc() {\n        cout << x << endl; // 成员函数可以访问私有成员\n    }\n\n    friend void friendFunc(A obj);\n};\n\nvoid friendFunc(A obj) {\n    cout << obj.x << endl; // 友元函数也可以访问私有成员\n}\n```\n\n调用方式：\n\n```cpp\nA a;\n\na.memberFunc();  // 正确，memberFunc 是成员函数\n\nfriendFunc(a);   // 正确，friendFunc 是普通函数\n\na.friendFunc();  // 错误，friendFunc 不是 A 的成员函数\n```\n\n---\n\n## 2. **逐项解析**\n\n### A. 静态成员函数\n\n**结论：错误，不符合题意。**\n\n静态成员函数是类的成员函数。\n\n它使用 `static` 关键字声明，例如：\n\n```cpp\nclass A {\npublic:\n    static void fun();\n};\n```\n\n静态成员函数属于类本身，而不是某个具体对象。\n\n可以通过类名调用：\n\n```cpp\nA::fun();\n```\n\n也可以通过对象调用：\n\n```cpp\nA a;\na.fun();\n```\n\n但是，静态成员函数有一个重要特点：\n\n> 静态成员函数没有隐含的 `this` 指针。\n\n因此，它不能直接访问非静态成员变量和非静态成员函数。\n\n例如：\n\n```cpp\nclass A {\nprivate:\n    int x;\n    static int count;\n\npublic:\n    static void fun() {\n        // x = 10;      // 错误：静态成员函数不能直接访问非静态成员\n        count = 10;     // 正确：可以访问静态成员\n    }\n};\n```\n\n虽然静态成员函数没有 `this` 指针，但它仍然：\n\n- 定义在类作用域中；\n- 可以使用类名加作用域解析运算符调用；\n- 受 `public`、`protected`、`private` 访问控制影响；\n- 是类的组成部分。\n\n因此，**静态成员函数属于类的成员函数**，A 选项不正确。\n\n---\n\n### B. 友元函数\n\n**结论：正确。**\n\n友元函数不是类的成员函数。\n\n它只是通过 `friend` 声明，被授予访问类的私有成员和保护成员的权限。\n\n例如：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x;\n\npublic:\n    A(int value) : x(value) {}\n\n    friend void show(A obj);\n};\n\nvoid show(A obj) {\n    cout << obj.x << endl;\n}\n```\n\n这里的 `show()` 具有如下特点：\n\n1. **不是类 `A` 的成员函数**\n\n   它的定义位于类外：\n\n   ```cpp\n   void show(A obj) {\n       cout << obj.x << endl;\n   }\n   ```\n\n2. **没有 `this` 指针**\n\n   因为它不是成员函数，所以不能在函数内部使用 `this`：\n\n   ```cpp\n   void show(A obj) {\n       // cout << this->x; // 错误\n       cout << obj.x;     // 正确\n   }\n   ```\n\n3. **不能通过对象调用**\n\n   ```cpp\n   A a(10);\n\n   show(a);    // 正确\n   a.show();   // 错误\n   ```\n\n4. **不属于类的作用域**\n\n   通常不能写成：\n\n   ```cpp\n   A::show(a); // 错误\n   ```\n\n5. **本质是普通函数**\n\n   它只是拥有访问 `A` 类私有成员、保护成员的特殊权限。\n\n因此，**友元函数不属于类的成员函数**，B 选项正确。\n\n---\n\n### C. 构造函数\n\n**结论：错误，不符合题意。**\n\n构造函数是类的一种特殊成员函数。\n\n它在对象创建时自动调用，用于初始化对象。\n\n例如：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\npublic:\n    A() {\n        cout << \"constructor\" << endl;\n    }\n};\n```\n\n创建对象时：\n\n```cpp\nA a; // 自动调用构造函数 A()\n```\n\n构造函数的主要特点包括：\n\n1. **函数名与类名相同**\n\n   ```cpp\n   class A {\n   public:\n       A();\n   };\n   ```\n\n2. **没有返回值类型**\n\n   注意不是返回 `void`，而是根本没有返回值类型。\n\n   ```cpp\n   A();      // 正确\n   void A(); // 错误\n   ```\n\n3. **创建对象时自动调用**\n\n   ```cpp\n   A a;\n   ```\n\n4. **可以重载**\n\n   ```cpp\n   class A {\n   public:\n       A();\n       A(int x);\n       A(int x, int y);\n   };\n   ```\n\n5. **属于类的成员函数**\n\n构造函数定义在类中，属于类的一部分，是典型的特殊成员函数。\n\n因此，**构造函数属于类的成员函数**，C 选项不正确。\n\n---\n\n### D. 析构函数\n\n**结论：错误，不符合题意。**\n\n析构函数也是类的一种特殊成员函数。\n\n它在对象生命周期结束时自动调用，常用于释放资源、关闭文件、释放内存等清理工作。\n\n例如：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\npublic:\n    ~A() {\n        cout << \"destructor\" << endl;\n    }\n};\n```\n\n对象销毁时：\n\n```cpp\n{\n    A a;\n} // 代码块结束，a 被销毁，自动调用 ~A()\n```\n\n析构函数的主要特点包括：\n\n1. **函数名为 `~类名`**\n\n   ```cpp\n   ~A();\n   ```\n\n2. **没有返回值类型**\n\n   与构造函数一样，析构函数也没有返回值类型。\n\n3. **不能带参数**\n\n   析构函数不能有参数。\n\n4. **不能重载**\n\n   一个类只能有一个析构函数。\n\n5. **对象销毁时自动调用**\n\n   例如局部对象离开作用域时，析构函数会被自动执行。\n\n6. **属于类的成员函数**\n\n析构函数定义在类中，是特殊的成员函数。\n\n因此，**析构函数属于类的成员函数**，D 选项不正确。\n\n---\n\n## 3. **答案总结**\n\n本题问的是：\n\n> 不属于类的成员函数的是哪一个？\n\n四个选项中：\n\n| 选项 | 内容 | 是否属于类的成员函数 | 说明 |\n|---|---|---|---|\n| A | 静态成员函数 | 是 | 虽无 `this` 指针，但属于类 |\n| B | 友元函数 | 否 | 是类外函数，只是被授权访问私有/保护成员 |\n| C | 构造函数 | 是 | 特殊成员函数，用于初始化对象 |\n| D | 析构函数 | 是 | 特殊成员函数，用于对象销毁时清理资源 |\n\n所以正确答案是：\n\n> **B. 友元函数**\n\n---\n\n## 4. **避坑指南与最佳实践**\n\n### 4.1 不要误以为“写在类里面”就是成员函数\n\n友元函数经常在类体内声明：\n\n```cpp\nclass A {\n    friend void fun(A obj);\n};\n```\n\n很多初学者会误以为：\n\n> `fun()` 出现在类里面，所以它是成员函数。\n\n这是错误的。\n\n`friend` 声明的含义只是：\n\n> 告诉编译器，外部函数 `fun()` 可以访问类 `A` 的私有成员和保护成员。\n\n它并不意味着 `fun()` 成为了类 `A` 的成员函数。\n\n---\n\n### 4.2 友元函数不能用对象调用\n\n成员函数可以这样调用：\n\n```cpp\nA a;\na.fun();\n```\n\n但友元函数不能这样调用：\n\n```cpp\na.fun(); // 错误\n```\n\n友元函数应像普通函数一样调用：\n\n```cpp\nfun(a);\n```\n\n---\n\n### 4.3 静态成员函数虽然没有 `this` 指针，但仍是成员函数\n\n静态成员函数容易与友元函数混淆。\n\n静态成员函数没有 `this` 指针，但它仍然属于类的成员函数。\n\n例如：\n\n```cpp\nclass A {\npublic:\n    static void fun();\n};\n```\n\n调用时可以写：\n\n```cpp\nA::fun();\n```\n\n而友元函数通常不能写成：\n\n```cpp\nA::fun();\n```\n\n因为它不属于类的作用域。\n\n---\n\n### 4.4 谨慎使用友元，避免破坏封装性\n\n友元函数会突破类的访问控制，使外部函数可以访问类的私有成员和保护成员。\n\n这在某些场景中很有用，但也可能削弱面向对象程序设计中的**封装性**。\n\n因此实际开发中应谨慎使用友元。\n\n常见合理使用场景包括：\n\n- 运算符重载，例如 `operator<<`、`operator>>`；\n- 两个类之间需要紧密协作；\n- 某些工具函数确实需要访问类的内部状态。\n\n例如输出运算符重载：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x;\n\npublic:\n    A(int value) : x(value) {}\n\n    friend ostream& operator<<(ostream& os, const A& obj);\n};\n\nostream& operator<<(ostream& os, const A& obj) {\n    os << obj.x;\n    return os;\n}\n```\n\n这样可以自然地使用：\n\n```cpp\nA a(10);\ncout << a;\n```\n\n由于 `cout << a` 的左操作数是 `cout`，即 `ostream` 对象，因此 `operator<<` 通常不能设计为 `A` 的普通成员函数，而常常设计为非成员函数，有时再声明为友元函数以便访问私有成员。\n\n---\n\n## 5. **本题结论**\n\n**友元函数不是类的成员函数。**\n\n它只是类外部的普通函数，通过 `friend` 声明获得访问该类私有成员和保护成员的权限。\n\n因此，本题正确答案为：\n\n> **B. 友元函数**",
-    "knowledgePoints": [
-      "友元函数与友元类",
-      "成员函数与数据成员",
-      "C++程序结构与命名空间"
-    ],
-    "knowledgePointsNormalized": [
-      "友元函数与友元类",
-      "成员函数与数据成员",
-      "C++程序结构与命名空间"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "source": "复习提纲(核心题库)",
-    "difficulty": "easy"
-  },
-  {
-    "id": 161,
-    "type": "choice",
     "chapter": "文件IO",
     "stem": "当用输出文件流对象调用open成员函数打开一个文件时，打开方式参数也可以省略，缺省按（ ）方式打开（ ）。",
     "options": [
@@ -4047,7 +4019,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 162,
+    "id": 161,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "下列哪个操作通常不会调用拷贝构造函数（不考虑编译器的拷贝省略/返回值优化）（ ）。",
@@ -4075,7 +4047,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 163,
+    "id": 162,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "下面程序的输出为（ ）。\n#include <iostream>\nusing namespace std;\nclass A {\npublic:\n    A() { cout<<\"A\"<<endl; }\n    ~A() { cout<<\"~A\"<<endl; }\n};\nA a;\nint main() {\n    cout<<\"Hello World!\"<<endl;\n    return 0;\n}",
@@ -4103,7 +4075,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 164,
+    "id": 163,
     "type": "truefalse",
     "chapter": "类与对象",
     "stem": "以下代码对吗？\nclass A {\nprotected:\n    int x;\npublic:\n    int y;\n    A(){x=y=0;}\n};\nint main() {\n    A a;\n    cout<<a.y<<\" \"<<a.x<<endl;\n}",
@@ -4125,7 +4097,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 165,
+    "id": 164,
     "type": "truefalse",
     "chapter": "构造函数与析构函数",
     "stem": "以下代码对吗？\nclass A {\nprotected:\n    int x;\npublic:\n    int y;\n    A(int xx,int yy):x(xx),y(yy){}\n};\nint main() {\n    A a;\n}",
@@ -4147,7 +4119,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 166,
+    "id": 165,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "以下代码对吗？\n#include <iostream>\nusing namespace std;\n\nint main() {\n    int a=5;\n    int *const ptr=&a;\n    (*ptr)++;\n    cout<<a<<endl;\n}",
@@ -4169,7 +4141,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 167,
+    "id": 166,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "以下代码对吗？\nclass A {\nprotected:\n    int x;\npublic:\n    int y;\n    A(int xx,int yy):x(xx),y(yy){}\n};\nint main() {\n    cout<<A::y<<endl;\n}",
@@ -4191,7 +4163,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 168,
+    "id": 167,
     "type": "truefalse",
     "chapter": "运算符重载",
     "stem": "以下代码对吗？表达式 c1 + 8.9 是否合法？\nclass Complex {\n    double real,image;\npublic:\n    Complex(double r=0,double i=0):real(r),image(i){}\n    Complex operator+(const Complex& c) const {\n        return Complex(real+c.real,image+c.image);\n    }\n};\nint main() {\n    Complex c1(5.6,6.6);\n    Complex c2=c1+8.9;\n    return 0;\n}",
@@ -4213,7 +4185,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 169,
+    "id": 168,
     "type": "truefalse",
     "chapter": "运算符重载",
     "stem": "以下代码对吗？8.9+c1是否合法？（operator+是成员函数重载）\nclass Complex {\n    double real,image;\npublic:\n    Complex(double r=0,double i=0):real(r),image(i){}\n    Complex operator+(const Complex& c) const {\n        return Complex(real+c.real,image+c.image);\n    }\n};\nint main() {\n    Complex c1(5.6,6.6);\n    Complex c2=8.9+c1;\n    return 0;\n}",
@@ -4235,7 +4207,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 170,
+    "id": 169,
     "type": "truefalse",
     "chapter": "继承与派生",
     "stem": "以下代码对吗？\nclass A {\n    int x;\npublic:\n    A(int xx):x(xx){}\n    void Print(){cout<<x<<endl;}\n};\nclass B:public A {\npublic:\n    void Print(){A::Print();}\n};\nint main() {\n    B b;\n    b.Print();\n}",
@@ -4257,7 +4229,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 171,
+    "id": 170,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "以下代码对吗？\nclass A {\n    int x;\npublic:\n    A(int xx):x(xx) {}\n    void Print() const {\n        cout<<x<<endl;\n    }\n};\nint main() {\n    const A a(5);\n    a.Print();\n    return 0;\n}",
@@ -4279,7 +4251,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 172,
+    "id": 171,
     "type": "truefalse",
     "chapter": "多态与虚函数",
     "stem": "以下代码可以输出Circle吗？\nclass Shape {\npublic:\n    virtual void Draw() { cout<<\"Shape\"<<endl; }\n    virtual ~Shape(){}\n};\nclass Circle:public Shape {\npublic:\n    void Draw() { cout<<\"Circle\"<<endl; }\n};\nint main() {\n    Shape* c=new Circle();\n    (*c).Draw();\n    return 0;\n}",
@@ -4301,7 +4273,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 173,
+    "id": 172,
     "type": "truefalse",
     "chapter": "STL",
     "stem": "以下代码对吗？（使用set<Data>但Data类没有定义比较运算符）\nclass Data {\n    int x;\npublic:\n    Data(int xx=0):x(xx) {}\n    friend ostream& operator<<(ostream& out,const Data& d);\n};\nint main() {\n    set<Data> s;\n    s.insert(Data(1));\n    s.insert(Data(2));\n    ...\n}",
@@ -4323,7 +4295,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 174,
+    "id": 173,
     "type": "choice",
     "chapter": "运算符重载",
     "stem": "能用友元函数重载的运算符是（ ）。",
@@ -4351,7 +4323,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 175,
+    "id": 174,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "在C++中使用流进行输入输出，其中专用于从键盘进行输入的流是（ ）。",
@@ -4379,7 +4351,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 176,
+    "id": 175,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "假设存在函数int max(int,int)返回两参数中较大值，若求22、59、70中最大值，下列说法不正确的是（ ）。",
@@ -4407,7 +4379,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 177,
+    "id": 176,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "int fun(int, int)，不可与下列哪个函数构成重载（ ）。",
@@ -4435,7 +4407,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 178,
+    "id": 177,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "内联函数的特点是（ ）。",
@@ -4463,7 +4435,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 179,
+    "id": 178,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "函数默认参数在函数原型中说明，默认参数必须放在参数序列的（ ）。",
@@ -4491,7 +4463,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 180,
+    "id": 179,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "如果没有为一个类定义任何构造函数的情况下，下列描述正确的是（ ）。",
@@ -4519,7 +4491,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 181,
+    "id": 180,
     "type": "choice",
     "chapter": "友元",
     "stem": "如果类A被声明为类B的友元（ ）。",
@@ -4547,7 +4519,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 182,
+    "id": 181,
     "type": "choice",
     "chapter": "类与对象",
     "stem": "类的私有成员可在何处被访问（ ）。",
@@ -4575,7 +4547,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 183,
+    "id": 182,
     "type": "choice",
     "chapter": "this/const/static成员",
     "stem": "如果在类外有函数调用CPoint::func(); 则函数func()是类CPoint的（ ）。",
@@ -4603,7 +4575,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 184,
+    "id": 183,
     "type": "choice",
     "chapter": "this/const/static成员",
     "stem": "一个类的所有对象共享的是（ ）。",
@@ -4631,7 +4603,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 185,
+    "id": 184,
     "type": "choice",
     "chapter": "多态与虚函数",
     "stem": "动态联编所支持的多态性称为（ ）。",
@@ -4659,7 +4631,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 186,
+    "id": 185,
     "type": "choice",
     "chapter": "模板",
     "stem": "定义类模板时要使用关键字（ ）。",
@@ -4690,7 +4662,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 187,
+    "id": 186,
     "type": "choice",
     "chapter": "多继承与虚基类",
     "stem": "对虚基类的定义（ ）。",
@@ -4718,7 +4690,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 188,
+    "id": 187,
     "type": "choice",
     "chapter": "运算符重载",
     "stem": "类型转换函数（ ）。",
@@ -4746,7 +4718,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 189,
+    "id": 188,
     "type": "choice",
     "chapter": "多态与虚函数",
     "stem": "说明虚函数的关键字是（ ）。",
@@ -4774,7 +4746,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 190,
+    "id": 189,
     "type": "truefalse",
     "chapter": "多态与虚函数",
     "stem": "虚函数通常在基类中声明，派生类对其进行重写时，函数原型应保持一致。",
@@ -4796,7 +4768,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 191,
+    "id": 190,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "内联函数中可以出现递归语句。",
@@ -4821,7 +4793,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 192,
+    "id": 191,
     "type": "truefalse",
     "chapter": "模板",
     "stem": "模板类与类模板的意义完全相同。",
@@ -4846,7 +4818,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 193,
+    "id": 192,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "常对象对于非静态成员函数，只能调用 const 成员函数，不能调用非 const 的非静态成员函数。",
@@ -4871,7 +4843,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 194,
+    "id": 193,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "重载函数要求函数有相同的函数名，但具有不同的参数序列。",
@@ -4896,7 +4868,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 195,
+    "id": 194,
     "type": "fillin",
     "chapter": "C++对C的扩充",
     "stem": "在用C++进行程序设计时，最好用（ ）代替malloc。",
@@ -4921,7 +4893,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 196,
+    "id": 195,
     "type": "fillin",
     "chapter": "模板",
     "stem": "函数模板中紧随template之后尖括号内的类型参数都要冠以保留字（ ）。",
@@ -4943,7 +4915,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 197,
+    "id": 196,
     "type": "fillin",
     "chapter": "C++对C的扩充",
     "stem": "编译时多态性可以用（ ）函数实现。",
@@ -4965,7 +4937,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 198,
+    "id": 197,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "用关键字static修饰的类的成员称为（ ）成员。",
@@ -4987,7 +4959,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 199,
+    "id": 198,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "说明内联函数的关键字是（ ）。",
@@ -5015,7 +4987,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 200,
+    "id": 199,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "假定CAb为一个类，则执行CAb oX;语句时将自动调用该类的（ ）。",
@@ -5046,7 +5018,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 201,
+    "id": 200,
     "type": "choice",
     "chapter": "文件IO",
     "stem": "cin 是某个类的标准对象，该类是（ ）。",
@@ -5074,7 +5046,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 202,
+    "id": 201,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "下面的哪个保留字不能作为函数的返回类型？（ ）。",
@@ -5102,7 +5074,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 203,
+    "id": 202,
     "type": "choice",
     "chapter": "this/const/static成员",
     "stem": "由于数据隐藏的需要，静态数据成员通常被说明为（ ）。",
@@ -5130,7 +5102,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 204,
+    "id": 203,
     "type": "choice",
     "chapter": "多态与虚函数",
     "stem": "编译时多态性使用什么获得？（ ）。",
@@ -5158,7 +5130,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 205,
+    "id": 204,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "拷贝构造函数的参数通常是（ ）。",
@@ -5186,7 +5158,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 206,
+    "id": 205,
     "type": "choice",
     "chapter": "多态与虚函数",
     "stem": "C++有几种联编？（ ）。",
@@ -5214,7 +5186,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 207,
+    "id": 206,
     "type": "choice",
     "chapter": "继承与派生",
     "stem": "基类和派生类可以分别称为（ ）。",
@@ -5242,7 +5214,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 208,
+    "id": 207,
     "type": "truefalse",
     "chapter": "多态与虚函数",
     "stem": "不可以定义抽象类的对象。",
@@ -5267,7 +5239,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 209,
+    "id": 208,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "内联函数的定义必须出现在第一次调用内联函数之前。",
@@ -5289,7 +5261,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 210,
+    "id": 209,
     "type": "truefalse",
     "chapter": "模板",
     "stem": "模板函数与函数模板的意义完全相同。",
@@ -5314,7 +5286,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 211,
+    "id": 210,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "只有常成员函数才可以操作常对象。",
@@ -5339,7 +5311,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 212,
+    "id": 211,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "引用可以不初始化。",
@@ -5364,7 +5336,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 213,
+    "id": 212,
     "type": "fillin",
     "chapter": "模板",
     "stem": "设函数max是由函数模板实现的，并且max(3.5, 5)和max(3, 5)都是正确的函数调用，则此函数模板具有（ ）个类型参数。",
@@ -5386,7 +5358,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 214,
+    "id": 213,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "由static修饰的数据成员为该类的所有对象（ ）。",
@@ -5408,7 +5380,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 215,
+    "id": 214,
     "type": "fillin",
     "chapter": "C++对C的扩充",
     "stem": "重载函数在参数类型或参数个数上不同，但（ ）相同。",
@@ -5430,7 +5402,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 216,
+    "id": 215,
     "type": "fillin",
     "chapter": "C++对C的扩充",
     "stem": "使用new建立的动态对象在不用时必须用（ ）释放所占用的空间。",
@@ -5455,7 +5427,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 217,
+    "id": 216,
     "type": "fillin",
     "chapter": "运算符重载",
     "stem": "重载运算符\"<<\"的函数名为（ ）。",
@@ -5477,7 +5449,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 218,
+    "id": 217,
     "type": "truefalse",
     "chapter": "构造函数与析构函数",
     "stem": "构造函数没有返回值类型，其函数体中不能使用 return 语句。",
@@ -5499,7 +5471,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 219,
+    "id": 218,
     "type": "truefalse",
     "chapter": "继承与派生",
     "stem": "在public继承方式下，基类中被说明为protected的成员在派生类中可被访问。",
@@ -5521,7 +5493,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 220,
+    "id": 219,
     "type": "truefalse",
     "chapter": "构造函数与析构函数",
     "stem": "类内对象成员构造函数的调用顺序，取决于该类构造函数的初始化列表中的内容。",
@@ -5543,7 +5515,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 221,
+    "id": 220,
     "type": "truefalse",
     "chapter": "多态与虚函数",
     "stem": "抽象类不会产生实例，所以不需要有构造函数。",
@@ -5565,7 +5537,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 222,
+    "id": 221,
     "type": "truefalse",
     "chapter": "多继承与虚基类",
     "stem": "在继承过程中，带着虚函数的类作为基类时，该类成为虚基类。",
@@ -5587,7 +5559,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 223,
+    "id": 222,
     "type": "truefalse",
     "chapter": "友元",
     "stem": "类B是类A的派生类，类C是类A的友元类，那么类C也是类B的友元类。",
@@ -5609,7 +5581,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 224,
+    "id": 223,
     "type": "truefalse",
     "chapter": "继承与派生",
     "stem": "类D以public方式继承类B，若在这两个类中以同样的方式分别声明一个同名的整型变量x，那么，为类D的对象分配内存空间时，不需要为类B中声明的x分配空间。",
@@ -5631,7 +5603,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 225,
+    "id": 224,
     "type": "truefalse",
     "chapter": "友元",
     "stem": "类的友元函数可以访问类的私有成员。",
@@ -5653,7 +5625,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 226,
+    "id": 225,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "对于普通函数，C++中函数返回值的类型是由return语句中的表达式的类型决定的。",
@@ -5675,7 +5647,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 227,
+    "id": 226,
     "type": "truefalse",
     "chapter": "构造函数与析构函数",
     "stem": "类Stu的缺省构造函数和析构函数是Stu()和~Stu()。",
@@ -5697,7 +5669,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 228,
+    "id": 227,
     "type": "truefalse",
     "chapter": "构造函数与析构函数",
     "stem": "构造函数必须定义，不能默认。",
@@ -5723,7 +5695,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 229,
+    "id": 228,
     "type": "truefalse",
     "chapter": "类与对象",
     "stem": "在类中定义的函数默认为内联函数。",
@@ -5748,7 +5720,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 230,
+    "id": 229,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "在C++中使用new和delete实现堆内存中进行数据的动态分配和释放。",
@@ -5773,7 +5745,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 231,
+    "id": 230,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "设置函数参数默认值，应从右向左设置。",
@@ -5798,32 +5770,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 232,
-    "type": "truefalse",
-    "chapter": "运算符重载",
-    "stem": "C++中所有运算符都可以重载。",
-    "answer": "错",
-    "explanation": "## 1. 核心概念与机制\n\n### 1.1 运算符重载的含义\n\nC++ 支持**运算符重载**，即允许程序员为自定义类型重新定义某些运算符的行为。例如：\n\n```cpp\nclass Complex {\npublic:\n    double real, imag;\n\n    Complex(double r, double i) : real(r), imag(i) {}\n\n    Complex operator+(const Complex& other) const {\n        return Complex(real + other.real, imag + other.imag);\n    }\n};\n```\n\n使用时可以写成：\n\n```cpp\nComplex a(1, 2), b(3, 4);\nComplex c = a + b;\n```\n\n这里的 `+` 被重载，用于表示两个复数对象相加。\n\n---\n\n### 1.2 并非所有运算符都可以重载\n\n题干说：\n\n> C++ 中所有运算符都可以重载。\n\n该说法是 **错误的**。\n\n虽然 C++ 提供了强大的运算符重载机制，但它并不允许程序员重载所有运算符。某些运算符与 C++ 的基本语法结构、作用域解析、成员访问规则或编译期语义密切相关，如果允许重载，会破坏语言本身的稳定性和可解析性。\n\n因此，C++ 标准明确规定：**只有部分运算符可以被重载，部分运算符不能被重载。**\n\n---\n\n## 2. 判断题解析\n\n### 正确答案：`False`\n\n判断依据如下：\n\nC++ 中可以重载许多常见运算符，例如：\n\n| 可重载运算符 | 示例含义 |\n|---|---|\n| `+` | 加法 |\n| `-` | 减法或取负 |\n| `*` | 乘法或解引用 |\n| `/` | 除法 |\n| `%` | 取模 |\n| `==` | 相等比较 |\n| `!=` | 不等比较 |\n| `<`、`>` | 大小比较 |\n| `[]` | 下标访问 |\n| `()` | 函数调用 |\n| `->` | 成员访问 |\n| `=` | 赋值 |\n| `++`、`--` | 自增、自减 |\n| `<<`、`>>` | 位移或流输入输出 |\n\n例如，常见的输出流运算符重载：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass Point {\npublic:\n    int x, y;\n\n    Point(int x, int y) : x(x), y(y) {}\n};\n\nostream& operator<<(ostream& os, const Point& p) {\n    os << \"(\" << p.x << \", \" << p.y << \")\";\n    return os;\n}\n```\n\n使用时：\n\n```cpp\nPoint p(1, 2);\ncout << p << endl;\n```\n\n---\n\n但是，有些运算符不能被重载，常见包括：\n\n| 不可重载运算符 | 含义 |\n|---|---|\n| `::` | 作用域解析运算符 |\n| `.` | 成员访问运算符 |\n| `.*` | 成员指针访问运算符 |\n| `?:` | 条件运算符 |\n| `sizeof` | 求对象或类型大小 |\n| `typeid` | 类型识别运算符 |\n| `alignof` | 对齐要求运算符 |\n\n因此，题干中的“所有运算符都可以重载”与 C++ 语言规则不符，所以答案为：\n\n```text\nFalse\n```\n\n---\n\n## 3. 关键不可重载运算符说明\n\n### 3.1 `::` 作用域解析运算符\n\n`::` 用于指定名称所在的作用域，例如：\n\n```cpp\nstd::cout\nClassName::staticMember\n```\n\n它直接参与名称查找和作用域解析，是编译器在编译阶段处理的重要语法机制，因此不能重载。\n\n---\n\n### 3.2 `.` 成员访问运算符\n\n`.` 用于访问对象的成员：\n\n```cpp\nobj.member\n```\n\n它是 C++ 对象模型中最基础的成员访问语法。如果允许重载，会影响编译器对对象成员布局和访问规则的判断，因此不能重载。\n\n需要注意的是，`->` 可以重载，但 `.` 不可以重载。\n\n例如：\n\n```cpp\nclass PtrLike {\npublic:\n    SomeClass* operator->();\n};\n```\n\n---\n\n### 3.3 `.*` 成员指针访问运算符\n\n`.*` 用于通过对象和成员指针访问成员：\n\n```cpp\nobj.*ptrToMember\n```\n\n该运算符和成员指针机制紧密相关，也不能被重载。\n\n不过，`->*` 是可以重载的。\n\n---\n\n### 3.4 `?:` 条件运算符\n\n条件运算符用于三目条件表达式：\n\n```cpp\ncondition ? expr1 : expr2\n```\n\n它具有特殊的语法结构，包含三个操作数。C++ 的运算符重载函数形式不支持重载这种特殊语法结构，因此 `?:` 不能重载。\n\n---\n\n### 3.5 `sizeof` 运算符\n\n`sizeof` 用于在编译期求类型或对象所占字节数：\n\n```cpp\nsizeof(int)\nsizeof(obj)\n```\n\n其结果由类型系统和对象布局决定，通常在编译期确定。它不是普通的函数调用行为，因此不能重载。\n\n---\n\n### 3.6 `typeid` 运算符\n\n`typeid` 用于获取表达式或类型的运行时类型信息：\n\n```cpp\ntypeid(obj)\ntypeid(int)\n```\n\n它与 RTTI（Run-Time Type Information，运行时类型信息）机制相关，具有标准规定的语义，因此不能重载。\n\n---\n\n### 3.7 `alignof` 运算符\n\n`alignof` 用于获取类型的对齐要求：\n\n```cpp\nalignof(int)\nalignof(double)\n```\n\n它反映的是类型在内存中的对齐约束，属于语言层面的类型属性，因此不能被重载。\n\n---\n\n## 4. 易错点与混淆概念\n\n### 4.1 误以为“支持运算符重载”就是“所有运算符都能重载”\n\n这是本题最常见的错误理解。\n\n正确理解应为：\n\n> C++ 支持运算符重载，但只能重载标准允许的运算符。\n\n也就是说，运算符重载是有限制的，并不是完全自由定义新语法。\n\n---\n\n### 4.2 误以为可以自定义新的运算符\n\nC++ 不允许程序员创建新的运算符。例如，不能定义类似下面的运算符：\n\n```cpp\noperator@@\noperator**\n```\n\nC++ 运算符重载只能基于语言中已有的可重载运算符进行。\n\n---\n\n### 4.3 误以为重载能改变运算符的基本语法规则\n\n运算符重载不能改变运算符的：\n\n- 操作数个数；\n- 优先级；\n- 结合性；\n- 基本语法形式。\n\n例如，`+` 是二元运算符时仍然需要两个操作数：\n\n```cpp\na + b\n```\n\n不能通过重载让它变成三元运算符。\n\n又如，`+` 的优先级仍然低于 `*`，重载后也不会改变：\n\n```cpp\na + b * c\n```\n\n仍然先计算 `b * c`，再计算 `a + (...)`。\n\n---\n\n### 4.4 注意 `.` 和 `->` 的区别\n\n这是考试中常见考点：\n\n| 运算符 | 是否可重载 |\n|---|---|\n| `.` | 不可以 |\n| `->` | 可以 |\n| `.*` | 不可以 |\n| `->*` | 可以 |\n\n例如，智能指针类通常会重载 `operator->`：\n\n```cpp\ntemplate <typename T>\nclass SmartPtr {\nprivate:\n    T* ptr;\n\npublic:\n    SmartPtr(T* p) : ptr(p) {}\n\n    T* operator->() {\n        return ptr;\n    }\n};\n```\n\n使用时：\n\n```cpp\nSmartPtr<MyClass> sp(new MyClass);\nsp->method();\n```\n\n这里的 `->` 可以重载，用于模拟指针访问对象成员的行为。\n\n---\n\n## 5. 避坑指南与最佳实践\n\n### 5.1 运算符重载应符合直觉语义\n\n虽然 C++ 允许重载很多运算符，但不应滥用。重载后的含义应尽量符合程序员对该运算符的常规理解。\n\n例如，`+` 通常表示加法或合并：\n\n```cpp\nComplex c = a + b;\n```\n\n不建议让 `+` 表示删除、打印、网络请求等与加法含义完全无关的操作。\n\n---\n\n### 5.2 不要试图重载不可重载运算符\n\n以下写法是非法的：\n\n```cpp\nclass A {\npublic:\n    void operator.();     // 错误\n    void operator::();    // 错误\n    void operator?:();    // 错误\n};\n```\n\n这些都会导致编译错误。\n\n---\n\n### 5.3 重载不能破坏语言既有规则\n\n运算符重载不能改变：\n\n- 运算符优先级；\n- 运算符结合性；\n- 操作数数量；\n- 求值顺序；\n- 是否短路求值等语言规则。\n\n例如，逻辑运算符 `&&` 和 `||` 虽然可以重载，但重载后不再具有内置逻辑运算符的短路求值特性，因此实际使用时应特别谨慎。\n\n---\n\n### 5.4 对称二元运算符通常建议定义为非成员函数\n\n对于 `+`、`==`、`<` 等对称性较强的运算符，常见做法是定义为非成员函数，必要时声明为友元函数：\n\n```cpp\nclass Complex {\nprivate:\n    double real, imag;\n\npublic:\n    Complex(double r, double i) : real(r), imag(i) {}\n\n    friend Complex operator+(const Complex& a, const Complex& b);\n};\n\nComplex operator+(const Complex& a, const Complex& b) {\n    return Complex(a.real + b.real, a.imag + b.imag);\n}\n```\n\n这样有利于支持左右操作数的隐式类型转换。\n\n---\n\n## 6. 结论\n\n本题判断为：\n\n```text\nFalse\n```\n\n理由是：\n\n> C++ 支持运算符重载，但并非所有运算符都可以重载。像 `::`、`.`、`.*`、`?:`、`sizeof`、`typeid`、`alignof` 等运算符不能被重载。\n\n因此，“C++ 中所有运算符都可以重载”这一说法是错误的。",
-    "knowledgePoints": [
-      "运算符重载规则",
-      "内联函数、重载与默认参数",
-      "成员/友元运算符重载"
-    ],
-    "knowledgePointsNormalized": [
-      "运算符重载规则",
-      "内联函数、重载与默认参数",
-      "成员/友元运算符重载"
-    ],
-    "mergedFrom": [
-      282
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "source": "复习提纲(核心题库)",
-    "difficulty": "easy"
-  },
-  {
-    "id": 233,
+    "id": 231,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "静态数据成员和非静态数据成员一样，用构造函数初始化。",
@@ -5848,7 +5795,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 234,
+    "id": 232,
     "type": "truefalse",
     "chapter": "继承与派生",
     "stem": "在protected继承下，基类中被说明为public和protected的成员都能被派生类的成员函数访问。",
@@ -5870,32 +5817,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 235,
-    "type": "truefalse",
-    "chapter": "多态与虚函数",
-    "stem": "构造函数和析构函数都可以被声明为虚函数。",
-    "answer": "错",
-    "explanation": "## 1. 核心概念与机制\n\n本题考查 C++ **多态与虚函数**中的基本规则：\n\n> **构造函数不能声明为虚函数；析构函数可以声明为虚函数。**\n\n因此，题干：\n\n> 构造函数和析构函数都可以被声明为虚函数。\n\n该说法是 **错误的**。\n\n---\n\n### 1.1 虚函数的作用：实现运行时多态\n\n虚函数用于实现 **运行时多态**，即通过基类指针或引用调用成员函数时，根据对象的实际类型决定调用哪个函数版本。\n\n例如：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass Base {\npublic:\n    virtual void show() {\n        cout << \"Base::show()\" << endl;\n    }\n};\n\nclass Derived : public Base {\npublic:\n    void show() override {\n        cout << \"Derived::show()\" << endl;\n    }\n};\n\nint main() {\n    Base* p = new Derived;\n    p->show();  // 调用 Derived::show()\n\n    delete p;\n    return 0;\n}\n```\n\n这里：\n\n```cpp\nBase* p = new Derived;\np->show();\n```\n\n虽然指针类型是 `Base*`，但实际指向的是 `Derived` 对象，因此调用的是：\n\n```cpp\nDerived::show()\n```\n\n这种动态绑定通常依赖对象内部的 **虚函数表指针**，即 `vptr`。对象通过 `vptr` 找到对应类的虚函数表，从而确定运行时应该调用哪个函数。\n\n---\n\n### 1.2 构造函数不能是虚函数\n\n构造函数的职责是 **创建并初始化对象**。\n\n在 C++ 中，构造函数不能被声明为虚函数。如下代码是非法的：\n\n```cpp\nclass A {\npublic:\n    virtual A(); // 错误：构造函数不能声明为 virtual\n};\n```\n\n编译器通常会报类似错误：\n\n```cpp\nconstructors cannot be declared virtual\n```\n\n---\n\n#### 1.2.1 原因一：对象尚未构造完成，无法进行正常动态绑定\n\n虚函数机制依赖对象已经具备完整的动态类型信息。\n\n但是构造函数执行时，对象还没有被完整构造完成。尤其是在构造派生类对象时，构造顺序是：\n\n1. 先构造基类部分；\n2. 再构造派生类成员对象；\n3. 最后执行派生类构造函数体。\n\n例如：\n\n```cpp\nclass Base {\npublic:\n    Base() {\n        // 此时只是在构造 Base 子对象\n    }\n};\n\nclass Derived : public Base {\npublic:\n    Derived() {\n        // 此时 Derived 对象才逐渐完成构造\n    }\n};\n```\n\n当创建对象：\n\n```cpp\nDerived d;\n```\n\n执行 `Base` 构造函数时，`Derived` 部分尚未构造完成，因此不能把当前对象视为完整的 `Derived` 对象来进行多态调用。\n\n所以，从对象生命周期角度看，构造函数不适合作为虚函数。\n\n---\n\n#### 1.2.2 原因二：构造函数不能被继承和重写\n\n虚函数成立的前提是：\n\n- 基类定义虚函数；\n- 派生类可以重写该函数；\n- 通过基类指针或引用进行动态绑定。\n\n但构造函数具有特殊性：\n\n- 构造函数没有返回类型；\n- 构造函数名称必须与类名相同；\n- 构造函数用于初始化对象；\n- 构造函数不能被普通意义上继承；\n- 构造函数不能被派生类重写。\n\n例如：\n\n```cpp\nclass Base {\npublic:\n    Base() {}\n};\n\nclass Derived : public Base {\npublic:\n    Derived() {}\n};\n```\n\n这里 `Derived()` 并不是对 `Base()` 的重写，它们只是各自类的构造函数。\n\n因此，构造函数不满足虚函数“可重写、可动态绑定”的基本条件。\n\n---\n\n#### 1.2.3 原因三：C++ 语法明确禁止虚构造函数\n\nC++ 标准语法明确规定构造函数不能带有 `virtual` 说明符。\n\n下面写法错误：\n\n```cpp\nclass A {\npublic:\n    virtual A() {} // 编译错误\n};\n```\n\n正确写法应为：\n\n```cpp\nclass A {\npublic:\n    A() {} // 正确\n};\n```\n\n因此，所谓“虚构造函数”并不是 C++ 语言直接支持的机制。\n\n---\n\n### 1.3 析构函数可以是虚函数\n\n析构函数用于销毁对象、释放资源。与构造函数不同，析构函数可以声明为虚函数。\n\n例如：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass Base {\npublic:\n    virtual ~Base() {\n        cout << \"Base::~Base()\" << endl;\n    }\n};\n\nclass Derived : public Base {\npublic:\n    ~Derived() {\n        cout << \"Derived::~Derived()\" << endl;\n    }\n};\n\nint main() {\n    Base* p = new Derived;\n    delete p;\n\n    return 0;\n}\n```\n\n输出结果通常为：\n\n```cpp\nDerived::~Derived()\nBase::~Base()\n```\n\n这是正确的析构顺序：\n\n> **先析构派生类部分，再析构基类部分。**\n\n---\n\n### 1.4 为什么多态基类通常需要虚析构函数\n\n当通过基类指针删除派生类对象时，如果基类析构函数是虚函数：\n\n```cpp\nBase* p = new Derived;\ndelete p;\n```\n\n程序会根据对象的实际类型，先调用 `Derived` 的析构函数，再调用 `Base` 的析构函数，从而保证整个对象被完整销毁。\n\n如果基类析构函数不是虚函数：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass Base {\npublic:\n    ~Base() {\n        cout << \"Base::~Base()\" << endl;\n    }\n};\n\nclass Derived : public Base {\npublic:\n    ~Derived() {\n        cout << \"Derived::~Derived()\" << endl;\n    }\n};\n\nint main() {\n    Base* p = new Derived;\n    delete p; // 危险：基类析构函数不是虚函数\n\n    return 0;\n}\n```\n\n可能只调用：\n\n```cpp\nBase::~Base()\n```\n\n而不会调用：\n\n```cpp\nDerived::~Derived()\n```\n\n这会导致：\n\n- 派生类资源无法释放；\n- 产生内存泄漏；\n- 对象析构不完整；\n- 程序行为不可靠。\n\n在标准 C++ 中，如果通过基类指针删除派生类对象，而基类析构函数不是虚函数，通常会导致 **未定义行为**。\n\n---\n\n## 2. 判断题解析\n\n### 题干\n\n> 构造函数和析构函数都可以被声明为虚函数。\n\n### 判断结果\n\n**False，即错误。**\n\n---\n\n### 解析\n\n题干错误在于将构造函数和析构函数混为一谈。\n\n| 函数类型 | 是否可以声明为虚函数 | 原因 |\n|---|---:|---|\n| 构造函数 | 不可以 | 对象尚未构造完成；构造函数不能被继承和重写；C++ 语法明确禁止 |\n| 析构函数 | 可以 | 便于通过基类指针正确销毁派生类对象，实现多态析构 |\n\n因此，正确表述应该是：\n\n> **构造函数不能声明为虚函数，析构函数可以声明为虚函数。**\n\n---\n\n### 2.1 错误示例：虚构造函数\n\n```cpp\nclass A {\npublic:\n    virtual A() {} // 错误\n};\n```\n\n原因：\n\n```cpp\nvirtual A()\n```\n\n违反 C++ 语法规则，构造函数不能声明为 `virtual`。\n\n---\n\n### 2.2 正确示例：虚析构函数\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass Base {\npublic:\n    virtual ~Base() {\n        cout << \"Base::~Base()\" << endl;\n    }\n};\n\nclass Derived : public Base {\npublic:\n    ~Derived() {\n        cout << \"Derived::~Derived()\" << endl;\n    }\n};\n\nint main() {\n    Base* p = new Derived;\n    delete p;\n}\n```\n\n输出顺序通常为：\n\n```cpp\nDerived::~Derived()\nBase::~Base()\n```\n\n说明通过基类指针删除派生类对象时，派生类和基类的析构函数都被正确调用。\n\n---\n\n### 2.3 易错点：构造函数中调用虚函数也不会表现为派生类多态\n\n需要注意，虽然普通虚函数可以在构造函数中被调用，但在构造函数或析构函数中调用虚函数时，不会表现出通常意义上的多态行为。\n\n例如：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass Base {\npublic:\n    Base() {\n        show();\n    }\n\n    virtual void show() {\n        cout << \"Base::show()\" << endl;\n    }\n\n    virtual ~Base() = default;\n};\n\nclass Derived : public Base {\npublic:\n    void show() override {\n        cout << \"Derived::show()\" << endl;\n    }\n};\n\nint main() {\n    Derived d;\n}\n```\n\n输出通常为：\n\n```cpp\nBase::show()\n```\n\n原因是执行 `Base` 构造函数时，`Derived` 部分尚未构造完成，因此此时虚函数调用不会派发到 `Derived::show()`。\n\n这也进一步说明：构造阶段不适合依赖虚函数多态机制。\n\n---\n\n## 3. 避坑指南与最佳实践\n\n### 3.1 不要把构造函数声明为 `virtual`\n\n以下写法是错误的：\n\n```cpp\nclass A {\npublic:\n    virtual A(); // 错误\n};\n```\n\n正确写法：\n\n```cpp\nclass A {\npublic:\n    A(); // 正确\n};\n```\n\n如果需要类似“虚构造函数”的效果，通常使用其他设计方式实现，例如：\n\n- 工厂模式；\n- 虚克隆函数 `clone()`；\n- 智能指针配合多态对象创建。\n\n例如使用 `clone()` 模拟多态复制：\n\n```cpp\nclass Base {\npublic:\n    virtual ~Base() = default;\n    virtual Base* clone() const = 0;\n};\n\nclass Derived : public Base {\npublic:\n    Derived* clone() const override {\n        return new Derived(*this);\n    }\n};\n```\n\n现代 C++ 中更推荐返回智能指针：\n\n```cpp\n#include <memory>\n\nclass Base {\npublic:\n    virtual ~Base() = default;\n    virtual std::unique_ptr<Base> clone() const = 0;\n};\n\nclass Derived : public Base {\npublic:\n    std::unique_ptr<Base> clone() const override {\n        return std::make_unique<Derived>(*this);\n    }\n};\n```\n\n这样可以避免手动 `new` 和 `delete` 带来的资源管理风险。\n\n---\n\n### 3.2 多态基类应声明虚析构函数\n\n如果一个类被设计为基类，并且可能通过基类指针或引用使用派生类对象，那么它的析构函数通常应该声明为虚函数：\n\n```cpp\nclass Base {\npublic:\n    virtual ~Base() = default;\n};\n```\n\n这是 C++ 面向对象程序设计中的重要原则。\n\n尤其是当代码中存在如下形式时：\n\n```cpp\nBase* p = new Derived;\ndelete p;\n```\n\n`Base` 必须具有虚析构函数，才能保证 `Derived` 对象被正确销毁。\n\n---\n\n### 3.3 派生类析构函数可以使用 `override`\n\n如果基类析构函数是虚函数，则派生类析构函数自动也是虚函数，不必重复写 `virtual`。\n\n例如：\n\n```cpp\nclass Base {\npublic:\n    virtual ~Base() = default;\n};\n\nclass Derived : public Base {\npublic:\n    ~Derived() override = default;\n};\n```\n\n这里的 `override` 可以让编译器检查 `Derived` 的析构函数是否确实覆盖了基类虚析构函数，有助于提高代码安全性和可读性。\n\n---\n\n### 3.4 使用智能指针管理资源\n\n现代 C++ 中应优先使用智能指针，减少手动资源管理：\n\n```cpp\n#include <memory>\n\nstd::unique_ptr<Base> p = std::make_unique<Derived>();\n```\n\n当 `p` 离开作用域时，会自动释放对象。\n\n但是需要注意：\n\n> 即使使用 `std::unique_ptr<Base>` 管理 `Derived` 对象，只要通过基类接口删除派生类对象，基类析构函数仍然应当是虚函数。\n\n即：\n\n```cpp\nclass Base {\npublic:\n    virtual ~Base() = default;\n};\n```\n\n---\n\n## 结论\n\n本题答案为：\n\n> **False（错误）**\n\n原因是：\n\n> **构造函数不能声明为虚函数；析构函数可以声明为虚函数。**\n\n更准确的说法是：\n\n```text\n构造函数不能是虚函数，析构函数可以是虚函数。\n```\n\n这是 C++ 多态机制中的基础规则，也是设计多态基类时必须掌握的重要知识点。",
-    "knowledgePoints": [
-      "虚函数与动态绑定",
-      "多态实现条件",
-      "构造函数"
-    ],
-    "knowledgePointsNormalized": [
-      "虚函数与动态绑定",
-      "多态实现条件",
-      "构造函数"
-    ],
-    "mergedFrom": [
-      286
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "source": "复习提纲(核心题库)",
-    "difficulty": "easy"
-  },
-  {
-    "id": 236,
+    "id": 233,
     "type": "truefalse",
     "chapter": "多继承与虚基类",
     "stem": "当使用带参数的构造函数的虚基类时，最终派生类的构造函数必须负责对虚基类的初始化。",
@@ -5920,7 +5842,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 237,
+    "id": 234,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "构造函数是在（ ）时被执行的。",
@@ -5952,7 +5874,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 238,
+    "id": 235,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "在内联函数内允许使用的是（ ）。",
@@ -5983,7 +5905,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 239,
+    "id": 236,
     "type": "choice",
     "chapter": "继承与派生",
     "stem": "在类的继承与派生的过程中，关于派生类不正确的说法是（ ）。",
@@ -6014,38 +5936,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 240,
-    "type": "choice",
-    "chapter": "友元",
-    "stem": "一个类的友元函数能够访问该类的（ ）。",
-    "options": [
-      "A. 私有成员",
-      "B. 保护成员",
-      "C. 公有成员",
-      "D. 所有成员"
-    ],
-    "answer": "D",
-    "explanation": "## 1. **核心概念与机制**\n\n在 C++ 中，类通过访问控制符来限制成员的可访问范围，常见的访问权限包括：\n\n- `private`：私有成员  \n  - 只能被本类的成员函数访问；\n  - 也可以被该类声明的友元访问。\n- `protected`：保护成员  \n  - 可以被本类的成员函数访问；\n  - 可以被派生类成员函数访问；\n  - 也可以被该类声明的友元访问。\n- `public`：公有成员  \n  - 可以在类外直接访问；\n  - 当然也可以被成员函数和友元访问。\n\n### 友元函数的含义\n\n友元函数使用关键字 `friend` 在类中声明。例如：\n\n```cpp\nclass A {\n    friend void show(A obj);\n};\n```\n\n这里的 `show` 函数并不是类 `A` 的成员函数，但由于它被声明为 `A` 的友元函数，因此它拥有访问类 `A` 内部成员的权限。\n\n也就是说，**友元函数虽然不是类的成员函数，但可以访问该类的所有成员，包括私有成员、保护成员和公有成员。**\n\n因此，本题正确答案是：\n\n> **D. 所有成员**\n\n---\n\n## 2. **逐项解析**\n\n### A. 私有成员\n\n该选项说友元函数能够访问类的私有成员。\n\n这是正确的，但不完整。\n\n在 C++ 中，`private` 成员通常只能由类的成员函数访问，类外普通函数不能直接访问。例如：\n\n```cpp\nclass A {\nprivate:\n    int x;\n};\n\nvoid func(A obj) {\n    // obj.x = 10; // 错误，普通函数不能访问 private 成员\n}\n```\n\n但是，如果该普通函数被声明为类的友元函数，则可以访问私有成员：\n\n```cpp\nclass A {\nprivate:\n    int x = 10;\n\n    friend void func(A obj);\n};\n\nvoid func(A obj) {\n    cout << obj.x << endl; // 正确，友元函数可以访问 private 成员\n}\n```\n\n所以，友元函数确实可以访问私有成员，但它不仅限于私有成员，因此 A 不是最佳答案。\n\n---\n\n### B. 保护成员\n\n该选项说友元函数能够访问类的保护成员。\n\n这也是正确的，但同样不完整。\n\n`protected` 成员通常可以被本类成员函数和派生类成员函数访问，但不能被普通类外函数直接访问。\n\n例如：\n\n```cpp\nclass A {\nprotected:\n    int y;\n};\n\nvoid func(A obj) {\n    // obj.y = 20; // 错误，普通函数不能访问 protected 成员\n}\n```\n\n如果 `func` 被声明为 `A` 的友元函数，则可以访问：\n\n```cpp\nclass A {\nprotected:\n    int y = 20;\n\n    friend void func(A obj);\n};\n\nvoid func(A obj) {\n    cout << obj.y << endl; // 正确，友元函数可以访问 protected 成员\n}\n```\n\n因此，B 选项本身没有错误，但它只描述了友元函数权限的一部分，不是最全面的答案。\n\n---\n\n### C. 公有成员\n\n该选项说友元函数能够访问类的公有成员。\n\n这当然是正确的，但没有体现友元的特殊性。\n\n`public` 成员本来就可以在类外直接访问，不需要成为友元函数。例如：\n\n```cpp\nclass A {\npublic:\n    int z = 30;\n};\n\nvoid func(A obj) {\n    cout << obj.z << endl; // 正确，public 成员可在类外直接访问\n}\n```\n\n因此，友元函数能够访问公有成员，但普通函数也可以访问公有成员。\n\n所以 C 选项虽然正确，但仍不是完整答案。\n\n---\n\n### D. 所有成员\n\n该选项是正确答案。\n\n一个类的友元函数可以访问该类的：\n\n- `private` 私有成员；\n- `protected` 保护成员；\n- `public` 公有成员。\n\n示例代码如下：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x = 10;\n\nprotected:\n    int y = 20;\n\npublic:\n    int z = 30;\n\n    friend void show(A obj);\n};\n\nvoid show(A obj) {\n    cout << obj.x << endl; // 可以访问 private 成员\n    cout << obj.y << endl; // 可以访问 protected 成员\n    cout << obj.z << endl; // 可以访问 public 成员\n}\n\nint main() {\n    A a;\n    show(a);\n\n    return 0;\n}\n```\n\n程序输出：\n\n```cpp\n10\n20\n30\n```\n\n在这个例子中，`show` 函数虽然不是 `A` 类的成员函数，但由于在 `A` 类中被声明为友元函数，所以它可以访问 `A` 对象的所有成员。\n\n因此，答案为：\n\n```text\nD. 所有成员\n```\n\n---\n\n## 3. **避坑指南与最佳实践**\n\n### 1. 友元函数不是成员函数\n\n友元函数虽然写在类中声明，但它本质上不是该类的成员函数。\n\n例如：\n\n```cpp\nclass A {\n    friend void show(A obj);\n};\n```\n\n这里的 `show` 不是 `A` 的成员函数，因此调用时不能写成：\n\n```cpp\nA a;\n// a.show(); // 错误\n```\n\n而应该写成：\n\n```cpp\nshow(a);\n```\n\n---\n\n### 2. 友元关系不会自动继承\n\n如果基类中声明了某个函数为友元，该友元函数并不会自动成为派生类的友元。\n\n例如：\n\n```cpp\nclass Base {\nprivate:\n    int x;\n    friend void func(Base obj);\n};\n\nclass Derived : public Base {\nprivate:\n    int y;\n};\n```\n\n此时 `func` 可以访问 `Base` 的私有成员，但不能因此访问 `Derived` 新增的私有成员。\n\n---\n\n### 3. 友元关系不是相互的\n\n如果类 `A` 把函数或类 `B` 声明为友元，并不意味着 `A` 自动成为 `B` 的友元。\n\n友元关系是单向授权。\n\n```cpp\nclass A {\n    friend class B;\n};\n```\n\n含义是：`B` 可以访问 `A` 的非公有成员。\n\n但这并不代表 `A` 可以访问 `B` 的非公有成员。\n\n---\n\n### 4. 友元会破坏一定程度的封装性\n\n友元函数可以绕过类的访问控制，直接访问私有成员和保护成员。因此，虽然友元在某些场景下很有用，例如：\n\n- 运算符重载；\n- 两个类之间需要紧密协作；\n- 非成员函数需要访问类的内部实现；\n\n但不应滥用友元，否则会削弱类的封装性和可维护性。\n\n---\n\n### 5. 常见使用场景：运算符重载\n\n友元函数常用于重载某些运算符，尤其是需要让左操作数不是当前类对象的情况。\n\n例如：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass Point {\nprivate:\n    int x, y;\n\npublic:\n    Point(int x, int y) : x(x), y(y) {}\n\n    friend ostream& operator<<(ostream& os, const Point& p);\n};\n\nostream& operator<<(ostream& os, const Point& p) {\n    os << \"(\" << p.x << \", \" << p.y << \")\";\n    return os;\n}\n\nint main() {\n    Point p(3, 4);\n    cout << p << endl;\n\n    return 0;\n}\n```\n\n这里 `operator<<` 不是 `Point` 的成员函数，但通过友元声明，它可以访问 `Point` 的私有成员 `x` 和 `y`。\n\n---\n\n## 总结\n\n一个类的友元函数虽然不是该类的成员函数，但只要在类中用 `friend` 声明，就可以访问该类的全部成员，包括：\n\n- 私有成员；\n- 保护成员；\n- 公有成员。\n\n因此，本题正确答案是：\n\n> **D. 所有成员**",
-    "knowledgePoints": [
-      "友元函数与友元类",
-      "访问控制与封装",
-      "C++程序结构与命名空间"
-    ],
-    "knowledgePointsNormalized": [
-      "友元函数与友元类",
-      "访问控制与封装",
-      "C++程序结构与命名空间"
-    ],
-    "mergedFrom": [
-      292
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "source": "复习提纲(核心题库)",
-    "difficulty": "easy"
-  },
-  {
-    "id": 241,
+    "id": 237,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "下面关于重载函数的说法正确的是（ ）。",
@@ -6076,7 +5967,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 242,
+    "id": 238,
     "type": "choice",
     "chapter": "this/const/static成员",
     "stem": "静态成员为该类的所有（ ）共享。",
@@ -6107,7 +5998,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 243,
+    "id": 239,
     "type": "choice",
     "chapter": "运算符重载",
     "stem": "为了满足运算符\"+\"的可交换性，且重载函数需要直接访问类的私有成员，通常应重载为（ ）。",
@@ -6135,7 +6026,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 244,
+    "id": 240,
     "type": "choice",
     "chapter": "多态与虚函数",
     "stem": "关于虚函数和抽象类的描述，（ ）是错误的（ ）。",
@@ -6167,7 +6058,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 245,
+    "id": 241,
     "type": "choice",
     "chapter": "运算符重载",
     "stem": "下列运算符中，（ ）运算符不可以重载（ ）。",
@@ -6195,7 +6086,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 246,
+    "id": 242,
     "type": "choice",
     "chapter": "模板",
     "stem": "类模板的参数可作为（ ）。",
@@ -6223,7 +6114,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 247,
+    "id": 243,
     "type": "choice",
     "chapter": "模板",
     "stem": "template<class T>\nT fun(T x, T y){return x*x+y*y;}\n下列对fun的调用错误的是（ ）。",
@@ -6251,7 +6142,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 248,
+    "id": 244,
     "type": "choice",
     "chapter": "继承与派生",
     "stem": "以下程序执行的结果为（ ）\n#include <iostream>\nusing namespace std;\n\nclass B {\npublic:\n    ~B(){cout<<\"B\";}\n};\nclass D:public B {\npublic:\n    ~D(){cout<<\"D\";}\n};\nint main() {\n    D d;\n    return 0;\n}",
@@ -6279,7 +6170,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 249,
+    "id": 245,
     "type": "choice",
     "chapter": "继承与派生",
     "stem": "在公有派生情况下，有关派生类对象和基类对象的关系，下面不正确的是（ ）。",
@@ -6311,7 +6202,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 250,
+    "id": 246,
     "type": "choice",
     "chapter": "继承与派生",
     "stem": "C++中，能被派生类继承的有（ ）。",
@@ -6342,7 +6233,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 251,
+    "id": 247,
     "type": "fillin",
     "chapter": "类与对象",
     "stem": "封装是面向对象程序设计的基本特性，将数据和（ ）捆绑在一起，并加上访问控制，称为封装。",
@@ -6364,7 +6255,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 252,
+    "id": 248,
     "type": "fillin",
     "chapter": "类与对象",
     "stem": "类中成员的访问权限可以分为公有、（ ）和私有。",
@@ -6386,7 +6277,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 253,
+    "id": 249,
     "type": "fillin",
     "chapter": "多态与虚函数",
     "stem": "将函数体和函数调用相联系称为绑定，C++默认的函数调用绑定方式是（ ）绑定，是在程序运行之前，由编译器和链接器实现。",
@@ -6408,7 +6299,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 254,
+    "id": 250,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "this指针是一个常量指针，含有当前实际调用该成员函数的对象的地址，不能改变this指针的值，也不能取this指针的地址。",
@@ -6430,7 +6321,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 255,
+    "id": 251,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "const关键字可以修饰对象和成员函数，且const成员函数不能够修改类数据成员。",
@@ -6452,7 +6343,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 256,
+    "id": 252,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "自增和自减运算符都可以对常量对象操作。",
@@ -6474,7 +6365,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 257,
+    "id": 253,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "以下代码中，变量a的作用域为（ ）\nvoid fun(int x);\nint main() {......}\nvoid fun(int x) {\n    int a;\n    ......\n}",
@@ -6502,7 +6393,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 258,
+    "id": 254,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "下面关于命名空间的说法，错误的是（ ）。",
@@ -6533,7 +6424,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 259,
+    "id": 255,
     "type": "choice",
     "chapter": "文件IO",
     "stem": "在C++中打开一个文件就是将整个文件与一个（ ）建立关联，关闭一个文件就是取消这种关联（ ）。",
@@ -6561,7 +6452,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 260,
+    "id": 256,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "在（ ）的情况下适宜采用inline定义内联函数。",
@@ -6589,7 +6480,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 261,
+    "id": 257,
     "type": "truefalse",
     "chapter": "类与对象",
     "stem": "在声明类的同时，不能直接定义对象。",
@@ -6611,7 +6502,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 262,
+    "id": 258,
     "type": "truefalse",
     "chapter": "类与对象",
     "stem": "在 C++ 中，系统自动为类分配存储空间，所以可以在类声明中给数据成员赋初值。",
@@ -6633,7 +6524,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 263,
+    "id": 259,
     "type": "truefalse",
     "chapter": "构造函数与析构函数",
     "stem": "拷贝构造函数的形参只能是本类对象的引用。",
@@ -6655,7 +6546,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 264,
+    "id": 260,
     "type": "choice",
     "chapter": "类与对象",
     "stem": "类中非静态数据成员的生存期，下面说法正确的是（ ）。",
@@ -6683,7 +6574,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 265,
+    "id": 261,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "Student是已定义的一个类，那么执行语句 Student stu1, stu2(3), *stu3, *stu4; 调用了（ ）次构造函数。",
@@ -6711,7 +6602,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 266,
+    "id": 262,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "假设A是一个类，p为指向该类的一个含有n个对象的动态数组的指针，则执行delete[]p语句时，共调用该类的析构函数次数为（ ）。",
@@ -6742,7 +6633,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 267,
+    "id": 263,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "有基类 Chair、Person 及双继承派生类 ChairofSuzume 定义如下：\n```cpp\nclass Chair {\npublic:\n    Chair() { cout << \"Chair\" << \" \"; }\n    Chair(const Chair&) { cout << \"CopyChair\" << \" \"; }\n    ~Chair() { cout << \"~Chair\" << \" \"; }\n};\nclass Person {\n    string name;\npublic:\n    Person(string n): name(n) { cout << \"Person\" << \" \"; }\n    Person(const Person& p): name(p.name) { cout << \"CopyPerson\" << \" \"; }\n    ~Person() { cout << \"~Person\" << \" \"; }\n};\nclass ChairofSuzume : public Chair, public Person {\npublic:\n    ChairofSuzume(string name): Chair(), Person(name) { cout << \"ChairofSuzume\" << \" \"; }\n    ~ChairofSuzume() { cout << \"~ChairofSuzume\" << \" \"; }\n};\n```\n在 main 函数中执行以下代码：\n```cpp\nChairofSuzume broken_chair(\"Suzume\");\nChairofSuzume Souta(broken_chair);\n```\n请写出该 main 函数运行结束前（即销毁这两个对象时），析构函数的输出序列（用空格分隔各个析构输出）。",
@@ -6764,7 +6655,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 268,
+    "id": 264,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "如果某个对象在其生命周期内不能被修改，则将这个对象定义为 const 对象。",
@@ -6786,7 +6677,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 269,
+    "id": 265,
     "type": "choice",
     "chapter": "类与对象",
     "stem": "类中定义的成员默认权限为（ ）。",
@@ -6814,7 +6705,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 270,
+    "id": 266,
     "type": "choice",
     "chapter": "运算符重载",
     "stem": "为了满足运算符\"+\"的可交换性，并且在函数中需要访问类的私有成员，通常应将其重载为（ ）。",
@@ -6842,7 +6733,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 271,
+    "id": 267,
     "type": "fillin",
     "chapter": "模板",
     "stem": "下列程序的输出结果为\n#include <iostream.h>\n\ntemplate <typename TT>\nclass FF\n{\n    TT a1,a2,a3;\npublic:\n    FF(TT b1,TT b2,TT b3){a1=b1;a2=b2;a3=b3;}\n    TT Sum(){return a1+a2+a3;}\n};\n\nint main()\n{\n    FF<int> x(2,3,4),y(5,7,9);\n    cout << x.Sum() << ' ' << y.Sum() << endl;\n    return 0;\n}\n输出结果为：",
@@ -6864,7 +6755,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 272,
+    "id": 268,
     "type": "fillin",
     "chapter": "C++对C的扩充",
     "stem": "C++中，为了避免____冲突的问题引入命名空间的概念。",
@@ -6886,7 +6777,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 273,
+    "id": 269,
     "type": "fillin",
     "chapter": "C++对C的扩充",
     "stem": "引用是变量的别名，必须在定义时进行____。",
@@ -6908,7 +6799,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 274,
+    "id": 270,
     "type": "fillin",
     "chapter": "C++对C的扩充",
     "stem": "函数重载是指两个或两个以上的函数具有____的函数名，但参数类型不一致或参数个数不同。",
@@ -6930,7 +6821,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 275,
+    "id": 271,
     "type": "fillin",
     "chapter": "C++对C的扩充",
     "stem": "在块作用域中声明的，没有用 static 修饰的对象具有____生存期。",
@@ -6952,7 +6843,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 276,
+    "id": 272,
     "type": "fillin",
     "chapter": "C++对C的扩充",
     "stem": "执行 new 操作将动态分配 p 所指向的数据空间，执行____操作将释放由 p 所指向的动态分配的数据空间。",
@@ -6974,7 +6865,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 277,
+    "id": 273,
     "type": "fillin",
     "chapter": "C++对C的扩充",
     "stem": "在一个函数的定义或声明前加上关键字____时，该函数声明为内联函数。",
@@ -6996,7 +6887,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 278,
+    "id": 274,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "不能建立引用数组，可以建立指针的引用。",
@@ -7018,7 +6909,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 279,
+    "id": 275,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "可以为一个变量指定多个引用。",
@@ -7040,7 +6931,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 280,
+    "id": 276,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "默认参数的函数实参和形参的结合是从左到右，定义参数默认值是从右到左。",
@@ -7062,7 +6953,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 281,
+    "id": 277,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "C++对内联函数和普通函数的调用处理方式相同，调用时都需要保存和恢复现场及返回地址。",
@@ -7084,7 +6975,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 282,
+    "id": 278,
     "type": "fillin",
     "chapter": "类与对象",
     "stem": "类的成员包括两类，一类是代表对象属性的____，另一类是实现对象行为的____。",
@@ -7106,7 +6997,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 283,
+    "id": 279,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "类的私有成员和保护成员的共同特点是都能被本类的____和该类的____访问，且不能被类外普通函数直接访问；不同点是保护成员还能被从该类派生的____的成员函数访问。",
@@ -7128,7 +7019,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 284,
+    "id": 280,
     "type": "fillin",
     "chapter": "构造函数与析构函数",
     "stem": "如果在类 A 中定义了一个构造函数 A(int aa=0):a(aa){};则定义类 A 的对象 b 时，可以有____种不同的调用方式，分别是____和____；",
@@ -7150,7 +7041,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 285,
+    "id": 281,
     "type": "fillin",
     "chapter": "构造函数与析构函数",
     "stem": "如果在程序中定义一个 point 类，使用语句 point *pt=new point[3];申请了一个对象数组，在需要释放 pt 指向对象的动态数组时，所使用的语句为____。",
@@ -7172,35 +7063,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 286,
-    "type": "choice",
-    "chapter": "类与对象",
-    "stem": "类中数据成员的生存期，下面说法正确的是（ ）。",
-    "options": [
-      "A. 类中数据成员的生存期与对象的生存期无关",
-      "B. 类中数据成员的生存期比对象的生存期长",
-      "C. 类中数据成员的生存期比对象的生存期短",
-      "D. 类中数据成员的生存期由对象决定"
-    ],
-    "answer": "D",
-    "explanation": "## 1. 核心概念与机制\n\n本题考查的是 **C++ 类中数据成员的生存期与对象生存期之间的关系**。\n\n在 C++ 中，**类（class）本身只是对对象结构和行为的抽象描述**，它定义了对象中应包含哪些数据成员、成员函数以及访问权限等内容。但类定义本身并不等价于对象，也不会直接为普通数据成员分配存储空间。\n\n例如：\n\n```cpp\nclass Student {\npublic:\n    int age;\n    double score;\n};\n```\n\n这里的 `age` 和 `score` 是类 `Student` 的数据成员，但仅仅定义类时，并不会真正创建 `age` 和 `score` 这两个变量。只有当创建对象时，数据成员才会作为对象的一部分被创建：\n\n```cpp\nStudent s;\n```\n\n此时对象 `s` 中才真正包含一个 `int age` 和一个 `double score`。\n\n对于 **普通非静态数据成员** 来说：\n\n- 对象被创建时，数据成员随对象一起创建；\n- 对象存在期间，数据成员作为对象的一部分存在；\n- 对象生命周期结束时，数据成员也随之销毁。\n\n因此，普通数据成员的生存期不是独立决定的，而是 **由其所属对象的生存期决定**。\n\n需要特别注意：本题讨论的是类中的普通数据成员，通常默认指 **非静态数据成员**。如果是 `static` 静态数据成员，其生存期与普通对象不同，属于静态存储期。但本题选项和参考解析语境中显然讨论的是普通数据成员。\n\n---\n\n## 2. 逐项解析\n\n### A. 类中数据成员的生存期与对象的生存期无关\n\n**错误。**\n\n对于普通非静态数据成员来说，它们并不能脱离对象单独存在。\n\n例如：\n\n```cpp\nclass A {\npublic:\n    int x;\n};\n\nA obj;\n```\n\n变量 `x` 并不是一个独立存在的全局变量，它是对象 `obj` 的组成部分。只有当 `obj` 存在时，`obj.x` 才有意义。\n\n如果对象 `obj` 的生命周期结束，那么 `obj.x` 也随之失效。因此，说数据成员的生存期与对象生存期无关是不正确的。\n\n---\n\n### B. 类中数据成员的生存期比对象的生存期长\n\n**错误。**\n\n普通非静态数据成员是对象的一部分，其生命周期不会超过对象本身。\n\n例如：\n\n```cpp\nvoid func() {\n    Student s;\n    s.age = 18;\n} // s 的生命周期结束，s.age 也随之结束\n```\n\n在函数 `func()` 中，局部对象 `s` 在函数结束时销毁，`s.age` 作为 `s` 的成员，也同时不再存在。它不可能在对象销毁后继续单独存在。\n\n因此，普通数据成员的生存期不比对象长。\n\n---\n\n### C. 类中数据成员的生存期比对象的生存期短\n\n**错误。**\n\n普通非静态数据成员通常随着对象的构造而构造，随着对象的析构而销毁。它们是对象存储结构的一部分，不会在对象仍然存在时自行结束生存期。\n\n例如：\n\n```cpp\nclass Person {\npublic:\n    int age;\n    string name;\n};\n\nPerson p;\n```\n\n对象 `p` 存在期间，`p.age` 和 `p.name` 也作为其成员存在。\n\n需要补充说明的是：对于类类型成员，其构造和析构确实有严格顺序：\n\n- 构造对象时，先构造成员，再执行构造函数体；\n- 析构对象时，先执行析构函数体，再析构成员。\n\n但从整体生命周期关系看，成员的生存期仍然依附于对象，并不是“比对象生存期短”这一说法所表达的独立更短关系。\n\n因此，选项 C 不正确。\n\n---\n\n### D. 类中数据成员的生存期由对象决定\n\n**正确。**\n\n普通非静态数据成员的生存期由其所属对象的生存期决定。\n\n也就是说：\n\n- 对象创建，成员随之创建；\n- 对象存在，成员存在；\n- 对象销毁，成员随之销毁。\n\n例如：\n\n```cpp\nclass Book {\npublic:\n    int pages;\n};\n\nint main() {\n    Book b;\n    b.pages = 300;\n} // b 生命周期结束，b.pages 也结束\n```\n\n这里 `pages` 是 `b` 对象的一部分，它的生存期由对象 `b` 决定。\n\n所以本题正确答案是：\n\n> **D. 类中数据成员的生存期由对象决定**\n\n另外，题目原参考解析中提到选项 D 中原来的“沙僧存起”应为笔误，应改为“生存期”。\n\n---\n\n## 3. 避坑指南与最佳实践\n\n### 1. 区分类和对象\n\n类只是类型定义，不直接产生普通数据成员的实体。\n\n```cpp\nclass A {\n    int x;\n};\n```\n\n这只是说明每个 `A` 类型对象中包含一个 `int x` 成员，并没有真正创建变量 `x`。\n\n只有创建对象时才会产生实际成员：\n\n```cpp\nA a;  // 此时对象 a 中才有成员 x\n```\n\n---\n\n### 2. 区分普通数据成员和静态数据成员\n\n本题默认讨论的是 **普通非静态数据成员**。\n\n普通非静态成员依附于对象：\n\n```cpp\nclass A {\npublic:\n    int x;  // 每个对象都有自己的 x\n};\n```\n\n而静态数据成员属于类本身，不属于某个具体对象：\n\n```cpp\nclass A {\npublic:\n    static int count;\n};\n```\n\n`static` 数据成员具有静态存储期，其生命周期通常贯穿整个程序运行期间。它不依赖某个具体对象的生存期。\n\n因此，如果题目没有特别说明 `static`，一般应按普通非静态数据成员理解。\n\n---\n\n### 3. 注意对象存储期对成员生存期的影响\n\n对象可以有不同的存储期，其成员生存期随对象变化：\n\n```cpp\nA a1;              // 全局对象，静态存储期\nvoid f() {\n    A a2;          // 局部对象，自动存储期\n    A* p = new A;  // 动态对象，动态存储期\n    delete p;\n}\n```\n\n对应关系如下：\n\n| 对象形式 | 对象生存期 | 成员生存期 |\n|---|---|---|\n| 全局对象 `a1` | 程序运行期间 | 随 `a1` |\n| 局部对象 `a2` | 进入作用域到离开作用域 | 随 `a2` |\n| 动态对象 `new A` | `new` 到 `delete` | 随动态对象 |\n\n无论对象采用哪种存储方式，普通数据成员的生存期都由对象决定。\n\n---\n\n### 4. 不要让成员引用或指针悬空\n\n虽然成员本身随对象存在，但如果外部保存了指向成员的指针或引用，当对象销毁后，这些指针或引用会变成悬空引用。\n\n例如：\n\n```cpp\nstruct A {\n    int x;\n};\n\nint* p;\n\nvoid f() {\n    A a;\n    p = &a.x;\n} // a 销毁，a.x 也销毁，p 悬空\n```\n\n函数结束后，`p` 指向的 `a.x` 已经不存在，继续访问会导致未定义行为。\n\n最佳实践是：不要在对象生命周期之外使用其成员的地址或引用。\n\n---\n\n## 结论\n\n本题考查普通非静态数据成员与对象生命周期的关系。\n\n类中的普通数据成员并不能脱离对象独立存在，它们是对象的组成部分：\n\n- 对象创建时，成员创建；\n- 对象存在时，成员存在；\n- 对象销毁时，成员销毁。\n\n因此，正确答案为：\n\n> **D. 类中数据成员的生存期由对象决定**",
-    "knowledgePoints": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "source": "复习提纲(核心题库)",
-    "difficulty": "easy"
-  },
-  {
-    "id": 287,
+    "id": 282,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "静态数据成员属于本类的所有对象____的，一般通过类访问静态成员。",
@@ -7222,7 +7085,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 288,
+    "id": 283,
     "type": "fillin",
     "chapter": "友元",
     "stem": "如果把类 B 的成员函数 int num()定义为类 A 的友元函数，则需要在类 A 定义中需要加入的语句为____。",
@@ -7244,7 +7107,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 289,
+    "id": 284,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "const 与指针的配合使用方式有两种，一种是用 const 修饰指针指向的变量称为____，另一种使用 const 修饰指针，称为____。",
@@ -7266,7 +7129,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 290,
+    "id": 285,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "静态数据成员既可以在类体内初始化，也可以在类体外初始化。",
@@ -7288,7 +7151,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 291,
+    "id": 286,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "静态常量数据成员的初始化工作与静态非常量数据成员的初始化方法相同。",
@@ -7310,7 +7173,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 292,
+    "id": 287,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "对于未提供类内初始化器的非静态常量数据成员，必须通过构造函数的成员初始化列表进行初始化，不能在构造函数体内赋值。",
@@ -7332,7 +7195,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 293,
+    "id": 288,
     "type": "choice",
     "chapter": "友元",
     "stem": "如果类 A 是类 B 的友元，则（ ）。",
@@ -7363,7 +7226,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 294,
+    "id": 289,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "多重继承时，派生类中可能因多个基类中的同名成员，或同一个间接基类被多次继承而导致标识符不唯一并出现二义性，可采用____或____来消除该问题。",
@@ -7385,7 +7248,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 295,
+    "id": 290,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "当公有派生时，基类的公有成员成为派生类的公有成员；保护成员成为派生类的____；私有成员成为派生类的不可见成员。",
@@ -7407,7 +7270,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 296,
+    "id": 291,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "在派生类中对基类成员的初始化，需要由派生类的构造函数调用基类____来完成。",
@@ -7429,7 +7292,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 297,
+    "id": 292,
     "type": "truefalse",
     "chapter": "继承与派生",
     "stem": "多继承情况下，派生类的构造函数的执行顺序取决于定义派生类时所指定的各基类的顺序。",
@@ -7451,7 +7314,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 298,
+    "id": 293,
     "type": "truefalse",
     "chapter": "继承与派生",
     "stem": "派生类是从基类派生出来的，不能再成为新的类。",
@@ -7473,7 +7336,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 299,
+    "id": 294,
     "type": "truefalse",
     "chapter": "继承与派生",
     "stem": "派生类中继承的基类成员的访问权限到派生类中保持不变。",
@@ -7495,7 +7358,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 300,
+    "id": 295,
     "type": "fillin",
     "chapter": "运算符重载",
     "stem": "重载运算符仍然保持其原来的____、____和____不变。",
@@ -7520,7 +7383,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 301,
+    "id": 296,
     "type": "fillin",
     "chapter": "运算符重载",
     "stem": "在 C++重载运算符中，如用成员函数重载双目运算符，参数中需要____参数；如用友元函数重载双目运算符，参数表中需要____参数。",
@@ -7542,7 +7405,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 302,
+    "id": 297,
     "type": "fillin",
     "chapter": "多态与虚函数",
     "stem": "如果一个类中至少有一个纯虚函数，那这个类成为____。",
@@ -7564,7 +7427,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 303,
+    "id": 298,
     "type": "fillin",
     "chapter": "多态与虚函数",
     "stem": "如果将基类的析构函数声明为虚函数，由该基类派生的所有派生类的析构函数也自动成为____，即使派生类的析构函数与基类的析构函数名字不相同。",
@@ -7586,7 +7449,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 304,
+    "id": 299,
     "type": "fillin",
     "chapter": "多态与虚函数",
     "stem": "C++中____虚构造函数，____虚析构函数。",
@@ -7608,7 +7471,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 305,
+    "id": 300,
     "type": "fillin",
     "chapter": "运算符重载",
     "stem": "若对复数数据类型 Complex 的对象 a,b 实现\"+\"操作运算，则定义\"+\"运算符重载为友元函数的原型是____。",
@@ -7630,7 +7493,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 306,
+    "id": 301,
     "type": "truefalse",
     "chapter": "多态与虚函数",
     "stem": "如果派生类的成员函数的原型与基类中被定义为虚函数的成员函数原型相同，那么，这个函数自动继承基类中虚函数的特性。",
@@ -7652,7 +7515,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 307,
+    "id": 302,
     "type": "truefalse",
     "chapter": "多态与虚函数",
     "stem": "如果某个成员函数已经被声明为虚函数，则在同一个类中仍可以再次声明一个与它同名、返回值相同、参数个数和参数类型都相同、但未显式写 virtual 的成员函数声明。",
@@ -7674,7 +7537,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 308,
+    "id": 303,
     "type": "fillin",
     "chapter": "模板",
     "stem": "模板的使用是为了____。",
@@ -7696,7 +7559,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 309,
+    "id": 304,
     "type": "fillin",
     "chapter": "模板",
     "stem": "类模板的使用实际上是将类模板实例化成为一个具体____。",
@@ -7718,7 +7581,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 310,
+    "id": 305,
     "type": "truefalse",
     "chapter": "模板",
     "stem": "类模板不能有数据成员。",
@@ -7740,7 +7603,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 311,
+    "id": 306,
     "type": "truefalse",
     "chapter": "模板",
     "stem": "在模板声明中有<和>括起来的部分是模板的形参表。",
@@ -7762,7 +7625,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 312,
+    "id": 307,
     "type": "truefalse",
     "chapter": "模板",
     "stem": "通过使用不同的类型参数，可以从函数模板得到不同的实例函数。",
@@ -7784,7 +7647,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 313,
+    "id": 308,
     "type": "truefalse",
     "chapter": "模板",
     "stem": "模板对类型的参数化提供了很好的支持，因此类模板实例化时，编译器将根据给出的模板实参生成一个类。",
@@ -7806,7 +7669,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 314,
+    "id": 309,
     "type": "choice",
     "chapter": "绪论",
     "stem": "在每个 C++程序中都必须包含有这样一个函数，该函数的函数名为（ ）。",
@@ -7834,7 +7697,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 315,
+    "id": 310,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "不能参与重载的是（ ）。",
@@ -7862,7 +7725,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 316,
+    "id": 311,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "在 C++98/C++03 中，使用 new 运算符创建动态数组时，可以像定义普通数组那样使用初始化列表为该数组各元素指定初始值。。",
@@ -7884,7 +7747,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 317,
+    "id": 312,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "假定 MyClass 为一个类，那么下列的函数说明中，（    ）为该类的析构函数（ ）。",
@@ -7915,7 +7778,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 318,
+    "id": 313,
     "type": "choice",
     "chapter": "模板",
     "stem": "（    ）是以一种完全通用的方法来设计函数或类，而不必预先说明将被使用的每个对象的类型。",
@@ -7943,7 +7806,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 319,
+    "id": 314,
     "type": "choice",
     "chapter": "运算符重载",
     "stem": "下列是重载乘法运算符的函数原型声明，其中错误的是（ ）。",
@@ -7971,7 +7834,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 320,
+    "id": 315,
     "type": "choice",
     "chapter": "多态与虚函数",
     "stem": "以下（    ）成员函数表示纯虚函数（ ）。",
@@ -7999,7 +7862,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 321,
+    "id": 316,
     "type": "choice",
     "chapter": "多态与虚函数",
     "stem": "关于纯虚函数，下列表述中正确的是（ ）。",
@@ -8027,7 +7890,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 322,
+    "id": 317,
     "type": "choice",
     "chapter": "多继承与虚基类",
     "stem": "（    ）可以解决二义性问题。",
@@ -8055,7 +7918,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 323,
+    "id": 318,
     "type": "choice",
     "chapter": "多态与虚函数",
     "stem": "实现编译时的多态性要使用（ ）。",
@@ -8083,7 +7946,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 324,
+    "id": 319,
     "type": "fillin",
     "chapter": "多态与虚函数",
     "stem": "定义一个函数名为 fun，返回值为 int，没有参数的纯虚函数的声明是（    ）。",
@@ -8105,7 +7968,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 325,
+    "id": 320,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "在类中声明静态成员函数应使用关键字（    ）。",
@@ -8127,7 +7990,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 326,
+    "id": 321,
     "type": "fillin",
     "chapter": "构造函数与析构函数",
     "stem": "在 C++中，如果类的名称是 CTest，则此类的构造函数名称为（    ）。",
@@ -8149,7 +8012,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 327,
+    "id": 322,
     "type": "fillin",
     "chapter": "构造函数与析构函数",
     "stem": "在类的对象被创建时，（    ）函数会被自动调用。",
@@ -8171,7 +8034,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 328,
+    "id": 323,
     "type": "fillin",
     "chapter": "类与对象",
     "stem": "类中数据成员和成员函数的默认访问级别为（    ）。",
@@ -8193,7 +8056,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 329,
+    "id": 324,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "请完成下面的程序\n#include <iostream>                  // 预处理命令\nusing namespace std;                 // 使用标准命名空间 std\n\n// 测试静态成员类\nclass Test\n{\nprivate:\n    ___[1]___ int count;             // 对象数\n\npublic:\n    Test(){ count++; }               // 构造函数，实现对对象进行计数\n    static void Show(){ cout << \"共有\" << count << \"个对象!\" << endl; }    // 显示对象数\n};\n\nint Test::count = 0;                 // 初始化静态数据成员赋初值\n\nint main(void)                       // 主函数 main(void)\n{\n    Test obj1, obj2, obj3;           // 定义对象\n    Test::Show();                    // 显示对象数\n\n    return 0;                        // 返回值 0，返回操作系统\n}",
@@ -8215,7 +8078,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 330,
+    "id": 325,
     "type": "fillin",
     "chapter": "运算符重载",
     "stem": "请完成下面的程序\n#include <iostream>                  // 预处理命令\nusing namespace std;                 // 使用标准命名空间 std\n\n// 整数类\nclass Integer\n{\nprivate:\n    int a;                           // 数据成员\n\npublic:\n    Integer(int x = 0) { a = x; }    // 构造函数\n    operator int() { return a; }     // 类型转换函数\n    Integer operator+(const Integer &i) const    // 重载加法运算符+\n    {\n        return ___[2]___;            // 返回和\n    }\n};",
@@ -8237,7 +8100,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 331,
+    "id": 326,
     "type": "fillin",
     "chapter": "模板",
     "stem": "请完成下面的程序\n#include <iostream>                         // 预处理命令\nusing namespace std;                        // 使用标准命名空间 std\n\ntemplate <class ElemType>\nclass A\n{\nprivate:\n    ElemType a;                             // 数据成员\n\npublic:\n    A(ElemType x): a(x) { }                 // 构造函数\n    void Show() const\n    { cout << a << endl; }                  // 显示 a 之值\n};\n\nint main(void)                              // 主函数 main(void)\n{\n    A<____[3]____> obj(\"Hello, world!\");    // 定义对象\n    obj.Show();                             // 显示相关信息\n\n    return 0;                               // 返回值 0，返回操作系统\n}",
@@ -8259,7 +8122,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 332,
+    "id": 327,
     "type": "choice",
     "chapter": "C++对C的扩充",
     "stem": "下列关于 C++函数的说明中，正确的是（ ）。",
@@ -8287,7 +8150,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 333,
+    "id": 328,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "假定 MyClass 为一个类，那么下列的函数说明中，（ ）为该类的无参构造函数（ ）。",
@@ -8315,7 +8178,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 334,
+    "id": 329,
     "type": "choice",
     "chapter": "继承与派生",
     "stem": "下列叙述中，错误的是（ ）。",
@@ -8343,7 +8206,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 335,
+    "id": 330,
     "type": "choice",
     "chapter": "多态与虚函数",
     "stem": "当一个类的某个函数被说明为 virtual 时，该函数在该类及其所有派生类中（ ）。",
@@ -8371,7 +8234,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 336,
+    "id": 331,
     "type": "choice",
     "chapter": "继承与派生",
     "stem": "派生类的构造函数的成员初始化表中，不能包含（ ）。",
@@ -8399,7 +8262,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 337,
+    "id": 332,
     "type": "choice",
     "chapter": "运算符重载",
     "stem": "下列是重载加法运算符的函数原型声明，其中错误的是（ ）。",
@@ -8427,7 +8290,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 338,
+    "id": 333,
     "type": "choice",
     "chapter": "继承与派生",
     "stem": "派生类中的成员不能直接访问基类中的（ ）成员（ ）。",
@@ -8455,7 +8318,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 339,
+    "id": 334,
     "type": "choice",
     "chapter": "多态与虚函数",
     "stem": "实现运行时的多态性要使用（ ）。",
@@ -8486,7 +8349,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 340,
+    "id": 335,
     "type": "choice",
     "chapter": "this/const/static成员",
     "stem": "如果在类 MyClass 的外面使用函数调用 MyClass::f(); 则函数 f() 是类 MyClass 的（ ）。",
@@ -8514,7 +8377,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 341,
+    "id": 336,
     "type": "choice",
     "chapter": "this/const/static成员",
     "stem": "由于常对象不能被更新，因此对于非静态成员函数而言，（ ）。",
@@ -8542,7 +8405,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 342,
+    "id": 337,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "对于派生类的构造函数，在定义对象时构造函数的执行顺序为：先执行调用__________的构造函数，再执行调用子对象类的构造函数，最后执行派生类的构造函数体中的内容。",
@@ -8567,7 +8430,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 343,
+    "id": 338,
     "type": "fillin",
     "chapter": "模板",
     "stem": "声明类模板应使用关键字（ ）。",
@@ -8589,7 +8452,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 344,
+    "id": 339,
     "type": "fillin",
     "chapter": "运算符重载",
     "stem": "重载的关系运算符和逻辑运算符的返回类型应当是（ ）。",
@@ -8611,7 +8474,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 345,
+    "id": 340,
     "type": "fillin",
     "chapter": "绪论",
     "stem": "在面向对象方法中，类的实例称为（ ）。",
@@ -8633,7 +8496,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 346,
+    "id": 341,
     "type": "fillin",
     "chapter": "构造函数与析构函数",
     "stem": "在类的对象被释放时，（ ）函数会被自动调用。",
@@ -8655,7 +8518,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 347,
+    "id": 342,
     "type": "fillin",
     "chapter": "运算符重载",
     "stem": "请完成下面的程序\n#include <iostream>                    // 预处理命令\nusing namespace std;                    // 使用标准命名空间 std\n\n// 整数类\nclass Integer\n{\nprivate:\n    int a;                              // 数据成员\n\npublic:\n    Integer(int x = 0){ a = x; }        // 构造函数\n    ____[2]____() { return a; }         // 类型转换函数(将类类型转换为整型)\n};\n\nint main(void)                          // 主函数 main(void)\n{\n    Integer a = 6;                      // 定义整数对象\n    cout << a << endl;                  // 显示整数\n\n    return 0;                           // 返回值 0, 返回操作系统\n}",
@@ -8677,7 +8540,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 348,
+    "id": 343,
     "type": "fillin",
     "chapter": "运算符重载",
     "stem": "完成程序填空题。\n\n#include <iostream>\nusing namespace std;\n\nclass Complex\n{\nprivate:\n    double realPart;        // 实部\n    double imagePart;       // 虚部\n\npublic:\n    Complex(double real = 0, double image = 0): realPart(real), imagePart(image) { }    // 构造函数\n    double GetRealPart() const { return realPart; }      // 返回实部\n    double GetImagePart() const { return imagePart; }    // 返回虚部\n    Complex operator+(const Complex &a) const            // 重载加法运算符+\n    {\n        return Complex(____[3]____);                     // 返回和\n    }\n};\n\nint main(void)                                           // 主函数 main(void)\n{\n    Complex a(1, 2), b(2, 6), c;                         // 定义复数对象\n\n    c = a + b;                                           // 复数加法运算\n    cout << \"a=\" << a.GetRealPart() << \"+\" << a.GetImagePart() << \"i\" << endl;    // 显示 a\n    cout << \"b=\" << b.GetRealPart() << \"+\" << b.GetImagePart() << \"i\" << endl;    // 显示 b\n    cout << \"c=\" << c.GetRealPart() << \"+\" << c.GetImagePart() << \"i\" << endl;    // 显示 c\n\n    return 0;                                            // 返回值 0，返回操作系统\n}",
@@ -8702,7 +8565,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 349,
+    "id": 344,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "下列对类的构造函数和析构函数描述正确的是（ ）。",
@@ -8730,35 +8593,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 350,
-    "type": "choice",
-    "chapter": "C++对C的扩充",
-    "stem": "下面有关重载函数的说明中，（ ）是正确的（ ）。",
-    "options": [
-      "A. 重载函数必须具有不同的返回值类型",
-      "B. 重载函数形参个数必须不同",
-      "C. 重载函数必须具有不同的形参列表",
-      "D. 重载函数名可以不同"
-    ],
-    "answer": "C",
-    "explanation": "## 1. **核心概念与机制**\n\n本题考查 **C++ 中的函数重载**。\n\n### 1.1 什么是函数重载\n\n在 C++ 中，**函数重载**是指：\n\n> 在同一作用域内，可以定义多个**函数名相同**但**形参列表不同**的函数。\n\n例如：\n\n```cpp\nvoid print(int x);\nvoid print(double x);\nvoid print(int x, int y);\n```\n\n以上三个函数都叫 `print`，但它们的参数列表不同，因此构成函数重载。\n\n---\n\n### 1.2 函数重载的判断依据\n\nC++ 编译器判断两个函数是否构成重载，主要依据的是函数的**形参列表**，也称为函数签名的一部分。\n\n形参列表不同通常包括以下几种情况：\n\n#### 1. 参数个数不同\n\n```cpp\nvoid func(int x);\nvoid func(int x, int y);\n```\n\n这两个函数参数个数不同，可以构成重载。\n\n#### 2. 参数类型不同\n\n```cpp\nvoid func(int x);\nvoid func(double x);\n```\n\n这两个函数参数个数相同，但参数类型不同，也可以构成重载。\n\n#### 3. 参数类型顺序不同\n\n```cpp\nvoid func(int x, double y);\nvoid func(double x, int y);\n```\n\n这两个函数参数个数相同，参数类型也相同，但顺序不同，也可以构成重载。\n\n---\n\n### 1.3 返回值类型不能单独作为重载依据\n\n需要特别注意：\n\n> **函数返回值类型不能作为函数重载的唯一依据。**\n\n例如：\n\n```cpp\nint func(int x);\ndouble func(int x);\n```\n\n这两个函数**不能构成重载**，因为它们的函数名相同，形参列表也完全相同，仅返回值类型不同。\n\n原因是：调用函数时，编译器通常根据函数名和实参列表确定调用哪个函数，而不是根据返回值类型判断。\n\n例如：\n\n```cpp\nfunc(10);\n```\n\n此时编译器无法根据调用语句判断到底应该调用返回 `int` 的版本，还是返回 `double` 的版本，因此这种定义是非法的。\n\n---\n\n## 2. **逐项解析**\n\n### A. 重载函数必须具有不同的返回值类型\n\n**错误。**\n\n函数重载并不要求返回值类型不同。\n\n例如：\n\n```cpp\nint add(int a, int b);\nint add(int a, int b, int c);\n```\n\n这两个函数返回值类型都为 `int`，但参数个数不同，因此可以构成重载。\n\n此外，如果仅仅返回值类型不同，而函数名和形参列表完全相同，则不能构成重载：\n\n```cpp\nint getValue();\ndouble getValue();  // 错误：仅返回值类型不同，不能重载\n```\n\n所以，返回值类型不是函数重载的决定条件。\n\n---\n\n### B. 重载函数形参个数必须不同\n\n**错误。**\n\n形参个数不同确实可以构成重载，但这不是唯一方式，也不是必须条件。\n\n例如：\n\n```cpp\nvoid show(int x);\nvoid show(double x);\n```\n\n这两个函数的参数个数都是 1，但参数类型不同，因此仍然可以构成重载。\n\n再如：\n\n```cpp\nvoid display(int x, double y);\nvoid display(double x, int y);\n```\n\n这两个函数参数个数都是 2，但参数类型顺序不同，也可以构成重载。\n\n因此，重载函数的形参个数不一定必须不同。\n\n---\n\n### C. 重载函数必须具有不同的形参列表\n\n**正确。**\n\n这是函数重载的核心条件。\n\n在同一作用域中，多个函数要构成重载，必须满足：\n\n1. **函数名相同**；\n2. **形参列表不同**。\n\n形参列表不同可以表现为：\n\n- 参数个数不同；\n- 参数类型不同；\n- 参数类型顺序不同。\n\n例如：\n\n```cpp\nvoid f(int);\nvoid f(double);\nvoid f(int, double);\nvoid f(double, int);\n```\n\n这些函数都叫 `f`，且形参列表不同，因此可以构成重载。\n\n所以，选项 C 的说法正确。\n\n---\n\n### D. 重载函数名可以不同\n\n**错误。**\n\n函数重载的前提是：**函数名必须相同**。\n\n如果函数名不同，只是普通的不同函数，不属于函数重载。\n\n例如：\n\n```cpp\nvoid printInt(int x);\nvoid printDouble(double x);\n```\n\n这两个函数名不同，因此不叫函数重载。\n\n函数重载强调的是：\n\n> 同一个函数名，根据不同参数列表表现出不同的调用形式。\n\n因此，重载函数名不能不同，必须相同。\n\n---\n\n## 3. **避坑指南与最佳实践**\n\n### 3.1 不要用返回值类型区分重载函数\n\n错误示例：\n\n```cpp\nint value();\ndouble value();  // 错误\n```\n\n正确做法是通过参数列表区分：\n\n```cpp\nint value(int type);\ndouble value(double type);\n```\n\n---\n\n### 3.2 避免设计容易产生二义性的重载\n\n例如：\n\n```cpp\nvoid func(int x);\nvoid func(double x);\n\nfunc(10);    // 调用 func(int)\nfunc(10.5);  // 调用 func(double)\n```\n\n这通常没有问题，但如果存在复杂的隐式类型转换，可能导致调用不明确。\n\n例如：\n\n```cpp\nvoid func(long x);\nvoid func(double x);\n\nfunc(10);  // 可能产生二义性，取决于转换匹配情况\n```\n\n在实际开发中，应尽量避免设计过于相近、容易混淆的重载形式。\n\n---\n\n### 3.3 合理使用函数重载提升代码可读性\n\n函数重载适合表达“相同语义，不同参数形式”的操作。\n\n例如：\n\n```cpp\nvoid print(int x);\nvoid print(double x);\nvoid print(const char* s);\n```\n\n这些函数都表示“输出”，只是输出的数据类型不同，因此使用同一个函数名 `print` 是合理的。\n\n但如果函数语义完全不同，则不应强行使用重载，否则会降低代码可读性。\n\n---\n\n## 4. **结论**\n\n函数重载要求：\n\n- 函数名必须相同；\n- 形参列表必须不同；\n- 返回值类型不能作为唯一重载依据。\n\n因此，正确答案是：\n\n> **C. 重载函数必须具有不同的形参列表**",
-    "knowledgePoints": [
-      "内联函数、重载与默认参数",
-      "自增自减与赋值重载",
-      "C++程序结构与命名空间"
-    ],
-    "knowledgePointsNormalized": [
-      "内联函数、重载与默认参数",
-      "自增自减与赋值重载",
-      "C++程序结构与命名空间"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "source": "复习提纲(核心题库)",
-    "difficulty": "easy"
-  },
-  {
-    "id": 351,
+    "id": 345,
     "type": "choice",
     "chapter": "类与对象",
     "stem": "下列有关类与对象的说法中，（ ）是不正确的。",
@@ -8786,38 +8621,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 352,
-    "type": "choice",
-    "chapter": "this/const/static成员",
-    "stem": "已知：Print()函数是一个类的常成员函数，它无返回值，下列表中，正确的是（ ）。",
-    "options": [
-      "A. void Print() const;",
-      "B. const void Print();",
-      "C. void const Print();",
-      "D. void Print(const)"
-    ],
-    "answer": "A",
-    "explanation": "## 1. **核心概念与机制**\n\n本题考查 C++ 中 **常成员函数（`const` member function）** 的声明语法。\n\n在 C++ 类中，如果一个成员函数不会修改对象的非静态数据成员，通常应将其声明为 **常成员函数**。其标准语法形式为：\n\n```cpp\n返回类型 函数名(参数列表) const;\n```\n\n例如：\n\n```cpp\nclass Test {\npublic:\n    void Print() const;\n};\n```\n\n这里需要特别注意：成员函数声明末尾的 `const` 写在 **参数列表之后**，表示该成员函数是一个常成员函数。\n\n---\n\n### 1.1 常成员函数中 `const` 的含义\n\n对于普通成员函数，编译器会隐式传入一个 `this` 指针。假设类名为 `Test`，普通成员函数中的 `this` 指针可以近似理解为：\n\n```cpp\nTest* const this\n```\n\n含义是：\n\n- `this` 指针本身不能改指向其他对象；\n- 但可以通过 `this` 修改当前对象的数据成员。\n\n而在常成员函数中，例如：\n\n```cpp\nvoid Print() const;\n```\n\n此时 `this` 指针可以近似理解为：\n\n```cpp\nconst Test* const this\n```\n\n含义是：\n\n- `this` 指针本身不能改指向其他对象；\n- 通过 `this` 不能修改当前对象的普通数据成员。\n\n因此，在常成员函数内部，不能修改对象的非静态数据成员。例如：\n\n```cpp\nclass Test {\nprivate:\n    int x;\n\npublic:\n    void Print() const {\n        // x = 10; // 错误：常成员函数中不能修改普通数据成员\n    }\n};\n```\n\n---\n\n### 1.2 常对象只能调用常成员函数\n\n常成员函数的重要作用之一是：允许 **常对象** 调用该函数。\n\n例如：\n\n```cpp\nclass Test {\npublic:\n    void Print() const {\n        // 输出信息，不修改对象\n    }\n\n    void Modify() {\n        // 修改对象\n    }\n};\n\nconst Test t;\n\nt.Print();   // 正确：常对象可以调用常成员函数\n// t.Modify(); // 错误：常对象不能调用普通成员函数\n```\n\n因此，如果某个成员函数只是用于输出、查询对象状态，而不修改对象，通常应该声明为 `const` 成员函数。\n\n---\n\n### 1.3 常成员函数的基本格式\n\n常成员函数的声明格式如下：\n\n```cpp\n返回类型 函数名(参数列表) const;\n```\n\n本题中：\n\n- `Print()` 函数无返回值；\n- 因此返回类型应为 `void`；\n- 它是类的常成员函数；\n- 所以 `const` 应放在参数列表 `()` 之后。\n\n正确写法为：\n\n```cpp\nvoid Print() const;\n```\n\n---\n\n## 2. **逐项解析**\n\n### A. `void Print() const;`\n\n该选项 **正确**。\n\n这是 C++ 中常成员函数的标准声明形式：\n\n```cpp\n返回类型 函数名(参数列表) const;\n```\n\n对应到本题：\n\n```cpp\nvoid Print() const;\n```\n\n含义是：\n\n- `void`：函数无返回值；\n- `Print`：函数名；\n- `()`：函数无参数；\n- `const`：该成员函数是常成员函数，不会修改当前对象的普通数据成员。\n\n例如：\n\n```cpp\nclass A {\npublic:\n    void Print() const;\n};\n```\n\n该写法完全符合题干要求：`Print()` 是一个类的常成员函数，并且无返回值。\n\n因此，选项 **A 正确**。\n\n---\n\n### B. `const void Print();`\n\n该选项 **错误**。\n\n这里的 `const` 写在了 `void` 前面，试图修饰返回类型：\n\n```cpp\nconst void Print();\n```\n\n但是 `void` 表示“无返回值”，对 `void` 添加 `const` 没有实际意义。更重要的是，这种写法并不能表示 `Print()` 是常成员函数。\n\n常成员函数中的 `const` 必须写在函数参数列表之后：\n\n```cpp\nvoid Print() const;\n```\n\n而不是写在返回类型前面。\n\n需要区分：\n\n```cpp\nconst int GetValue(); // const 修饰返回值\nint GetValue() const; // const 修饰成员函数\n```\n\n二者含义不同。\n\n对于本题而言，`Print()` 无返回值，因此不涉及返回值常量性问题，而是要求声明成员函数本身为常成员函数。\n\n因此，选项 **B 错误**。\n\n---\n\n### C. `void const Print();`\n\n该选项 **错误**。\n\n`void const` 与 `const void` 在语法意图上类似，都是试图让 `const` 修饰返回类型：\n\n```cpp\nvoid const Print();\n```\n\n但是这并不是常成员函数的声明方式。\n\n常成员函数的 `const` 不能放在返回类型附近，而必须放在参数列表之后：\n\n```cpp\nvoid Print() const;\n```\n\n也就是说，判断一个成员函数是否为常成员函数，关键要看函数声明中参数列表后面是否有 `const`。\n\n例如：\n\n```cpp\nclass A {\npublic:\n    void Print() const; // 常成员函数\n    void Print();       // 普通成员函数\n};\n```\n\n其中只有第一个是常成员函数。\n\n因此，选项 **C 错误**。\n\n---\n\n### D. `void Print(const)`\n\n该选项 **错误**。\n\n该写法把 `const` 放在参数列表中：\n\n```cpp\nvoid Print(const)\n```\n\n但这是不完整的参数声明，因为在 C++ 中函数参数必须有明确的类型。\n\n合法的参数声明示例：\n\n```cpp\nvoid Print(const int x);\nvoid Print(const std::string& s);\nvoid Print(const char* p);\n```\n\n单独写一个 `const`，没有指定它修饰的具体类型，因此不是正确的函数参数声明。\n\n更重要的是，即使参数列表中存在 `const`，它也只是修饰函数参数，并不表示该函数是常成员函数。\n\n例如：\n\n```cpp\nvoid Print(const int x);\n```\n\n这表示参数 `x` 在函数内部不能被修改，但该函数本身仍然不是常成员函数。\n\n常成员函数的 `const` 应写在参数列表之后：\n\n```cpp\nvoid Print() const;\n```\n\n因此，选项 **D 错误**。\n\n---\n\n## 3. **答案总结**\n\n题目要求：\n\n- `Print()` 是类的成员函数；\n- `Print()` 是常成员函数；\n- `Print()` 无返回值。\n\n常成员函数的正确声明格式是：\n\n```cpp\n返回类型 函数名(参数列表) const;\n```\n\n所以本题中应写为：\n\n```cpp\nvoid Print() const;\n```\n\n因此正确答案是：\n\n```text\nA\n```\n\n---\n\n## 4. **避坑指南与最佳实践**\n\n### 4.1 `const` 成员函数的 `const` 必须放在参数列表之后\n\n正确写法：\n\n```cpp\nvoid Print() const;\n```\n\n错误写法：\n\n```cpp\nconst void Print();\nvoid const Print();\nvoid Print(const);\n```\n\n判断是否为常成员函数时，重点看参数列表后面是否有 `const`。\n\n---\n\n### 4.2 常成员函数中的 `const` 修饰的是隐含的 `this` 指针\n\n常成员函数中的 `const` 并不是修饰函数返回值，也不是修饰函数名，而是修饰隐含的 `this` 指针所指向的对象。\n\n普通成员函数中：\n\n```cpp\nClassName* const this\n```\n\n常成员函数中：\n\n```cpp\nconst ClassName* const this\n```\n\n因此，在常成员函数中不能修改对象的普通成员变量：\n\n```cpp\nclass A {\nprivate:\n    int x;\n\npublic:\n    void Print() const {\n        // x = 100; // 错误：不能在常成员函数中修改普通数据成员\n    }\n};\n```\n\n---\n\n### 4.3 常对象只能调用常成员函数\n\n例如：\n\n```cpp\nclass A {\npublic:\n    void Print() const {}\n    void Modify() {}\n};\n\nconst A a;\n\na.Print();   // 正确\n// a.Modify(); // 错误：常对象不能调用普通成员函数\n```\n\n如果一个成员函数没有声明为 `const`，编译器会认为它可能修改对象。因此，常对象不能调用它。\n\n---\n\n### 4.4 查询类、输出类函数建议加 `const`\n\n在实际开发中，以下类型的成员函数通常应声明为常成员函数：\n\n- 输出对象信息的函数；\n- 获取成员变量值的函数；\n- 判断对象状态的函数；\n- 不改变对象内部状态的辅助函数。\n\n例如：\n\n```cpp\n#include <string>\n#include <iostream>\n\nclass Student {\nprivate:\n    std::string name;\n    int age;\n\npublic:\n    void Print() const {\n        std::cout << name << \" \" << age << std::endl;\n    }\n\n    std::string GetName() const {\n        return name;\n    }\n\n    int GetAge() const {\n        return age;\n    }\n};\n```\n\n这样做的好处是：\n\n- 提高代码安全性；\n- 表达函数“不修改对象”的语义；\n- 允许常对象调用这些函数；\n- 便于编译器进行类型检查。\n\n---\n\n### 4.5 区分“返回值 `const`”和“成员函数 `const`”\n\n下面两个声明的含义完全不同：\n\n```cpp\nconst int GetValue();   // const 修饰返回值\nint GetValue() const;   // const 修饰成员函数\n```\n\n第一种：\n\n```cpp\nconst int GetValue();\n```\n\n表示函数返回一个 `const int`。但对于按值返回的基本类型来说，这种 `const` 通常没有实际意义。\n\n第二种：\n\n```cpp\nint GetValue() const;\n```\n\n表示该函数是常成员函数，不能修改当前对象的普通数据成员。\n\n本题中的 `Print()` 无返回值，因此正确关注点应是：如何声明一个无返回值的常成员函数。\n\n结论：\n\n```cpp\nvoid Print() const;\n```\n\n即选项 **A**。",
-    "knowledgePoints": [
-      "this指针",
-      "const成员与常对象",
-      "static成员"
-    ],
-    "knowledgePointsNormalized": [
-      "this指针",
-      "const成员与常对象",
-      "static成员"
-    ],
-    "mergedFrom": [
-      625
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "source": "复习提纲(核心题库)",
-    "difficulty": "easy"
-  },
-  {
-    "id": 353,
+    "id": 346,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "按传统 C++（C++98/03）语法，下面类的定义中有（ ）处错误。\nclass myclass\n{\n    int i=0;\npublic:\n    void myclass() { };\n    ~myclass(value);\n};",
@@ -8845,7 +8649,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 354,
+    "id": 347,
     "type": "choice",
     "chapter": "this/const/static成员",
     "stem": "如果在类 CTest 的外面函数调用 CTest::f()；则函数 f()是类 CTest 的（ ）。",
@@ -8873,7 +8677,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 355,
+    "id": 348,
     "type": "truefalse",
     "chapter": "构造函数与析构函数",
     "stem": "构造函数可以设置默认参数。。",
@@ -8895,7 +8699,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 356,
+    "id": 349,
     "type": "truefalse",
     "chapter": "构造函数与析构函数",
     "stem": "类的析构函数的作用是对象的初始化。。",
@@ -8917,7 +8721,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 357,
+    "id": 350,
     "type": "truefalse",
     "chapter": "绪论",
     "stem": "cout 的默认输出设备是屏幕（控制台），cin 的默认输入设备是键盘。",
@@ -8939,7 +8743,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 358,
+    "id": 351,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "常对象可以调用任意成员函数。。",
@@ -8961,7 +8765,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 359,
+    "id": 352,
     "type": "fillin",
     "chapter": "运算符重载",
     "stem": "重载运算符\"-\"的函数名为（ ）。",
@@ -8983,7 +8787,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 360,
+    "id": 353,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "C++中类的用途有两种，一种是类的实例化，即生成类的对象，另一种是通过（ ），派生出新的类。",
@@ -9005,7 +8809,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 361,
+    "id": 354,
     "type": "fillin",
     "chapter": "多态与虚函数",
     "stem": "在下面程序的横线处填上正确的语句，以实现动态多态。\n#include <iostream.h>\nclass Base\n{\npublic:\n    virtual void Fun() { cout << \"Base::Fun\" << endl; }\n};\n\nclass Derived: public Base\n{\npublic:\n    void Fun() { cout << \"Derived::Fun\" << endl; }\n};\n\nint main()\n{\n    Base a, *pb;\n    Derived b;\n    __________;\n    pb->Fun();    // 调派生类的成员函数 Fun(),以实现动态多态\n    return 0;\n}",
@@ -9027,7 +8831,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 362,
+    "id": 355,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "类的析构函数的作用是（ ）。",
@@ -9055,7 +8859,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 363,
+    "id": 356,
     "type": "choice",
     "chapter": "类与对象",
     "stem": "下列关于成员函数特征的描述中，（ ）是错误的（ ）。",
@@ -9083,7 +8887,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 364,
+    "id": 357,
     "type": "choice",
     "chapter": "友元",
     "stem": "下列函数中，（ ）不是类的成员函数（ ）。",
@@ -9111,7 +8915,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 365,
+    "id": 358,
     "type": "choice",
     "chapter": "继承与派生",
     "stem": "下列对派生类的描述中，（ ）是错误的（ ）。",
@@ -9139,7 +8943,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 366,
+    "id": 359,
     "type": "choice",
     "chapter": "继承与派生",
     "stem": "下列的描述中，（ ）是错误的（ ）。",
@@ -9167,7 +8971,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 367,
+    "id": 360,
     "type": "choice",
     "chapter": "继承与派生",
     "stem": "若类 A 和类 B 的定义如下：\nclass A\n{\n    int i, j;\npublic:\n    A(int m, int n): i(m), j(n) {}\n    int Geti() { return i; }\n};\n\nclass B: public A\n{\n    int k;\npublic:\n    B(int m, int n, int u): A(m, n), k(u) {}\n    void Make() { k = i * j; }\n};\n\nint main()\n{\n    B b(1, 2, 3);\n    return 0;\n}\n则上述定义中，（ ）是非法的表达式（ ）。",
@@ -9195,7 +8999,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 368,
+    "id": 361,
     "type": "choice",
     "chapter": "多继承与虚基类",
     "stem": "若有以下程序：\n#include <iostream>\nusing namespace std;\n\nclass A\n{\npublic:\n    int a;\n    A() { a = 10; }\n};\n\nclass A1: public A\n{\npublic:\n    A1() { a = a + 1; }\n};\n\nclass A2: public A\n{\npublic:\n    A2() { a = a + 2; }\n};\n\nclass B: public A1, public A2\n{\npublic:\n    B() {}\n    void Print() { cout << a << endl; }\n};\n\nint main()\n{\n    B obj;\n    obj.Print();\n    return 0;\n}\n则程序运行后的输出结果为：",
@@ -9223,7 +9027,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 369,
+    "id": 362,
     "type": "choice",
     "chapter": "多态与虚函数",
     "stem": "在下面的 4 个关键字中，（ ）是用来说明虚函数的（ ）。",
@@ -9251,7 +9055,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 370,
+    "id": 363,
     "type": "choice",
     "chapter": "多态与虚函数",
     "stem": "调用一个成员函数时，使用动态联编的情况是（ ）。",
@@ -9279,7 +9083,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 371,
+    "id": 364,
     "type": "choice",
     "chapter": "构造函数与析构函数",
     "stem": "假定 CTest 为一个类，并且有一无默认值的有参构造函数和一无参构造函数，则执行 \"CTest objTest;\" 语句时将自动调用该类的（ ）。",
@@ -9307,7 +9111,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 372,
+    "id": 365,
     "type": "truefalse",
     "chapter": "继承与派生",
     "stem": "若类 Y 是类 X 的私有派生类，类 Z 是类 Y 的公有派生类，则类 Z 不能访问类 X 的公有成员和保护成员。。",
@@ -9329,7 +9133,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 373,
+    "id": 366,
     "type": "truefalse",
     "chapter": "多继承与虚基类",
     "stem": "C++中设置虚基类的目的是实现运行时的多态。。",
@@ -9351,7 +9155,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 374,
+    "id": 367,
     "type": "fillin",
     "chapter": "类与对象",
     "stem": "类的具体表现是通过创建______来操作的。",
@@ -9373,7 +9177,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 375,
+    "id": 368,
     "type": "fillin",
     "chapter": "构造函数与析构函数",
     "stem": "假定 AB 为一个类，则执行 \"AB a[10];\" 语句时，系统自动调用该类的构造函数的次数为______。",
@@ -9395,7 +9199,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 376,
+    "id": 369,
     "type": "fillin",
     "chapter": "模板",
     "stem": "使用函数模板的方法是先说明函数模板，然后实例化成相应的______进行调用、执行。",
@@ -9417,7 +9221,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 377,
+    "id": 370,
     "type": "fillin",
     "chapter": "类与对象",
     "stem": "若有以下程序：\n#include <iostream.h>\n\nclass Test\n{\n    int x;\npublic:\n    void Setx(int i) { x = i; }\n    int Putx() { return x; }\n};\n\nint main()\n{\n    Test *p;\n    Test a[3];\n    a[0].Setx(5);\n    a[1].Setx(6);\n    a[2].Setx(7);\n    for(int j = 0; j < 3; j++)\n    {\n        p = &a[j];\n        cout << p->Putx() << \",\";\n    }\n    cout << endl;\n    return 0;\n}\n输出结果为：",
@@ -9439,7 +9243,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 378,
+    "id": 371,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "若有以下程序：\n#include <iostream.h>\n\nclass Base\n{\npublic:\n    Base(int x) { a = x; }\n    void Show() { cout << a << endl; }\nprivate:\n    int a;\n};\n\nclass Derived: public Base\n{\npublic:\n    Derived(int i): Base(i + 1), b(i) {}\n    void Show() { cout << b << endl; }\nprivate:\n    int b;\n};\n\nint main()\n{\n    Base b(5), *pb;\n    Derived d(1);\n    pb = &d;\n    pb->Show();\n    return 0;\n}\n输出结果为：",
@@ -9461,7 +9265,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 379,
+    "id": 372,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "静态数据成员是一种特殊的数据成员类型，它的定义以关键字____开头。它不能在类的____中初始化，只能在类对象生成之前，在____进行初始化。",
@@ -9486,7 +9290,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 380,
+    "id": 373,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "当公有派生时，基类的公有成员成为派生类的公有成员；保护成员成为派生类的____；私有成员成为派生类的____。",
@@ -9508,7 +9312,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 381,
+    "id": 374,
     "type": "choice",
     "chapter": "this/const/static成员",
     "stem": "下列函数中，可以通过类名直接调用的是（ ）。",
@@ -9536,7 +9340,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 382,
+    "id": 375,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "阅读下面程序，写出输出结果。\n\n#include <iostream>\nusing namespace std;\n\nclass CPosition\n{\npublic:\n    CPosition(int iPositionX = 0, int iPositionY = 0):m_iPositionX(iPositionX)\n    {\n        m_iPositionY = iPositionY;\n    }\n\n    int GetPositionX() const\n    {\n        return m_iPositionX;\n    }\n\n    int GetPositionY() const\n    {\n        return m_iPositionY;\n    }\n\n    void SetPositionX(int iPositionX)\n    {\n        m_iPositionX = iPositionX;\n    }\n\n    void SetPositionY(int iPositionY)\n    {\n        m_iPositionY = iPositionY;\n    }\n\nprivate:\n    int m_iPositionX;    // X 坐标\n    int m_iPositionY;    // X 坐标\n};\n\nint main(void)\n{\n    CPosition oPostion1;\n    const CPosition oPostion2(6, 8);\n\n    cout << oPostion1.GetPositionX() << endl;\n    oPostion1.SetPositionX(16);\n    cout << oPostion1.GetPositionX() << endl;\n    oPostion1.SetPositionY(18);\n    cout << oPostion1.GetPositionY() << endl;\n    cout << oPostion2.GetPositionX() << endl;\n    cout << oPostion2.GetPositionY() << endl;\n\n    return 0;\n}\n\n上面程序的输出结果为：",
@@ -9558,7 +9362,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 383,
+    "id": 376,
     "type": "fillin",
     "chapter": "模板",
     "stem": "阅读下面程序，写出输出结果。\n\n#include <iostream>\nusing namespace std;\n\ntemplate <class Type>\nclass CTest\n{\npublic:\n    CTest(Type m_tArray[], int iSize):m_pArray(m_tArray)\n    {\n        m_iSize = iSize;\n    }\n\n    void Print() const\n    {\n        for (int i = 0; i < m_iSize; i++)\n        {\n            cout << m_pArray[i] << \"  \";\n        }\n    }\n\nprivate:\n    Type *m_pArray;\n    int m_iSize;\n};\n\nint main(void)\n{\n    int a[] = {1, 0, 8};\n    double b[] = {1.6, 1.8};\n\n    CTest<int> oTest1(a, 3);\n    oTest1.Print();\n\n    CTest<double> oTest2(b, sizeof(b) / sizeof(double));\n    oTest2.Print();\n\n    cout << endl;\n\n    return 0;\n}",
@@ -9580,7 +9384,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 384,
+    "id": 377,
     "type": "coding",
     "chapter": "运算符重载",
     "stem": "请补全下面程序中 Integer 类的定义，使程序能够正确编译运行，并输出整数对象 a 与 b 相加后的结果。\n\n#include <iostream>\nusing namespace std;\n\n// 请在此处补全 Integer 类的定义\n\nint main(void)\n{\n    Integer a(2), b(3), c;        // 定义整数对象\n    c = a + b;                    // 求和\n    cout << c << endl;            // 显示和\n\n    return 0;                     // 返回值0，返回操作系统\n}",
@@ -9604,7 +9408,7 @@
     "difficulty": "hard"
   },
   {
-    "id": 385,
+    "id": 378,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "阅读下面程序，写出输出结果。\n\n#include <iostream>\nusing namespace std;\n\nclass A\n{\npublic:\n    A(){ cout << \"构造 A\" << endl; }    // 构造函数\n    ~A(){ cout << \"析构 A\" << endl; }   // 析构函数\n};\n\nclass B : public A\n{\npublic:\n    B(){ cout << \"构造 B\" << endl; }    // 构造函数\n    ~B(){ cout << \"析构 B\" << endl; }   // 析构函数\n};\n\nint main(void)\n{\n    B obj;\n    A *p = new A;\n\n    return 0;    // 返回值0，返回操作系统\n}\n\n上面程序的输出结果为：",
@@ -9626,7 +9430,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 386,
+    "id": 379,
     "type": "fillin",
     "chapter": "模板",
     "stem": "阅读下面程序，写出输出结果。\n\n#include <iostream>        // 预处理命令\n#include <cstdlib>\nusing namespace std;       // 使用标准命名空间 std\n\ntemplate <class ElemType>\nElemType f(ElemType x)\n{\n    return x * (ElemType)5.1;\n}\n\ntemplate <class ElemType>\nvoid f(ElemType x, ElemType y)\n{\n    x = x * 1.1;\n    y = y * 1.1;\n    cout << x << endl;\n    cout << y << endl;\n}\n\nint main(void)\n{\n    cout << f(3.0) << endl;\n    f(1, 2);\n    f(1.0, 2.0);\n\n    system(\"PAUSE\");    // 调用库函数 system()，输出系统提示信息\n    return 0;            // 返回值0，返回操作系统\n}\n\n上面程序的输出结果为：",
@@ -9648,7 +9452,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 387,
+    "id": 380,
     "type": "fillin",
     "chapter": "多态与虚函数",
     "stem": "在类中声明一个返回值为 int、函数名为 fun 的纯虚函数。若题干中已给出关键字 virtual，则空格处应填写：____",
@@ -9670,7 +9474,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 388,
+    "id": 381,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "在 C++ 类中，使用 ______ 修饰的成员称为静态成员。",
@@ -9692,7 +9496,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 389,
+    "id": 382,
     "type": "fillin",
     "chapter": "构造函数与析构函数",
     "stem": "若类名为 CTest，则该类的构造函数名应为 ______。",
@@ -9714,7 +9518,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 390,
+    "id": 383,
     "type": "fillin",
     "chapter": "构造函数与析构函数",
     "stem": "在 C++ 中，创建对象时由系统自动调用、用于初始化对象的特殊成员函数称为____。",
@@ -9736,7 +9540,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 391,
+    "id": 384,
     "type": "fillin",
     "chapter": "类与对象",
     "stem": "在 C++ 中，使用 class 定义类时，类成员的默认访问权限是____。",
@@ -9758,7 +9562,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 392,
+    "id": 385,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "完成程序填空，使成员函数 add 返回当前对象的成员变量 a 与参数对象 i 的成员变量 a 之和。\n\n```cpp\nclass A {\nprivate:\n    int a;\npublic:\n    A(int x) : a(x) {}\n    int add(A i) {\n        return ______;\n    }\n};\n```\n\n第 2 空应填写什么？",
@@ -9780,29 +9584,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 393,
-    "type": "fillin",
-    "chapter": "构造函数与析构函数",
-    "stem": "阅读下面程序，写出程序的运行结果。\n\n#include <iostream>\nusing namespace std;\n\nclass A {\npublic:\n    A() { cout << \"构造 A\" << endl; }\n    ~A() { cout << \"析构 A\" << endl; }\n};\n\nclass B : public A {\npublic:\n    B() { cout << \"构造 B\" << endl; }\n    ~B() { cout << \"析构 B\" << endl; }\n};\n\nint main() {\n    B b;\n    A *p = new A;\n    return 0;\n}",
-    "answer": "构造 A\n构造 B\n构造 A\n析构 B\n析构 A",
-    "explanation": "## 1. **核心概念与机制**\n\n本题考查 **构造函数与析构函数的调用顺序**，尤其涉及以下几个关键点：\n\n### （1）派生类对象的构造顺序\n\n当创建派生类对象时，构造顺序遵循：\n\n1. **先构造基类部分**\n2. **再构造派生类自身部分**\n\n因此，当执行：\n\n```cpp\nB b;\n```\n\n时，`b` 是一个 `B` 类对象，而 `B` 公有继承自 `A`：\n\n```cpp\nclass B : public A\n```\n\n所以创建 `B` 对象时，会先调用基类 `A` 的构造函数：\n\n```cpp\nA() { cout << \"构造 A\" << endl; }\n```\n\n然后再调用派生类 `B` 的构造函数：\n\n```cpp\nB() { cout << \"构造 B\" << endl; }\n```\n\n所以前两行输出为：\n\n```cpp\n构造 A\n构造 B\n```\n\n---\n\n### （2）动态对象的构造与释放\n\n语句：\n\n```cpp\nA *p = new A;\n```\n\n表示在堆区动态创建一个 `A` 类对象。\n\n执行 `new A` 时，会调用 `A` 的构造函数，因此输出：\n\n```cpp\n构造 A\n```\n\n但是要注意，动态创建的对象不会在作用域结束时自动销毁，必须显式使用：\n\n```cpp\ndelete p;\n```\n\n才会调用析构函数。\n\n本程序中没有写：\n\n```cpp\ndelete p;\n```\n\n因此，`p` 指向的动态对象没有被释放，其析构函数不会被调用。\n\n也就是说，这个动态创建的 `A` 对象只输出构造信息，不输出析构信息。\n\n---\n\n### （3）自动对象的析构顺序\n\n变量：\n\n```cpp\nB b;\n```\n\n是在 `main` 函数中定义的局部自动对象。\n\n当 `main` 函数结束时，局部自动对象 `b` 会被自动销毁。\n\n析构顺序与构造顺序相反：\n\n1. 先调用派生类 `B` 的析构函数\n2. 再调用基类 `A` 的析构函数\n\n因此 `b` 销毁时输出：\n\n```cpp\n析构 B\n析构 A\n```\n\n---\n\n## 2. **步骤解析**\n\n完整程序如下：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\npublic:\n    A() { cout << \"构造 A\" << endl; }\n    ~A() { cout << \"析构 A\" << endl; }\n};\n\nclass B : public A {\npublic:\n    B() { cout << \"构造 B\" << endl; }\n    ~B() { cout << \"析构 B\" << endl; }\n};\n\nint main() {\n    B b;\n    A *p = new A;\n    return 0;\n}\n```\n\n---\n\n### 第一步：执行 `B b;`\n\n```cpp\nB b;\n```\n\n创建派生类对象 `b`。\n\n由于 `B` 继承自 `A`，所以构造顺序为：\n\n```cpp\nA::A()\nB::B()\n```\n\n输出：\n\n```cpp\n构造 A\n构造 B\n```\n\n此时对象 `b` 已经创建完成。\n\n---\n\n### 第二步：执行 `A *p = new A;`\n\n```cpp\nA *p = new A;\n```\n\n这条语句在堆区动态创建一个 `A` 类对象。\n\n执行 `new A` 时调用 `A` 的构造函数，输出：\n\n```cpp\n构造 A\n```\n\n此时 `p` 指向这个动态创建的 `A` 对象。\n\n---\n\n### 第三步：执行 `return 0;`\n\n```cpp\nreturn 0;\n```\n\n`main` 函数结束。\n\n此时会销毁局部自动对象 `b`。\n\n由于 `b` 是 `B` 类对象，析构时先执行派生类析构函数，再执行基类析构函数：\n\n```cpp\nB::~B()\nA::~A()\n```\n\n因此输出：\n\n```cpp\n析构 B\n析构 A\n```\n\n---\n\n### 第四步：动态对象是否析构？\n\n虽然 `p` 指向一个动态创建的 `A` 对象，但是程序中没有执行：\n\n```cpp\ndelete p;\n```\n\n所以这个动态对象不会被正常析构。\n\n因此不会输出：\n\n```cpp\n析构 A\n```\n\n这也是本题最容易出错的地方。\n\n---\n\n## 3. **最终运行结果**\n\n因此程序的完整运行结果为：\n\n```cpp\n构造 A\n构造 B\n构造 A\n析构 B\n析构 A\n```\n\n---\n\n## 4. **避坑指南与最佳实践**\n\n### （1）派生类构造：先基类，后派生类\n\n对于继承关系中的对象构造，必须记住：\n\n```cpp\n先构造基类，再构造派生类\n```\n\n因为派生类对象中包含基类子对象，只有基类部分先构造完成，派生类部分才能继续构造。\n\n---\n\n### （2）派生类析构：先派生类，后基类\n\n析构顺序与构造顺序正好相反：\n\n```cpp\n先析构派生类，再析构基类\n```\n\n这是为了保证派生类析构函数执行时，基类部分仍然有效。\n\n---\n\n### （3）`new` 创建的对象必须 `delete`\n\n本题中：\n\n```cpp\nA *p = new A;\n```\n\n只创建了动态对象，却没有释放它。\n\n正确的资源管理方式应该是：\n\n```cpp\nA *p = new A;\ndelete p;\n```\n\n如果添加 `delete p;`，那么程序输出会多出一次：\n\n```cpp\n析构 A\n```\n\n并且这次析构发生在 `delete p;` 执行时。\n\n---\n\n### （4）实际开发中推荐使用 RAII\n\n在现代 C++ 中，不推荐直接使用裸指针管理动态对象。\n\n更好的做法是使用智能指针，例如：\n\n```cpp\n#include <memory>\n\nunique_ptr<A> p = make_unique<A>();\n```\n\n这样对象会在作用域结束时自动释放，避免忘记 `delete` 导致内存泄漏。\n\n---\n\n### （5）关于虚析构函数的补充说明\n\n本题中 `p` 的类型是：\n\n```cpp\nA *p = new A;\n```\n\n它指向的本身就是 `A` 类对象，因此不涉及通过基类指针删除派生类对象的问题。\n\n但在实际开发中，如果基类用于多态，通常应将析构函数声明为虚函数：\n\n```cpp\nvirtual ~A() {\n    cout << \"析构 A\" << endl;\n}\n```\n\n否则如果写出如下代码：\n\n```cpp\nA *p = new B;\ndelete p;\n```\n\n在基类析构函数不是虚函数的情况下，可能导致派生类析构函数无法正确调用，产生未定义行为或资源泄漏风险。\n\n本题没有执行 `delete p`，也没有创建 `new B`，所以不影响本题答案。",
-    "knowledgePoints": [
-      "构造函数",
-      "析构函数",
-      "程序阅读与输出推导"
-    ],
-    "knowledgePointsNormalized": [
-      "构造函数",
-      "析构函数",
-      "程序阅读与输出推导"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "source": "复习提纲(核心题库)",
-    "difficulty": "medium"
-  },
-  {
-    "id": 394,
+    "id": 386,
     "type": "fillin",
     "chapter": "构造函数与析构函数",
     "stem": "请完成下面的程序。\n\n#include <iostream>\nusing namespace std;        // 使用标准命名空间 std\n\n// 测试构造函数成员初始化列表\nclass Test\n{\nprivate:\n    int a;                  // 数据成员\n\npublic:\n    Test(int x = 0):____[1]____{}        // 构造函数\n    void Show(){ cout << \"a:\" << a << endl; }        // 显示数据成员之值\n};\n\nint main(void)              // 主函数 main(void)\n{\n    Test obj(168);          // 定义对象\n    obj.Show();             // 显示数据成员之值\n\n    return 0;               // 返回值 0，返回操作系统\n}",
@@ -9827,7 +9609,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 395,
+    "id": 387,
     "type": "fillin",
     "chapter": "类与对象",
     "stem": "请完成下面程序中空缺处的内容。\n#include <iostream>                         // 预处理命令\nusing namespace std;                        // 使用标准命名空间 std\n\n// 复数类\nclass Complex\n____",
@@ -9849,7 +9631,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 396,
+    "id": 388,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "在 C++ 的继承关系中，被继承的已有类称为____。",
@@ -9871,7 +9653,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 397,
+    "id": 389,
     "type": "fillin",
     "chapter": "模板",
     "stem": "在 C++ 中，定义函数模板或类模板时使用的关键字是____。",
@@ -9893,7 +9675,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 398,
+    "id": 390,
     "type": "fillin",
     "chapter": "C++对C的扩充",
     "stem": "C++ 增加了一种表示逻辑值的数据类型，即____。",
@@ -9915,7 +9697,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 399,
+    "id": 391,
     "type": "fillin",
     "chapter": "类与对象",
     "stem": "类的具体实例称为____。",
@@ -9937,7 +9719,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 400,
+    "id": 392,
     "type": "fillin",
     "chapter": "构造函数与析构函数",
     "stem": "对象撤销时自动调用的成员函数称为______。",
@@ -9959,7 +9741,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 401,
+    "id": 393,
     "type": "fillin",
     "chapter": "运算符重载",
     "stem": "完成程序填空：在类中定义一个将对象转换为 int 类型的类型转换函数，空格处应填写：____",
@@ -9981,29 +9763,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 402,
-    "type": "fillin",
-    "chapter": "运算符重载",
-    "stem": "完成程序填空题第3空：\n\n下面程序定义了一个复数类 Complex，并重载了加法运算符，使两个复数对象可以相加。请在 [3] 处填入适当代码。\n\n```cpp\nclass Complex {\nprivate:\n    double realPart;\n    double imagePart;\npublic:\n    Complex(double r = 0, double i = 0) : realPart(r), imagePart(i) {}\n\n    Complex operator+(const Complex& a) const {\n        return Complex([3]);\n    }\n};\n```\n\n第3空应填：__________",
-    "answer": "realPart + a.realPart, imagePart + a.imagePart",
-    "explanation": "## 1. 核心概念与机制\n\n本题考查 **C++ 运算符重载** 中的成员函数形式，具体是为复数类 `Complex` 重载加法运算符 `operator+`。\n\n题目代码如下：\n\n```cpp\nclass Complex {\nprivate:\n    double realPart;\n    double imagePart;\npublic:\n    Complex(double r = 0, double i = 0) : realPart(r), imagePart(i) {}\n\n    Complex operator+(const Complex& a) const {\n        return Complex([3]);\n    }\n};\n```\n\n其中，`Complex` 类中有两个私有数据成员：\n\n```cpp\ndouble realPart;   // 实部\ndouble imagePart;  // 虚部\n```\n\n构造函数为：\n\n```cpp\nComplex(double r = 0, double i = 0) : realPart(r), imagePart(i) {}\n```\n\n它接收两个参数：\n\n- 第一个参数 `r` 用于初始化实部 `realPart`；\n- 第二个参数 `i` 用于初始化虚部 `imagePart`。\n\n---\n\n### 1.1 复数加法规则\n\n复数的一般形式为：\n\n\\[\na + bi\n\\]\n\n其中：\n\n- `a` 是实部；\n- `b` 是虚部。\n\n两个复数相加时，遵循如下数学规则：\n\n\\[\n(a + bi) + (c + di) = (a + c) + (b + d)i\n\\]\n\n也就是说：\n\n- 结果复数的实部 = 两个复数实部之和；\n- 结果复数的虚部 = 两个复数虚部之和。\n\n如果当前对象表示一个复数：\n\n```cpp\nrealPart + imagePart * i\n```\n\n参数对象 `a` 表示另一个复数：\n\n```cpp\na.realPart + a.imagePart * i\n```\n\n那么相加后的新复数应该是：\n\n```cpp\n(realPart + a.realPart) + (imagePart + a.imagePart) * i\n```\n\n因此，需要构造并返回一个新的 `Complex` 对象：\n\n```cpp\nComplex(realPart + a.realPart, imagePart + a.imagePart)\n```\n\n所以第 `[3]` 空应填：\n\n```cpp\nrealPart + a.realPart, imagePart + a.imagePart\n```\n\n---\n\n## 2. 填空解析\n\n### 正确答案\n\n第 3 空应填：\n\n```cpp\nrealPart + a.realPart, imagePart + a.imagePart\n```\n\n完整代码为：\n\n```cpp\nclass Complex {\nprivate:\n    double realPart;\n    double imagePart;\npublic:\n    Complex(double r = 0, double i = 0) : realPart(r), imagePart(i) {}\n\n    Complex operator+(const Complex& a) const {\n        return Complex(realPart + a.realPart, imagePart + a.imagePart);\n    }\n};\n```\n\n也可以显式使用 `this->`：\n\n```cpp\nreturn Complex(this->realPart + a.realPart,\n               this->imagePart + a.imagePart);\n```\n\n这两种写法在本题中是等价的。\n\n---\n\n### 2.1 `operator+` 的调用过程\n\n假设有如下代码：\n\n```cpp\nComplex c1(1, 2);\nComplex c2(3, 4);\nComplex c3 = c1 + c2;\n```\n\n表达式：\n\n```cpp\nc1 + c2\n```\n\n本质上会被编译器理解为：\n\n```cpp\nc1.operator+(c2)\n```\n\n此时：\n\n- 当前对象是 `c1`；\n- `this` 指针指向 `c1`；\n- 参数 `a` 引用对象 `c2`。\n\n所以在 `operator+` 函数内部：\n\n```cpp\nrealPart\n```\n\n等价于：\n\n```cpp\nthis->realPart\n```\n\n即表示 `c1` 的实部。\n\n而：\n\n```cpp\na.realPart\n```\n\n表示 `c2` 的实部。\n\n因此：\n\n```cpp\nrealPart + a.realPart\n```\n\n表示：\n\n```cpp\nc1.realPart + c2.realPart\n```\n\n同理：\n\n```cpp\nimagePart + a.imagePart\n```\n\n表示：\n\n```cpp\nc1.imagePart + c2.imagePart\n```\n\n于是返回的新对象为：\n\n```cpp\nComplex(1 + 3, 2 + 4)\n```\n\n即：\n\n```cpp\nComplex(4, 6)\n```\n\n这正符合复数加法规则。\n\n---\n\n### 2.2 为什么可以访问 `a.realPart` 和 `a.imagePart`\n\n虽然 `realPart` 和 `imagePart` 是 `private` 私有成员，但这里的访问是合法的。\n\n原因是：**类的成员函数可以访问同一个类的所有对象的私有成员**。\n\n也就是说，`Complex` 类的成员函数不仅可以访问当前对象的私有成员：\n\n```cpp\nrealPart\nimagePart\n```\n\n也可以访问其他 `Complex` 对象的私有成员：\n\n```cpp\na.realPart\na.imagePart\n```\n\n因此，在 `operator+` 函数中写：\n\n```cpp\na.realPart\na.imagePart\n```\n\n是完全合法的。\n\n---\n\n### 2.3 构造函数参数与填空位置的关系\n\n题目中返回语句为：\n\n```cpp\nreturn Complex([3]);\n```\n\n而 `Complex` 构造函数定义为：\n\n```cpp\nComplex(double r = 0, double i = 0)\n```\n\n也就是说，`Complex(...)` 中需要传入两个值：\n\n```cpp\nComplex(实部, 虚部)\n```\n\n所以 `[3]` 位置应当填入两个表达式：\n\n```cpp\nrealPart + a.realPart, imagePart + a.imagePart\n```\n\n第一个表达式作为构造函数的第一个实参，用于初始化结果对象的实部；\n\n第二个表达式作为构造函数的第二个实参，用于初始化结果对象的虚部。\n\n---\n\n## 3. 常见易错点\n\n### 易错点一：只计算实部，忽略虚部\n\n错误写法：\n\n```cpp\nreturn Complex(realPart + a.realPart);\n```\n\n由于构造函数第二个参数有默认值：\n\n```cpp\nComplex(double r = 0, double i = 0)\n```\n\n所以这种写法可以通过编译，但逻辑是错误的。\n\n它只计算了实部，虚部会被默认初始化为 `0`。\n\n例如：\n\n```cpp\nComplex c1(1, 2);\nComplex c2(3, 4);\nComplex c3 = c1 + c2;\n```\n\n错误结果为：\n\n```cpp\nComplex(4, 0)\n```\n\n正确结果应为：\n\n```cpp\nComplex(4, 6)\n```\n\n---\n\n### 易错点二：实部和虚部交叉相加\n\n错误写法：\n\n```cpp\nreturn Complex(realPart + a.imagePart,\n               imagePart + a.realPart);\n```\n\n这种写法把实部和虚部混淆了。\n\n复数加法必须是：\n\n```cpp\n实部 + 实部\n虚部 + 虚部\n```\n\n不能写成：\n\n```cpp\n实部 + 虚部\n虚部 + 实部\n```\n\n---\n\n### 易错点三：误以为必须写 `this->`\n\n在成员函数内部访问当前对象的数据成员时，可以直接写成员名：\n\n```cpp\nrealPart\nimagePart\n```\n\n它们等价于：\n\n```cpp\nthis->realPart\nthis->imagePart\n```\n\n因此，本题既可以写：\n\n```cpp\nrealPart + a.realPart, imagePart + a.imagePart\n```\n\n也可以写：\n\n```cpp\nthis->realPart + a.realPart, this->imagePart + a.imagePart\n```\n\n不过，对于初学者来说，显式写出 `this->` 有助于理解当前对象和参数对象之间的区别。\n\n---\n\n### 易错点四：返回当前对象而不是新对象\n\n错误写法：\n\n```cpp\nreturn *this;\n```\n\n这种写法没有完成加法运算，只是返回了当前对象。\n\n例如：\n\n```cpp\nComplex c1(1, 2);\nComplex c2(3, 4);\nComplex c3 = c1 + c2;\n```\n\n如果 `operator+` 中直接返回 `*this`，那么 `c3` 的值会等于 `c1`，而不是 `c1 + c2`。\n\n---\n\n### 易错点五：在 `operator+` 中修改当前对象\n\n错误设计：\n\n```cpp\nComplex operator+(const Complex& a) {\n    realPart += a.realPart;\n    imagePart += a.imagePart;\n    return *this;\n}\n```\n\n这段代码虽然可能得到一个看似正确的返回值，但它改变了左操作数本身。\n\n例如：\n\n```cpp\nComplex c1(1, 2);\nComplex c2(3, 4);\nComplex c3 = c1 + c2;\n```\n\n执行后，`c1` 也会被修改为 `(4, 6)`，这不符合通常对 `+` 运算符的语义预期。\n\n`+` 运算符通常应该产生一个新对象，而不改变原来的两个操作数。\n\n如果希望原地修改对象，应重载 `operator+=`。\n\n---\n\n## 4. 避坑指南与最佳实践\n\n### 4.1 参数使用 `const` 引用\n\n题目中写法：\n\n```cpp\nComplex operator+(const Complex& a) const\n```\n\n是较好的设计。\n\n其中：\n\n```cpp\nconst Complex& a\n```\n\n表示参数 `a` 是一个常量引用。\n\n这样做有两个好处：\n\n1. **避免对象拷贝**\n\n   如果写成：\n\n   ```cpp\n   Complex operator+(Complex a) const\n   ```\n\n   那么调用 `operator+` 时会复制一份参数对象，可能带来不必要的开销。\n\n2. **保证不会修改右操作数**\n\n   `const` 表明函数内部不能修改参数对象 `a`。\n\n   例如，下面代码会被禁止：\n\n   ```cpp\n   a.realPart = 10; // 错误，a 是 const 引用\n   ```\n\n---\n\n### 4.2 成员函数末尾的 `const` 很重要\n\n题目中的函数声明为：\n\n```cpp\nComplex operator+(const Complex& a) const\n```\n\n最后一个 `const` 表示：\n\n```cpp\noperator+\n```\n\n不会修改当前对象。\n\n也就是说，在函数内部不能写：\n\n```cpp\nrealPart += a.realPart;\nimagePart += a.imagePart;\n```\n\n这符合 `+` 运算符的通常语义：相加产生新值，而不改变参与运算的对象。\n\n如果没有末尾的 `const`，则类似下面的代码可能无法使用：\n\n```cpp\nconst Complex c1(1, 2);\nComplex c2(3, 4);\n\nComplex c3 = c1 + c2; // 若 operator+ 不是 const 成员函数，可能无法调用\n```\n\n因为 `c1` 是常量对象，只能调用常量成员函数。\n\n---\n\n### 4.3 `operator+` 应返回新对象\n\n对于加法运算符，推荐实现方式是：\n\n```cpp\nComplex operator+(const Complex& a) const {\n    return Complex(realPart + a.realPart,\n                   imagePart + a.imagePart);\n}\n```\n\n或者在 C++11 及以后标准中，也可以写成：\n\n```cpp\nComplex operator+(const Complex& a) const {\n    return {realPart + a.realPart,\n            imagePart + a.imagePart};\n}\n```\n\n但对于本题填空而言，由于外层已经写了：\n\n```cpp\nreturn Complex([3]);\n```\n\n所以 `[3]` 只能填写构造函数参数部分：\n\n```cpp\nrealPart + a.realPart, imagePart + a.imagePart\n```\n\n---\n\n### 4.4 区分 `operator+` 与 `operator+=`\n\n`operator+` 通常表示生成一个新结果：\n\n```cpp\nComplex c3 = c1 + c2;\n```\n\n执行后：\n\n```cpp\nc1\nc2\n```\n\n不应被修改。\n\n而 `operator+=` 表示在当前对象上累加：\n\n```cpp\nc1 += c2;\n```\n\n执行后：\n\n```cpp\nc1\n```\n\n会发生改变。\n\n较规范的写法是先实现 `operator+=`：\n\n```cpp\nComplex& operator+=(const Complex& a) {\n    realPart += a.realPart;\n    imagePart += a.imagePart;\n    return *this;\n}\n```\n\n再基于它实现 `operator+`：\n\n```cpp\nComplex operator+(const Complex& a) const {\n    Complex temp = *this;\n    temp += a;\n    return temp;\n}\n```\n\n不过在本题中，直接返回新构造的 `Complex` 对象更简洁清晰：\n\n```cpp\nreturn Complex(realPart + a.realPart,\n               imagePart + a.imagePart);\n```\n\n---\n\n## 5. 本题答案总结\n\n第 `[3]` 空应填：\n\n```cpp\nrealPart + a.realPart, imagePart + a.imagePart\n```\n\n填入后完整语句为：\n\n```cpp\nreturn Complex(realPart + a.realPart, imagePart + a.imagePart);\n```\n\n其含义是：\n\n- 用当前对象的实部加上参数对象 `a` 的实部，作为结果复数的实部；\n- 用当前对象的虚部加上参数对象 `a` 的虚部，作为结果复数的虚部；\n- 构造并返回一个新的 `Complex` 对象，表示两个复数相加的结果。",
-    "knowledgePoints": [
-      "运算符重载规则",
-      "内联函数、重载与默认参数",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "运算符重载规则",
-      "内联函数、重载与默认参数",
-      "面向对象基本特征"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "source": "复习提纲(核心题库)",
-    "difficulty": "medium"
-  },
-  {
-    "id": 403,
+    "id": 394,
     "type": "choice",
     "chapter": "this/const/static成员",
     "stem": "若要将成员函数 Print 声明为常成员函数，下列选项中正确的是（ ）。",
@@ -10031,35 +9791,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 404,
-    "type": "choice",
-    "chapter": "构造函数与析构函数",
-    "stem": "按 C++98/C++03 语法规则，下面类的定义中有（ ）处错误。\nclass myclass\n{\nint i=0;\npublic:\nvoid myclass();\n~myclass(value);\n};",
-    "options": [
-      "A. 1",
-      "B. 2",
-      "C. 3",
-      "D. 4"
-    ],
-    "answer": "C",
-    "explanation": "本题应按 C++98/C++03 语法规则理解，共有 3 处错误。\n\n1. `int i=0;`\n在 C++98/C++03 中，非静态数据成员不能在类内直接初始化，因此这里算 1 处错误。（C++11 及以后该写法合法，所以题干必须明确语境。）\n\n2. `void myclass();`\n构造函数名必须与类名相同，且不能写返回类型。正确写法应为：`myclass();`\n\n3. `~myclass(value);`\n析构函数不能带参数，也不能有返回类型。正确写法应为：`~myclass();`\n\n因此共有 3 处错误，答案选 C。",
-    "knowledgePoints": [
-      "构造函数",
-      "析构函数",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "构造函数",
-      "析构函数",
-      "面向对象基本特征"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "source": "复习提纲(核心题库)",
-    "difficulty": "easy"
-  },
-  {
-    "id": 405,
+    "id": 395,
     "type": "fillin",
     "chapter": "多态与虚函数",
     "stem": "在下面程序的横线处填上正确的关键字，以实现动态多态。\n\n#include <iostream>\nusing namespace std;\n\nclass Base\n{\npublic:\n    ______ void Fun() { cout << \"Base::Fun\" << endl; }\n};\n\nclass Derived : public Base\n{\npublic:\n    void Fun() { cout << \"Derived::Fun\" << endl; }\n};\n\nint main()\n{\n    Base *p;\n    Derived d;\n    p = &d;\n    p->Fun();\n    return 0;\n}",
@@ -10081,7 +9813,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 406,
+    "id": 396,
     "type": "fillin",
     "chapter": "多态与虚函数",
     "stem": "#include <iostream>\nusing namespace std;\n\nclass Base\n{\npublic:\n    virtual void Fun() { cout << \"Base::Fun\" << endl; }\n};\n\nclass Derived : public Base\n{\npublic:\n    void Fun() { cout << \"Derived::Fun\" << endl; }\n};\n\nint main()\n{\n    Base a, *pb;\n    Derived b;\n    ________;\n    pb->Fun();    // 调派生类的成员函数 Fun(), 以实现动态多态\n    return 0;\n}",
@@ -10103,7 +9835,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 407,
+    "id": 397,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "#include <iostream>\nusing namespace std;\n\nclass Sample\n{\n    int n;\npublic:\n    Sample(int i) { n = i; }\n    void Add() { s += n; }\n    static int s;\n    void Dis() { cout << s << endl; }\n};\n\nint Sample::s = 0;\n\nint main()\n{\n    Sample a(2), b(5), c(8);\n    a.Add();\n    b.Add();\n    c.Dis();\n    return 0;\n}\n上面程序的输出结果为：",
@@ -10125,7 +9857,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 408,
+    "id": 398,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "若有以下程序：\n#include <iostream.h>\n\nclass Base\n{\npublic:\n    void Fun() { cout << \"1\" << endl; }\n};\n\nclass Derived: public Base\n{\npublic:\n    void Fun() { cout << \"2\" << endl; }\n};\n\nint main()\n{\n    Derived a;\n    Base *p;\n    p = &a;\n    p->Fun();\n    a.Fun();\n    return 0;\n}\n上面程序的输出结果为：",
@@ -10147,7 +9879,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 409,
+    "id": 399,
     "type": "fillin",
     "chapter": "模板",
     "stem": "若有以下程序：\n#include <iostream.h>\n\ntemplate<class T1, class T2>\nvoid Fun(T1 &x, T2 &y)\n{\n    if (sizeof(T1) > sizeof(T2)) x = (T1)y;\n    else y = (T2)x;\n}\n\nint main()\n{\n    double d;\n    int i;\n    d = 99.99;\n    i = 88;\n    Fun(d, i);\n    cout << \"d=\" << d << \"i=\" << i << endl;\n    return 0;\n}\n上面程序的输出结果为：",
@@ -10169,7 +9901,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 410,
+    "id": 400,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "阅读下面程序，写出输出结果。\n#include <iostream>\nusing namespace std;\n\nclass Point\n{\npublic:\n    Point(int x = 0, int y = 0): m_x(x), m_y(y) { }\n    int GetX() const { return m_x; }\n    int GetY() const { return m_y; }\n    void SetX(int x) { m_x = x; }\n    void SetY(int y) { m_y = y; }\n\nprivate:\n    int m_x;    // X坐标\n    int m_y;    // Y坐标\n};\n\nint main(void)\n{\n    Point oPoint1;\n    const Point oPoint2(3, 4);\n    cout << oPoint1.GetX() << endl;\n    oPoint1.SetX(1);\n    cout << oPoint1.GetX() << endl;\n    oPoint1.SetY(2);\n    cout << oPoint1.GetY() << endl;\n    cout << oPoint2.GetX() << endl;\n    cout << oPoint2.GetY() << endl;\n    return 0;\n}",
@@ -10191,7 +9923,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 411,
+    "id": 401,
     "type": "fillin",
     "chapter": "构造函数与析构函数",
     "stem": "阅读下面程序，写出输出结果。\n#include <iostream.h>\n\nclass Sample\n{\n    int i;\npublic:\n    Sample();\n    void Display();\n    ~Sample();\n};\n\nSample::Sample()\n{\n    cout << \"constructor\" << \" \";\n    i = 0;\n}\n\nvoid Sample::Display() { cout << \"i=\" << i << \" \"; }\nSample::~Sample() { cout << \"destructor\" << endl; }\n\nint main()\n{\n    Sample a;\n    a.Display();\n    return 0;\n}\n\n上面程序的输出结果为：",
@@ -10213,7 +9945,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 412,
+    "id": 402,
     "type": "fillin",
     "chapter": "构造函数与析构函数",
     "stem": "阅读下面程序，写出输出结果。\n#include<iostream>\nusing namespace std;\n\nclass A\n{\n    int a, b;\npublic:\n    A() { a = b = 0; }\n    A(int aa, int bb)\n    {\n        a = aa;\n        b = bb;\n        cout << a << ' ' << b << endl;\n    }\n};\n\nint main()\n{\n    A x, y(2,3);\n    return 0;\n}\n\n上面程序的输出结果为：",
@@ -10235,7 +9967,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 413,
+    "id": 403,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "C++ 是对 C 的扩充。",
@@ -10257,7 +9989,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 414,
+    "id": 404,
     "type": "truefalse",
     "chapter": "C++对C的扩充",
     "stem": "C++完全等同于C语言，C程序无需修改一定就是合法的C++程序。",
@@ -10279,7 +10011,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 415,
+    "id": 405,
     "type": "fillin",
     "chapter": "运算符重载",
     "stem": "重载减号运算符 - 的函数名应写为 ______。",
@@ -10301,7 +10033,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 416,
+    "id": 406,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "在 C++ 中，一个类可以在已有类的基础上创建新类，这种机制称为____。",
@@ -10323,7 +10055,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 417,
+    "id": 407,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "有如下程序片段：\n\n```cpp\nclass A\n{\npublic:\n    void f() {}\n};\n\nclass B : public A\n{\n};\n\nint main()\n{\n    A *pb;\n    B b;\n    ________;\n    return 0;\n}\n```\n\n请在横线处填写一条语句，使基类指针 `pb` 指向派生类对象 `b`。",
@@ -10345,7 +10077,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 418,
+    "id": 408,
     "type": "fillin",
     "chapter": "运算符重载",
     "stem": "在 C++ 中，已有的运算符可以被赋予适用于自定义类型的新含义，这种机制称为运算符____。",
@@ -10367,7 +10099,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 419,
+    "id": 409,
     "type": "fillin",
     "chapter": "构造函数与析构函数",
     "stem": "使用 new 动态创建对象后，应使用 ______ 运算符释放该对象并调用其析构函数。",
@@ -10389,7 +10121,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 420,
+    "id": 410,
     "type": "fillin",
     "chapter": "继承与派生",
     "stem": "若有以下程序：\n#include <iostream.h>\n\nclass A\n{\n    int a;\npublic:\n    A(int aa = 0)\n    {\n        a = aa;\n        cout << \"A(): \" << a << endl;\n    }\n};\n\nclass B: public A\n{\n    int b;\npublic:\n    B(int aa = 0, int bb = 0): A(aa)\n    {\n        b = bb;\n        cout << \"B(): \" << b << endl;\n    }\n};\n\nint main()\n{\n    B x(5), y(6,7);\n    return 0;\n}\n输出结果为：",
@@ -10411,7 +10143,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 421,
+    "id": 411,
     "type": "fillin",
     "chapter": "类与对象",
     "stem": "若有以下程序：\n#include <iostream.h>\n\nclass Point\n{\n    int x, y;\npublic:\n    Point(int m = 0, int n = 0) { x = m; y = n; }\n    void Show() { cout << \"x=\" << x << \",\" << \"y=\" << y << endl; }\n};\n\nint main()\n{\n    Point *p = new Point(1, 68);\n    p->Show();\n    delete p;\n    return 0;\n}\n输出结果为：",
@@ -10433,7 +10165,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 422,
+    "id": 412,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "若有以下程序：\n#include <iostream.h>\n\nclass Sample\n{\n    int n;\npublic:\n    Sample(int i) { n = i; s += n; }\n    static int s;\n    void Show() { cout << s << endl; }\n};\n\nint Sample::s = 0;\n\nint main()\n{\n    Sample a(2), b(5), c(8);\n    c.Show();\n    return 0;\n}\n输出结果为：",
@@ -10455,7 +10187,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 423,
+    "id": 413,
     "type": "fillin",
     "chapter": "this/const/static成员",
     "stem": "若有以下程序：\n#include <iostream>\nusing namespace std;\n\nclass Sample\n{\n    int n;\npublic:\n    Sample(int i) { n = i; }\n    void Print() { cout << \"1:n=\" << n << \",\"; }\n    void Print() const { cout << \"2:n=\" << n << endl; }\n};\n\nint main()\n{\n    Sample a(10);\n    const Sample b(20);\n    a.Print();\n    b.Print();\n    return 0;\n}\n输出结果为：",
@@ -10480,63 +10212,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 424,
-    "type": "choice",
-    "chapter": "构造函数与析构函数",
-    "stem": "若 CAb 为一个类，则执行 CAb oX; 语句时将自动调用该类的（ ）。",
-    "options": [
-      "A. 有参构造函数",
-      "B. 无参构造函数",
-      "C. 拷贝构造函数",
-      "D. 赋值重载函数"
-    ],
-    "answer": "B",
-    "explanation": "CAb oX; 是无参对象的定义，系统自动调用无参构造函数（默认构造函数）来初始化对象。",
-    "source": "模拟试题二",
-    "knowledgePoints": [
-      "构造函数",
-      "析构函数",
-      "对象生命周期"
-    ],
-    "knowledgePointsNormalized": [
-      "构造函数",
-      "析构函数",
-      "对象生命周期"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 425,
-    "type": "choice",
-    "chapter": "C++对C的扩充",
-    "stem": "cin 是某个类的标准对象的引用，该类是（ ）。",
-    "options": [
-      "A. ostream",
-      "B. istream",
-      "C. stdout",
-      "D. stdin"
-    ],
-    "answer": "B",
-    "explanation": "cin 是 istream 类的标准对象，用于从标准输入（键盘）读取数据。cout 是 ostream 类的标准对象。",
-    "source": "模拟试题二",
-    "knowledgePoints": [
-      "引用与函数参数",
-      "C++程序结构与命名空间",
-      "内联函数、重载与默认参数"
-    ],
-    "knowledgePointsNormalized": [
-      "引用与函数参数",
-      "C++程序结构与命名空间",
-      "内联函数、重载与默认参数"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 427,
+    "id": 414,
     "type": "truefalse",
     "chapter": "this/const/static成员",
     "stem": "使用 new 运算符创建数组时，可以为该数组指定初始值。",
@@ -10558,197 +10234,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 428,
-    "type": "fillin",
-    "chapter": "类与对象",
-    "stem": "在 C++ 中，类的用途有两种：一种是类的实例化，即生成类的对象，另一种是通过（ ），派生出新的类。",
-    "answer": "继承",
-    "explanation": "类有两个主要用途：一是实例化为对象，二是通过继承派生出新类。",
-    "source": "模拟试题二",
-    "knowledgePoints": [
-      "类与对象定义",
-      "继承基础",
-      "继承方式与访问权限"
-    ],
-    "knowledgePointsNormalized": [
-      "类与对象定义",
-      "继承基础",
-      "继承方式与访问权限"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 429,
-    "type": "choice",
-    "chapter": "C++对C的扩充",
-    "stem": "下面有关重载函数的描述中，正确的是（ ）。",
-    "options": [
-      "A. 重载函数必须具有不同的返回值类型",
-      "B. 重载函数形参个数必须不同",
-      "C. 重载函数必须具有不同的形参列表",
-      "D. 重载函数名可以不同"
-    ],
-    "answer": "C",
-    "explanation": "函数重载要求函数名相同、参数列表不同（参数类型、个数或顺序不同）。返回值类型不能作为重载依据。",
-    "source": "模拟试题三",
-    "knowledgePoints": [
-      "内联函数、重载与默认参数",
-      "运算符重载规则",
-      "C++程序结构与命名空间"
-    ],
-    "knowledgePointsNormalized": [
-      "内联函数、重载与默认参数",
-      "运算符重载规则",
-      "C++程序结构与命名空间"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 431,
-    "type": "choice",
-    "chapter": "构造函数与析构函数",
-    "stem": "若 AB 为一个类，则该类的拷贝构造函数的声明语句为（ ）。",
-    "options": [
-      "A. AB(AB&);",
-      "B. AB&(AB x);",
-      "C. AB(AB x);",
-      "D. AB(AB* x);"
-    ],
-    "answer": "A",
-    "explanation": "拷贝构造函数的参数必须是本类对象的引用：AB(AB&) 或 AB(const AB&)。选项C使用值传递会导致无限递归。",
-    "source": "模拟试题四",
-    "knowledgePoints": [
-      "构造函数",
-      "析构函数",
-      "拷贝构造与赋值"
-    ],
-    "knowledgePointsNormalized": [
-      "构造函数",
-      "析构函数",
-      "拷贝构造与赋值"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 432,
-    "type": "choice",
-    "chapter": "继承与派生",
-    "stem": "若类 A 公有派生类 B，当创建类 B 的一个对象 b，下列描述中正确的是（ ）。",
-    "options": [
-      "A. 先调用类 A 的构造函数，再调用类 B 的构造函数",
-      "B. 先调用类 B 的构造函数，再调用类 A 的构造函数",
-      "C. 先调用类 B 的无参构造函数，再调用类 A 的构造函数",
-      "D. 在释放对象 b 时，类 A 的析构函数先于类 B 的析构函数被调用"
-    ],
-    "answer": "A",
-    "explanation": "创建派生类对象时，先调用基类的构造函数，再调用派生类的构造函数。释放时顺序相反：先调用派生类的析构函数，再调用基类的析构函数。",
-    "source": "模拟试题四",
-    "knowledgePoints": [
-      "继承基础",
-      "继承方式与访问权限",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "继承基础",
-      "继承方式与访问权限",
-      "面向对象基本特征"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 434,
-    "type": "choice",
-    "chapter": "this/const/static成员",
-    "stem": "已知 Print() 函数是一个类的常成员函数，它无返回值，下列表示中正确的是（ ）。",
-    "options": [
-      "A. void Print() const;",
-      "B. const void Print();",
-      "C. void const Print();",
-      "D. void Print(const)"
-    ],
-    "answer": "A",
-    "explanation": "常成员函数的声明格式为：返回类型 函数名(参数表) const; const 放在参数表后面。",
-    "source": "模拟试题五",
-    "knowledgePoints": [
-      "this指针",
-      "const成员与常对象",
-      "static成员"
-    ],
-    "knowledgePointsNormalized": [
-      "this指针",
-      "const成员与常对象",
-      "static成员"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 435,
-    "type": "choice",
-    "chapter": "构造函数与析构函数",
-    "stem": "若 Myclass 为一个类，那么下列的函数说明中（ ）为该类的析构函数。",
-    "options": [
-      "A. void ~Myclass();",
-      "B. ~Myclass(int n);",
-      "C. Myclass();",
-      "D. ~Myclass()"
-    ],
-    "answer": "D",
-    "explanation": "析构函数的格式为 ~类名()，无参数、无返回值类型。选项A有void返回类型（错），选项B有参数（错），选项C是构造函数。D正确。",
-    "source": "模拟试题五",
-    "knowledgePoints": [
-      "析构函数",
-      "构造函数",
-      "对象生命周期"
-    ],
-    "knowledgePointsNormalized": [
-      "析构函数",
-      "构造函数",
-      "对象生命周期"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 436,
-    "type": "choice",
-    "chapter": "类与对象",
-    "stem": "下面类定义中有（ ）处错误。\nclass myclass {\npublic: \n    void myclass() { };\n    int i=0;\n    ~myclass(value);\n};",
-    "options": [
-      "A. 1",
-      "B. 2",
-      "C. 3",
-      "D. 4"
-    ],
-    "answer": "C",
-    "explanation": "三处错误：1) 构造函数不能有返回值类型 void；2) 类内不能直接初始化数据成员 int i=0（C++11前）；3) 析构函数不能带参数 ~myclass(value)。",
-    "source": "模拟试题五",
-    "knowledgePoints": [
-      "访问控制与封装",
-      "类与对象定义",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "访问控制与封装",
-      "类与对象定义",
-      "面向对象基本特征"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 437,
+    "id": 415,
     "type": "choice",
     "chapter": "多态与虚函数",
     "stem": "实现运行时多态性要使用（ ）。",
@@ -10776,7 +10262,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 438,
+    "id": 416,
     "type": "choice",
     "chapter": "文件IO",
     "stem": "cout 是某个类的标准对象的引用，该类是（ ）。",
@@ -10804,7 +10290,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 439,
+    "id": 417,
     "type": "choice",
     "chapter": "类与对象",
     "stem": "成员函数通过（ ）来区分不同的对象。",
@@ -10832,35 +10318,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 440,
-    "type": "choice",
-    "chapter": "this/const/static成员",
-    "stem": "如果在类 CTest 的外面使用函数调用 CTest::f(); 则函数 f() 是类 CTest 的（ ）。",
-    "options": [
-      "A. 静态成员函数",
-      "B. 非静态成员函数",
-      "C. 友元函数",
-      "D. 前面都不正确"
-    ],
-    "answer": "A",
-    "explanation": "通过类名::函数名() 的方式调用，说明该函数是静态成员函数。非静态成员函数需要通过对象调用。",
-    "source": "模拟试题五",
-    "knowledgePoints": [
-      "this指针",
-      "const成员与常对象",
-      "static成员"
-    ],
-    "knowledgePointsNormalized": [
-      "this指针",
-      "const成员与常对象",
-      "static成员"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 441,
+    "id": 418,
     "type": "truefalse",
     "chapter": "文件IO",
     "stem": "cout 的默认输出对象是键盘，cin 的默认输入对象是屏幕。",
@@ -10882,173 +10340,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 442,
-    "type": "fillin",
-    "chapter": "多态与虚函数",
-    "stem": "在下面程序的横线处填上正确的语句，以实现动态多态：\nclass Base {\npublic:\n    virtual void Fun() { cout << \"Base::Fun\" << endl; }\n};\nclass Derived: public Base {\npublic:\n    void Fun() { cout << \"Derived::Fun\" << endl; }\n};\nint main() {\n    Base a, *pb;\n    Derived b;\n    ____;\n    pb->Fun(); // 调派生类的成员函数 Fun()，以实现动态多态\n    return 0;\n}",
-    "answer": "pb = &b;",
-    "explanation": "动态多态需要通过基类指针或引用调用虚函数。这里 pb 是 Base*，b 是 Derived 对象，应令 pb 指向 b，即填写 pb = &b;，随后 pb->Fun() 会动态绑定到 Derived::Fun()。",
-    "source": "模拟试题五",
-    "knowledgePoints": [
-      "虚函数与动态绑定",
-      "多态实现条件",
-      "继承基础"
-    ],
-    "knowledgePointsNormalized": [
-      "虚函数与动态绑定",
-      "多态实现条件",
-      "继承基础"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "medium"
-  },
-  {
-    "id": 443,
-    "type": "fillin",
-    "chapter": "this/const/static成员",
-    "stem": "使用 new 建立的动态对象在不用时必须用（ ）删除，以便释放所占用空间。",
-    "answer": "delete",
-    "explanation": "new 和 delete 必须配对使用。使用 new 创建的动态对象必须用 delete 释放，使用 new[] 创建的数组必须用 delete[] 释放。",
-    "source": "模拟试题五",
-    "knowledgePoints": [
-      "this指针",
-      "const成员与常对象",
-      "static成员"
-    ],
-    "knowledgePointsNormalized": [
-      "this指针",
-      "const成员与常对象",
-      "static成员"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 444,
-    "type": "choice",
-    "chapter": "类与对象",
-    "stem": "友元函数可以访问类的（ ）成员。",
-    "options": [
-      "A. 私有成员",
-      "B. 保护成员",
-      "C. 公有成员",
-      "D. 所有成员"
-    ],
-    "answer": "D",
-    "explanation": "友元函数可以访问类的所有成员，包括私有、保护和公有成员。这是友元的主要特点。",
-    "source": "模拟试题七",
-    "knowledgePoints": [
-      "类与对象定义",
-      "访问控制与封装",
-      "友元函数与友元类"
-    ],
-    "knowledgePointsNormalized": [
-      "类与对象定义",
-      "访问控制与封装",
-      "友元函数与友元类"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 445,
-    "type": "choice",
-    "chapter": "多态与虚函数",
-    "stem": "实现运行时的多态要使用（ ）。",
-    "options": [
-      "A. 重载函数",
-      "B. 析构函数",
-      "C. 构造函数",
-      "D. 虚函数"
-    ],
-    "answer": "D",
-    "explanation": "运行时多态通过虚函数和基类指针/引用调用实现。重载函数是编译时多态。",
-    "source": "模拟试题七",
-    "knowledgePoints": [
-      "多态实现条件",
-      "虚函数与动态绑定",
-      "引用与函数参数"
-    ],
-    "knowledgePointsNormalized": [
-      "多态实现条件",
-      "虚函数与动态绑定",
-      "引用与函数参数"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 446,
-    "type": "truefalse",
-    "chapter": "类与对象",
-    "stem": "在用 class 定义一个类时，数据成员和成员函数默认的访问权限是 public。",
-    "answer": "错",
-    "explanation": "用 class 定义类时，成员默认的访问权限是 private，不是 public。用 struct 定义时默认才是 public。",
-    "source": "模拟试题七",
-    "knowledgePoints": [
-      "访问控制与封装",
-      "类与对象定义",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "访问控制与封装",
-      "类与对象定义",
-      "面向对象基本特征"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 447,
-    "type": "fillin",
-    "chapter": "构造函数与析构函数",
-    "stem": "假定 AB 为一个类，则执行 AB a[10]; 语句时，系统自动调用该类的构造函数的次数为（ ）。",
-    "answer": "10",
-    "explanation": "AB a[10]; 创建了含10个元素的对象数组，每个元素都需要调用一次构造函数，共10次。",
-    "source": "模拟试题七",
-    "knowledgePoints": [
-      "构造函数",
-      "析构函数",
-      "对象生命周期"
-    ],
-    "knowledgePointsNormalized": [
-      "构造函数",
-      "析构函数",
-      "对象生命周期"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "medium"
-  },
-  {
-    "id": 448,
-    "type": "fillin",
-    "chapter": "模板",
-    "stem": "使用函数模板的方法是先说明函数模板，然后实例化成相应的（ ）进行调用执行。",
-    "answer": "模板函数",
-    "explanation": "函数模板需要实例化为具体的模板函数才能调用。实例化过程由编译器根据实参类型自动完成。",
-    "source": "模拟试题七",
-    "knowledgePoints": [
-      "函数模板",
-      "类模板",
-      "模板实例化与特化"
-    ],
-    "knowledgePointsNormalized": [
-      "函数模板",
-      "类模板",
-      "模板实例化与特化"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
-    "id": 449,
+    "id": 419,
     "type": "fillin",
     "chapter": "STL",
     "stem": "STL 的三大组成部分为容器、（ ）、迭代器。",
@@ -11068,29 +10360,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 450,
-    "type": "fillin",
-    "chapter": "C++对C的扩充",
-    "stem": "C++ 程序中，使用 cin, cout, endl 需要在程序中包含（ ）头文件。",
-    "answer": "iostream",
-    "explanation": "cin、cout、endl 都定义在 iostream 头文件中的 std 命名空间中。",
-    "source": "2018-2019学年第2学期",
-    "knowledgePoints": [
-      "C++程序结构与命名空间",
-      "输入输出运算符重载",
-      "输入输出流"
-    ],
-    "knowledgePointsNormalized": [
-      "C++程序结构与命名空间",
-      "输入输出运算符重载",
-      "输入输出流"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "medium"
-  },
-  {
-    "id": 451,
+    "id": 420,
     "type": "choice",
     "chapter": "类与对象",
     "stem": "class 和 struct 都可以定义类，它们的主要差别是默认的（ ）不同。",
@@ -11118,7 +10388,7 @@
     "difficulty": "easy"
   },
   {
-    "id": 452,
+    "id": 421,
     "type": "choice",
     "chapter": "模板",
     "stem": "若定义类模板如下，则以此类模板建立对象语法正确的是（ ）。\ntemplate<class T=int>\nclass A {\n    T a;\npublic:\n    A(T a):a(a){}\n};",
@@ -11146,7 +10416,7 @@
     "difficulty": "medium"
   },
   {
-    "id": 453,
+    "id": 422,
     "type": "choice",
     "chapter": "模板",
     "stem": "若类模板定义为 template <class T> class Array { /* ... */ };，其中 T 是第（ ）个模板参数。",
@@ -11198,7 +10468,7 @@
     "explanation": "命名空间成员应使用作用域解析运算符访问。Student 是命名空间名，Num 是其中的变量，因此正确写法是 Student::Num；using namespace Num 把变量名误当命名空间，Num 在未引入时不可直接使用，Student.Num 是对象成员访问语法。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 454,
+    "id": 423,
     "difficulty": "easy"
   },
   {
@@ -11220,80 +10490,8 @@
     "explanation": "类模板把数据类型参数化，使同一份类定义可以生成不同具体类型的类，例如 Array<int> 和 Array<double>。因此空白处应填“参数化”。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 455,
+    "id": 424,
     "difficulty": "medium"
-  },
-  {
-    "type": "choice",
-    "stem": "在C++中，要实现动态绑定，必须使用（ ）调用虚函数",
-    "options": [
-      "A. 类名",
-      "B. 派生类指针",
-      "C. 对象名",
-      "D. 基类指针或引用"
-    ],
-    "answer": "D",
-    "chapter": "多态与虚函数",
-    "source": "2018-2019学年第1学期A卷",
-    "knowledgePoints": [
-      "虚函数与动态绑定",
-      "多态实现条件",
-      "纯虚函数与抽象类"
-    ],
-    "knowledgePointsNormalized": [
-      "虚函数与动态绑定",
-      "多态实现条件",
-      "纯虚函数与抽象类"
-    ],
-    "explanation": "本题选 D（基类指针或引用）。题干考查虚函数的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 461,
-    "difficulty": "medium"
-  },
-  {
-    "type": "fillin",
-    "stem": "每个非静态成员函数都有一个隐含的参数，指向接受消息的对象，称为____指针。",
-    "answer": "this",
-    "chapter": "this/const/static成员",
-    "source": "2018-2019学年第1学期A卷",
-    "knowledgePoints": [
-      "this指针",
-      "static成员",
-      "const与指针"
-    ],
-    "knowledgePointsNormalized": [
-      "this指针",
-      "static成员",
-      "const与指针"
-    ],
-    "explanation": "非静态成员函数被对象调用时，系统会隐含传入 this 指针，this 指向当前调用该函数的对象。静态成员函数没有 this 指针。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 462,
-    "difficulty": "easy"
-  },
-  {
-    "type": "fillin",
-    "stem": "派生类中可以重新定义基类的虚函数，称为____。",
-    "answer": "覆盖/重写",
-    "chapter": "多态与虚函数",
-    "source": "2018-2019学年第1学期A卷",
-    "knowledgePoints": [
-      "虚函数与动态绑定",
-      "多态实现条件",
-      "纯虚函数与抽象类"
-    ],
-    "knowledgePointsNormalized": [
-      "虚函数与动态绑定",
-      "多态实现条件",
-      "纯虚函数与抽象类"
-    ],
-    "explanation": "应填“覆盖/重写”。题干考查虚函数的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 463,
-    "difficulty": "easy"
   },
   {
     "type": "fillin",
@@ -11314,7 +10512,7 @@
     "explanation": "cin 是标准输入流对象，通常关联键盘；cout 是标准输出流对象，通常关联控制台屏幕。它们来自 iostream 库，而不是同一个所谓 iostream 类的普通成员。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 464,
+    "id": 425,
     "difficulty": "easy"
   },
   {
@@ -11336,52 +10534,8 @@
     "explanation": "应填“函数/操作”。题干考查类与对象的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 468,
+    "id": 426,
     "difficulty": "medium"
-  },
-  {
-    "type": "fillin",
-    "stem": "类中成员的访问权限可以分为公有、（____）和私有",
-    "answer": "保护(protected)",
-    "chapter": "类与对象",
-    "source": "2015-2016学年第2学期期中考试",
-    "knowledgePoints": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "explanation": "应填“保护(protected)”。题干考查类与对象的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 469,
-    "difficulty": "easy"
-  },
-  {
-    "type": "fillin",
-    "stem": "定义重载函数时，应至少使重载函数的参数个数或者（____）不同",
-    "answer": "参数类型",
-    "chapter": "C++对C的扩充",
-    "source": "2015-2016学年第2学期期中考试",
-    "knowledgePoints": [
-      "C++程序结构与命名空间",
-      "引用与函数参数",
-      "内联函数、重载与默认参数"
-    ],
-    "knowledgePointsNormalized": [
-      "C++程序结构与命名空间",
-      "引用与函数参数",
-      "内联函数、重载与默认参数"
-    ],
-    "explanation": "应填“参数类型”。题干考查C++基础语法的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 470,
-    "difficulty": "easy"
   },
   {
     "type": "fillin",
@@ -11402,7 +10556,7 @@
     "explanation": "应填“this指针”。题干考查this指针的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 471,
+    "id": 427,
     "difficulty": "easy"
   },
   {
@@ -11424,7 +10578,7 @@
     "explanation": "应填“指针”。题干考查STL容器的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 472,
+    "id": 428,
     "difficulty": "easy"
   },
   {
@@ -11446,30 +10600,8 @@
     "explanation": "应填“作用域运算符(::)”。题干考查多重继承的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 473,
+    "id": 429,
     "difficulty": "easy"
-  },
-  {
-    "type": "fillin",
-    "stem": "阅读下面程序，写出输出结果。\n\n#include <iostream>\nusing namespace std;\n\nclass Shape {\npublic:\n    void Draw() { cout << \"Shape\" << endl; }\n};\n\nclass Circle : public Shape {\npublic:\n    void Draw() { cout << \"Circle\" << endl; }\n};\n\nint main() {\n    Shape *p = new Circle;\n    p->Draw();\n    delete p;\n    return 0;\n}",
-    "answer": "Shape",
-    "chapter": "继承与派生",
-    "source": "2015-2016学年第2学期期中考试",
-    "knowledgePoints": [
-      "继承基础",
-      "继承方式与访问权限",
-      "程序阅读与输出推导"
-    ],
-    "knowledgePointsNormalized": [
-      "继承基础",
-      "继承方式与访问权限",
-      "程序阅读与输出推导"
-    ],
-    "explanation": "基类 Shape 的 Draw() 不是虚函数，通过 Shape* 调用 p->Draw() 时采用静态绑定，调用的是 Shape::Draw()，因此输出 Shape。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 474,
-    "difficulty": "medium"
   },
   {
     "type": "fillin",
@@ -11490,7 +10622,7 @@
     "explanation": "应填“template<typename T> void Swap(T &a, T &b) { T temp=a; a=b; b=temp; }”。题干考查函数模板的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 475,
+    "id": 430,
     "difficulty": "medium"
   },
   {
@@ -11512,7 +10644,7 @@
     "explanation": "v 是 vector<int> 类型容器，遍历它的迭代器类型应为 vector<int>::iterator。因此空白处应填写 vector<int>::iterator it;。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 476,
+    "id": 431,
     "difficulty": "medium"
   },
   {
@@ -11534,7 +10666,7 @@
     "explanation": "该说法正确。题干考查类与对象的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“对”。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 477,
+    "id": 432,
     "difficulty": "easy"
   },
   {
@@ -11556,29 +10688,7 @@
     "explanation": "该说法错误。题干考查this指针的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“错”。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 478,
-    "difficulty": "easy"
-  },
-  {
-    "type": "truefalse",
-    "stem": "友元关系可以继承，即如果类A是类B的友元，则类A的派生类也是类B的友元",
-    "answer": "错",
-    "chapter": "友元",
-    "source": "2015-2016学年第2学期期中考试",
-    "knowledgePoints": [
-      "友元函数与友元类",
-      "继承基础",
-      "继承方式与访问权限"
-    ],
-    "knowledgePointsNormalized": [
-      "友元函数与友元类",
-      "继承基础",
-      "继承方式与访问权限"
-    ],
-    "explanation": "该说法错误。题干考查友元函数的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“错”。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 479,
+    "id": 433,
     "difficulty": "easy"
   },
   {
@@ -11600,7 +10710,7 @@
     "explanation": "该说法错误。题干考查this指针的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“错”。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 480,
+    "id": 434,
     "difficulty": "easy"
   },
   {
@@ -11622,7 +10732,7 @@
     "explanation": "迭代器变量可以先声明再赋值，此时可能未指向有效元素；真正解引用或访问元素前，必须让它等于容器的 begin、end 或算法返回的有效迭代器，否则可能产生未定义行为。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 481,
+    "id": 435,
     "difficulty": "easy"
   },
   {
@@ -11644,7 +10754,7 @@
     "explanation": "该说法正确。题干考查虚函数的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“对”。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 482,
+    "id": 436,
     "difficulty": "easy"
   },
   {
@@ -11666,7 +10776,7 @@
     "explanation": "该说法正确。题干考查运算符重载的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“对”。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 483,
+    "id": 437,
     "difficulty": "easy"
   },
   {
@@ -11688,7 +10798,7 @@
     "explanation": "该说法错误。题干考查虚函数的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“错”。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 484,
+    "id": 438,
     "difficulty": "easy"
   },
   {
@@ -11710,7 +10820,7 @@
     "explanation": "该说法正确。题干考查友元函数的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“对”。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 485,
+    "id": 439,
     "difficulty": "easy"
   },
   {
@@ -11732,7 +10842,7 @@
     "explanation": "该说法正确。题干考查虚函数的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“对”。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 486,
+    "id": 440,
     "difficulty": "easy"
   },
   {
@@ -11760,7 +10870,7 @@
     "explanation": "本题选 C（ofstream infile(\"d:\\\\file.dat\", ios::out);）。题干考查输入输出流的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 488,
+    "id": 441,
     "difficulty": "easy"
   },
   {
@@ -11788,7 +10898,7 @@
     "explanation": "静态数据成员属于类本身，由该类所有对象共享，传统 C++ 中通常需要在类外定义并初始化。静态成员函数没有 this 指针，不能直接访问非静态数据成员；静态数据成员也不属于某个具体对象。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 489,
+    "id": 442,
     "difficulty": "easy"
   },
   {
@@ -11816,7 +10926,7 @@
     "explanation": "本题选 A（解决二义性问题）。题干考查多重继承的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 490,
+    "id": 443,
     "difficulty": "medium"
   },
   {
@@ -11844,7 +10954,7 @@
     "explanation": "在类模板中，成员函数随类模板一起依赖模板参数，通常也按模板机制实例化；类模板可以有多个模板参数，实例化发生在编译期，模板参数也不一定只能是类型参数，因此本题选 A。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 491,
+    "id": 444,
     "difficulty": "medium"
   },
   {
@@ -11872,7 +10982,7 @@
     "explanation": "本题选 A（虚函数）。题干考查虚函数的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 492,
+    "id": 445,
     "difficulty": "easy"
   },
   {
@@ -11894,7 +11004,7 @@
     "explanation": "main 函数中需要通过派生类对象 b 访问基类 A 的公有成员 x。只有 public 继承会保持 A::x 在 B 中仍为 public，因此应填 public。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 493,
+    "id": 446,
     "difficulty": "medium"
   },
   {
@@ -11916,7 +11026,7 @@
     "explanation": "main 函数属于类外代码，类外只能通过对象直接访问 public 成员。因此 x 必须声明在 public 访问权限下。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 494,
+    "id": 447,
     "difficulty": "medium"
   },
   {
@@ -11938,7 +11048,7 @@
     "explanation": "类 D 同时继承 B1::f() 和 B2::f()，直接调用 d.f() 时编译器无法判断调用哪一个。可使用作用域分辨符明确基类路径，例如 d.B1::f(); 或 d.B2::f();。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 495,
+    "id": 448,
     "difficulty": "medium"
   },
   {
@@ -11966,36 +11076,8 @@
     "explanation": "本题选 C（构造函数可以有返回值）。题干考查构造函数的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 498,
+    "id": 449,
     "difficulty": "easy"
-  },
-  {
-    "type": "choice",
-    "stem": "在使用 class 定义一个派生类时，若不使用保留字显式地规定采用何种继承方式，则默认为（    ）方式",
-    "options": [
-      "A. 私有继承",
-      "B. 非私有继承",
-      "C. 保护继承",
-      "D. 公有继承"
-    ],
-    "answer": "A",
-    "chapter": "继承与派生",
-    "source": "复习提纲(2024春季)",
-    "knowledgePoints": [
-      "继承基础",
-      "继承方式与访问权限",
-      "类与对象定义"
-    ],
-    "knowledgePointsNormalized": [
-      "继承基础",
-      "继承方式与访问权限",
-      "类与对象定义"
-    ],
-    "explanation": "用 class 定义派生类时，继承列表中省略 public、protected、private，则默认按 private 继承；若用 struct 定义派生类，默认继承方式才是 public。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 500,
-    "difficulty": "medium"
   },
   {
     "type": "choice",
@@ -12022,73 +11104,7 @@
     "explanation": "派生类构造函数通常需要在初始化列表中调用基类构造函数，并初始化基类子对象成员和派生类对象成员；普通内置类型数据成员也可以在构造函数体内赋值，因此初始化列表中可以不包含派生类中一般数据成员的初始化。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 501,
-    "difficulty": "easy"
-  },
-  {
-    "type": "truefalse",
-    "stem": "判断下面代码是否正确：class A { protected: int x; public: int y; A(int xx, int yy): x(xx), y(yy) {} }; int main() { A a; }。",
-    "answer": "错",
-    "chapter": "构造函数与析构函数",
-    "source": "2015-2016学年第2学期期中考试",
-    "knowledgePoints": [
-      "构造函数",
-      "析构函数",
-      "拷贝构造与赋值"
-    ],
-    "knowledgePointsNormalized": [
-      "构造函数",
-      "析构函数",
-      "拷贝构造与赋值"
-    ],
-    "explanation": "这段代码错误。类 A 只定义了带两个参数的构造函数 A(int,int)，编译器不会再自动生成无参构造函数，因此 A a; 试图调用不存在的默认构造函数，无法通过编译。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 502,
-    "difficulty": "easy"
-  },
-  {
-    "type": "truefalse",
-    "stem": "判断下面代码是否正确：int a = 5; int *const ptr = &a; (*ptr)++; cout << a << endl;。",
-    "answer": "对",
-    "chapter": "C++对C的扩充",
-    "source": "2015-2016学年第2学期期中考试",
-    "knowledgePoints": [
-      "引用与函数参数",
-      "const与指针",
-      "C++程序结构与命名空间"
-    ],
-    "knowledgePointsNormalized": [
-      "引用与函数参数",
-      "const与指针",
-      "C++程序结构与命名空间"
-    ],
-    "explanation": "该代码正确。ptr 是指针常量，表示 ptr 本身不能再指向其他地址，但可以通过 *ptr 修改其指向对象 a 的值。因此 (*ptr)++ 合法，执行后 a 的值变为 6。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 503,
-    "difficulty": "easy"
-  },
-  {
-    "type": "truefalse",
-    "stem": "判断下面代码是否正确：class A { protected: int x; public: int y; A(int xx, int yy): x(xx), y(yy) {} }; int main() { cout << A::y << endl; }。",
-    "answer": "错",
-    "chapter": "this/const/static成员",
-    "source": "2015-2016学年第2学期期中考试",
-    "knowledgePoints": [
-      "this指针",
-      "const成员与常对象",
-      "static成员"
-    ],
-    "knowledgePointsNormalized": [
-      "this指针",
-      "const成员与常对象",
-      "static成员"
-    ],
-    "explanation": "这段代码错误。y 是普通非静态数据成员，必须通过具体对象访问，不能写成 A::y；只有静态成员才可以用类名加作用域解析运算符直接访问。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 504,
+    "id": 450,
     "difficulty": "easy"
   },
   {
@@ -12110,7 +11126,7 @@
     "explanation": "该说法正确。成员函数形式的 operator+ 要求左操作数 c1 是 Complex 对象；右操作数 8.9 可以通过 Complex(double) 之类的构造函数隐式转换为 Complex 临时对象，因此 c1 + 8.9 可以匹配成员运算符重载。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 505,
+    "id": 451,
     "difficulty": "easy"
   },
   {
@@ -12132,95 +11148,7 @@
     "explanation": "该说法正确。成员函数形式的二元 operator+ 等价于左操作数调用成员函数，如 c1.operator+(8.9)。当表达式写成 8.9 + c1 时，左操作数是 double，不是 Complex 对象，无法调用 Complex 的成员 operator+。若要支持 8.9 + c1，通常需要定义非成员或友元形式的 operator+。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 506,
-    "difficulty": "easy"
-  },
-  {
-    "type": "truefalse",
-    "stem": "判断下面代码是否正确：class A { public: A(int) {} void Print() {} }; class B: public A { public: void Print() { A::Print(); } }; int main() { B b; b.Print(); }。",
-    "answer": "错",
-    "chapter": "继承与派生",
-    "source": "2015-2016学年第2学期期中考试",
-    "knowledgePoints": [
-      "继承基础",
-      "继承方式与访问权限",
-      "C++程序结构与命名空间"
-    ],
-    "knowledgePointsNormalized": [
-      "继承基础",
-      "继承方式与访问权限",
-      "C++程序结构与命名空间"
-    ],
-    "explanation": "这段代码错误。基类 A 只有带参数构造函数 A(int)，没有默认构造函数；派生类 B 又没有定义构造函数显式调用 A(int)，因此创建 B b 时无法构造其 A 基类子对象。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 507,
-    "difficulty": "easy"
-  },
-  {
-    "type": "truefalse",
-    "stem": "判断下面代码是否正确：class A { int x; public: A(int xx): x(xx) {} void Print() const { cout << x << endl; } }; int main() { const A a(5); a.Print(); return 0; }。",
-    "answer": "对",
-    "chapter": "this/const/static成员",
-    "source": "2015-2016学年第2学期期中考试",
-    "knowledgePoints": [
-      "this指针",
-      "const成员与常对象",
-      "static成员"
-    ],
-    "knowledgePointsNormalized": [
-      "this指针",
-      "const成员与常对象",
-      "static成员"
-    ],
-    "explanation": "这段代码正确。对象 a 是 const 对象，只能调用 const 成员函数；Print() 已在参数列表后声明 const，函数体只读取 x，不修改对象，因此 a.Print() 合法。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 508,
-    "difficulty": "easy"
-  },
-  {
-    "type": "truefalse",
-    "stem": "判断下面说法是否正确：Shape 类中 Draw() 是虚函数且析构函数是虚析构函数，Circle 继承 Shape 并重写 Draw()；执行 Shape* c = new Circle(); (*c).Draw(); 时可以动态绑定到 Circle::Draw()，输出 Circle。",
-    "answer": "对",
-    "chapter": "多态与虚函数",
-    "source": "2015-2016学年第2学期期中考试",
-    "knowledgePoints": [
-      "虚函数与动态绑定",
-      "多态实现条件",
-      "纯虚函数与抽象类"
-    ],
-    "knowledgePointsNormalized": [
-      "虚函数与动态绑定",
-      "多态实现条件",
-      "纯虚函数与抽象类"
-    ],
-    "explanation": "该说法正确。Draw() 是虚函数，通过基类指针 c 调用 (*c).Draw() 时会发生动态绑定，实际对象类型是 Circle，因此调用 Circle::Draw() 并输出 Circle。虚析构函数还可保证通过基类指针释放派生类对象时析构顺序正确。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 509,
-    "difficulty": "easy"
-  },
-  {
-    "type": "truefalse",
-    "stem": "判断下面代码是否正确：class Data { int x; public: friend ostream& operator<<(ostream&, const Data&); }; set<Data> s;。已知 Data 没有定义 operator< 或比较函数。",
-    "answer": "错",
-    "chapter": "STL",
-    "source": "2015-2016学年第2学期期中考试",
-    "knowledgePoints": [
-      "STL容器与迭代器",
-      "STL算法与函数对象",
-      "C++程序结构与命名空间"
-    ],
-    "knowledgePointsNormalized": [
-      "STL容器与迭代器",
-      "STL算法与函数对象",
-      "C++程序结构与命名空间"
-    ],
-    "explanation": "这段代码错误。std::set 默认按 std::less<Data> 排序，通常需要 Data 支持 operator<，或在声明 set 时提供自定义比较器；只重载输出运算符 operator<< 不能满足 set 的排序要求。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 510,
+    "id": 452,
     "difficulty": "easy"
   },
   {
@@ -12242,30 +11170,8 @@
     "explanation": "应填“类的成员”。题干考查运算符重载的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 511,
+    "id": 453,
     "difficulty": "medium"
-  },
-  {
-    "type": "fillin",
-    "stem": "重载运算符\"+\"的函数名为____。",
-    "answer": "operator+",
-    "chapter": "运算符重载",
-    "source": "2014-2015学年第2学期测试",
-    "knowledgePoints": [
-      "运算符重载规则",
-      "内联函数、重载与默认参数",
-      "成员/友元运算符重载"
-    ],
-    "knowledgePointsNormalized": [
-      "运算符重载规则",
-      "内联函数、重载与默认参数",
-      "成员/友元运算符重载"
-    ],
-    "explanation": "应填“operator+”。题干考查运算符重载的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 512,
-    "difficulty": "easy"
   },
   {
     "type": "choice",
@@ -12292,7 +11198,7 @@
     "explanation": "本题选 A（private）。题干考查运算符重载的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 513,
+    "id": 454,
     "difficulty": "easy"
   },
   {
@@ -12320,7 +11226,7 @@
     "explanation": "本题选 D（不能声明其对象）。题干考查虚函数的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 514,
+    "id": 455,
     "difficulty": "easy"
   },
   {
@@ -12348,7 +11254,7 @@
     "explanation": "new C 会先构造基类 B，再构造派生类 C，所以输出 B_Con、C_Con。程序没有执行 delete pc，动态对象不会在 main 返回时自动析构，因此不会输出 C_Des 和 B_Des。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 515,
+    "id": 456,
     "difficulty": "medium"
   },
   {
@@ -12372,7 +11278,7 @@
     "explanation": "程序分析题，考查程序改错与错误定位+程序阅读与输出推导+类与对象定义+访问控制与封装相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 517,
+    "id": 457,
     "difficulty": "hard"
   },
   {
@@ -12396,7 +11302,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+虚函数与动态绑定+多态实现条件+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 518,
+    "id": 458,
     "difficulty": "hard"
   },
   {
@@ -12420,7 +11326,7 @@
     "explanation": "程序分析题，考查程序改错与错误定位+类与对象定义+访问控制与封装+程序阅读与输出推导相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 519,
+    "id": 459,
     "difficulty": "hard"
   },
   {
@@ -12444,30 +11350,8 @@
     "explanation": "程序分析题，考查程序改错与错误定位+程序阅读与输出推导+C++程序结构与命名空间+引用与函数参数相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 520,
+    "id": 460,
     "difficulty": "hard"
-  },
-  {
-    "type": "truefalse",
-    "stem": "构造函数没有值类型，其函数体中不能使用return语句。",
-    "answer": "错",
-    "chapter": "构造函数与析构函数",
-    "source": "模拟试卷一",
-    "knowledgePoints": [
-      "构造函数",
-      "析构函数",
-      "拷贝构造与赋值"
-    ],
-    "knowledgePointsNormalized": [
-      "构造函数",
-      "析构函数",
-      "拷贝构造与赋值"
-    ],
-    "explanation": "构造函数没有返回值类型，但构造函数体内可以使用不带表达式的 return; 提前结束函数体；只是不能写 return 某个值。因此“不能使用 return 语句”的说法过于绝对，是错误的。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 521,
-    "difficulty": "easy"
   },
   {
     "type": "truefalse",
@@ -12488,29 +11372,7 @@
     "explanation": "含有纯虚函数的类是抽象类。抽象类不能声明普通对象，主要用作基类，由派生类实现纯虚函数后再实例化具体对象。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 522,
-    "difficulty": "easy"
-  },
-  {
-    "type": "truefalse",
-    "stem": "C++中函数返回值的类型是由return语句中的表达式的类型决定的。",
-    "answer": "错",
-    "chapter": "C++对C的扩充",
-    "source": "模拟试卷一",
-    "knowledgePoints": [
-      "C++程序结构与命名空间",
-      "引用与函数参数",
-      "自增自减与赋值重载"
-    ],
-    "knowledgePointsNormalized": [
-      "C++程序结构与命名空间",
-      "引用与函数参数",
-      "自增自减与赋值重载"
-    ],
-    "explanation": "该说法错误。题干考查C++基础语法的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“错”。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 523,
+    "id": 461,
     "difficulty": "easy"
   },
   {
@@ -12538,7 +11400,7 @@
     "explanation": "本题选 A（.cpp）。题干考查C++基础语法的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 524,
+    "id": 462,
     "difficulty": "easy"
   },
   {
@@ -12566,7 +11428,7 @@
     "explanation": "本题选 C（前缀0）。题干考查C++基础语法的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 525,
+    "id": 463,
     "difficulty": "easy"
   },
   {
@@ -12590,7 +11452,7 @@
     "explanation": "程序分析题，考查程序改错与错误定位+类与对象定义+访问控制与封装+程序阅读与输出推导相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 526,
+    "id": 464,
     "difficulty": "hard"
   },
   {
@@ -12614,7 +11476,7 @@
     "explanation": "程序分析题，考查程序改错与错误定位+C++程序结构与命名空间+引用与函数参数+程序阅读与输出推导相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 527,
+    "id": 465,
     "difficulty": "hard"
   },
   {
@@ -12638,7 +11500,7 @@
     "explanation": "程序分析题，考查程序改错与错误定位+继承基础+继承方式与访问权限+程序阅读与输出推导相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 528,
+    "id": 466,
     "difficulty": "hard"
   },
   {
@@ -12662,58 +11524,8 @@
     "explanation": "程序分析题，考查程序改错与错误定位+多继承与二义性+虚基类与菱形继承+程序阅读与输出推导相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 529,
+    "id": 467,
     "difficulty": "hard"
-  },
-  {
-    "type": "truefalse",
-    "stem": "在C++中使用new和delete实现堆内存区中进行数据的动态分配和释放。",
-    "answer": "对",
-    "chapter": "类与对象",
-    "source": "模拟试卷二",
-    "knowledgePoints": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "explanation": "该说法正确。题干考查类与对象的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“对”。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 530,
-    "difficulty": "easy"
-  },
-  {
-    "type": "choice",
-    "stem": "构造函数是在（ ）时被执行。",
-    "options": [
-      "A. 程序编译",
-      "B. 创建对象",
-      "C. 创建类",
-      "D. 程序装入内存"
-    ],
-    "answer": "B",
-    "chapter": "构造函数与析构函数",
-    "source": "模拟试卷二",
-    "knowledgePoints": [
-      "构造函数",
-      "析构函数",
-      "拷贝构造与赋值"
-    ],
-    "knowledgePointsNormalized": [
-      "构造函数",
-      "析构函数",
-      "拷贝构造与赋值"
-    ],
-    "explanation": "本题选 B（创建对象）。题干考查构造函数的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 531,
-    "difficulty": "easy"
   },
   {
     "type": "truefalse",
@@ -12734,29 +11546,7 @@
     "explanation": "C++ 可以建立数组的引用，例如 int a[3]; int (&r)[3] = a;。也可以建立指针的引用，例如 int *p; int *&rp = p;。因此“不能建立数组的引用”的说法错误。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 532,
-    "difficulty": "easy"
-  },
-  {
-    "type": "truefalse",
-    "stem": "C++对内联函数和普通函数的调用处理方式相同，调用时需要保存和恢复现场和地址。",
-    "answer": "错",
-    "chapter": "C++对C的扩充",
-    "source": "模拟基础试卷",
-    "knowledgePoints": [
-      "C++程序结构与命名空间",
-      "引用与函数参数",
-      "内联函数、重载与默认参数"
-    ],
-    "knowledgePointsNormalized": [
-      "C++程序结构与命名空间",
-      "引用与函数参数",
-      "内联函数、重载与默认参数"
-    ],
-    "explanation": "该说法错误。题干考查C++基础语法的基本规则，判断时应以 C++ 语法和对象模型为准，结论为“错”。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 533,
+    "id": 468,
     "difficulty": "easy"
   },
   {
@@ -12778,7 +11568,7 @@
     "explanation": "应填“成员函数; 友元函数; 派生类”。题干考查类与对象的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 535,
+    "id": 469,
     "difficulty": "easy"
   },
   {
@@ -12800,7 +11590,7 @@
     "explanation": "构造函数 A(int aa=0) 带默认参数，因此既可写 A b; 使用默认实参 0，也可写 A b(1); 传入实参 1。注意 A b(); 会被解析为函数声明，不是对象定义。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 536,
+    "id": 470,
     "difficulty": "easy"
   },
   {
@@ -12822,7 +11612,7 @@
     "explanation": "应填“static; 构造函数”。题干考查this指针的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 537,
+    "id": 471,
     "difficulty": "easy"
   },
   {
@@ -12844,7 +11634,7 @@
     "explanation": "常量数据成员必须在对象构造时完成初始化，通常只能写在构造函数初始化列表中，不能先默认初始化后在构造函数体内赋值。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 538,
+    "id": 472,
     "difficulty": "easy"
   },
   {
@@ -12866,29 +11656,7 @@
     "explanation": "应填“虚基类; 类作用域标识符”。题干考查继承方式的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 539,
-    "difficulty": "easy"
-  },
-  {
-    "type": "fillin",
-    "stem": "当共有派生时，基类的共有成员成为派生的公有成员；保护成员成为派生类的____；私有成员成为派生类的不可见成员。",
-    "answer": "保护成员",
-    "chapter": "继承与派生",
-    "source": "复习提纲(2024春季)",
-    "knowledgePoints": [
-      "继承基础",
-      "继承方式与访问权限",
-      "访问控制与封装"
-    ],
-    "knowledgePointsNormalized": [
-      "继承基础",
-      "继承方式与访问权限",
-      "访问控制与封装"
-    ],
-    "explanation": "应填“保护成员”。题干考查继承方式的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 540,
+    "id": 473,
     "difficulty": "easy"
   },
   {
@@ -12910,57 +11678,7 @@
     "explanation": "派生类对象包含基类子对象，构造派生类对象时必须先构造基类部分。派生类构造函数可以在初始化列表中显式调用基类构造函数来完成基类成员初始化。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 541,
-    "difficulty": "easy"
-  },
-  {
-    "type": "truefalse",
-    "stem": "派生类是从基类派生出来的，不能再生成新的类。",
-    "answer": "错",
-    "chapter": "继承与派生",
-    "source": "复习提纲(2024春季)",
-    "knowledgePoints": [
-      "继承基础",
-      "继承方式与访问权限",
-      "自增自减与赋值重载"
-    ],
-    "knowledgePointsNormalized": [
-      "继承基础",
-      "继承方式与访问权限",
-      "自增自减与赋值重载"
-    ],
-    "explanation": "派生类仍然可以作为新的基类继续派生出更多类，C++ 支持多层继承。因此“派生类不能再生成新的类”的说法错误。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 542,
-    "difficulty": "easy"
-  },
-  {
-    "type": "choice",
-    "stem": "在共有派生情况下，有关派生类对象和基类对象的关系，下面不正确的是（  ）",
-    "options": [
-      "A. 派生类的对象可以赋值给基类的对象",
-      "B. 派生类的对象可以初始化基类的引用",
-      "C. 派生类的对象可以直接访问基类中的成员",
-      "D. 派生类的对象的地址可以赋给指向基类的指针"
-    ],
-    "answer": "C",
-    "chapter": "继承与派生",
-    "source": "复习提纲(2024春季)",
-    "knowledgePoints": [
-      "继承基础",
-      "继承方式与访问权限",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "继承基础",
-      "继承方式与访问权限",
-      "面向对象基本特征"
-    ],
-    "explanation": "本题选 C（派生类的对象可以直接访问基类中的成员）。题干考查继承方式的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 543,
+    "id": 474,
     "difficulty": "easy"
   },
   {
@@ -12982,7 +11700,7 @@
     "explanation": "应填“操作数个数、优先级和结合性”。题干考查运算符重载的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 544,
+    "id": 475,
     "difficulty": "easy"
   },
   {
@@ -13004,7 +11722,7 @@
     "explanation": "应填“一; 两”。题干考查运算符重载的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 545,
+    "id": 476,
     "difficulty": "easy"
   },
   {
@@ -13026,7 +11744,7 @@
     "explanation": "应填“不存在”。题干考查虚函数的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 546,
+    "id": 477,
     "difficulty": "easy"
   },
   {
@@ -13048,7 +11766,7 @@
     "explanation": "同一类作用域中不能同时存在函数签名完全相同、但一个声明为虚函数另一个声明为非虚函数的两个成员函数；签名相同会被视为同一个函数声明。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 547,
+    "id": 478,
     "difficulty": "easy"
   },
   {
@@ -13076,7 +11794,7 @@
     "explanation": "本题选 C（一个基类中声明有纯虚函数，则它的派生类一定不再是抽象类）。题干考查虚函数的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 548,
+    "id": 479,
     "difficulty": "medium"
   },
   {
@@ -13098,7 +11816,7 @@
     "explanation": "派生类重写基类虚函数时，应保持函数名、参数列表、返回类型以及 const 等限定匹配。签名不一致通常不是重写，而是隐藏或重载。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 549,
+    "id": 480,
     "difficulty": "easy"
   },
   {
@@ -13120,7 +11838,7 @@
     "explanation": "常对象的 this 指针类型相当于指向 const 对象的指针，只能调用保证不修改对象状态的 const 成员函数，不能调用普通非 const 成员函数。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 550,
+    "id": 481,
     "difficulty": "easy"
   },
   {
@@ -13144,7 +11862,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+运算符重载规则+程序改错与错误定位+内联函数、重载与默认参数相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 551,
+    "id": 482,
     "difficulty": "hard"
   },
   {
@@ -13168,7 +11886,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+函数模板+类模板+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 552,
+    "id": 483,
     "difficulty": "hard"
   },
   {
@@ -13192,7 +11910,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+this指针+const成员与常对象+static成员相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 553,
+    "id": 484,
     "difficulty": "hard"
   },
   {
@@ -13216,30 +11934,8 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+this指针+const成员与常对象+static成员相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 554,
+    "id": 485,
     "difficulty": "hard"
-  },
-  {
-    "type": "fillin",
-    "stem": "在C++中，函数重载与虚函数帮助实现了类的____性。",
-    "answer": "多态",
-    "chapter": "多态与虚函数",
-    "source": "模拟试题二",
-    "knowledgePoints": [
-      "虚函数与动态绑定",
-      "多态实现条件",
-      "纯虚函数与抽象类"
-    ],
-    "knowledgePointsNormalized": [
-      "虚函数与动态绑定",
-      "多态实现条件",
-      "纯虚函数与抽象类"
-    ],
-    "explanation": "应填“多态”。题干考查虚函数的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 557,
-    "difficulty": "easy"
   },
   {
     "type": "coding",
@@ -13262,7 +11958,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+构造函数+析构函数+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 558,
+    "id": 486,
     "difficulty": "hard"
   },
   {
@@ -13290,35 +11986,7 @@
     "explanation": "静态成员函数属于类，没有 this 指针；它可以有返回值和参数，也可以通过类名调用。因此“this 指针可以指向静态成员函数”是错误描述。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 561,
-    "difficulty": "easy"
-  },
-  {
-    "type": "choice",
-    "stem": "（ ）解决二义性问题。",
-    "options": [
-      "A. 只能使用作用域分辨操作符",
-      "B. 只能使用虚基类",
-      "C. 使用作用域分辨操作符或虚基类",
-      "D. 上面都不能"
-    ],
-    "answer": "C",
-    "chapter": "继承与派生",
-    "source": "模拟试题三",
-    "knowledgePoints": [
-      "继承基础",
-      "继承方式与访问权限",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "继承基础",
-      "继承方式与访问权限",
-      "面向对象基本特征"
-    ],
-    "explanation": "多重继承中的同名成员二义性可以用作用域分辨符明确访问路径，也可以通过虚基类解决共同基类产生的多份基类子对象问题，因此选 C。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 562,
+    "id": 487,
     "difficulty": "easy"
   },
   {
@@ -13340,7 +12008,7 @@
     "explanation": "声明静态成员函数时在成员函数声明前加 static。静态成员函数属于类本身，不依赖某个具体对象调用。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 563,
+    "id": 488,
     "difficulty": "easy"
   },
   {
@@ -13362,7 +12030,7 @@
     "explanation": "类中用于统计对象数目的共享计数器应声明为静态数据成员，因此 count 前应填写 static，使所有对象共享同一个计数值。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 564,
+    "id": 489,
     "difficulty": "medium"
   },
   {
@@ -13384,7 +12052,7 @@
     "explanation": "模板类 A 的对象以字符串字面量 \"Hello, world!\" 初始化时，模板实参可写 const char*；若类设计为保存 std::string，也可使用 string。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 565,
+    "id": 490,
     "difficulty": "medium"
   },
   {
@@ -13408,7 +12076,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+运算符重载规则+程序改错与错误定位+内联函数、重载与默认参数相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 566,
+    "id": 491,
     "difficulty": "hard"
   },
   {
@@ -13432,7 +12100,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+继承基础+继承方式与访问权限+C++程序结构与命名空间相关知识。 创建局部对象 obj 时先构造基类 A 再构造派生类 B；new A 又输出一次构造A；delete p 立即析构动态创建的 A；main 结束时局部对象 obj 销毁，先析构 B 再析构其 A 基类子对象。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 567,
+    "id": 492,
     "difficulty": "hard"
   },
   {
@@ -13456,7 +12124,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+函数模板+类模板+C++程序结构与命名空间相关知识。 f(3.0) 实例化为 double 版本，返回 3.0*5.1，即 15.3。调用 f(1,2) 时 ElemType 为 int，x*1.1 和 y*1.1 的结果赋回 int 会截断为 1 和 2；调用 f(1.0,2.0) 时 ElemType 为 double，输出 1.1 和 2.2。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 568,
+    "id": 493,
     "difficulty": "hard"
   },
   {
@@ -13484,7 +12152,7 @@
     "explanation": "常对象只能调用 const 成员函数，因为 const 成员函数承诺不修改对象状态。选项 D 只说“实际不改变对象值”还不够，函数声明本身也必须带 const，编译器才能允许常对象调用。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 570,
+    "id": 494,
     "difficulty": "easy"
   },
   {
@@ -13506,51 +12174,7 @@
     "explanation": "构造函数初始化列表中应写成员名并用实参初始化。题干已给出形式 Test(int x): ____(x)，因此空白处填写数据成员名 a，完整写法是 Test(int x): a(x) {}。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 571,
-    "difficulty": "medium"
-  },
-  {
-    "type": "fillin",
-    "stem": "完成程序填空：类 A 需要定义一个把对象转换为 int 的类型转换函数，函数头应写为____()。",
-    "answer": "operator int",
-    "chapter": "运算符重载",
-    "source": "模拟试题四",
-    "knowledgePoints": [
-      "运算符重载规则",
-      "内联函数、重载与默认参数",
-      "成员/友元运算符重载"
-    ],
-    "knowledgePointsNormalized": [
-      "运算符重载规则",
-      "内联函数、重载与默认参数",
-      "成员/友元运算符重载"
-    ],
-    "explanation": "类型转换函数的声明格式是 operator 目标类型()，不能写返回值类型，也不能带普通参数。目标类型为 int 时，函数头应写 operator int()。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 572,
-    "difficulty": "medium"
-  },
-  {
-    "type": "fillin",
-    "stem": "完成程序填空：Complex 类包含 double realPart 和 double imagePart 两个成员，成员函数 Complex operator+(const Complex& a) const 中有语句 return Complex(____);。请填写用于返回两复数之和的构造参数。",
-    "answer": "realPart + a.realPart, imagePart + a.imagePart",
-    "chapter": "运算符重载",
-    "source": "模拟试题四",
-    "knowledgePoints": [
-      "运算符重载规则",
-      "内联函数、重载与默认参数",
-      "成员/友元运算符重载"
-    ],
-    "knowledgePointsNormalized": [
-      "运算符重载规则",
-      "内联函数、重载与默认参数",
-      "成员/友元运算符重载"
-    ],
-    "explanation": "复数相加应分别相加实部和虚部。当前对象的实部、虚部为 realPart 和 imagePart，参数对象 a 的实部、虚部为 a.realPart 和 a.imagePart，因此应填 realPart + a.realPart, imagePart + a.imagePart。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 573,
+    "id": 495,
     "difficulty": "medium"
   },
   {
@@ -13574,7 +12198,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+虚函数与动态绑定+多态实现条件+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 574,
+    "id": 496,
     "difficulty": "hard"
   },
   {
@@ -13598,7 +12222,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+函数模板+类模板+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 575,
+    "id": 497,
     "difficulty": "hard"
   },
   {
@@ -13622,7 +12246,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+this指针+const成员与常对象+static成员相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 576,
+    "id": 498,
     "difficulty": "hard"
   },
   {
@@ -13646,64 +12270,8 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+继承基础+继承方式与访问权限+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 577,
+    "id": 499,
     "difficulty": "hard"
-  },
-  {
-    "type": "choice",
-    "stem": "假定Myclass为一个类，则该类的析构函数的声明为（ ）。",
-    "options": [
-      "A. void ~Myclass();",
-      "B. ~Myclass(int n);",
-      "C. Myclass();",
-      "D. ~Myclass()"
-    ],
-    "answer": "D",
-    "chapter": "类与对象",
-    "source": "模拟试题五",
-    "knowledgePoints": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "explanation": "析构函数名由波浪号加类名组成，没有返回值类型，也不能带参数。Myclass 的析构函数应声明为 ~Myclass()，因此选 D。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 579,
-    "difficulty": "easy"
-  },
-  {
-    "type": "choice",
-    "stem": "下面类的定义中有（ ）处错误。\nclass myclass\n{\n  int i=0;\npublic:\n  void myclass() || ;\n  ~myclass(value);\n};",
-    "options": [
-      "A. 1",
-      "B. 2",
-      "C. 3",
-      "D. 4"
-    ],
-    "answer": "C",
-    "chapter": "类与对象",
-    "source": "模拟试题五",
-    "knowledgePoints": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "explanation": "该类定义有三处错误：类内直接写 int i=0 在旧标准下不合法；构造函数不能写返回类型 void；析构函数不能带参数 value。因此选 C。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 580,
-    "difficulty": "easy"
   },
   {
     "type": "choice",
@@ -13730,7 +12298,7 @@
     "explanation": "使用 class 定义类时，成员默认访问权限为 private；使用 struct 定义时默认访问权限才是 public。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 581,
+    "id": 500,
     "difficulty": "easy"
   },
   {
@@ -13758,7 +12326,7 @@
     "explanation": "定义函数模板或类模板都使用关键字 template，并在其后写模板参数列表，例如 template<class T>。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 582,
+    "id": 501,
     "difficulty": "medium"
   },
   {
@@ -13786,7 +12354,7 @@
     "explanation": "普通数据成员每个对象各有一份；静态数据成员属于类本身，被该类所有对象共享。因此类的对象共享的是静态数据成员。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 583,
+    "id": 502,
     "difficulty": "easy"
   },
   {
@@ -13814,58 +12382,8 @@
     "explanation": "多重继承同名成员造成二义性时，可用作用域分辨操作符明确访问哪个基类成员；菱形继承中的共同基类多份副本问题可用虚基类解决。因此选 C。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 584,
+    "id": 503,
     "difficulty": "medium"
-  },
-  {
-    "type": "choice",
-    "stem": "如果在类CTest的外面调用函数CTest::f()，则该函数是（ ）。",
-    "options": [
-      "A. 静态成员函数",
-      "B. 非静态成员函数",
-      "C. 友元函数",
-      "D. 前面都不正确"
-    ],
-    "answer": "A",
-    "chapter": "类与对象",
-    "source": "模拟试题五",
-    "knowledgePoints": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "explanation": "能够在类外写 CTest::f() 直接调用，说明 f 不依赖具体对象，是 CTest 的静态成员函数。普通非静态成员函数需要通过对象或对象指针调用。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 585,
-    "difficulty": "easy"
-  },
-  {
-    "type": "truefalse",
-    "stem": "析构函数的作用是对象的初始化。",
-    "answer": "错",
-    "chapter": "类与对象",
-    "source": "模拟试题五",
-    "knowledgePoints": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "knowledgePointsNormalized": [
-      "类与对象定义",
-      "访问控制与封装",
-      "面向对象基本特征"
-    ],
-    "explanation": "析构函数在对象生命周期结束时自动调用，主要用于清理资源；对象初始化由构造函数负责。因此该说法错误。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 586,
-    "difficulty": "easy"
   },
   {
     "type": "truefalse",
@@ -13886,7 +12404,7 @@
     "explanation": "cout 默认输出到屏幕或控制台，cin 默认从键盘或标准输入读取。题干把二者的默认设备说反了，因此错误。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 587,
+    "id": 504,
     "difficulty": "easy"
   },
   {
@@ -13908,7 +12426,7 @@
     "explanation": "应填“继承”。题干考查继承方式的基本概念，空白处需要补出的正是该概念或语法成分；填入后语句含义完整且符合 C++ 术语。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 588,
+    "id": 505,
     "difficulty": "easy"
   },
   {
@@ -13932,7 +12450,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+继承基础+继承方式与访问权限+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 590,
+    "id": 506,
     "difficulty": "hard"
   },
   {
@@ -13956,7 +12474,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+类与对象定义+访问控制与封装+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 591,
+    "id": 507,
     "difficulty": "hard"
   },
   {
@@ -13980,7 +12498,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+this指针+const成员与常对象+static成员相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 592,
+    "id": 508,
     "difficulty": "hard"
   },
   {
@@ -14004,7 +12522,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+继承基础+继承方式与访问权限+C++程序结构与命名空间相关知识。 Base::Fun 不是虚函数，Base* p 虽然指向 Derived 对象，但通过 (*p).Fun() 调用时按静态类型 Base 绑定，输出 1；a 是 Derived 对象，a.Fun() 调用派生类版本，输出 2。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 593,
+    "id": 509,
     "difficulty": "hard"
   },
   {
@@ -14028,7 +12546,7 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+类与对象定义+访问控制与封装+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 597,
+    "id": 510,
     "difficulty": "hard"
   },
   {
@@ -14052,36 +12570,8 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+类与对象定义+访问控制与封装+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 598,
+    "id": 511,
     "difficulty": "hard"
-  },
-  {
-    "type": "choice",
-    "stem": "若类A和类B的定义如下，则上述定义中，（ ）是非法的表达式。\nclass A\n{\n    int i, j;\npublic:\n    A(int m, int n): i(m), j(n) {}\n    int Geti() { return i;}\n};\nclass B: public A\n{\n    int k;\npublic:\n    B(int m, int n, int u): A(m, n), k(u) {}\n    void Make() { k = i * j; }\n};",
-    "options": [
-      "A. k = i * j;",
-      "B. int k;",
-      "C. return i;",
-      "D. void Make()"
-    ],
-    "answer": "A",
-    "chapter": "继承与派生",
-    "source": "模拟试题六",
-    "knowledgePoints": [
-      "继承基础",
-      "继承方式与访问权限",
-      "类与对象定义"
-    ],
-    "knowledgePointsNormalized": [
-      "继承基础",
-      "继承方式与访问权限",
-      "类与对象定义"
-    ],
-    "explanation": "本题选 A（k = i * j;）。题干考查继承方式的基本规则，所选项与该规则一致，其余选项与语法规定或概念定义不符。",
-    "explanation_status": "done",
-    "audit_status": "done",
-    "id": 601,
-    "difficulty": "easy"
   },
   {
     "type": "coding",
@@ -14104,35 +12594,11 @@
     "explanation": "程序分析题，考查程序阅读与输出推导+函数模板+类模板+程序改错与错误定位相关知识。 本题需要根据程序执行顺序、函数调用绑定或访问控制逐步推导，答案中给出的输出或错误原因对应代码中的关键语句。",
     "explanation_status": "done",
     "audit_status": "done",
-    "id": 608,
+    "id": 512,
     "difficulty": "hard"
   },
   {
-    "id": 609,
-    "type": "coding",
-    "chapter": "构造函数与析构函数",
-    "stem": "阅读下列程序，写出输出结果。\n\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int i;\npublic:\n    A() {\n        i = 0;\n        cout << \"constructor,i=\" << i << \",\";\n    }\n\n    ~A() {\n        cout << \"destructor\";\n    }\n};\n\nint main() {\n    A obj;\n    return 0;\n}",
-    "answer": "constructor,i=0,destructor",
-    "explanation": "程序分析题，考查程序阅读与输出推导+构造函数+析构函数+对象生命周期相关知识。\n\n## 1. **设计思路与要点**\n\n本题考查的是 **构造函数与析构函数的调用时机**，属于 C++ 面向对象程序设计中非常基础但重要的知识点。\n\n程序如下：\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int i;\npublic:\n    A() {\n        i = 0;\n        cout << \"constructor,i=\" << i << \",\";\n    }\n\n    ~A() {\n        cout << \"destructor\";\n    }\n};\n\nint main() {\n    A obj;\n    return 0;\n}\n```\n\n---\n\n### 1.1 类 `A` 的结构分析\n\n类 `A` 中包含：\n\n```cpp\nprivate:\n    int i;\n```\n\n这是一个私有成员变量，只能在类的成员函数内部访问。\n\n类中定义了两个特殊成员函数：\n\n```cpp\nA()\n```\n\n这是 **默认构造函数**，对象创建时自动调用。\n\n```cpp\n~A()\n```\n\n这是 **析构函数**，对象生命周期结束时自动调用。\n\n---\n\n### 1.2 构造函数的作用\n\n构造函数用于对象初始化。\n\n在本题中：\n\n```cpp\nA() {\n    i = 0;\n    cout << \"constructor,i=\" << i << \",\";\n}\n```\n\n当执行：\n\n```cpp\nA obj;\n```\n\n时，会自动调用构造函数 `A()`。\n\n构造函数完成两件事情：\n\n1. 将成员变量 `i` 赋值为 `0`\n2. 输出：\n\n```cpp\nconstructor,i=0,\n```\n\n注意，输出内容末尾有一个逗号 `,`。\n\n---\n\n### 1.3 析构函数的作用\n\n析构函数用于对象销毁前的清理工作。\n\n本题中的析构函数为：\n\n```cpp\n~A() {\n    cout << \"destructor\";\n}\n```\n\n当对象 `obj` 生命周期结束时，会自动调用析构函数。\n\n由于 `obj` 是 `main` 函数中的局部自动对象，其生命周期从定义处开始，到所在作用域结束时结束。\n\n也就是说，程序执行到：\n\n```cpp\nreturn 0;\n```\n\n之前或 `main` 函数即将结束时，`obj` 会被销毁，从而自动调用析构函数。\n\n析构函数输出：\n\n```cpp\ndestructor\n```\n\n---\n\n### 1.4 对象生命周期分析\n\n在 `main` 函数中：\n\n```cpp\nint main() {\n    A obj;\n    return 0;\n}\n```\n\n执行过程如下：\n\n1. 进入 `main` 函数\n2. 执行 `A obj;`\n3. 创建局部对象 `obj`\n4. 自动调用构造函数 `A()`\n5. 输出：\n\n   ```cpp\n   constructor,i=0,\n   ```\n\n6. 执行 `return 0;`\n7. `main` 函数结束前，局部对象 `obj` 生命周期结束\n8. 自动调用析构函数 `~A()`\n9. 输出：\n\n   ```cpp\n   destructor\n   ```\n\n因此最终输出为：\n\n```cpp\nconstructor,i=0,destructor\n```\n\n---\n\n## 2. **参考代码深度解读**\n\n虽然题目中的“参考代码实现”为空，但原程序本身就是需要分析的代码。下面对关键代码进行逐段解析。\n\n---\n\n### 2.1 成员变量 `i`\n\n```cpp\nprivate:\n    int i;\n```\n\n`i` 是类 `A` 的私有数据成员。\n\n由于使用了 `private` 访问权限，类外代码不能直接访问 `i`，例如下面代码是非法的：\n\n```cpp\nA obj;\nobj.i = 10;   // 错误，i 是 private 成员\n```\n\n只能通过类的成员函数访问或修改它。\n\n在本题中，构造函数内部可以访问 `i`：\n\n```cpp\ni = 0;\n```\n\n这是合法的，因为构造函数是类 `A` 的成员函数。\n\n---\n\n### 2.2 默认构造函数 `A()`\n\n```cpp\nA() {\n    i = 0;\n    cout << \"constructor,i=\" << i << \",\";\n}\n```\n\n这是一个无参构造函数，也称为默认构造函数。\n\n当定义对象时：\n\n```cpp\nA obj;\n```\n\n编译器会自动调用：\n\n```cpp\nA::A()\n```\n\n因此输出：\n\n```cpp\nconstructor,i=0,\n```\n\n这里需要注意，构造函数没有返回值，连 `void` 也不能写。\n\n下面这种写法是错误的：\n\n```cpp\nvoid A() {\n    // 错误，这不是构造函数\n}\n```\n\n如果写成 `void A()`，它会被视为普通成员函数，而不是构造函数。\n\n---\n\n### 2.3 析构函数 `~A()`\n\n```cpp\n~A() {\n    cout << \"destructor\";\n}\n```\n\n析构函数的特点：\n\n1. 名称为类名前加 `~`\n2. 没有返回值\n3. 不能带参数\n4. 一个类只能有一个析构函数\n5. 对象销毁时自动调用\n\n本题中，`obj` 是局部变量，存储期为自动存储期。\n\n当 `main` 函数结束时，`obj` 被销毁，析构函数自动执行。\n\n---\n\n### 2.4 `main` 函数中的对象创建与销毁\n\n```cpp\nint main() {\n    A obj;\n    return 0;\n}\n```\n\n这里的 `A obj;` 表示创建一个 `A` 类型的对象。\n\n它不是指针，不需要手动 `delete`，也不是动态分配对象。\n\n因此，对象的构造和析构完全由编译器自动管理：\n\n```cpp\nA obj;  // 自动调用构造函数\n```\n\n当离开作用域时：\n\n```cpp\n}       // 自动调用析构函数\n```\n\n所以该程序的调用顺序是：\n\n```cpp\nA::A()\nA::~A()\n```\n\n对应输出顺序是：\n\n```cpp\nconstructor,i=0,\ndestructor\n```\n\n由于构造函数的输出末尾已经有逗号，因此两个输出连接起来后为：\n\n```cpp\nconstructor,i=0,destructor\n```\n\n---\n\n### 2.5 输出结果\n\n最终输出结果为：\n\n```cpp\nconstructor,i=0,destructor\n```\n\n需要注意，程序中没有输出换行符 `endl` 或 `'\\n'`，因此实际输出不会主动换行。\n\n---\n\n## 3. **避坑指南与最佳实践**\n\n---\n\n### 3.1 不要忘记构造函数会在对象创建时自动调用\n\n很多初学者容易忽略：\n\n```cpp\nA obj;\n```\n\n这行代码不仅仅是声明变量，还会真正创建对象，并自动调用构造函数。\n\n因此，程序刚执行到这一行时，就会输出：\n\n```cpp\nconstructor,i=0,\n```\n\n---\n\n### 3.2 析构函数在对象生命周期结束时自动调用\n\n局部对象的析构时间点是离开其作用域时。\n\n例如：\n\n```cpp\nint main() {\n    {\n        A obj;\n    } // 这里 obj 生命周期结束，析构函数被调用\n\n    return 0;\n}\n```\n\n如果是这种写法，析构函数会在内部代码块结束时调用，而不是等到 `main` 结束。\n\n本题中 `obj` 定义在 `main` 函数体内，因此它在 `main` 函数结束时析构。\n\n---\n\n### 3.3 注意输出中没有换行\n\n本题中构造函数和析构函数的输出代码分别是：\n\n```cpp\ncout << \"constructor,i=\" << i << \",\";\n```\n\n和：\n\n```cpp\ncout << \"destructor\";\n```\n\n二者都没有使用 `endl` 或 `'\\n'`。\n\n所以输出会连在一起：\n\n```cpp\nconstructor,i=0,destructor\n```\n\n而不是：\n\n```cpp\nconstructor,i=0,\ndestructor\n```\n\n---\n\n### 3.4 不要把 `A obj;` 误认为函数声明\n\n本题中：\n\n```cpp\nA obj;\n```\n\n是对象定义，会调用构造函数。\n\n但是 C++ 中存在一种常见陷阱，叫作“最令人困惑的解析”。\n\n例如：\n\n```cpp\nA obj();\n```\n\n这不是创建对象，而是声明了一个函数 `obj`，该函数无参数，返回值类型为 `A`。\n\n因此：\n\n```cpp\nA obj();\n```\n\n不会调用构造函数。\n\n如果想创建对象，应写：\n\n```cpp\nA obj;\n```\n\n或者在现代 C++ 中写：\n\n```cpp\nA obj{};\n```\n\n---\n\n### 3.5 构造函数中更推荐使用初始化列表\n\n本题代码中使用的是赋值方式：\n\n```cpp\nA() {\n    i = 0;\n}\n```\n\n对于 `int` 类型成员，这样写没有明显问题。\n\n但在 C++ 中，更推荐使用成员初始化列表：\n\n```cpp\nA() : i(0) {\n    cout << \"constructor,i=\" << i << \",\";\n}\n```\n\n原因是：\n\n1. 初始化列表是真正的初始化\n2. 构造函数体内赋值是先默认初始化再赋值\n3. 对于 `const` 成员、引用成员、没有默认构造函数的成员对象，必须使用初始化列表\n\n例如：\n\n```cpp\nclass B {\nprivate:\n    const int x;\npublic:\n    B() : x(10) {\n    }\n};\n```\n\n如果写成：\n\n```cpp\nclass B {\nprivate:\n    const int x;\npublic:\n    B() {\n        x = 10; // 错误，const 成员不能在构造函数体内赋值\n    }\n};\n```\n\n会编译失败。\n\n因此，本题可以改写为：\n\n```cpp\nclass A {\nprivate:\n    int i;\npublic:\n    A() : i(0) {\n        cout << \"constructor,i=\" << i << \",\";\n    }\n\n    ~A() {\n        cout << \"destructor\";\n    }\n};\n```\n\n输出结果不变，仍然是：\n\n```cpp\nconstructor,i=0,destructor\n```\n\n---\n\n### 3.6 析构函数中通常用于释放资源\n\n本题的析构函数只是输出信息：\n\n```cpp\n~A() {\n    cout << \"destructor\";\n}\n```\n\n实际开发中，析构函数通常用于释放对象持有的资源，例如：\n\n1. 动态分配的内存\n2. 文件句柄\n3. 网络连接\n4. 互斥锁\n5. 数据库连接\n\n例如：\n\n```cpp\nclass Buffer {\nprivate:\n    int* data;\npublic:\n    Buffer() {\n        data = new int[100];\n    }\n\n    ~Buffer() {\n        delete[] data;\n    }\n};\n```\n\n不过现代 C++ 中更推荐使用 RAII 类型和智能指针，例如：\n\n```cpp\n#include <memory>\n\nclass Buffer {\nprivate:\n    std::unique_ptr<int[]> data;\npublic:\n    Buffer() : data(std::make_unique<int[]>(100)) {\n    }\n};\n```\n\n这样可以减少手动 `new` / `delete` 带来的内存泄漏风险。\n\n---\n\n### 3.7 本题不涉及虚析构函数，但要理解其适用场景\n\n本题中没有继承和多态，因此析构函数不需要写成 `virtual`。\n\n但是如果类被设计为基类，并且可能通过基类指针删除派生类对象，则基类析构函数应声明为虚析构函数：\n\n```cpp\nclass Base {\npublic:\n    virtual ~Base() {\n    }\n};\n```\n\n否则下面代码可能导致派生类析构函数不被调用：\n\n```cpp\nBase* p = new Derived;\ndelete p;  // 如果 Base 析构函数不是 virtual，可能只调用 Base 析构函数\n```\n\n本题中：\n\n```cpp\nA obj;\n```\n\n是直接定义对象，不涉及基类指针，也不涉及动态删除，因此普通析构函数即可。\n\n---\n\n### 3.8 本题的核心结论\n\n本题程序的执行顺序为：\n\n```cpp\n进入 main\n创建 obj\n调用构造函数 A()\n输出 constructor,i=0,\nmain 结束\n调用析构函数 ~A()\n输出 destructor\n```\n\n最终输出结果：\n\n```cpp\nconstructor,i=0,destructor\n```",
-    "knowledgePoints": [
-      "程序阅读与输出推导",
-      "构造函数",
-      "析构函数",
-      "对象生命周期"
-    ],
-    "source": "综合编程练习",
-    "difficulty": "hard",
-    "knowledgePointsNormalized": [
-      "程序阅读与输出推导",
-      "构造函数",
-      "析构函数",
-      "对象生命周期"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done"
-  },
-  {
-    "id": 610,
+    "id": 513,
     "type": "coding",
     "chapter": "构造函数与析构函数",
     "stem": "阅读下列程序，写出输出结果。\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nclass A {\nprivate:\n    int x;\n    int y;\npublic:\n    A(int a, int b) {\n        x = a;\n        y = b;\n    }\n\n    void show() {\n        cout << x << \" \" << y << endl;\n    }\n};\n\nint main() {\n    A obj(2, 3);\n    obj.show();\n    return 0;\n}\n```",
@@ -14156,7 +12622,7 @@
     "audit_status": "done"
   },
   {
-    "id": 611,
+    "id": 514,
     "type": "coding",
     "chapter": "构造函数与析构函数",
     "stem": "指出下面程序 main 函数中的错误，以及原因。\nclass A\n{\n    int a,b;\npublic:\n    A(int aa,int bb){a=aa;b=bb;}\n};\nvoid main()\n{\n    A x(2,3), y(4);\n}",

@@ -3,37 +3,37 @@
   "version": "2026.06",
   "generatedAt": "2026-06-07",
   "stats": {
-    "totalQuestions": 617,
-    "totalInQuestionsJson": 576,
+    "totalQuestions": 555,
+    "totalInQuestionsJson": 514,
     "totalInProgrammingJson": 41,
     "pendingReview": 0,
     "invalidQuestions": 0,
-    "choice": 218,
-    "fillin": 190,
-    "truefalse": 137,
-    "coding": 31,
+    "choice": 192,
+    "fillin": 172,
+    "truefalse": 120,
+    "coding": 30,
     "programming": 41
   },
   "questionTypes": [
     {
       "type": "choice",
       "label": "选择题",
-      "count": 218
+      "count": 192
     },
     {
       "type": "fillin",
       "label": "填空题",
-      "count": 190
+      "count": 172
     },
     {
       "type": "truefalse",
       "label": "判断题",
-      "count": 137
+      "count": 120
     },
     {
       "type": "coding",
       "label": "程序分析题",
-      "count": 31
+      "count": 30
     },
     {
       "type": "programming",
@@ -256,7 +256,7 @@
       "rule": "每题knowledgePoints只允许使用kp_vocab.json中的受控词条。"
     }
   },
-  "totalQuestions": 618,
+  "totalQuestions": 555,
   "sourceStats": {
     "2014-2015学年第2学期测试": 3,
     "2015-2016学年第2学期期中考试": 29,
@@ -296,10 +296,10 @@
     "Homework 7": 1
   },
   "typeStats": {
-    "choice": 219,
-    "fillin": 190,
-    "truefalse": 137,
-    "coding": 31,
+    "choice": 192,
+    "fillin": 172,
+    "truefalse": 120,
+    "coding": 30,
     "programming": 41
   },
   "chapterStats": {
@@ -318,10 +318,10 @@
     "this/const/static成员": 75
   },
   "lastUpdated": "2026-06-07",
-  "choiceCount": 219,
-  "truefalseCount": 137,
-  "fillinCount": 190,
-  "codingCount": 31,
+  "choiceCount": 192,
+  "truefalseCount": 120,
+  "fillinCount": 172,
+  "codingCount": 30,
   "programmingCount": 41,
   "dataUpdate": {
     "completedAt": "2026-06-07",
