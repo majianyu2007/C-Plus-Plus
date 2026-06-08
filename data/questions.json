@@ -10536,34 +10536,6 @@
     "difficulty": "easy"
   },
   {
-    "id": 426,
-    "type": "choice",
-    "chapter": "C++对C的扩充",
-    "stem": "不能参与重载的是（ ）。",
-    "options": [
-      "A. 类",
-      "B. 函数",
-      "C. 函数模板",
-      "D. 运算符"
-    ],
-    "answer": "A",
-    "explanation": "函数、函数模板和可重载运算符都可以根据参数列表或操作数形式参与重载；类名在同一作用域中不能像函数那样用参数列表区分，重复定义同名类属于重定义错误，因此不能参与重载的是类。",
-    "source": "模拟试题二",
-    "knowledgePoints": [
-      "内联函数、重载与默认参数",
-      "运算符重载规则",
-      "C++程序结构与命名空间"
-    ],
-    "knowledgePointsNormalized": [
-      "内联函数、重载与默认参数",
-      "运算符重载规则",
-      "C++程序结构与命名空间"
-    ],
-    "explanation_status": "done",
-    "audit_status": "done",
-    "difficulty": "easy"
-  },
-  {
     "id": 427,
     "type": "truefalse",
     "chapter": "this/const/static成员",

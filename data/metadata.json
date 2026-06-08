@@ -3,12 +3,12 @@
   "version": "2026.06",
   "generatedAt": "2026-06-07",
   "stats": {
-    "totalQuestions": 618,
-    "totalInQuestionsJson": 577,
+    "totalQuestions": 617,
+    "totalInQuestionsJson": 576,
     "totalInProgrammingJson": 41,
     "pendingReview": 0,
     "invalidQuestions": 0,
-    "choice": 219,
+    "choice": 218,
     "fillin": 190,
     "truefalse": 137,
     "coding": 31,
@@ -18,7 +18,7 @@
     {
       "type": "choice",
       "label": "选择题",
-      "count": 219
+      "count": 218
     },
     {
       "type": "fillin",
@@ -43,48 +43,8 @@
   ],
   "chapters": [
     {
-      "name": "多继承与虚基类",
-      "questionCount": 17
-    },
-    {
-      "name": "多态与虚函数",
-      "questionCount": 75
-    },
-    {
-      "name": "构造函数与析构函数",
-      "questionCount": 70
-    },
-    {
-      "name": "继承与派生",
-      "questionCount": 75
-    },
-    {
-      "name": "类与对象",
-      "questionCount": 72
-    },
-    {
-      "name": "模板",
-      "questionCount": 47
-    },
-    {
-      "name": "文件IO",
-      "questionCount": 14
-    },
-    {
-      "name": "绪论",
-      "questionCount": 11
-    },
-    {
-      "name": "友元",
-      "questionCount": 17
-    },
-    {
-      "name": "运算符重载",
-      "questionCount": 55
-    },
-    {
       "name": "C++对C的扩充",
-      "questionCount": 75
+      "questionCount": 74
     },
     {
       "name": "STL",
@@ -93,6 +53,46 @@
     {
       "name": "this/const/static成员",
       "questionCount": 75
+    },
+    {
+      "name": "友元",
+      "questionCount": 17
+    },
+    {
+      "name": "多态与虚函数",
+      "questionCount": 75
+    },
+    {
+      "name": "多继承与虚基类",
+      "questionCount": 17
+    },
+    {
+      "name": "文件IO",
+      "questionCount": 14
+    },
+    {
+      "name": "构造函数与析构函数",
+      "questionCount": 70
+    },
+    {
+      "name": "模板",
+      "questionCount": 47
+    },
+    {
+      "name": "类与对象",
+      "questionCount": 72
+    },
+    {
+      "name": "继承与派生",
+      "questionCount": 75
+    },
+    {
+      "name": "绪论",
+      "questionCount": 11
+    },
+    {
+      "name": "运算符重载",
+      "questionCount": 55
     }
   ],
   "sources": [
