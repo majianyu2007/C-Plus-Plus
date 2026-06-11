@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=1.5.7">
+  <link rel="stylesheet" href="assets/style.css?v=1.5.8">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#cc785c">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -163,23 +163,25 @@
             <button class="filter-btn" data-type="coding">程序分析题</button>
             <button class="filter-btn" data-type="programming">程序设计题</button>
           </div>
-          <select class="chapter-select" id="chapter-filter">
-            <option value="all">全部章节</option>
-          </select>
-          <select class="chapter-select" id="knowledge-filter" title="按知识点筛选">
-            <option value="all">全部知识点</option>
-          </select>
-          <div class="filter-group" id="status-filters">
-            <button class="filter-btn" data-status="unmarked">未标记</button>
-            <button class="filter-btn" data-status="mastered">已掌握</button>
-            <button class="filter-btn" data-status="review">待复习</button>
-            <button class="filter-btn" data-status="wrong">错题</button>
-            <button class="filter-btn" id="favorites-only" title="只显示已收藏的题目">★ 收藏</button>
-          </div>
-          <div class="filter-group mode-filter-group" id="mode-filters">
-            <button class="filter-btn active" data-mode="list">列表</button>
-            <button class="filter-btn" data-mode="focus">单题</button>
-            <button class="filter-btn" id="today-review" title="进入待复习/错题队列的单题模式">待复习</button>
+          <div class="toolbar-controls">
+            <select class="chapter-select" id="chapter-filter">
+              <option value="all">全部章节</option>
+            </select>
+            <select class="chapter-select" id="knowledge-filter" title="按知识点筛选">
+              <option value="all">全部知识点</option>
+            </select>
+            <div class="filter-group" id="status-filters">
+              <button class="filter-btn" data-status="unmarked">未标记</button>
+              <button class="filter-btn" data-status="mastered">已掌握</button>
+              <button class="filter-btn" data-status="review">待复习</button>
+              <button class="filter-btn" data-status="wrong">错题</button>
+              <button class="filter-btn" id="favorites-only" title="只显示已收藏的题目">★ 收藏</button>
+            </div>
+            <div class="filter-group mode-filter-group" id="mode-filters">
+              <button class="filter-btn active" data-mode="list">列表</button>
+              <button class="filter-btn" data-mode="focus">单题</button>
+              <button class="filter-btn" id="today-review" title="进入待复习/错题队列的单题模式">待复习</button>
+            </div>
           </div>
         </div>
         <div class="question-list" id="question-list">
@@ -364,7 +366,7 @@
     </div>
   </div>
 
-  <script src="assets/app.js?v=1.5.7"></script>
+  <script src="assets/app.js?v=1.5.8"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(registrations => {

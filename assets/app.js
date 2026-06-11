@@ -197,10 +197,23 @@
       state.allKnowledgePoints = kpData.points;
       state.knowledgePointCounts = kpData.counts;
 
-      // 提取章节列表
+      // 提取章节列表（按课程大纲顺序排列，而非乱序后的出现顺序，
+      // 否则章节下拉框与进度页每次随机种子都会乱序，不利于复习）
+      const CHAPTER_ORDER = [
+        '绪论', 'C++对C的扩充', '类与对象', '构造函数与析构函数',
+        'this/const/static成员', '友元', '运算符重载', '继承与派生',
+        '多态与虚函数', '多继承与虚基类', '模板', 'STL', '文件IO'
+      ];
       const chapterSet = new Set();
       state.allItems.forEach(q => { if (q.chapter) chapterSet.add(q.chapter); });
-      state.chapters = Array.from(chapterSet);
+      state.chapters = Array.from(chapterSet).sort((a, b) => {
+        const ia = CHAPTER_ORDER.indexOf(a);
+        const ib = CHAPTER_ORDER.indexOf(b);
+        if (ia === -1 && ib === -1) return String(a).localeCompare(String(b), 'zh');
+        if (ia === -1) return 1;
+        if (ib === -1) return -1;
+        return ia - ib;
+      });
 
       // 加载用户进度
       loadProgress();
@@ -2872,7 +2885,14 @@ ${userCode}
       if (state.userProgress[key] === 'mastered') chapterStats[ch].mastered++;
     });
 
-    chapterContainer.innerHTML = Object.entries(chapterStats).map(([ch, s]) => {
+    // 按课程大纲顺序（state.chapters 已排序）展示，未知章节追加在后
+    const orderedChapters = state.chapters.filter(ch => chapterStats[ch]);
+    Object.keys(chapterStats).forEach(ch => {
+      if (!orderedChapters.includes(ch)) orderedChapters.push(ch);
+    });
+
+    chapterContainer.innerHTML = orderedChapters.map(ch => {
+      const s = chapterStats[ch];
       const pct = s.total > 0 ? Math.round(s.mastered / s.total * 100) : 0;
       return `
         <div class="question-card" style="padding:14px 20px;margin-bottom:8px; display:flex; flex-direction:column; justify-content:center;">
