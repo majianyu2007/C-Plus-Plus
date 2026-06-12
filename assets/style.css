@@ -3850,30 +3850,34 @@ h4,
   height: 38px;
 }
 
+/* 设置弹窗按钮：保存为珊瑚主按钮, 其余为标准次级按钮
+   （DESIGN.md: teal 仅作状态点缀, 不用于按钮） */
 .settings-btn-seed {
-  border-color: var(--accent-secondary);
-  color: var(--accent-secondary);
+  border-color: var(--hairline);
+  color: var(--text-primary);
+  background: var(--canvas);
   margin: 0;
   white-space: nowrap;
   font-size: 0.85rem;
 }
 
 .settings-btn-seed:hover {
-  background: color-mix(in srgb, var(--accent-secondary) 8%, transparent);
-  border-color: var(--accent-secondary);
-  color: var(--accent-secondary);
+  background: var(--surface-card);
+  border-color: var(--border-active);
+  color: var(--text-primary);
 }
 
 .settings-btn-onboarding {
   flex: 1;
-  border-color: var(--accent-info);
-  color: var(--accent-info);
+  border-color: var(--hairline);
+  color: var(--text-primary);
+  background: var(--canvas);
 }
 
 .settings-btn-onboarding:hover {
-  background: color-mix(in srgb, var(--accent-info) 8%, transparent);
-  border-color: var(--accent-info);
-  color: var(--accent-info);
+  background: var(--surface-card);
+  border-color: var(--border-active);
+  color: var(--text-primary);
 }
 
 .settings-btn-save {
