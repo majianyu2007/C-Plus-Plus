@@ -1758,9 +1758,8 @@
       html += `
         <div class="programming-input-wrapper">
           <textarea class="programming-input" id="prog-input-${safeUniqueId}" placeholder="粘贴你的 C++ 实现，用提示词检查思路与边界..."></textarea>
-          <button class="show-answer-btn grade-btn" style="margin-top: 8px; border-color: var(--accent-warning); color: var(--accent-warning);" onclick="window._gradeProgrammingAnswer('${safeUniqueId}')">检查代码</button>
+          <button class="show-answer-btn grade-btn" style="margin-top: 8px; border-color: var(--accent-warning); color: var(--accent-warning);" onclick="window._gradeProgrammingAnswer('${safeUniqueId}', this)">检查代码</button>
         </div>
-        <div class="programming-grading-result" id="grading-${safeUniqueId}" style="display: none;"></div>
       `;
     } else {
       html += `<div class="question-stem">${formatStem(q.stem || '')}</div>`;
@@ -1813,7 +1812,7 @@
     html += `<div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">`;
     html += `<button class="show-answer-btn" id="toggle-answer-btn-${safeUniqueId}" onclick="window._toggleAnswer('${safeUniqueId}')">`;
     html += `${isProgramming ? '查看参考代码' : '显示答案'}</button>`;
-    html += `<button class="show-answer-btn" id="ai-toggle-btn-${safeUniqueId}" style="border-color: var(--accent-primary); color: var(--accent-primary); background: var(--accent-primary-glow);" onclick="window._runAiAnalysis('${safeUniqueId}')">`;
+    html += `<button class="show-answer-btn" id="ai-toggle-btn-${safeUniqueId}" style="border-color: var(--accent-primary); color: var(--accent-primary); background: var(--accent-primary-glow);" onclick="window._runAiAnalysis('${safeUniqueId}', this)">`;
     html += `获取讲解提示词</button>`;
     html += `</div>`;
 
@@ -1821,9 +1820,6 @@
     if (!isProgramming && (q.type === 'choice' || q.type === 'truefalse')) {
       html += `<div class="fillin-feedback" id="feedback-${safeUniqueId}" style="display: none;"></div>`;
     }
-
-    // AI 对话渲染区
-    html += `<div class="ai-analysis-wrapper" id="ai-analysis-${safeUniqueId}" data-loaded="0" style="display: none; width: 100%;"></div>`;
 
     // 答案区域
     html += `<div class="answer-section" id="answer-${safeUniqueId}">`;
@@ -2461,17 +2457,17 @@
     showToast(state.favorites[idKey] ? '已收藏' : '已取消收藏', 'info');
   };
 
-  window._gradeProgrammingAnswer = async function (uniqueId) {
+  window._gradeProgrammingAnswer = async function (uniqueId, btnEl) {
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     const q = state.programming.find(item => String(item.id) === realId);
     if (!q) return;
 
     const textarea = document.getElementById('prog-input-' + uniqueId);
-    const userCode = textarea.value.trim();
-    const gradingEl = document.getElementById('grading-' + uniqueId);
+    const userCode = (textarea ? textarea.value : '').trim();
 
     if (!userCode) {
-      alert('请先贴入您的 C++ 代码！');
+      showToast('请先贴入你的 C++ 代码', 'error');
+      if (textarea) textarea.focus();
       return;
     }
 
@@ -2492,67 +2488,44 @@ ${userCode}
 
 请对上述学生解答代码进行评审打分并给出建议。`;
 
-    const promptToCopy = `${systemPrompt}\n\n${userPrompt}`;
-    await copyPromptAndNotify(promptToCopy);
-    gradingEl.style.display = 'block';
-    gradingEl.innerHTML = `
-      <div style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7;">
-        判题/审查提示词已复制到剪贴板。<br>
-        请粘贴到你偏好的网页版大模型进行“评审打分”。
-      </div>
-    `;
+    const ok = await copyPromptAndNotify(`${systemPrompt}\n\n${userPrompt}`);
+    flashCopied(btnEl, '检查代码', ok);
   };
 
-  window._runAiAnalysis = async function (uniqueId) {
-    const container = document.getElementById(`ai-analysis-${uniqueId}`);
-    if (!container) return;
-
-    const btn = document.getElementById(`ai-toggle-btn-${uniqueId}`);
-    const isVisible = container.style.display !== 'none';
-
-    if (isVisible) {
-      container.style.display = 'none';
-      if (btn) btn.textContent = '获取讲解提示词';
-      return;
-    }
-
-    container.style.display = 'block';
-    if (btn) btn.textContent = '收起提示词';
-
+  window._runAiAnalysis = async function (uniqueId, btnEl) {
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     const isProg = uniqueId.startsWith('prog-');
     let promptContent = '';
 
     if (isProg) {
       const q = state.programming.find(item => String(item.id) === realId);
-      promptContent = `请分析下面这道 C++ 程序设计复习题：\n题目：${q.title}\n功能要求：${q.requirement}\n参考代码实现：\n\`\`\`cpp\n${q.answerCode}\n\`\`\`\n核心知识点：${q.keyPoints.join(', ')}`;
+      if (!q) return;
+      promptContent = `请分析下面这道 C++ 程序设计复习题：\n题目：${q.title}\n功能要求：${q.requirement}\n参考代码实现：\n\`\`\`cpp\n${q.answerCode}\n\`\`\`\n核心知识点：${(q.keyPoints || []).join(', ')}`;
     } else {
       const q = state.questions.find(item => String(item.id) === realId);
+      if (!q) return;
       const typeName = { choice: '选择题', truefalse: '判断题', fillin: '填空题', coding: '程序分析题' }[q.type] || q.type;
       promptContent = `请分析下面这道 C++ 复习题：\n题型：${typeName}\n题目章节：${q.chapter}\n题干：${q.stem}\n${q.options ? '选项：\n' + q.options.join('\n') : ''}\n正确答案：${q.answer}\n原版答案解析：${q.explanation || '无'}`;
     }
 
     const systemPrompt = "你是一位精通 C++ 面向对象程序设计（OOP）的老师。请为学生提供深入浅出的解题步骤思路、该题关联的 C++ 核心机制解析（例如为什么不能写成某种错误的语法）、以及相关的核心代码小范例（如果有）。请使用 Markdown 语法排版，逻辑清晰，中文作答，保证 self-contained 完备性。";
 
-    const promptToCopy = `${systemPrompt}\n\n${promptContent}`;
-    await copyPromptAndNotify(promptToCopy);
-
-    container.innerHTML = `
-      <div class="ai-analysis-container">
-        <div class="ai-analysis-header">
-          <span id="ai-title-${uniqueId}">讲解提示词已复制到剪贴板</span>
-        </div>
-        <div class="ai-analysis-box" id="ai-box-${uniqueId}">
-          <div style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.7;">
-            讲解提示词已复制到剪贴板。<br>
-            如果你想获取其他大模型的解释，可以打开网页端 AI 并直接粘贴发送。
-          </div>
-        </div>
-      </div>
-    `;
-
-    container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    const ok = await copyPromptAndNotify(`${systemPrompt}\n\n${promptContent}`);
+    flashCopied(btnEl || document.getElementById(`ai-toggle-btn-${uniqueId}`), '获取讲解提示词', ok);
   };
+
+  // 复制类按钮的短暂“✓ 已复制”反馈：复制成功由 toast 告知即可，
+  // 不再额外渲染一个只写着“已复制”的冗余结果框。
+  function flashCopied(btn, label, ok) {
+    if (!btn || !ok) return;
+    btn.textContent = '✓ 已复制';
+    btn.classList.add('btn-copied-flash');
+    clearTimeout(btn._copyTimer);
+    btn._copyTimer = setTimeout(() => {
+      btn.textContent = label;
+      btn.classList.remove('btn-copied-flash');
+    }, 1800);
+  }
 
   async function copyPromptAndNotify(text) {
     try {

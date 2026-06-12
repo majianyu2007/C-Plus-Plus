@@ -700,6 +700,13 @@ h3, h4, .chapter-title {
   background: var(--accent-primary-glow);
 }
 
+/* 复制成功的短暂反馈态（覆盖按钮的内联强调色，显示绿色“✓ 已复制”） */
+.show-answer-btn.btn-copied-flash {
+  border-color: var(--accent-success) !important;
+  color: var(--accent-success) !important;
+  background: color-mix(in srgb, var(--accent-success) 12%, transparent) !important;
+}
+
 /* 代码块 */
 .code-block {
   position: relative;
@@ -1403,38 +1410,6 @@ h3, h4, .chapter-title {
 .token.punctuation { color: #8a8880; }                   /* {} () ; 等 */
 .token.operator { color: #cc785c; }                      /* << >> + = */
 
-/* ============================================================
-   单题 AI 解析框
-   ============================================================ */
-.ai-analysis-container {
-  margin-top: 14px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: color-mix(in srgb, var(--accent-primary) 4%, var(--bg-card));
-}
-
-.ai-analysis-header {
-  padding: 10px 16px;
-  background: color-mix(in srgb, var(--accent-primary) 8%, var(--bg-secondary));
-  border-bottom: 1px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--accent-primary);
-}
-
-.ai-analysis-box {
-  padding: 16px;
-  font-size: 0.88rem;
-  line-height: 1.7;
-  color: var(--text-secondary);
-  max-height: 400px;
-  overflow-y: auto;
-}
-
 /* Skeleton Loading */
 .skeleton-line {
   height: 12px;
@@ -1636,18 +1611,6 @@ h3, h4, .chapter-title {
   outline: none;
   border-color: var(--accent-warning);
   box-shadow: 0 0 6px rgba(241, 196, 15, 0.15);
-}
-
-.programming-grading-result {
-  margin-top: 12px;
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
-  background: var(--bg-code);
-  border: 1px dashed var(--border-color);
-  font-size: 0.88rem;
-  line-height: 1.6;
-  color: var(--text-primary);
-  animation: fadeInUp 0.3s ease;
 }
 
 @keyframes fadeIn {
@@ -3446,24 +3409,6 @@ h4,
 .fillin-feedback.incorrect {
   background: color-mix(in srgb, var(--accent-danger) 10%, var(--canvas));
   border-color: color-mix(in srgb, var(--accent-danger) 42%, var(--hairline));
-}
-
-.programming-grading-result,
-.ai-analysis-container {
-  background: var(--surface-dark);
-  border: 1px solid rgba(250, 249, 245, 0.08);
-  border-radius: var(--radius-lg);
-  color: var(--on-dark);
-}
-
-.ai-analysis-header {
-  background: var(--surface-dark-elevated);
-  border-color: rgba(250, 249, 245, 0.08);
-  color: var(--on-dark);
-}
-
-.ai-analysis-box {
-  color: var(--on-dark-soft);
 }
 
 .kp-index-card {
