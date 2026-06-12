@@ -56,8 +56,6 @@
   }
 
   const defaultSettings = {
-    aiMode: localStorage.getItem('oop_ai_mode') || 'clipboard',
-    saveApiKey: localStorage.getItem('oop_save_api_key') !== '0',
     redoMode: localStorage.getItem('oop_redo_mode') === '1',
     shuffle: true,
     seed: null
@@ -224,7 +222,7 @@
       // 初始化界面
       initUI();
       initTheme();
-      initApiSettings();
+      initSettingsPanel();
       initImportProgress();
       renderStats();
       renderDashboard();
@@ -560,7 +558,7 @@
   // ============================================================
   // 设置面板管理
   // ============================================================
-  function initApiSettings() {
+  function initSettingsPanel() {
     const modal = document.getElementById('settings-modal');
     const openBtn = document.getElementById('settings-open');
     const closeBtn = document.getElementById('settings-close');
@@ -1520,23 +1518,6 @@
         renderKnowledge(query);
       }, 300);
     });
-
-    // AI 导师键盘与发送绑定
-    const chatInput = document.getElementById('chat-input');
-    const chatSendBtn = document.getElementById('chat-send-btn');
-
-    if (chatInput) {
-      chatInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendChatMessage();
-        }
-      });
-    }
-
-    if (chatSendBtn) {
-      chatSendBtn.addEventListener('click', sendChatMessage);
-    }
 
     // 监听全局键盘事件用于焦点模式左右按键刷题
     document.addEventListener('keydown', (e) => {
@@ -2644,23 +2625,6 @@ ${userCode}
     }).catch(() => {});
   }
 
-  window.clearChat = function() {
-    if (confirm('确定要清空问答历史记录吗？')) {
-      state.chatHistory = [
-        { role: 'assistant', content: '对话已重置。你好，这里可以帮你整理 C++ OOP 概念、题目思路和代码问题。' }
-      ];
-      const container = document.getElementById('chat-messages');
-      container.innerHTML = `
-        <div class="message ai">
-          <div class="avatar">AI</div>
-          <div class="message-content">
-            对话已重置。你好，这里可以帮你整理 C++ OOP 概念、题目思路和代码问题。
-          </div>
-        </div>
-      `;
-    }
-  };
-
   // ============================================================
   // 统计
   // ============================================================
@@ -2894,7 +2858,7 @@ ${userCode}
       favorites: state.favorites || {},
       attempts: state.attempts || [],
       questionStats: state.questionStats || {},
-      settings: Object.assign({}, state.settings || {}, { apiKey: undefined })
+      settings: state.settings || {}
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -2926,10 +2890,8 @@ ${userCode}
         state.favorites = data.favorites || {};
         state.attempts = Array.isArray(data.attempts) ? data.attempts : [];
         if (data.settings && typeof data.settings === 'object') {
-          // 不导入 apiKey
-          const s = Object.assign({}, data.settings);
-          delete s.apiKey;
-          state.settings = Object.assign(state.settings, s);
+          state.settings = Object.assign(state.settings, data.settings);
+          normalizeSettings();
           localStorage.setItem('oop_redo_mode', state.settings.redoMode ? '1' : '0');
           saveJsonToStorage(SETTINGS_KEY, state.settings);
         }

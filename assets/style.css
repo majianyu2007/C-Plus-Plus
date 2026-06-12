@@ -2083,10 +2083,6 @@ textarea:focus-visible,
 }
 
 
-.message {
-  max-width: min(85%, 780px);
-}
-
 .modal-content {
   max-height: min(90dvh, 760px);
   overflow: auto;
@@ -2287,15 +2283,6 @@ textarea:focus-visible,
 
   .fillin-input-wrapper {
     flex-direction: column;
-  }
-
-  .message .avatar {
-    width: 32px;
-    height: 32px;
-  }
-
-  .chat-input-area {
-    padding: 12px 16px calc(12px + var(--safe-bottom));
   }
 
   .modal-backdrop {
