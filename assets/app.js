@@ -661,16 +661,36 @@
   window.copyToClipboard = function (btn) {
     const pre = btn.nextElementSibling;
     const codeText = pre.textContent;
-    navigator.clipboard.writeText(codeText).then(() => {
+    const fallbackCopy = () => {
+      const textarea = document.createElement('textarea');
+      textarea.value = codeText;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.top = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    };
+    const done = () => {
       btn.textContent = '已复制！';
       btn.style.color = 'var(--accent-success)';
       setTimeout(() => {
         btn.textContent = '复制';
         btn.style.color = '';
       }, 2000);
-    }).catch(() => {
-      btn.textContent = '复制失败';
-    });
+    };
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(codeText).then(done).catch(fallbackCopy);
+      } else {
+        fallbackCopy();
+        done();
+      }
+    } catch (e) {
+      fallbackCopy();
+      done();
+    }
   };
 
   function highlightCpp(code) {
