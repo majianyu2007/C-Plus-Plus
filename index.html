@@ -368,16 +368,5 @@
   </div>
 
   <script src="assets/app.js?v=1.6.1"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(registrations => {
-        for (const registration of registrations) {
-          registration.unregister().then(() => {
-            console.log('[Service Worker] Unregistered successfully');
-          });
-        }
-      });
-    }
-  </script>
 </body>
 </html>
