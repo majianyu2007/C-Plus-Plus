@@ -3912,3 +3912,167 @@ pre code,
   box-shadow: none !important;
   text-shadow: none !important;
 }
+
+/* ============================================================
+   Long-answer navigation and robust Markdown table rendering
+   ============================================================ */
+.question-card {
+  scroll-margin-top: 86px;
+  overflow: visible;
+}
+
+.answer-section {
+  scroll-margin-top: 86px;
+}
+
+.answer-nav {
+  position: sticky;
+  top: 72px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border: 1px solid var(--hairline);
+  border-bottom: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: color-mix(in srgb, var(--surface-soft) 92%, transparent);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
+}
+
+.answer-nav-title {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.answer-nav-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.answer-nav-btn {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  background: var(--canvas);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.answer-nav-btn:hover {
+  border-color: var(--border-active);
+  background: var(--surface-card);
+}
+
+.answer-nav + .answer-box {
+  margin-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.answer-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.answer-return-btn {
+  background: var(--canvas);
+  color: var(--text-primary);
+}
+
+.markdown-table-wrap {
+  width: 100%;
+  margin: 12px 0 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  background: var(--canvas);
+}
+
+.chapter-body .markdown-table-wrap,
+.message-content .markdown-table-wrap,
+.ai-analysis-box .markdown-table-wrap,
+.explanation .markdown-table-wrap {
+  overflow-wrap: normal;
+}
+
+.chapter-body table.markdown-table,
+.message-content table.markdown-table,
+.ai-analysis-box table.markdown-table,
+.explanation table.markdown-table {
+  display: table !important;
+  width: 100%;
+  min-width: max-content;
+  margin: 0;
+  overflow: visible;
+  border: 0;
+  border-collapse: collapse;
+  border-radius: 0;
+  background: transparent;
+  table-layout: auto;
+  white-space: normal;
+}
+
+.chapter-body table.markdown-table th,
+.message-content table.markdown-table th,
+.ai-analysis-box table.markdown-table th,
+.explanation table.markdown-table th,
+.chapter-body table.markdown-table td,
+.message-content table.markdown-table td,
+.ai-analysis-box table.markdown-table td,
+.explanation table.markdown-table td {
+  min-width: 9rem;
+  max-width: 34rem;
+  vertical-align: top;
+  white-space: normal;
+}
+
+.chapter-body table.markdown-table th:first-child,
+.message-content table.markdown-table th:first-child,
+.ai-analysis-box table.markdown-table th:first-child,
+.explanation table.markdown-table th:first-child,
+.chapter-body table.markdown-table td:first-child,
+.message-content table.markdown-table td:first-child,
+.ai-analysis-box table.markdown-table td:first-child,
+.explanation table.markdown-table td:first-child {
+  min-width: 7rem;
+}
+
+.chapter-body table.markdown-table code,
+.message-content table.markdown-table code,
+.ai-analysis-box table.markdown-table code,
+.explanation table.markdown-table code {
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .answer-nav {
+    top: 68px;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .answer-nav-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .answer-nav-btn {
+    width: 100%;
+  }
+}

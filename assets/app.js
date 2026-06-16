@@ -656,7 +656,7 @@
   }
 
   // ============================================================
-  // C++ Tokenizer & Markdown 渲染引擎 (Block-Based Parser)
+  // C++ Tokenizer & Markdown 渲染引擎 (markdown-it + DOMPurify)
   // ============================================================
   window.copyToClipboard = function (btn) {
     const pre = btn.nextElementSibling;
@@ -682,7 +682,10 @@
     };
     try {
       if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(codeText).then(done).catch(fallbackCopy);
+        navigator.clipboard.writeText(codeText).then(done).catch(() => {
+          fallbackCopy();
+          done();
+        });
       } else {
         fallbackCopy();
         done();
@@ -765,254 +768,152 @@
   function parseMarkdown(text) {
     if (!text) return '';
 
-    // 1. 规范化换行符，处理 Windows \r\n 平台差异
-    let normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    const normalized = String(text).replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    const renderer = getMarkdownRenderer();
+    const rendered = renderer ? renderer.render(normalized) : renderMarkdownFallback(normalized);
+    const cleaned = sanitizeMarkdownHtml(rendered);
+    return enhanceMarkdownHtml(cleaned);
+  }
 
-    // 2. 保护代码块，提取出来免受其他块的格式化污染
-    const codeBlocks = [];
-    normalized = normalized.replace(/^[ \t]*```([a-zA-Z0-9+#-]*)[ \t]*\n([\s\S]*?)\n[ \t]*```/gm, (match, lang, code) => {
-      const indentMatch = match.match(/^[ \t]*/);
-      const indent = indentMatch ? indentMatch[0] : '';
-      const indentLength = indent.length;
-      
-      let processedCode = code;
-      if (indentLength > 0) {
-        const lines = code.split('\n');
-        const processedLines = lines.map(line => {
-          if (line.startsWith(indent)) {
-            return line.slice(indentLength);
-          }
-          return line;
-        });
-        processedCode = processedLines.join('\n');
-      }
-
-      const id = `__CODE_BLOCK_PH_${codeBlocks.length}__`;
-      codeBlocks.push({ lang: lang || 'cpp', code: processedCode });
-      return `\n\n${id}\n\n`;
-    });
-
-    // 行内基本元素转义与格式化
-    function formatInline(txt) {
-      if (!txt) return '';
-      let t = escapeHtml(txt);
-      // 粗体 **text**
-      t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-      // 行内代码 `code`
-      t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
-      // 链接 [text](url)
-      t = t.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
-      return t;
+  function getMarkdownRenderer() {
+    if (getMarkdownRenderer._renderer !== undefined) return getMarkdownRenderer._renderer;
+    if (typeof window.markdownit !== 'function') {
+      console.warn('markdown-it 未加载，使用简化 Markdown 渲染兜底。');
+      getMarkdownRenderer._renderer = null;
+      return null;
     }
 
-    const lines = normalized.split('\n');
-    const blocks = [];
-    let activeBlock = null;
-
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      const trimmed = line.trim();
-
-      // 处理空行
-      if (trimmed === '') {
-        if (activeBlock) {
-          blocks.push(activeBlock);
-          activeBlock = null;
-        }
-        continue;
-      }
-
-      // 处理代码块占位符
-      if (trimmed.startsWith('__CODE_BLOCK_PH_') && trimmed.endsWith('__')) {
-        if (activeBlock) {
-          blocks.push(activeBlock);
-          activeBlock = null;
-        }
-        blocks.push({ type: 'code_placeholder', content: trimmed });
-        continue;
-      }
-
-      // 处理水平分割线
-      if (trimmed === '---' || trimmed === '***') {
-        if (activeBlock) {
-          blocks.push(activeBlock);
-          activeBlock = null;
-        }
-        blocks.push({ type: 'hr' });
-        continue;
-      }
-
-      // 处理标题
-      const headerMatch = line.match(/^(#{1,6})\s+(.*)$/);
-      if (headerMatch) {
-        if (activeBlock) {
-          blocks.push(activeBlock);
-          activeBlock = null;
-        }
-        blocks.push({ type: 'header', level: headerMatch[1].length, content: headerMatch[2] });
-        continue;
-      }
-
-      // 处理引用
-      if (line.startsWith('>') || trimmed.startsWith('>')) {
-        if (activeBlock && activeBlock.type !== 'blockquote') {
-          blocks.push(activeBlock);
-          activeBlock = null;
-        }
-        if (!activeBlock) {
-          activeBlock = { type: 'blockquote', lines: [] };
-        }
-        activeBlock.lines.push(line.replace(/^\s*>\s?/, ''));
-        continue;
-      }
-
-      // 处理表格
-      if (trimmed.startsWith('|')) {
-        if (activeBlock && activeBlock.type !== 'table') {
-          blocks.push(activeBlock);
-          activeBlock = null;
-        }
-        if (!activeBlock) {
-          activeBlock = { type: 'table', lines: [] };
-        }
-        activeBlock.lines.push(trimmed);
-        continue;
-      }
-
-      // 处理无序列表
-      const ulMatch = line.match(/^(\s*)([-\*\+])\s+(.*)$/);
-      if (ulMatch) {
-        if (activeBlock && activeBlock.type !== 'ul') {
-          blocks.push(activeBlock);
-          activeBlock = null;
-        }
-        if (!activeBlock) {
-          activeBlock = { type: 'ul', items: [] };
-        }
-        activeBlock.items.push({ indent: ulMatch[1].length, content: ulMatch[3] });
-        continue;
-      }
-
-      // 处理有序列表
-      const olMatch = line.match(/^(\s*)(\d+)\.\s+(.*)$/);
-      if (olMatch) {
-        if (activeBlock && activeBlock.type !== 'ol') {
-          blocks.push(activeBlock);
-          activeBlock = null;
-        }
-        if (!activeBlock) {
-          activeBlock = { type: 'ol', items: [] };
-        }
-        activeBlock.items.push({ indent: olMatch[1].length, content: olMatch[3] });
-        continue;
-      }
-
-      // 默认：段落
-      if (activeBlock && activeBlock.type !== 'p') {
-        blocks.push(activeBlock);
-        activeBlock = null;
-      }
-      if (!activeBlock) {
-        activeBlock = { type: 'p', lines: [] };
-      }
-      activeBlock.lines.push(line);
-    }
-
-    if (activeBlock) {
-      blocks.push(activeBlock);
-    }
-
-    const formattedBlocks = [];
-
-    blocks.forEach(block => {
-      if (block.type === 'code_placeholder') {
-        formattedBlocks.push(block.content);
-      } else if (block.type === 'hr') {
-        formattedBlocks.push('<hr>');
-      } else if (block.type === 'header') {
-        const tag = `h${block.level}`;
-        formattedBlocks.push(`<${tag}>${formatInline(block.content)}</${tag}>`);
-      } else if (block.type === 'blockquote') {
-        const content = block.lines.map(l => formatInline(l)).join('<br>');
-        formattedBlocks.push(`<blockquote>${content}</blockquote>`);
-      } else if (block.type === 'table') {
-        let tableHtml = '<table>';
-        let hasHeader = false;
-        let bodyOpen = false;
-
-        block.lines.forEach(line => {
-          const cells = line.split('|').slice(1, -1).map(c => c.trim());
-          if (cells.every(c => /^:-*|-*:|:-*:|-+$/.test(c))) {
-            return;
-          }
-          if (!hasHeader) {
-            tableHtml += '<thead><tr>' + cells.map(c => `<th>${formatInline(c)}</th>`).join('') + '</tr></thead>';
-            hasHeader = true;
-          } else {
-            if (!bodyOpen) {
-              tableHtml += '<tbody>';
-              bodyOpen = true;
-            }
-            tableHtml += '<tr>' + cells.map(c => `<td>${formatInline(c)}</td>`).join('') + '</tr>';
-          }
-        });
-        if (bodyOpen) tableHtml += '</tbody>';
-        tableHtml += '</table>';
-        formattedBlocks.push(tableHtml);
-      } else if (block.type === 'ul' || block.type === 'ol') {
-        const tag = block.type === 'ul' ? 'ul' : 'ol';
-        let listHtml = '';
-        let currentIndent = 0;
-        const listStack = [];
-
-        block.items.forEach((item, idx) => {
-          if (idx === 0) {
-            listHtml += `<${tag}>`;
-            listStack.push(tag);
-          } else {
-            if (item.indent > currentIndent) {
-              listHtml += `<${tag}>`;
-              listStack.push(tag);
-            } else if (item.indent < currentIndent) {
-              while (listStack.length > 1 && item.indent < currentIndent) {
-                const top = listStack.pop();
-                listHtml += `</${top}>`;
-                currentIndent -= 2;
-              }
-            }
-          }
-          listHtml += `<li>${formatInline(item.content)}</li>`;
-          currentIndent = item.indent;
-        });
-
-        while (listStack.length > 0) {
-          const top = listStack.pop();
-          listHtml += `</${top}>`;
-        }
-        formattedBlocks.push(listHtml);
-      } else if (block.type === 'p') {
-        const content = block.lines.map(l => formatInline(l)).join('<br>');
-        formattedBlocks.push(`<p>${content}</p>`);
+    const renderer = window.markdownit({
+      html: false,
+      linkify: true,
+      typographer: false,
+      breaks: false,
+      highlight: (code, lang) => {
+        const normalizedLang = String(lang || 'cpp').toLowerCase();
+        const highlighted = (normalizedLang === 'cpp' || normalizedLang === 'c++' || normalizedLang === 'cxx' || normalizedLang === 'cc')
+          ? highlightCpp(code)
+          : escapeHtml(code);
+        return `<pre><code class="language-${escapeAttr(normalizedLang || 'text')}">${highlighted}</code></pre>`;
       }
     });
 
-    let finalHtml = formattedBlocks.join('\n');
+    const defaultLinkOpen = renderer.renderer.rules.link_open || function (tokens, idx, options, env, self) {
+      return self.renderToken(tokens, idx, options);
+    };
+    renderer.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+      const token = tokens[idx];
+      const href = token.attrGet('href') || '';
+      if (/^(https?:|mailto:|#|\/)/i.test(href)) {
+        token.attrSet('target', '_blank');
+        token.attrSet('rel', 'noopener noreferrer');
+      } else {
+        token.attrSet('href', '#');
+      }
+      return defaultLinkOpen(tokens, idx, options, env, self);
+    };
 
-    // 4. 还原受保护的代码块并进行语法高亮
-    codeBlocks.forEach((codeBlock, idx) => {
-      const codeHtml = (codeBlock.lang === 'cpp' || codeBlock.lang === 'c++')
-        ? highlightCpp(codeBlock.code)
-        : escapeHtml(codeBlock.code);
-      const replacement = `
-        <div class="code-block-wrapper">
-          <button class="copy-code-btn" onclick="window.copyToClipboard(this)">复制</button>
-          <pre><code class="language-${codeBlock.lang}">${codeHtml}</code></pre>
-        </div>
-      `;
-      finalHtml = finalHtml.replace(`__CODE_BLOCK_PH_${idx}__`, replacement);
+    getMarkdownRenderer._renderer = renderer;
+    return renderer;
+  }
+
+  function renderMarkdownFallback(text) {
+    let html = escapeHtml(text);
+    html = html.replace(/```([a-zA-Z0-9+#-]*)\n([\s\S]*?)```/g, (match, lang, code) => {
+      const normalizedLang = lang || 'text';
+      const highlighted = (normalizedLang === 'cpp' || normalizedLang === 'c++')
+        ? highlightCpp(code)
+        : escapeHtml(code);
+      return `<pre><code class="language-${escapeAttr(normalizedLang)}">${highlighted}</code></pre>`;
+    });
+    html = html.replace(/^######\s+(.*)$/gm, '<h6>$1</h6>')
+      .replace(/^#####\s+(.*)$/gm, '<h5>$1</h5>')
+      .replace(/^####\s+(.*)$/gm, '<h4>$1</h4>')
+      .replace(/^###\s+(.*)$/gm, '<h3>$1</h3>')
+      .replace(/^##\s+(.*)$/gm, '<h2>$1</h2>')
+      .replace(/^#\s+(.*)$/gm, '<h1>$1</h1>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>');
+    return html.split(/\n{2,}/).map(block => {
+      const trimmed = block.trim();
+      if (!trimmed) return '';
+      if (/^<(h\d|pre|ul|ol|blockquote|table|hr)/i.test(trimmed)) return trimmed;
+      return `<p>${trimmed.replace(/\n/g, '<br>')}</p>`;
+    }).join('\n');
+  }
+
+  function sanitizeMarkdownHtml(html) {
+    if (window.DOMPurify && typeof window.DOMPurify.sanitize === 'function') {
+      return window.DOMPurify.sanitize(html, {
+        ADD_ATTR: ['target', 'rel', 'class', 'style', 'scope'],
+        ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i
+      });
+    }
+    console.warn('DOMPurify 未加载，使用浏览器模板兜底清理。');
+    return sanitizeHtmlFallback(html);
+  }
+
+  function sanitizeHtmlFallback(html) {
+    const template = document.createElement('template');
+    template.innerHTML = html;
+    template.content.querySelectorAll('script, iframe, object, embed, form, input, button, textarea, select, style').forEach(el => el.remove());
+    template.content.querySelectorAll('*').forEach(el => {
+      Array.from(el.attributes).forEach(attr => {
+        const name = attr.name.toLowerCase();
+        const value = attr.value || '';
+        if (name.startsWith('on')) {
+          el.removeAttribute(attr.name);
+          return;
+        }
+        if ((name === 'href' || name === 'src') && /^\s*javascript:/i.test(value)) {
+          el.removeAttribute(attr.name);
+        }
+      });
+    });
+    return template.innerHTML;
+  }
+
+  function enhanceMarkdownHtml(html) {
+    const template = document.createElement('template');
+    template.innerHTML = html;
+
+    template.content.querySelectorAll('table').forEach(table => {
+      table.classList.add('markdown-table');
+      if (table.parentElement && table.parentElement.classList.contains('markdown-table-wrap')) return;
+      const wrapper = document.createElement('div');
+      wrapper.className = 'markdown-table-wrap';
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
     });
 
-    return finalHtml;
+    template.content.querySelectorAll('pre > code').forEach(code => {
+      const pre = code.parentElement;
+      if (!pre || pre.parentElement?.classList.contains('code-block-wrapper')) return;
+      const language = Array.from(code.classList).find(cls => cls.startsWith('language-'))?.replace('language-', '') || 'text';
+      if (language === 'cpp' || language === 'c++' || language === 'cxx' || language === 'cc') {
+        code.innerHTML = highlightCpp(code.textContent || '');
+      }
+      const wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'copy-code-btn';
+      copyBtn.type = 'button';
+      copyBtn.textContent = '复制';
+      pre.parentNode.insertBefore(wrapper, pre);
+      wrapper.appendChild(copyBtn);
+      wrapper.appendChild(pre);
+    });
+
+    template.content.querySelectorAll('a[href]').forEach(link => {
+      const href = link.getAttribute('href') || '';
+      if (/^(https?:|mailto:|#|\/)/i.test(href)) {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+      } else {
+        link.removeAttribute('href');
+      }
+    });
+
+    return template.innerHTML;
   }
 
   // ============================================================
@@ -1564,6 +1465,13 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest('.copy-code-btn') : null;
+      if (!btn || btn.hasAttribute('onclick')) return;
+      window.copyToClipboard(btn);
+    });
+
     window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
   }
 
@@ -1824,6 +1732,15 @@
 
     // 答案区域
     html += `<div class="answer-section" id="answer-${safeUniqueId}">`;
+    html += `
+      <div class="answer-nav" aria-label="答案导航">
+        <span class="answer-nav-title">${escapeHtml(label)} · 解析</span>
+        <div class="answer-nav-actions">
+          <button class="answer-nav-btn" type="button" onclick="window._scrollToQuestion('${safeUniqueId}')">返回题目</button>
+          <button class="answer-nav-btn" type="button" onclick="window._toggleAnswer('${safeUniqueId}')">收起</button>
+        </div>
+      </div>
+    `;
     html += `<div class="answer-box">`;
     html += `<div class="answer-label">答案</div>`;
 
@@ -1856,7 +1773,13 @@
       }
     }
 
-    html += `</div></div></div>`;
+    html += `</div>`;
+    html += `
+      <div class="answer-footer-actions">
+        <button class="show-answer-btn answer-return-btn" type="button" onclick="window._scrollToQuestion('${safeUniqueId}')">返回题目</button>
+      </div>
+    `;
+    html += `</div></div>`;
     return html;
   }
 
@@ -2159,20 +2082,36 @@
     return Array.from(document.querySelectorAll('[data-id]')).find(card => card.getAttribute('data-id') === String(uniqueId));
   }
 
-  window._toggleAnswer = function (id) {
+  function setAnswerVisibility(id, visible) {
     const el = document.getElementById('answer-' + id);
-    if (el) el.classList.toggle('visible');
+    if (!el) return false;
+    el.classList.toggle('visible', !!visible);
+
     const btn = document.getElementById('toggle-answer-btn-' + id);
     if (btn) {
-      const isVisible = el && el.classList.contains('visible');
       const isProg = String(id).startsWith('prog-');
-      btn.textContent = isVisible ? `${isProg ? '隐藏参考代码' : '隐藏答案'}` : `${isProg ? '查看参考代码' : '显示答案'}`;
+      btn.textContent = visible ? `${isProg ? '隐藏参考代码' : '隐藏答案'}` : `${isProg ? '查看参考代码' : '显示答案'}`;
     }
+    return true;
+  }
+
+  window._scrollToQuestion = function (id) {
+    const card = findQuestionCard(id);
+    if (!card) return;
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    card.classList.add('jump-highlight');
+    clearTimeout(card._answerReturnTimer);
+    card._answerReturnTimer = setTimeout(() => card.classList.remove('jump-highlight'), 1400);
+  };
+
+  window._toggleAnswer = function (id) {
+    const el = document.getElementById('answer-' + id);
+    if (!el) return;
+    setAnswerVisibility(id, !el.classList.contains('visible'));
   };
 
   window._showAnswer = function (id) {
-    const el = document.getElementById('answer-' + id);
-    if (el) el.classList.add('visible');
+    setAnswerVisibility(id, true);
   };
 
   function normalizeChoiceAnswer(answer) {
