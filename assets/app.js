@@ -435,6 +435,28 @@
     return isProg ? `prog_${item.id}` : `q_${item.id}`;
   }
 
+  function getCurrentProgressKeys() {
+    return new Set(state.allItems.map(getProgressKeyForItem).filter(Boolean));
+  }
+
+  function getProgressCounts() {
+    const validKeys = getCurrentProgressKeys();
+    const progress = { mastered: 0, review: 0, wrong: 0 };
+    Object.entries(state.userProgress || {}).forEach(([key, status]) => {
+      if (validKeys.has(key) && progress[status] !== undefined) {
+        progress[status]++;
+      }
+    });
+    return progress;
+  }
+
+  function getRecentCurrentAttempts(limit = 20) {
+    const validKeys = getCurrentProgressKeys();
+    return (state.attempts || [])
+      .filter(item => item && validKeys.has(String(item.id || '')))
+      .slice(0, limit);
+  }
+
   window.resetProgress = function () {
     if (confirm('确定要重置所有学习进度吗？\n\n将同时清空：已掌握/待复习/错题标记、作答记录、复习统计。\n不会清空收藏。此操作不可撤销。')) {
       state.userProgress = {};
@@ -1348,9 +1370,9 @@
     });
 
     // 刷题模式筛选 (列表/焦点)
-    document.querySelectorAll('#mode-filters .filter-btn').forEach(btn => {
+    document.querySelectorAll('#mode-filters .filter-btn[data-mode]').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('#mode-filters .filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('#mode-filters .filter-btn[data-mode]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         state.quizMode = btn.dataset.mode;
         state.focusIndex = 0;
@@ -2507,7 +2529,7 @@ ${userCode}
   function renderRecentAttempts() {
     const container = document.getElementById('recent-attempts');
     if (!container) return;
-    const items = (state.attempts || []).slice(0, 20);
+    const items = getRecentCurrentAttempts(20);
     if (!items.length) {
       container.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;">暂无作答记录</div>';
       return;
@@ -2599,8 +2621,7 @@ ${userCode}
     document.getElementById('stat-programming').textContent = counts.programming;
 
     // 进度统计
-    const progress = { mastered: 0, review: 0, wrong: 0 };
-    Object.values(state.userProgress).forEach(s => { if (progress[s] !== undefined) progress[s]++; });
+    const progress = getProgressCounts();
 
     document.getElementById('stat-mastered').textContent = progress.mastered;
     document.getElementById('stat-review').textContent = progress.review;
@@ -2616,7 +2637,7 @@ ${userCode}
     if (kpEl) kpEl.textContent = state.allKnowledgePoints.length;
     if (dueEl) dueEl.textContent = typeof getTodayReviewKeys === 'function' ? getTodayReviewKeys().length : 0;
     if (accuracyEl) {
-      const attempts = (state.attempts || []).slice(0, 20);
+      const attempts = getRecentCurrentAttempts(20);
       const correct = attempts.filter(a => a.result === 'correct').length;
       accuracyEl.textContent = attempts.length ? `${Math.round(correct / attempts.length * 100)}%` : '--';
     }
@@ -2722,8 +2743,7 @@ ${userCode}
   // ============================================================
   function renderProgress() {
     const total = state.allItems.length;
-    const progress = { mastered: 0, review: 0, wrong: 0 };
-    Object.values(state.userProgress).forEach(s => { if (progress[s] !== undefined) progress[s]++; });
+    const progress = getProgressCounts();
 
     const totalEl = document.getElementById('progress-total');
     const masteredEl = document.getElementById('progress-mastered');
@@ -2754,7 +2774,7 @@ ${userCode}
       const marked = progress.mastered + progress.review + progress.wrong;
       const untouched = Math.max(total - marked, 0);
       const nextAction = dueCount > 0
-        ? `优先完成 ${dueCount} 道到期复习题，防止遗忘曲线回落。`
+        ? `优先完成复习队列中的 ${dueCount} 道题，防止遗忘曲线回落。`
         : untouched > 0
           ? `继续推进 ${untouched} 道未标记题，先用焦点模式做一轮诊断。`
           : '当前题库已全部纳入学习记录，可按错题与待复习标签做二轮巩固。';
@@ -2877,13 +2897,14 @@ ${userCode}
 
   function getTodayReviewKeys() {
     const now = Date.now();
+    const validKeys = getCurrentProgressKeys();
     const due = [];
     Object.entries(state.questionStats || {}).forEach(([k, s]) => {
-      if (s && typeof s.nextReviewTs === 'number' && s.nextReviewTs <= now) due.push(k);
+      if (validKeys.has(k) && s && typeof s.nextReviewTs === 'number' && s.nextReviewTs <= now) due.push(k);
     });
     // 兜底：错题 / 待复习
     Object.entries(state.userProgress || {}).forEach(([k, v]) => {
-      if ((v === 'wrong' || v === 'review') && !due.includes(k)) due.push(k);
+      if (validKeys.has(k) && (v === 'wrong' || v === 'review') && !due.includes(k)) due.push(k);
     });
     return due.slice(0, 80);
   }
@@ -2893,7 +2914,7 @@ ${userCode}
     if (!btn) return;
     const dueCount = getTodayReviewKeys().length;
     btn.disabled = dueCount === 0;
-    btn.textContent = dueCount === 0 ? '待复习（0）' : `待复习（${dueCount}）`;
+    btn.textContent = dueCount === 0 ? '复习队列（0）' : `复习队列（${dueCount}）`;
   }
 
   window.startTodayReview = function () {
@@ -2913,7 +2934,7 @@ ${userCode}
     document.querySelectorAll('#mode-filters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === 'focus'));
     window._goToPage('quiz');
     renderQuestionList();
-    showToast(`待复习：${state.filtered.length} 题`, 'success');
+    showToast(`复习队列：${state.filtered.length} 题`, 'success');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

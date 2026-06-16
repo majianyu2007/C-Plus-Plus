@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="assets/style.css?v=1.6.3">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#cc785c">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="C++ OOP 复习">
@@ -139,14 +140,14 @@
             <h1 id="quiz-hero-title">题库、讲义和错题记录放在同一处</h1>
             <p>按章节、题型和知识点筛题；需要讲解时可一键复制提示词，到你常用的模型里继续追问。</p>
             <div class="hero-actions">
-              <button class="primary-cta" type="button" onclick="window.startTodayReview()">复习待处理题</button>
+              <button class="primary-cta" type="button" onclick="window.startTodayReview()">开始复习队列</button>
               <button class="secondary-cta" type="button" onclick="window._goToPage('knowledge')">看讲义</button>
             </div>
           </div>
           <div class="hero-metrics" aria-label="复习概览">
             <div class="hero-metric"><span id="hero-total">0</span><small>题库总量</small></div>
             <div class="hero-metric"><span id="hero-kp">0</span><small>知识点标签</small></div>
-            <div class="hero-metric"><span id="hero-due">0</span><small>待复习</small></div>
+            <div class="hero-metric"><span id="hero-due">0</span><small>复习队列</small></div>
             <div class="hero-metric"><span id="hero-accuracy">--</span><small>近 20 次正确率</small></div>
           </div>
         </section>
@@ -182,7 +183,7 @@
             <div class="filter-group mode-filter-group" id="mode-filters">
               <button class="filter-btn active" data-mode="list">列表</button>
               <button class="filter-btn" data-mode="focus">单题</button>
-              <button class="filter-btn" id="today-review" title="进入待复习/错题队列的单题模式">待复习</button>
+              <button class="filter-btn" id="today-review" title="进入待复习、错题和到期题组成的复习队列">复习队列</button>
             </div>
           </div>
         </div>
@@ -370,6 +371,6 @@
 
   <script src="assets/vendor/markdown-it.min.js?v=14.2.0"></script>
   <script src="assets/vendor/purify.min.js?v=3.4.10"></script>
-  <script src="assets/app.js?v=1.6.3"></script>
+  <script src="assets/app.js?v=1.6.4"></script>
 </body>
 </html>
