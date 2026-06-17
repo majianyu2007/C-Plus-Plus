@@ -135,7 +135,8 @@
   // 数据加载
   // ============================================================
   async function loadJSON(filename) {
-    const paths = [`data/${filename}`, `../data/${filename}`, `site/data/${filename}`];
+    const v = '1.8.1';
+    const paths = [`data/${filename}?v=${v}`, `../data/${filename}?v=${v}`, `site/data/${filename}?v=${v}`];
     for (const path of paths) {
       try {
         const res = await fetch(path);

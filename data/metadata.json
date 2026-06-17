@@ -1,0 +1,349 @@
+{
+  "title": "面向对象程序设计期末复习题库",
+  "version": "2026.06",
+  "generatedAt": "2026-06-07",
+  "stats": {
+    "totalQuestions": 504,
+    "totalInQuestionsJson": 463,
+    "choice": 163,
+    "fillin": 153,
+    "truefalse": 117,
+    "coding": 30
+  },
+  "questionTypes": [
+    {
+      "type": "choice",
+      "label": "选择题",
+      "count": 163
+    },
+    {
+      "type": "fillin",
+      "label": "填空题",
+      "count": 153
+    },
+    {
+      "type": "truefalse",
+      "label": "判断题",
+      "count": 117
+    },
+    {
+      "type": "coding",
+      "label": "程序分析题",
+      "count": 30
+    },
+    {
+      "type": "programming",
+      "label": "程序设计题",
+      "count": 41
+    }
+  ],
+  "chapters": [
+    {
+      "name": "绪论",
+      "questionCount": 11
+    },
+    {
+      "name": "C++对C的扩充",
+      "questionCount": 64
+    },
+    {
+      "name": "类与对象",
+      "questionCount": 51
+    },
+    {
+      "name": "构造函数与析构函数",
+      "questionCount": 57
+    },
+    {
+      "name": "this/const/static成员",
+      "questionCount": 61
+    },
+    {
+      "name": "友元",
+      "questionCount": 14
+    },
+    {
+      "name": "运算符重载",
+      "questionCount": 43
+    },
+    {
+      "name": "继承与派生",
+      "questionCount": 60
+    },
+    {
+      "name": "多态与虚函数",
+      "questionCount": 61
+    },
+    {
+      "name": "多继承与虚基类",
+      "questionCount": 16
+    },
+    {
+      "name": "模板",
+      "questionCount": 42
+    },
+    {
+      "name": "STL",
+      "questionCount": 13
+    },
+    {
+      "name": "文件IO",
+      "questionCount": 11
+    }
+  ],
+  "sources": [
+    "2014-2015学年第2学期测试",
+    "2015-2016学年第2学期期中考试",
+    "2017-2018学年第1学期期中考试",
+    "2018-2019学年第1学期",
+    "2018-2019学年第1学期A卷",
+    "2018-2019学年第2学期",
+    "2018年CPP期中考试",
+    "2021-2022学年第2学期B卷",
+    "复习提纲(2024春季)",
+    "复习提纲(核心题库)",
+    "复习提纲(核心题库)；2017-2018学年第1学期期中考试",
+    "复习提纲(核心题库)；复习提纲(2024春季)",
+    "复习提纲(核心题库)；模拟试题六",
+    "复习提纲(核心题库)；模拟试题四",
+    "复习提纲(核心题库)；模拟试题五",
+    "复习提纲(核心题库)；模拟试题五；模拟试题六",
+    "模拟基础试卷",
+    "模拟试卷二",
+    "模拟试卷一",
+    "模拟试题二",
+    "模拟试题六",
+    "模拟试题七",
+    "模拟试题三",
+    "模拟试题四",
+    "模拟试题五",
+    "模拟试题五；模拟试题六",
+    "模拟试题一",
+    "综合编程练习",
+    "综合改错练习",
+    "Homework 1",
+    "Homework 2",
+    "Homework 3",
+    "Homework 4",
+    "Homework 5",
+    "Homework 6",
+    "Homework 7"
+  ],
+  "cleaning": {
+    "schemaValidatedAt": "2026-06-07",
+    "rules": [
+      "choice questions must have exactly four non-empty options",
+      "non-choice questions must not carry options",
+      "answer, explanation, knowledgePoints, chapter, source and difficulty are required",
+      "metadata stats are recomputed from actual JSON contents",
+      "duplicate normalized stems and duplicate code stems are not allowed"
+    ],
+    "removedInvalidOrDuplicateQuestions": [
+      430,
+      496,
+      499,
+      433,
+      487,
+      497,
+      456,
+      457,
+      458,
+      459,
+      460,
+      465,
+      466,
+      467,
+      555,
+      556,
+      559,
+      560,
+      569,
+      578,
+      599,
+      600,
+      609,
+      610,
+      516,
+      534,
+      602,
+      595,
+      596,
+      603,
+      607,
+      604,
+      605,
+      594,
+      606,
+      589
+    ],
+    "correctedQuestions": [
+      384,
+      426,
+      442,
+      449,
+      452,
+      453,
+      454,
+      455,
+      462,
+      464,
+      474,
+      476,
+      481,
+      489,
+      491,
+      493,
+      494,
+      495,
+      500,
+      501,
+      502,
+      503,
+      504,
+      505,
+      506,
+      507,
+      508,
+      509,
+      510,
+      515,
+      521,
+      522,
+      532,
+      536,
+      538,
+      541,
+      542,
+      547,
+      549,
+      550,
+      561,
+      562,
+      563,
+      564,
+      565,
+      567,
+      568,
+      570,
+      571,
+      572,
+      573,
+      579,
+      580,
+      581,
+      582,
+      583,
+      584,
+      585,
+      586,
+      587,
+      593,
+      295
+    ],
+    "fixedProgrammingItems": [
+      "P28",
+      "P29",
+      "P30",
+      "P44"
+    ],
+    "knowledgePointNormalization": {
+      "normalizedAt": "2026-06-07",
+      "controlledVocabularySize": 48,
+      "sourceBasis": "2025 面向对象程序设计 HS.pdf：C++复习纲要、历年真题题型与常见考点标注",
+      "rule": "每题knowledgePoints只允许使用kp_vocab.json中的受控词条。"
+    }
+  },
+  "totalQuestions": 504,
+  "sourceStats": {
+    "复习提纲(核心题库)": 375,
+    "2015-2016学年第2学期期中考试": 16,
+    "复习提纲(2024春季)": 14,
+    "综合编程练习": 13,
+    "模拟试题五": 9,
+    "2017-2018学年第1学期期中考试": 6,
+    "模拟试题一": 6,
+    "模拟试题六": 6,
+    "2021-2022学年第2学期B卷": 5,
+    "模拟试题三": 5,
+    "模拟试题四": 5,
+    "复习提纲(核心题库);模拟试题六": 4,
+    "2018-2019学年第2学期": 4,
+    "2018-2019学年第1学期": 4,
+    "模拟试卷二": 4,
+    "复习提纲(核心题库);复习提纲(2024春季)": 3,
+    "复习提纲(核心题库);模拟试题五": 3,
+    "模拟试卷一": 3,
+    "综合改错练习": 3,
+    "2018年CPP期中考试": 2,
+    "复习提纲(核心题库);模拟试题四": 1,
+    "复习提纲(核心题库);2017-2018学年第1学期期中考试": 1,
+    "复习提纲(核心题库);模拟试题五;模拟试题六": 1,
+    "2018-2019学年第1学期A卷": 1,
+    "模拟基础试卷": 1,
+    "模拟试题二": 1,
+    "模拟试题五;模拟试题六": 1,
+    "Homework 1": 1,
+    "Homework 2": 1,
+    "Homework 3": 1,
+    "Homework 4": 1,
+    "Homework 5": 1,
+    "Homework 6": 1,
+    "Homework 7": 1
+  },
+  "typeStats": {
+    "choice": 163,
+    "fillin": 153,
+    "truefalse": 117,
+    "coding": 30,
+    "programming": 41
+  },
+  "chapterStats": {
+    "绪论": 11,
+    "C++对C的扩充": 64,
+    "类与对象": 51,
+    "构造函数与析构函数": 57,
+    "this/const/static成员": 61,
+    "友元": 14,
+    "运算符重载": 43,
+    "继承与派生": 60,
+    "多态与虚函数": 61,
+    "多继承与虚基类": 16,
+    "模板": 42,
+    "STL": 13,
+    "文件IO": 11
+  },
+  "lastUpdated": "2026-06-11",
+  "choiceCount": 163,
+  "truefalseCount": 117,
+  "fillinCount": 153,
+  "codingCount": 30,
+  "programmingCount": 41,
+  "dataUpdate": {
+    "completedAt": "2026-06-07",
+    "baseBranch": "origin/feat/data-update",
+    "correctivePass": true,
+    "rule": "以当前 JSON 实际内容为准，删除重复和不可恢复残缺题，修正答案/题干/解析/选项，所有题目通过本地 schema、重复和元数据一致性校验。",
+    "hsAlignedAt": "2026-06-07",
+    "hsQuestionTypeLabels": [
+      "选择题",
+      "填空题",
+      "判断题",
+      "程序分析题",
+      "程序设计题"
+    ],
+    "knowledgePointPolicy": "按HS复习纲要归并为48个考试导向标签，每题保留1-4个主标签，避免一次性散成上百个低频标签。",
+    "movedAnalysisItemsFromProgramming": [
+      "P40",
+      "P41",
+      "P44"
+    ],
+    "answerReviewPass": {
+      "completedAt": "2026-06-11",
+      "scope": "全量复核 463 道客观题 + 41 道程序设计题答案；抽查程序设计代码",
+      "fixedAnswers": [
+        295
+      ],
+      "note": "Q295 判断题答案由“对”改为“错”（同签名虚/非虚函数不可在同一类内重复声明，与Q436互为反命题）；重写19道占位式简略题解；按实际内容重算全部统计字段。"
+    }
+  }
+}

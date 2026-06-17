@@ -1,0 +1,762 @@
+{
+  "vocabVersion": 2,
+  "sourceBasis": "2025 面向对象程序设计 HS.pdf",
+  "policy": "HS笔试复习导向：用少量稳定主标签覆盖题库，近义词放入aliases，不再把一次性表述当作新标签。",
+  "points": [
+    {
+      "id": "kp_001",
+      "name": "C++程序结构与命名空间",
+      "aliases": [
+        "命名空间",
+        "namespace",
+        "作用域解析",
+        "::",
+        "头文件",
+        "main函数",
+        "程序结构",
+        "using"
+      ],
+      "lectureChapterHint": "C++对C的扩充",
+      "description": "C++程序结构、头文件、main函数、命名空间与作用域解析。"
+    },
+    {
+      "id": "kp_002",
+      "name": "动态内存new/delete",
+      "aliases": [
+        "动态内存",
+        "new",
+        "delete",
+        "new[]",
+        "delete[]",
+        "动态分配",
+        "释放内存",
+        "堆对象",
+        "数组释放"
+      ],
+      "lectureChapterHint": "C++对C的扩充",
+      "description": "new/delete、new[]/delete[]与动态对象生命周期。"
+    },
+    {
+      "id": "kp_003",
+      "name": "引用与函数参数",
+      "aliases": [
+        "引用",
+        "reference",
+        "引用参数",
+        "返回引用",
+        "const引用",
+        "常量引用",
+        "别名",
+        "传引用"
+      ],
+      "lectureChapterHint": "C++对C的扩充",
+      "description": "引用、引用参数、返回引用、const引用及其初始化规则。"
+    },
+    {
+      "id": "kp_004",
+      "name": "const与指针",
+      "aliases": [
+        "const指针",
+        "指针常量",
+        "常量指针",
+        "指向常量",
+        "const int",
+        "int const",
+        "指针",
+        "只读"
+      ],
+      "lectureChapterHint": "C++对C的扩充",
+      "description": "const限定指针、指向常量的指针、常量指针及读写限制。"
+    },
+    {
+      "id": "kp_005",
+      "name": "内联函数、重载与默认参数",
+      "aliases": [
+        "内联",
+        "inline",
+        "函数重载",
+        "重载",
+        "默认参数",
+        "缺省参数",
+        "参数列表",
+        "函数匹配",
+        "返回类型不作为重载"
+      ],
+      "lectureChapterHint": "C++对C的扩充",
+      "description": "inline、函数重载、默认参数以及重载匹配规则。"
+    },
+    {
+      "id": "kp_006",
+      "name": "面向对象基本特征",
+      "aliases": [
+        "面向对象",
+        "四大特征",
+        "抽象性",
+        "封装性",
+        "继承性",
+        "多态性",
+        "OOP",
+        "对象"
+      ],
+      "lectureChapterHint": "绪论",
+      "description": "抽象、封装、继承、多态等面向对象基本特征。"
+    },
+    {
+      "id": "kp_007",
+      "name": "类与对象定义",
+      "aliases": [
+        "类与对象",
+        "类的定义",
+        "对象定义",
+        "class",
+        "struct",
+        "空类",
+        "对象内存",
+        "类作用域",
+        "成员访问运算符"
+      ],
+      "lectureChapterHint": "类与对象",
+      "description": "class/struct、对象定义、类作用域与对象内存基本概念。"
+    },
+    {
+      "id": "kp_008",
+      "name": "访问控制与封装",
+      "aliases": [
+        "访问控制",
+        "访问权限",
+        "public",
+        "private",
+        "protected",
+        "封装",
+        "私有成员",
+        "保护成员",
+        "公有成员",
+        "类外访问",
+        "数据隐藏"
+      ],
+      "lectureChapterHint": "类与对象",
+      "description": "public/protected/private访问控制与类外访问规则。"
+    },
+    {
+      "id": "kp_009",
+      "name": "成员函数与数据成员",
+      "aliases": [
+        "数据成员",
+        "成员函数",
+        "成员访问",
+        "类的接口",
+        "成员变量",
+        "成员声明",
+        "成员定义"
+      ],
+      "lectureChapterHint": "类与对象",
+      "description": "数据成员、成员函数、类接口与成员访问。"
+    },
+    {
+      "id": "kp_010",
+      "name": "this指针",
+      "aliases": [
+        "this",
+        "this指针",
+        "当前对象",
+        "return this",
+        "return *this"
+      ],
+      "lectureChapterHint": "this/const/static成员",
+      "description": "this指针的含义、用途和非静态成员函数的隐含参数。"
+    },
+    {
+      "id": "kp_011",
+      "name": "友元函数与友元类",
+      "aliases": [
+        "友元",
+        "friend",
+        "友元函数",
+        "友元类",
+        "友元关系",
+        "破坏封装"
+      ],
+      "lectureChapterHint": "友元",
+      "description": "friend函数、friend类及其访问非公有成员的规则。"
+    },
+    {
+      "id": "kp_012",
+      "name": "const成员与常对象",
+      "aliases": [
+        "const成员",
+        "常对象",
+        "常量对象",
+        "const成员函数",
+        "常成员函数",
+        "const数据成员",
+        "只读成员"
+      ],
+      "lectureChapterHint": "this/const/static成员",
+      "description": "const数据成员、const成员函数、常对象及调用限制。"
+    },
+    {
+      "id": "kp_013",
+      "name": "static成员",
+      "aliases": [
+        "static",
+        "静态成员",
+        "静态数据成员",
+        "静态成员函数",
+        "类变量",
+        "类方法",
+        "共享一份",
+        "没有this"
+      ],
+      "lectureChapterHint": "this/const/static成员",
+      "description": "静态数据成员、静态成员函数及类级共享存储。"
+    },
+    {
+      "id": "kp_014",
+      "name": "构造函数",
+      "aliases": [
+        "构造函数",
+        "构造器",
+        "默认构造",
+        "无参构造",
+        "有参构造",
+        "构造函数重载",
+        "对象初始化"
+      ],
+      "lectureChapterHint": "构造函数与析构函数",
+      "description": "默认构造、有参构造、构造函数重载与对象初始化。"
+    },
+    {
+      "id": "kp_015",
+      "name": "析构函数",
+      "aliases": [
+        "析构函数",
+        "析构器",
+        "~",
+        "析构",
+        "释放资源",
+        "析构函数调用"
+      ],
+      "lectureChapterHint": "构造函数与析构函数",
+      "description": "析构函数定义、调用时机、资源释放与析构限制。"
+    },
+    {
+      "id": "kp_016",
+      "name": "拷贝构造与赋值",
+      "aliases": [
+        "拷贝构造",
+        "复制构造",
+        "赋值运算符",
+        "operator=",
+        "深拷贝",
+        "浅拷贝",
+        "自赋值",
+        "拷贝赋值"
+      ],
+      "lectureChapterHint": "构造函数与析构函数",
+      "description": "拷贝构造函数、赋值运算符、浅拷贝与深拷贝。"
+    },
+    {
+      "id": "kp_017",
+      "name": "初始化列表",
+      "aliases": [
+        "初始化列表",
+        "成员初始化列表",
+        "初始化顺序",
+        "冒号初始化",
+        "成员初始化"
+      ],
+      "lectureChapterHint": "构造函数与析构函数",
+      "description": "成员初始化列表、const/引用成员和组合对象初始化顺序。"
+    },
+    {
+      "id": "kp_018",
+      "name": "对象生命周期",
+      "aliases": [
+        "对象生命周期",
+        "构造顺序",
+        "析构顺序",
+        "调用顺序",
+        "局部对象",
+        "全局对象",
+        "动态对象",
+        "生存期"
+      ],
+      "lectureChapterHint": "构造函数与析构函数",
+      "description": "对象创建、构造析构顺序、局部/全局/动态对象生命周期。"
+    },
+    {
+      "id": "kp_019",
+      "name": "包含与组合",
+      "aliases": [
+        "包含",
+        "组合",
+        "has-a",
+        "成员对象",
+        "对象成员",
+        "聚合",
+        "关联"
+      ],
+      "lectureChapterHint": "类与对象",
+      "description": "has-a关系、成员对象、组合类构造与初始化。"
+    },
+    {
+      "id": "kp_020",
+      "name": "继承基础",
+      "aliases": [
+        "继承",
+        "派生",
+        "基类",
+        "派生类",
+        "父类",
+        "子类",
+        "is-a",
+        "代码复用"
+      ],
+      "lectureChapterHint": "继承与派生",
+      "description": "基类、派生类、is-a关系和继承语法。"
+    },
+    {
+      "id": "kp_021",
+      "name": "继承方式与访问权限",
+      "aliases": [
+        "继承方式",
+        "public继承",
+        "private继承",
+        "protected继承",
+        "公有继承",
+        "私有继承",
+        "保护继承",
+        "访问属性"
+      ],
+      "lectureChapterHint": "继承与派生",
+      "description": "public/private/protected继承下成员访问属性变化。"
+    },
+    {
+      "id": "kp_022",
+      "name": "派生类构造析构顺序",
+      "aliases": [
+        "派生类构造",
+        "基类构造",
+        "派生类析构",
+        "基类析构",
+        "继承构造顺序",
+        "继承析构顺序",
+        "构造析构顺序"
+      ],
+      "lectureChapterHint": "继承与派生",
+      "description": "派生类对象创建和销毁时基类、成员对象、派生类的调用顺序。"
+    },
+    {
+      "id": "kp_023",
+      "name": "覆盖隐藏与同名成员",
+      "aliases": [
+        "覆盖",
+        "隐藏",
+        "同名成员",
+        "同名函数",
+        "重写",
+        "override",
+        "作用域限定",
+        "基类同名"
+      ],
+      "lectureChapterHint": "继承与派生",
+      "description": "派生类同名成员、函数隐藏、覆盖和作用域限定调用。"
+    },
+    {
+      "id": "kp_024",
+      "name": "多继承与二义性",
+      "aliases": [
+        "多继承",
+        "多重继承",
+        "二义性",
+        "命名冲突",
+        "多个基类",
+        "作用域消解",
+        "A::",
+        "B::"
+      ],
+      "lectureChapterHint": "多继承与虚基类",
+      "description": "多重继承、同名成员冲突与二义性消解。"
+    },
+    {
+      "id": "kp_025",
+      "name": "虚基类与菱形继承",
+      "aliases": [
+        "虚基类",
+        "虚继承",
+        "菱形继承",
+        "共同基类",
+        "间接基类",
+        "virtual继承",
+        "基类子对象"
+      ],
+      "lectureChapterHint": "多继承与虚基类",
+      "description": "虚继承、虚基类、菱形继承与共同基类子对象共享。"
+    },
+    {
+      "id": "kp_026",
+      "name": "类型转换与赋值兼容",
+      "aliases": [
+        "类型转换",
+        "赋值兼容",
+        "向上转型",
+        "基类指针",
+        "基类引用",
+        "派生类对象",
+        "替代原则"
+      ],
+      "lectureChapterHint": "继承与派生",
+      "description": "派生类向基类转换、基类指针/引用绑定派生类对象。"
+    },
+    {
+      "id": "kp_027",
+      "name": "虚函数与动态绑定",
+      "aliases": [
+        "虚函数",
+        "virtual函数",
+        "动态绑定",
+        "动态联编",
+        "静态绑定",
+        "静态联编",
+        "迟绑定",
+        "早绑定",
+        "函数绑定"
+      ],
+      "lectureChapterHint": "多态与虚函数",
+      "description": "virtual函数、动态联编、静态联编及调用绑定。"
+    },
+    {
+      "id": "kp_028",
+      "name": "多态实现条件",
+      "aliases": [
+        "多态",
+        "运行时多态",
+        "基类指针",
+        "基类引用",
+        "派生类重写",
+        "动态多态",
+        "虚函数调用"
+      ],
+      "lectureChapterHint": "多态与虚函数",
+      "description": "通过基类指针/引用调用虚函数实现运行时多态。"
+    },
+    {
+      "id": "kp_029",
+      "name": "纯虚函数与抽象类",
+      "aliases": [
+        "纯虚函数",
+        "抽象类",
+        "抽象基类",
+        "=0",
+        "不能实例化",
+        "虚函数=0"
+      ],
+      "lectureChapterHint": "多态与虚函数",
+      "description": "纯虚函数、抽象类、抽象基类及不可实例化规则。"
+    },
+    {
+      "id": "kp_030",
+      "name": "虚析构函数",
+      "aliases": [
+        "虚析构",
+        "virtual析构",
+        "多态删除",
+        "基类析构函数",
+        "delete基类指针"
+      ],
+      "lectureChapterHint": "多态与虚函数",
+      "description": "基类析构函数声明为virtual以保证多态删除正确。"
+    },
+    {
+      "id": "kp_031",
+      "name": "运算符重载规则",
+      "aliases": [
+        "运算符重载",
+        "operator",
+        "不可重载",
+        "优先级",
+        "结合性",
+        "操作数个数",
+        "重载规则"
+      ],
+      "lectureChapterHint": "运算符重载",
+      "description": "可重载/不可重载运算符、操作数个数、优先级和结合性不变。"
+    },
+    {
+      "id": "kp_032",
+      "name": "成员/友元运算符重载",
+      "aliases": [
+        "成员运算符",
+        "友元运算符",
+        "全局运算符",
+        "成员函数重载运算符",
+        "友元函数重载运算符"
+      ],
+      "lectureChapterHint": "运算符重载",
+      "description": "成员函数与友元/全局函数重载运算符的适用场景。"
+    },
+    {
+      "id": "kp_033",
+      "name": "输入输出运算符重载",
+      "aliases": [
+        "<<重载",
+        ">>重载",
+        "输入运算符",
+        "输出运算符",
+        "ostream",
+        "istream",
+        "cin",
+        "cout",
+        "operator<<",
+        "operator>>"
+      ],
+      "lectureChapterHint": "运算符重载",
+      "description": "operator<<、operator>>与流对象作为左操作数的友元重载。"
+    },
+    {
+      "id": "kp_034",
+      "name": "自增自减与赋值重载",
+      "aliases": [
+        "++",
+        "--",
+        "自增",
+        "自减",
+        "前置",
+        "后置",
+        "赋值重载",
+        "operator++",
+        "operator--",
+        "operator="
+      ],
+      "lectureChapterHint": "运算符重载",
+      "description": "前置/后置++--、赋值重载返回引用和深拷贝。"
+    },
+    {
+      "id": "kp_035",
+      "name": "类型转换函数",
+      "aliases": [
+        "类型转换函数",
+        "转换函数",
+        "operator 类型",
+        "强制转换",
+        "转换运算符"
+      ],
+      "lectureChapterHint": "运算符重载",
+      "description": "operator 类型() 转换函数的声明和使用规则。"
+    },
+    {
+      "id": "kp_036",
+      "name": "函数模板",
+      "aliases": [
+        "函数模板",
+        "模板函数",
+        "template",
+        "typename",
+        "class Type",
+        "模板参数推导",
+        "函数模板重载"
+      ],
+      "lectureChapterHint": "模板",
+      "description": "函数模板定义、调用、模板参数推导与函数模板重载。"
+    },
+    {
+      "id": "kp_037",
+      "name": "类模板",
+      "aliases": [
+        "类模板",
+        "模板类",
+        "类模板实例化",
+        "模板类实例化",
+        "类模板成员函数",
+        "友元模板"
+      ],
+      "lectureChapterHint": "模板",
+      "description": "类模板定义、实例化、类模板成员函数和友元模板。"
+    },
+    {
+      "id": "kp_038",
+      "name": "模板实例化与特化",
+      "aliases": [
+        "模板实例化",
+        "实例化",
+        "显式实例化",
+        "隐式实例化",
+        "特化",
+        "模板特化",
+        "默认模板参数"
+      ],
+      "lectureChapterHint": "模板",
+      "description": "模板隐式/显式实例化、默认模板参数与特化。"
+    },
+    {
+      "id": "kp_039",
+      "name": "STL容器与迭代器",
+      "aliases": [
+        "STL",
+        "容器",
+        "顺序容器",
+        "关联容器",
+        "容器适配器",
+        "vector",
+        "list",
+        "map",
+        "set",
+        "迭代器",
+        "iterator",
+        "begin",
+        "end"
+      ],
+      "lectureChapterHint": "STL",
+      "description": "STL容器、顺序容器、关联容器、适配器和迭代器。"
+    },
+    {
+      "id": "kp_040",
+      "name": "STL算法与函数对象",
+      "aliases": [
+        "STL算法",
+        "算法",
+        "函数对象",
+        "仿函数",
+        "functor",
+        "sort",
+        "find",
+        "for_each",
+        "函数模板实现算法"
+      ],
+      "lectureChapterHint": "STL",
+      "description": "STL算法、函数对象、算法通过迭代器操作容器。"
+    },
+    {
+      "id": "kp_041",
+      "name": "异常处理",
+      "aliases": [
+        "异常",
+        "异常处理",
+        "try",
+        "throw",
+        "catch"
+      ],
+      "lectureChapterHint": "异常处理",
+      "description": "try、throw、catch和异常处理流程。"
+    },
+    {
+      "id": "kp_042",
+      "name": "输入输出流",
+      "aliases": [
+        "输入输出流",
+        "I/O流",
+        "iostream",
+        "cin",
+        "cout",
+        "get",
+        "getline",
+        "put",
+        "flush",
+        "标准输入输出"
+      ],
+      "lectureChapterHint": "文件IO",
+      "description": "iostream、cin/cout、get/getline/read/write等标准流操作。"
+    },
+    {
+      "id": "kp_043",
+      "name": "文件流与打开模式",
+      "aliases": [
+        "文件IO",
+        "文件流",
+        "ifstream",
+        "ofstream",
+        "fstream",
+        "文件打开模式",
+        "ios::in",
+        "ios::out",
+        "ios::app",
+        "打开文件",
+        "关闭文件"
+      ],
+      "lectureChapterHint": "文件IO",
+      "description": "ifstream/ofstream/fstream及ios::in/out/app/binary等打开模式。"
+    },
+    {
+      "id": "kp_044",
+      "name": "二进制文件读写",
+      "aliases": [
+        "二进制文件",
+        "二进制IO",
+        "read/write",
+        "read",
+        "write",
+        "ios::binary"
+      ],
+      "lectureChapterHint": "文件IO",
+      "description": "二进制文件、read/write按字节读写对象数据。"
+    },
+    {
+      "id": "kp_045",
+      "name": "C++新标准特性",
+      "aliases": [
+        "C++11",
+        "新标准",
+        "auto",
+        "范围for",
+        "lambda",
+        "右值引用",
+        "移动构造",
+        "智能指针",
+        "shared_ptr",
+        "unique_ptr"
+      ],
+      "lectureChapterHint": "C++新标准特性",
+      "description": "auto、范围for、lambda、右值引用、智能指针等新标准特性。"
+    },
+    {
+      "id": "kp_046",
+      "name": "程序阅读与输出推导",
+      "aliases": [
+        "运行结果",
+        "输出结果",
+        "程序输出",
+        "写出输出",
+        "输出为",
+        "运行输出",
+        "执行结果",
+        "阅读程序",
+        "程序阅读"
+      ],
+      "lectureChapterHint": "综合能力",
+      "description": "根据构造析构顺序、函数调用绑定和表达式执行过程推导输出。"
+    },
+    {
+      "id": "kp_047",
+      "name": "程序改错与错误定位",
+      "aliases": [
+        "指出错误",
+        "找出错误",
+        "错误原因",
+        "编译错误",
+        "改错",
+        "错在",
+        "说明原因",
+        "无法通过编译",
+        "语法错误"
+      ],
+      "lectureChapterHint": "综合能力",
+      "description": "定位编译错误、访问控制错误、语义错误并说明原因。"
+    },
+    {
+      "id": "kp_048",
+      "name": "程序设计实现",
+      "aliases": [
+        "程序设计",
+        "设计一个",
+        "实现",
+        "编写程序",
+        "定义类",
+        "完成程序",
+        "输入描述",
+        "输出描述"
+      ],
+      "lectureChapterHint": "综合能力",
+      "description": "按题意完成类设计、运算符重载、继承多态、模板或文件/STL程序。"
+    }
+  ]
+}
