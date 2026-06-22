@@ -1,0 +1,42 @@
+{
+  "backgrounds": {
+    "duskRoom": "assets/galgame/backgrounds/sister-room-dusk.png",
+    "dayRoom": "assets/galgame/backgrounds/sister-room-day.png",
+    "nightRoom": "assets/galgame/backgrounds/sister-room-night.png",
+    "exterior": "assets/galgame/backgrounds/summer-exterior-day.png",
+    "entrance": "assets/galgame/backgrounds/entrance-day.png",
+    "kitchen": "assets/galgame/backgrounds/kitchen-day.png"
+  },
+  "characters": {
+    "mio": {
+      "smile": "assets/galgame/characters/mio/smile.png",
+      "happy": "assets/galgame/characters/mio/happy.png",
+      "shy": "assets/galgame/characters/mio/shy.png",
+      "serious": "assets/galgame/characters/mio/serious.png",
+      "surprised": "assets/galgame/characters/mio/surprised.png",
+      "sad": "assets/galgame/characters/mio/sad.png"
+    }
+  },
+  "ui": {
+    "dialogueBox": "assets/galgame/ui/dialogue-box.png",
+    "namebox": "assets/galgame/ui/namebox.png",
+    "arrow": "assets/galgame/ui/arrow.png"
+  },
+  "audio": {
+    "bgm": {
+      "summer": "assets/galgame/audio/bgm/summer.ogg",
+      "afterSchool": "assets/galgame/audio/bgm/after-school.ogg",
+      "sunlight": "assets/galgame/audio/bgm/sunlight.ogg"
+    },
+    "bgs": {
+      "summerCicadas": "assets/galgame/audio/bgs/summer-cicadas.ogg"
+    },
+    "se": {
+      "decision": "assets/galgame/audio/se/decision.ogg",
+      "cursor": "assets/galgame/audio/se/cursor.ogg",
+      "cancel": "assets/galgame/audio/se/cancel.ogg",
+      "success": "assets/galgame/audio/se/success.ogg",
+      "wrong": "assets/galgame/audio/se/wrong.ogg"
+    }
+  }
+}

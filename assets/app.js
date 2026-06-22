@@ -32,6 +32,15 @@
     favoritesOnly: false,
     quizMode: 'list',     // 'list' (列表) 或 'focus' (单题焦点)
     focusIndex: 0,         // 焦点模式下的当前题目索引
+    galgameMode: false,
+    galgameAudioReady: false,
+    galgameCurrentScene: null,
+    galgameVariant: 'romance',
+    galgameStreak: { correct: 0, wrong: 0 },
+    galgameEventHistory: {},
+    galgameAffection: 12,
+    galgameAffectionEvents: {},
+    galgameScenarioMap: {},
     isReadyForScrollSave: false
   };
 
@@ -42,6 +51,7 @@
   const FAVORITES_KEY = 'oop_favorites';
   const ATTEMPTS_KEY = 'oop_attempts';
   const STATS_KEY = 'oop_question_stats';
+  const GALGAME_AFFECTION_KEY = 'oop_galgame_affection';
 
   function loadJsonFromStorage(key, fallback) {
     try {
@@ -64,14 +74,66 @@
   const defaultSettings = {
     redoMode: localStorage.getItem('oop_redo_mode') === '1',
     shuffle: true,
-    seed: null
+    seed: null,
+    galgameAudio: true,
+    galgameBgmVolume: 35,
+    galgameSeVolume: 55
   };
+
+  const GALGAME_ASSETS = {
+    backgrounds: {
+      duskRoom: 'assets/galgame/backgrounds/sister-room-dusk.png',
+      dayRoom: 'assets/galgame/backgrounds/sister-room-day.png',
+      nightRoom: 'assets/galgame/backgrounds/sister-room-night.png',
+      exterior: 'assets/galgame/backgrounds/summer-exterior-day.png',
+      entrance: 'assets/galgame/backgrounds/entrance-day.png',
+      kitchen: 'assets/galgame/backgrounds/kitchen-day.png'
+    },
+    characters: {
+      smile: 'assets/galgame/characters/mio/smile.png',
+      happy: 'assets/galgame/characters/mio/happy.png',
+      shy: 'assets/galgame/characters/mio/shy.png',
+      serious: 'assets/galgame/characters/mio/serious.png',
+      surprised: 'assets/galgame/characters/mio/surprised.png',
+      sad: 'assets/galgame/characters/mio/sad.png'
+    },
+    audio: {
+      bgm: {
+        summer: 'assets/galgame/audio/bgm/summer.ogg',
+        afterSchool: 'assets/galgame/audio/bgm/after-school.ogg',
+        sunlight: 'assets/galgame/audio/bgm/sunlight.ogg'
+      },
+      bgs: 'assets/galgame/audio/bgs/summer-cicadas.ogg',
+      se: {
+        decision: 'assets/galgame/audio/se/decision.ogg',
+        cursor: 'assets/galgame/audio/se/cursor.ogg',
+        cancel: 'assets/galgame/audio/se/cancel.ogg',
+        success: 'assets/galgame/audio/se/success.ogg',
+        wrong: 'assets/galgame/audio/se/wrong.ogg'
+      }
+    }
+  };
+
+  const storedSettings = loadJsonFromStorage(SETTINGS_KEY, {});
+  let cleanedStoredSettings = false;
+  ['galgameMode', 'galgameVariant'].forEach(key => {
+    if (storedSettings && Object.prototype.hasOwnProperty.call(storedSettings, key)) {
+      delete storedSettings[key];
+      cleanedStoredSettings = true;
+    }
+  });
+  if (cleanedStoredSettings) saveJsonToStorage(SETTINGS_KEY, storedSettings);
 
   state.settings = Object.assign(
     {},
     defaultSettings,
-    loadJsonFromStorage(SETTINGS_KEY, {})
+    storedSettings
   );
+
+  function clampGalgameVolume(value, fallback) {
+    const parsed = Number.parseInt(value, 10);
+    return Number.isFinite(parsed) ? Math.min(100, Math.max(0, parsed)) : fallback;
+  }
 
   function generateSeed() {
     return Math.floor(Math.random() * 1000000) + 1;
@@ -80,6 +142,10 @@
   function normalizeSettings() {
     state.settings.shuffle = state.settings.shuffle !== false;
     state.settings.redoMode = !!state.settings.redoMode;
+    state.settings.galgameAudio = state.settings.galgameAudio !== false;
+    state.galgameVariant = 'romance';
+    state.settings.galgameBgmVolume = clampGalgameVolume(state.settings.galgameBgmVolume, 35);
+    state.settings.galgameSeVolume = clampGalgameVolume(state.settings.galgameSeVolume, 55);
     const parsedSeed = Number.parseInt(state.settings.seed, 10);
     state.settings.seed = Number.isFinite(parsedSeed) && parsedSeed > 0 ? parsedSeed : null;
   }
@@ -89,6 +155,119 @@
   state.favorites = loadJsonFromStorage(FAVORITES_KEY, {}); // { "q_1": true }
   state.attempts = loadJsonFromStorage(ATTEMPTS_KEY, []); // [{id,ts,result}]
   state.questionStats = loadJsonFromStorage(STATS_KEY, {}); // { "q_1": {streak,nextReviewTs,wrongCount,lastTs} }
+  loadGalgameAffectionState();
+
+  const GALGAME_AFFECTION_RANKS = [
+    { min: 0, key: 'first', label: '初遇' },
+    { min: 18, key: 'warm', label: '熟悉' },
+    { min: 36, key: 'trust', label: '信赖' },
+    { min: 58, key: 'close', label: '心动' },
+    { min: 78, key: 'promise', label: '约定' },
+    { min: 96, key: 'true', label: 'True End' }
+  ];
+
+  function clampGalgameAffection(value) {
+    const parsed = Number.parseInt(value, 10);
+    return Number.isFinite(parsed) ? Math.min(100, Math.max(0, parsed)) : 12;
+  }
+
+  function loadGalgameAffectionState() {
+    const saved = loadJsonFromStorage(GALGAME_AFFECTION_KEY, null);
+    if (typeof saved === 'number') {
+      state.galgameAffection = clampGalgameAffection(saved);
+      state.galgameAffectionEvents = {};
+      return;
+    }
+    if (saved && typeof saved === 'object') {
+      state.galgameAffection = clampGalgameAffection(saved.score);
+      state.galgameAffectionEvents = saved.events && typeof saved.events === 'object' ? saved.events : {};
+    }
+  }
+
+  function saveGalgameAffectionState() {
+    saveJsonToStorage(GALGAME_AFFECTION_KEY, {
+      score: state.galgameAffection,
+      events: state.galgameAffectionEvents || {}
+    });
+  }
+
+  function getGalgameAffectionRank(value = state.galgameAffection) {
+    const score = clampGalgameAffection(value);
+    let rank = GALGAME_AFFECTION_RANKS[0];
+    GALGAME_AFFECTION_RANKS.forEach(item => {
+      if (score >= item.min) rank = item;
+    });
+    return rank;
+  }
+
+  function updateGalgameAffectionDisplay() {
+    const score = clampGalgameAffection(state.galgameAffection);
+    const rank = getGalgameAffectionRank(score);
+    state.galgameAffection = score;
+    const el = document.getElementById('galgame-affection');
+    if (el) {
+      el.textContent = `好感 ${score} · ${rank.label}`;
+      el.title = `澪的好感度：${score}/100`;
+    }
+    if (state.galgameMode) {
+      document.body.dataset.galgameAffection = rank.key;
+    } else {
+      delete document.body.dataset.galgameAffection;
+    }
+  }
+
+  function triggerGalgameAffectionMilestone(previousScore, nextScore) {
+    if (!state.galgameMode || nextScore <= previousScore) return false;
+    const currentRank = getGalgameAffectionRank(nextScore);
+    if (currentRank.min <= 0 || previousScore >= currentRank.min) return false;
+    const eventKey = `affection:${currentRank.key}`;
+    if (state.galgameAffectionEvents[eventKey]) return false;
+    state.galgameAffectionEvents[eventKey] = true;
+    saveGalgameAffectionState();
+    showGalgameEffect('affection', `好感 ${nextScore} · ${currentRank.label}`);
+    setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'affectionMilestone', { rank: currentRank.label }), currentRank.min >= 58 ? 'shy' : 'happy');
+    setGalgameStory(getCurrentFocusItem(), 'affectionMilestone');
+    return true;
+  }
+
+  function triggerGalgameAffectionDrop(previousScore, nextScore) {
+    if (!state.galgameMode || nextScore >= previousScore) return false;
+    const previousRank = getGalgameAffectionRank(previousScore);
+    const currentRank = getGalgameAffectionRank(nextScore);
+    if (previousRank.key === currentRank.key) return false;
+    showGalgameEffect('warning', `好感 ${nextScore} · ${currentRank.label}`);
+    setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'affectionDown', { rank: currentRank.label }), 'sad');
+    setGalgameStory(getCurrentFocusItem(), 'affectionDown');
+    return true;
+  }
+
+  function adjustGalgameAffection(delta, reason = 'event', options = {}) {
+    if (!state.galgameMode || !Number.isFinite(delta) || delta === 0) return 0;
+    const previousScore = clampGalgameAffection(state.galgameAffection);
+    const nextScore = clampGalgameAffection(previousScore + delta);
+    const actualDelta = nextScore - previousScore;
+    if (!actualDelta) return 0;
+    state.galgameAffection = nextScore;
+    saveGalgameAffectionState();
+    updateGalgameAffectionDisplay();
+    const milestoneTriggered = actualDelta > 0 && triggerGalgameAffectionMilestone(previousScore, nextScore);
+    const dropTriggered = actualDelta < 0 && triggerGalgameAffectionDrop(previousScore, nextScore);
+    if (options.effect !== false && actualDelta > 0 && !milestoneTriggered) {
+      showGalgameEffect('affection', `+${actualDelta} · ${getGalgameAffectionRank(nextScore).label}`);
+    }
+    if (options.effect !== false && actualDelta < 0 && !dropTriggered) {
+      showGalgameEffect('warning', `${actualDelta} · ${getGalgameAffectionRank(nextScore).label}`);
+    }
+    return actualDelta;
+  }
+
+  function adjustGalgameAffectionOnce(eventKey, delta, reason = 'event', options = {}) {
+    if (!state.galgameMode || !eventKey) return 0;
+    const key = `once:${eventKey}`;
+    if (state.galgameAffectionEvents[key]) return 0;
+    state.galgameAffectionEvents[key] = true;
+    return adjustGalgameAffection(delta, reason, options);
+  }
 
   function createSeededRandom(seed) {
     let currentSeed = seed;
@@ -140,7 +319,7 @@
   // ============================================================
   // 数据加载
   // ============================================================
-  async function loadJSON(filename) {
+  async function loadJSON(filename, options = {}) {
     const v = '1.8.1';
     const paths = [`data/${filename}?v=${v}`, `../data/${filename}?v=${v}`, `site/data/${filename}?v=${v}`];
     for (const path of paths) {
@@ -149,7 +328,7 @@
         if (res.ok) return await res.json();
       } catch (e) { /* try next */ }
     }
-    console.warn(`无法加载 ${filename}，使用内嵌数据`);
+    if (!options.optional) console.warn(`无法加载 ${filename}，使用内嵌数据`);
     return null;
   }
 
@@ -180,6 +359,10 @@
 
       // 应用乱序逻辑
       applyShuffle();
+
+      // 可选：读取本地脚本批量生成的 Galgame 剧情包。
+      const scenarios = await loadJSON('galgame_scenarios.json', { optional: true });
+      state.galgameScenarioMap = normalizeGalgameScenarios(scenarios);
 
       // 读取标准化知识点词表（若存在），用于“知识点→讲义章节”精准跳转
       try {
@@ -231,6 +414,9 @@
       initTheme();
       initSettingsPanel();
       initImportProgress();
+      initGalgameEntrances();
+      applyGalgameModeClass();
+      applyGalgameAudioVolumes();
       renderStats();
       renderDashboard();
       
@@ -275,6 +461,863 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state.userProgress));
     } catch (e) { console.warn('无法保存进度'); }
+  }
+
+  function applyGalgameModeClass() {
+    document.body.classList.toggle('galgame-mode', !!state.galgameMode);
+    document.body.classList.toggle('galgame-variant-romance', !!state.galgameMode);
+    if (state.galgameMode) {
+      state.quizMode = 'focus';
+    } else {
+      document.body.classList.remove('galgame-variant-romance');
+      delete document.body.dataset.galgameAffection;
+    }
+    updateGalgameAffectionDisplay();
+    updateGalgameStageVisibility();
+  }
+
+  function shouldUseGalgameStage() {
+    const quizPage = document.getElementById('page-quiz');
+    return !!state.galgameMode && state.quizMode === 'focus' && (!quizPage || quizPage.classList.contains('active'));
+  }
+
+  function getCurrentFocusItem() {
+    if (state.quizMode !== 'focus' || !state.filtered.length) return null;
+    if (state.focusIndex >= state.filtered.length) state.focusIndex = 0;
+    if (state.focusIndex < 0) state.focusIndex = state.filtered.length - 1;
+    return state.filtered[state.focusIndex] || null;
+  }
+
+  function getGalgameSceneForQuestion(q) {
+    const sceneByType = {
+      choice: { bg: 'exterior', bgm: 'summer', location: '夏日町外', expression: 'smile' },
+      truefalse: { bg: 'entrance', bgm: 'sunlight', location: '玄关回廊', expression: 'serious' },
+      fillin: { bg: 'duskRoom', bgm: 'afterSchool', location: '黄昏复习室', expression: 'shy' },
+      coding: { bg: 'nightRoom', bgm: 'afterSchool', location: '夜间推演', expression: 'serious' },
+      programming: { bg: 'kitchen', bgm: 'sunlight', location: '实践工坊', expression: 'happy' }
+    };
+    return sceneByType[q?.type] || sceneByType.choice;
+  }
+
+  function pickFrom(list, seedText = '') {
+    if (!Array.isArray(list) || !list.length) return '';
+    let hash = 0;
+    const raw = String(seedText || Date.now());
+    for (let i = 0; i < raw.length; i++) {
+      hash = ((hash << 5) - hash + raw.charCodeAt(i)) | 0;
+    }
+    return list[Math.abs(hash) % list.length];
+  }
+
+  function getGalgameStudyHint(q) {
+    if (!q) return '先把筛选条件调舒服一点，再继续推进这条路线。';
+    const hints = {
+      choice: [
+        '选择题先判断题干问的是“概念”“语法”还是“执行结果”，再去排除干扰项。',
+        '看到相似选项时，先找最绝对、最偷换概念的那一个。',
+        '把每个选项当成分支路线，能被反例击穿的路线就先划掉。'
+      ],
+      truefalse: [
+        '判断题要小心“总是”“一定”“只能”这类词，很多陷阱都藏在语气里。',
+        '先想一个反例，想不出反例再判断它是否成立。',
+        '别被熟悉的名词催着点按钮，判断题考的是边界。'
+      ],
+      fillin: [
+        '填空题更像补完关键台词，先回忆定义，再看语境需要哪种写法。',
+        '如果答案是关键字或函数名，注意大小写、作用域和参数形式。',
+        '先写核心词，再对照题干补完整表达。'
+      ],
+      coding: [
+        '程序分析题按语句执行顺序走一遍，尤其盯住构造、析构、虚函数和作用域。',
+        '先别急着看输出，画一下对象什么时候创建、什么时候销毁。',
+        '遇到多态题，先确认指针/引用的静态类型和对象的动态类型。'
+      ],
+      programming: [
+        '程序设计题先定接口和边界，再写实现，最后补测试样例。',
+        '把类的职责分清楚，主函数就会自然干净很多。',
+        '如果题目要求继承或多态，先写基类契约，再考虑派生类差异。'
+      ]
+    };
+    return pickFrom(hints[q.type] || hints.choice, `${q.type}:${q.id}:${state.focusIndex}`);
+  }
+
+  function getGalgameRouteTitle(q) {
+    const scenarioTitle = getGalgameScenario(q)?.routeTitle;
+    if (typeof scenarioTitle === 'string' && scenarioTitle.trim()) return scenarioTitle.trim();
+    if (!q) return '空白路线';
+    const typeTitle = {
+      choice: '选择分支',
+      truefalse: '真假分岔',
+      fillin: '关键词补完',
+      coding: '代码推演',
+      programming: '实践事件'
+    };
+    return `${typeTitle[q.type] || '复习事件'} · ${q.chapter || '综合章节'}`;
+  }
+
+  function getGalgameKnowledgeSummary(q) {
+    const scenarioSummary = getGalgameScenario(q)?.summary;
+    if (typeof scenarioSummary === 'string' && scenarioSummary.trim()) return scenarioSummary.trim();
+    const points = getKnowledgePointsForItem(q).slice(0, 3);
+    if (!points.length) return '本幕没有显式考点标签，先按题干线索推进。';
+    if (points.length === 1) return `本幕主线是「${points[0]}」，先把这个点吃透。`;
+    return `本幕主线围绕「${points.join('」「')}」，注意它们之间的边界。`;
+  }
+
+  function getGalgameKnowledgePlan(q) {
+    const points = getKnowledgePointsForItem(q);
+    const primary = points[0] || '题干线索';
+    const related = points.slice(1, 6);
+    const lectureHint = state.kpLectureMap && state.kpLectureMap[primary] ? state.kpLectureMap[primary] : '';
+    const count = state.knowledgePointCounts && state.knowledgePointCounts[primary] ? state.knowledgePointCounts[primary] : 0;
+    const scenario = getGalgameScenario(q);
+    const scenarioPlan = scenario && typeof scenario.plan === 'object' ? scenario.plan : {};
+    return {
+      primary: typeof scenarioPlan.primary === 'string' && scenarioPlan.primary.trim() ? scenarioPlan.primary.trim() : primary,
+      related: Array.isArray(scenarioPlan.related) && scenarioPlan.related.length ? scenarioPlan.related.filter(Boolean).map(String) : related,
+      lectureHint: typeof scenarioPlan.lectureHint === 'string' && scenarioPlan.lectureHint.trim() ? scenarioPlan.lectureHint.trim() : lectureHint,
+      count,
+      summary: typeof scenarioPlan.summary === 'string' && scenarioPlan.summary.trim()
+        ? scenarioPlan.summary.trim()
+        : points.length
+        ? `先锁定「${primary}」，再用关联点校验边界。`
+        : '先读题干条件，再从选项或代码里反推考点。'
+    };
+  }
+
+  function normalizeGalgameScenarios(raw) {
+    if (!raw) return {};
+    const source = Array.isArray(raw)
+      ? raw
+      : (Array.isArray(raw.items) ? raw.items : Object.entries(raw).map(([key, value]) => Object.assign({ key }, value)));
+    const map = {};
+    source.forEach(item => {
+      if (!item || typeof item !== 'object') return;
+      const key = String(item.key || item.id || '').trim();
+      if (!key) return;
+      map[key] = item;
+    });
+    return map;
+  }
+
+  function getGalgameScenario(q) {
+    if (!q || !state.galgameScenarioMap) return null;
+    const key = getProgressKeyForItem(q);
+    return state.galgameScenarioMap[key] || state.galgameScenarioMap[String(q.id)] || null;
+  }
+
+  function pickScenarioField(scenario, event, field) {
+    if (!scenario || !event) return '';
+    const direct = scenario[event];
+    if (direct && typeof direct === 'object' && typeof direct[field] === 'string') return direct[field].trim();
+    const events = scenario.events || {};
+    if (events[event] && typeof events[event][field] === 'string') return events[event][field].trim();
+    return '';
+  }
+
+  function getGalgameStoryBeat(q, event = 'intro') {
+    const scenarioStory = pickScenarioField(getGalgameScenario(q), event, 'story');
+    if (scenarioStory) return scenarioStory;
+    const routeTitle = getGalgameRouteTitle(q);
+    const scene = getGalgameSceneForQuestion(q);
+    const rank = getGalgameAffectionRank();
+    const beats = {
+      intro: [
+        `澪把练习册推到你面前，窗外的光落在「${q?.chapter || '综合复习'}」这一页。她靠得比平时近一些，只点了点题干最关键的地方。`,
+        `新的事件在${scene.location}展开。澪把选项当成几条分支路线排开，等你先判断哪一条最稳。好感阶段：${rank.label}。`,
+        `复习线推进到 ${routeTitle}。这一幕不急着抢答案，先把题干里的限制条件读清楚，她会在旁边盯着你的理由。`
+      ],
+      answer: [
+        '解析幕已经打开。澪把正确路线和干扰路线并排放好，让你先看结论，再回到题干核对证据。',
+        '答案不是终点，而是本幕的回想片段。把错因和关键条件对上，她才会满意地点头。',
+        '澪把讲义翻到对应页，示意你慢慢看：这一段会解释为什么别的分支走不通，也会决定这次好感能不能继续升温。'
+      ],
+      next: [
+        `你把这一页轻轻合上，路线图翻到下一格。${scene.location}的光线换了角度，新的限制条件也跟着浮现。`,
+        `下一幕接上来了。澪先把「${q?.chapter || '综合复习'}」的标题圈住，像是在提醒：剧情转场，考点也会换。`,
+        `翻页声落下，${routeTitle} 开始。她没有把答案递过来，只把题干往你这边推近了一点。`
+      ],
+      prev: [
+        '你回到上一幕。澪把书签重新夹回刚才的位置，等你补上那条没有走完的推理线。',
+        `路线倒回 ${routeTitle}。这一次不用急着选，先看清楚上次错过的条件。`,
+        `回看事件触发。${scene.location}安静下来，题干里容易漏掉的词反而更明显了。`
+      ],
+      correct: [
+        '你选中正确分支时，澪靠近了一点，声音压得很轻：这次判断很漂亮。好感度也跟着亮了一格。',
+        '选择落定，剧情顺利推进。澪提醒你把刚才那个判断点留在短时记忆里。',
+        '这次路线判断成功。题库进度向前亮了一格，下一幕可以稍微大胆一点，她似乎也更期待你的回答。'
+      ],
+      wrong: [
+        '分支暂时走偏了。澪没有责怪，只是把解析推近一些，低声说：别躲，先把错因抓住。好感度也会因为犹豫稍微降温。',
+        '错误路线触发了回看事件。先别急着下一题，这里藏着一个容易混淆的边界。',
+        '本幕进入慢读。澪把题干里的关键词圈出来，提醒你从条件而不是直觉开始。'
+      ],
+      selected: [
+        '你按下选项的瞬间，路线图短暂亮起。澪没有急着判定，只让你先记住刚才做判断的理由。',
+        `分支选择完成。${scene.location}里像是安静了一秒，等解析幕把伏笔逐条翻出来。`,
+        '你刚选完，她就把指尖停在题干旁边，轻声提醒：别只看结果，等会儿要说出理由。'
+      ],
+      streak: [
+        `连续 ${state.galgameStreak.correct} 次选择正确，夏日复习线的节奏明显变亮了。澪看你的眼神也更柔和。`,
+        `连胜 ${state.galgameStreak.correct}。澪把一张新的回想便签贴到书页边缘，好感度悄悄上升。`
+      ],
+      slump: [
+        `连续 ${state.galgameStreak.wrong} 次卡住，澪切到慢读模式：先暂停推进，把相似概念分开。她没有离开，只是把语速放慢。`,
+        `错误分支连续出现。她把菜单里的复习路线打开，等你把这一段补稳。空气稍微降温，但路线还没断。`
+      ],
+      affectionDown: [
+        `好感度降到「${rank.label}」阶段。澪轻轻敲了敲题干：先别撒娇，把理由补完整再继续。`,
+        `路线气氛稍微降温。${scene.location}安静下来，她把解析推近，等你把这次失误补回来。`
+      ],
+      mastered: [
+        '这一题被盖上掌握印章。路线图上多了一段稳定的亮色，好感节点也被记录下来。',
+        '澪把这题移出危险区，提醒你过一会儿再用复习队列回看。她说完又补了一句：做得不错。'
+      ],
+      review: [
+        '这题被放进复习队列。它会在稍后的剧情里重新出现。',
+        '澪在页角写下“待回看”，像给后面的你留下一个伏笔。'
+      ],
+      notebook: [
+        '路线手账摊开在桌面上，主考点、错题伏笔和复习进度都被整理成了能继续推进的线索。',
+        '澪把书签移到当前考点旁边：先看路线，再处理题干，这样不会被细节带偏。'
+      ],
+      complete: [
+        '题库路线抵达终章节点。新的 CG 片段被点亮，所有曾经卡住的地方都成了路线的一部分。',
+        '终章事件解锁。澪合上练习册，认真地说：这条路线，你真的走完了。'
+      ],
+      favorite: [
+        '这题被加入回想收藏。以后可以直接回到这一幕重看，像把两个人都记得的场景收进相册。',
+        '澪把这一页夹上书签：这类题值得在考前再看一次。她似乎很满意你愿意留下线索。'
+      ],
+      unfavorite: [
+        '你把这一幕从回想里撤下。澪没有多说，只是把书签收回去，气氛短暂安静了一点。',
+        '收藏被取消，这段回想暂时合上。她提醒你：重要场景别太轻易错过。'
+      ],
+      markedWrong: [
+        '这一幕被标成错题伏笔。澪把它放进路线手账的醒目位置，等你下一轮回收。',
+        '错题标记落下，不是坏结局，只是提醒你这里还有一条没走稳的支线。'
+      ],
+      affectionMilestone: [
+        `好感度进入「${rank.label}」阶段。澪把书页往你这边推近，声音也比刚才更轻：这条路线，我们继续走。`,
+        `新的好感节点点亮。${scene.location}的光像被调暖了一点，澪认真看着你，等你把下一题也说清楚。`
+      ]
+    };
+    const list = beats[event] || beats.intro;
+    return pickFrom(list, `story:${event}:${q?.id}:${state.focusIndex}:${state.galgameAffection}:${state.galgameStreak.correct}:${state.galgameStreak.wrong}`);
+  }
+
+  function getGalgameLine(q, event = 'intro', meta = {}) {
+    const scenarioLine = pickScenarioField(getGalgameScenario(q), event, 'line');
+    if (scenarioLine) return scenarioLine;
+    const chapter = q?.chapter ? `「${q.chapter}」` : '这一节';
+    const rank = getGalgameAffectionRank();
+    const introLines = [
+      `${chapter}的剧情线开始。靠近一点读题，我会陪你把题干拆开。${getGalgameStudyHint(q)}`,
+      `这一幕轮到${chapter}。先别急着选，你的理由我要听清楚。${getGalgameStudyHint(q)}`,
+      `翻到新的题页了。好感阶段是「${rank.label}」，这次也别让我失望哦。${getGalgameStudyHint(q)}`
+    ];
+    const answerLines = [
+      '解析已经解锁。现在不是跳过剧情的时候，我们把关键条件一条条对上。',
+      '答案出现了。先看结论，再回到题干确认它为什么只能这样。',
+      '这段解析就是本幕的真相线索，读完再推进会更稳。'
+    ];
+    const nextLines = [
+      `下一幕开始。${getGalgameStudyHint(q)}`,
+      `路线推进到${chapter}。先读题干，再决定这次该走哪条分支。`,
+      `翻页了。澪把练习册往你这边推近一点：这幕别走神。${getGalgameStudyHint(q)}`
+    ];
+    const prevLines = [
+      `回到${chapter}。把刚才没读透的地方补上，路线就会顺很多。`,
+      '回看上一幕不是倒退，是把伏笔收回来。',
+      '你回头看这一题时，她没有催你，只是安静等你把思路接上。'
+    ];
+    const correctLines = [
+      '答对了。你的路线判断很稳，好感度也悄悄上升。',
+      '嗯，这个选择漂亮。下一题之前，把刚才那个判断点记住。',
+      '答对了。靠得更近一点说，这题你真的处理得很好。'
+    ];
+    const wrongLines = [
+      '这条路线暂时走偏了。没关系，错题会变成下一次的伏笔。',
+      '先停一下。我们不急着翻页，把错因抓出来才算真正推进。',
+      '答错也不用躲，我在这里。把解析看完，我们再把场子找回来。'
+    ];
+    const lines = {
+      intro: pickFrom(introLines, `intro:${q?.id}:${state.focusIndex}:${state.galgameAffection}`),
+      answer: pickFrom(answerLines, `answer:${q?.id}:${state.focusIndex}`),
+      next: pickFrom(nextLines, `next:${q?.id}:${state.focusIndex}:${state.galgameAffection}`),
+      prev: pickFrom(prevLines, `prev:${q?.id}:${state.focusIndex}:${state.galgameAffection}`),
+      correct: pickFrom(correctLines, `correct:${q?.id}:${state.galgameStreak.correct}`),
+      wrong: pickFrom(wrongLines, `wrong:${q?.id}:${state.galgameStreak.wrong}`),
+      selected: meta.choice ? `你选择了 ${meta.choice} 分支。先别急着翻页，我们马上核对这条路线的证据。` : '分支已经选定。接下来要看它和题干证据是否对得上。',
+      review: '我先把它放进复习路线。晚点回来重读，剧情就会接上。',
+      mastered: '这题盖章通过。已经掌握的章节，会一点点把结局和好感都推亮。',
+      favorite: '已收藏。这类关键场景，之后值得一起回看。',
+      unfavorite: '回想书签收回去了。下次如果又想起这一幕，我们再把它夹回来。',
+      markedWrong: '我把它记成错题伏笔。下一次再遇到这类边界，就从这里接着往下走。',
+      empty: '当前条件下没有题目。换个筛选条件，也许会打开新的路线。',
+      streak: `连胜 ${state.galgameStreak.correct} 次。节奏很好，今天的复习线和好感度都在变亮。`,
+      slump: `连续 ${state.galgameStreak.wrong} 次卡住了。先别硬冲，我把节奏放慢陪你读。`,
+      affectionDown: `好感降到「${meta.rank || rank.label}」。别慌，把这一题补回来，气氛还能升温。`,
+      affectionMilestone: `好感进入「${meta.rank || rank.label}」。别移开视线，下一题也把理由说给我听。`,
+      complete: '题库路线已经推进到一个重要节点。辛苦了，新的回想片段已解锁。'
+    };
+    return lines[event] || lines.intro;
+  }
+
+  function setGalgameStory(q, event = 'intro') {
+    const panel = document.getElementById('galgame-story-panel');
+    const kicker = document.getElementById('galgame-story-kicker');
+    const title = document.getElementById('galgame-story-title');
+    const text = document.getElementById('galgame-story-text');
+    if (!panel || !title || !text) return;
+    const kickerMap = {
+      answer: 'Review Scene',
+      correct: 'Branch Result',
+      wrong: 'Branch Result',
+      selected: 'Branch Select',
+      next: 'Scene Shift',
+      prev: 'Replay Scene',
+      streak: 'Memory Unlock',
+      slump: 'Slow Read',
+      notebook: 'Route Notebook',
+      markedWrong: 'Bad End Flag',
+      affectionDown: 'Affection Down',
+      affectionMilestone: 'Affection Scene',
+      complete: 'Finale'
+    };
+    if (kicker) kicker.textContent = kickerMap[event] || 'Route Log';
+    title.textContent = getGalgameRouteTitle(q);
+    text.textContent = getGalgameStoryBeat(q, event);
+    panel.classList.remove('pulse');
+    requestAnimationFrame(() => panel.classList.add('pulse'));
+  }
+
+  function updateGalgameNotebook(q, scene) {
+    const notebook = document.getElementById('galgame-route-notebook');
+    const popover = document.getElementById('galgame-notebook-popover');
+    if (!notebook && !popover) return;
+    const title = document.getElementById('galgame-notebook-title');
+    const summary = document.getElementById('galgame-notebook-summary');
+    const stats = document.getElementById('galgame-notebook-stats');
+    const tags = document.getElementById('galgame-notebook-tags');
+    const popoverTitle = document.getElementById('galgame-notebook-popover-title');
+    const popoverSummary = document.getElementById('galgame-notebook-popover-summary');
+    const popoverStats = document.getElementById('galgame-notebook-popover-stats');
+    const popoverTags = document.getElementById('galgame-notebook-popover-tags');
+    const counts = getProgressCounts();
+    const ratio = Math.round(getGalgameProgressRatio() * 100);
+    const affectionRank = getGalgameAffectionRank();
+    const currentKey = q ? getProgressKeyForItem(q) : '';
+    const status = currentKey ? getQuestionStatus(currentKey) : '';
+    const plan = q ? getGalgameKnowledgePlan(q) : null;
+    const statusLabel = status === 'mastered' ? '已掌握' : status === 'review' ? '待复习' : status === 'wrong' ? '错题伏笔' : '未标记';
+    const titleText = plan ? plan.primary : '攻略手账';
+    const summaryText = plan
+      ? `${plan.summary}${scene?.location ? ` · ${scene.location}` : ''}`
+      : '当前路线的考点与进度会记录在这里。';
+    const statsHtml = `
+      <span><b>${escapeHtml(String(ratio))}%</b> 掌握</span>
+      <span><b>${escapeHtml(String(counts.review || 0))}</b> 待复习</span>
+      <span><b>${escapeHtml(String(counts.wrong || 0))}</b> 错题</span>
+      <span><b>${escapeHtml(statusLabel)}</b> 本幕</span>
+      <span><b>${escapeHtml(String(state.galgameAffection))}</b> 好感</span>
+      <span><b>${escapeHtml(affectionRank.label)}</b> 关系</span>
+    `;
+    const related = plan ? [plan.primary, ...plan.related].filter(Boolean) : [];
+    const tagsHtml = related.length
+      ? related.slice(0, 6).map(kp => `<span>${escapeHtml(kp)}</span>`).join('')
+      : '<span>题干线索</span>';
+    [title, popoverTitle].forEach(el => {
+      if (el) el.textContent = titleText;
+    });
+    [summary, popoverSummary].forEach(el => {
+      if (el) el.textContent = summaryText;
+    });
+    [stats, popoverStats].forEach(el => {
+      if (el) el.innerHTML = statsHtml;
+    });
+    [tags, popoverTags].forEach(el => {
+      if (el) el.innerHTML = tagsHtml;
+    });
+  }
+
+  function closeGalgameNotebook() {
+    const popover = document.getElementById('galgame-notebook-popover');
+    if (popover) popover.hidden = true;
+  }
+
+  function openGalgameNotebook() {
+    const notebook = document.getElementById('galgame-route-notebook');
+    const popover = document.getElementById('galgame-notebook-popover');
+    if (!shouldUseGalgameStage()) return;
+    const q = getCurrentFocusItem();
+    updateGalgameNotebook(q, getGalgameSceneForQuestion(q));
+    if (notebook) {
+      notebook.classList.remove('spotlight');
+      requestAnimationFrame(() => notebook.classList.add('spotlight'));
+    }
+    if (popover) {
+      popover.hidden = false;
+      popover.classList.remove('spotlight');
+      requestAnimationFrame(() => popover.classList.add('spotlight'));
+    }
+    setGalgameStory(q, 'notebook');
+    setGalgameDialogue('路线手账已打开。先把主考点、错题伏笔和掌握度对齐，再继续推进这一幕。', 'serious');
+  }
+
+  function spotlightGalgameNotebook() {
+    openGalgameNotebook();
+  }
+
+  function setGalgameDialogue(line, expression) {
+    const textEl = document.getElementById('galgame-dialogue-text');
+    const characterEl = document.getElementById('galgame-character');
+    if (textEl && line) textEl.textContent = line;
+    if (characterEl && expression && GALGAME_ASSETS.characters[expression]) {
+      characterEl.src = GALGAME_ASSETS.characters[expression];
+    }
+  }
+
+  function showGalgameEffect(kind, message) {
+    if (!state.galgameMode) return;
+    const layer = document.getElementById('galgame-effect-layer');
+    if (!layer) return;
+    const effectKind = kind || 'info';
+    const effectTitle = {
+      success: '路线推进',
+      warning: '慢读事件',
+      complete: 'CG 解锁',
+      affection: '好感变化',
+      info: '路线提示'
+    }[effectKind] || '路线提示';
+    const effectKicker = {
+      success: 'Memory Fragment',
+      warning: 'Bad End Avoided',
+      complete: 'Finale Cut-in',
+      affection: 'Affection Route',
+      info: 'Route Notice'
+    }[effectKind] || 'Route Notice';
+    layer.innerHTML = `
+      <div class="galgame-effect-card ${effectKind}">
+        <span>${escapeHtml(effectKicker)}</span>
+        <strong>${escapeHtml(effectTitle)}</strong>
+        <em>${escapeHtml(message || '')}</em>
+      </div>
+    `;
+    layer.classList.remove('visible');
+    requestAnimationFrame(() => layer.classList.add('visible'));
+    clearTimeout(layer._effectTimer);
+    layer._effectTimer = setTimeout(() => layer.classList.remove('visible'), effectKind === 'complete' ? 3200 : 2300);
+  }
+
+  function getGalgameProgressRatio() {
+    const total = getCurrentProgressKeys().size || state.allItems.length || 0;
+    if (!total) return 0;
+    const mastered = getProgressCounts().mastered || 0;
+    return mastered / total;
+  }
+
+  function triggerGalgameMilestones() {
+    if (!state.galgameMode) return false;
+    let triggered = false;
+    const ratio = getGalgameProgressRatio();
+    const milestones = [
+      { key: 'p25', value: 0.25, label: '回想片段 25%' },
+      { key: 'p50', value: 0.5, label: '回想片段 50%' },
+      { key: 'p75', value: 0.75, label: '回想片段 75%' },
+      { key: 'p100', value: 1, label: '终章 CG' }
+    ];
+    milestones.forEach(ms => {
+      if (ratio >= ms.value && !state.galgameEventHistory[ms.key]) {
+        state.galgameEventHistory[ms.key] = true;
+        triggered = true;
+        showGalgameEffect(ms.value >= 1 ? 'complete' : 'success', ms.label);
+        setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), ms.value >= 1 ? 'complete' : 'mastered'), 'happy');
+        setGalgameStory(getCurrentFocusItem(), ms.value >= 1 ? 'complete' : 'mastered');
+      }
+    });
+    return triggered;
+  }
+
+  function handleGalgameAttemptResult(isCorrect) {
+    if (!state.galgameMode) return;
+    const q = getCurrentFocusItem();
+    const key = getProgressKeyForItem(q);
+    if (isCorrect) {
+      adjustGalgameAffectionOnce(`${key}:correct`, 3, 'correct');
+      state.galgameStreak.correct += 1;
+      state.galgameStreak.wrong = 0;
+      if (state.galgameStreak.correct > 1 && state.galgameStreak.correct % 3 === 0) {
+        adjustGalgameAffection(2, 'streak');
+        setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'streak'), 'happy');
+        setGalgameStory(getCurrentFocusItem(), 'streak');
+        showGalgameEffect('success', `连胜 ${state.galgameStreak.correct}`);
+      }
+    } else {
+      adjustGalgameAffectionOnce(`${key}:wrong`, -2, 'wrong');
+      state.galgameStreak.wrong += 1;
+      state.galgameStreak.correct = 0;
+      if (state.galgameStreak.wrong > 1 && state.galgameStreak.wrong % 3 === 0) {
+        adjustGalgameAffection(-3, 'slump');
+        setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'slump'), 'sad');
+        setGalgameStory(getCurrentFocusItem(), 'slump');
+        showGalgameEffect('warning', '慢读模式');
+      }
+    }
+    triggerGalgameMilestones();
+  }
+
+  function getGalgameAudioElements() {
+    return {
+      bgm: document.getElementById('galgame-bgm'),
+      bgs: document.getElementById('galgame-bgs'),
+      se: document.getElementById('galgame-se')
+    };
+  }
+
+  function applyGalgameAudioVolumes() {
+    const { bgm, bgs, se } = getGalgameAudioElements();
+    const bgmVolume = (state.settings.galgameBgmVolume || 35) / 100;
+    const seVolume = (state.settings.galgameSeVolume || 55) / 100;
+    if (bgm) bgm.volume = bgmVolume;
+    if (bgs) bgs.volume = Math.min(0.35, bgmVolume * 0.7);
+    if (se) se.volume = seVolume;
+  }
+
+  function playGalgameSe(name) {
+    if (!state.galgameMode || !state.settings.galgameAudio) return;
+    const src = GALGAME_ASSETS.audio.se[name];
+    const se = document.getElementById('galgame-se');
+    if (!src || !se) return;
+    se.src = src;
+    applyGalgameAudioVolumes();
+    se.currentTime = 0;
+    se.play().catch(() => {});
+  }
+
+  function startGalgameAmbient(scene) {
+    const { bgm, bgs } = getGalgameAudioElements();
+    if (!state.galgameMode || !state.settings.galgameAudio || !state.galgameAudioReady) {
+      if (bgm) bgm.pause();
+      if (bgs) bgs.pause();
+      return;
+    }
+    applyGalgameAudioVolumes();
+    const bgmSrc = GALGAME_ASSETS.audio.bgm[scene.bgm] || GALGAME_ASSETS.audio.bgm.summer;
+    if (bgm && !bgm.src.endsWith(bgmSrc)) {
+      bgm.src = bgmSrc;
+    }
+    if (bgs && !bgs.src.endsWith(GALGAME_ASSETS.audio.bgs)) {
+      bgs.src = GALGAME_ASSETS.audio.bgs;
+    }
+    if (bgm) bgm.play().catch(() => {});
+    if (bgs) bgs.play().catch(() => {});
+  }
+
+  function syncGalgameMenuSliders() {
+    const bgmInput = document.getElementById('galgame-bgm-volume');
+    const seInput = document.getElementById('galgame-se-volume');
+    if (bgmInput) bgmInput.value = state.settings.galgameBgmVolume || 35;
+    if (seInput) seInput.value = state.settings.galgameSeVolume || 55;
+    updateGalgameVolumeLabels();
+  }
+
+  function updateGalgameVolumeLabels() {
+    const labelPairs = [
+      ['galgame-entry-bgm-volume', 'galgame-entry-bgm-value'],
+      ['galgame-entry-se-volume', 'galgame-entry-se-value'],
+      ['galgame-bgm-volume', 'galgame-bgm-volume-value'],
+      ['galgame-se-volume', 'galgame-se-volume-value']
+    ];
+    labelPairs.forEach(([inputId, labelId]) => {
+      const input = document.getElementById(inputId);
+      const label = document.getElementById(labelId);
+      if (!input || !label) return;
+      label.textContent = `${clampGalgameVolume(input.value, 0)}%`;
+    });
+  }
+
+  function syncGalgameEntrySettings(variant = 'romance', syncSliders = true) {
+    const modal = document.getElementById('galgame-choice-modal');
+    const note = document.getElementById('galgame-rating-note');
+    const bgmInput = document.getElementById('galgame-entry-bgm-volume');
+    const seInput = document.getElementById('galgame-entry-se-volume');
+    const audioInput = document.getElementById('galgame-entry-audio');
+    if (modal) modal.dataset.variant = 'romance';
+    if (note) note.textContent = '恋爱喜剧氛围：对白更贴近 Galgame 的陪伴感与距离感，但题干、解析和刷题节奏优先。';
+    if (syncSliders) {
+      if (bgmInput) bgmInput.value = state.settings.galgameBgmVolume || 35;
+      if (seInput) seInput.value = state.settings.galgameSeVolume || 55;
+      if (audioInput) audioInput.checked = state.settings.galgameAudio !== false;
+    }
+    if (bgmInput) bgmInput.disabled = audioInput && !audioInput.checked;
+    if (seInput) seInput.disabled = audioInput && !audioInput.checked;
+    updateGalgameVolumeLabels();
+  }
+
+  function getGalgameEntryVariant() {
+    return 'romance';
+  }
+
+  function saveGalgameEntrySettings() {
+    const bgmInput = document.getElementById('galgame-entry-bgm-volume');
+    const seInput = document.getElementById('galgame-entry-se-volume');
+    const audioInput = document.getElementById('galgame-entry-audio');
+    state.settings.galgameAudio = audioInput ? !!audioInput.checked : state.settings.galgameAudio !== false;
+    state.settings.galgameBgmVolume = clampGalgameVolume(bgmInput?.value, state.settings.galgameBgmVolume || 35);
+    state.settings.galgameSeVolume = clampGalgameVolume(seInput?.value, state.settings.galgameSeVolume || 55);
+    state.galgameVariant = getGalgameEntryVariant();
+    applyGalgameAudioVolumes();
+    syncGalgameMenuSliders();
+  }
+
+  function stopGalgameAmbient() {
+    const { bgm, bgs } = getGalgameAudioElements();
+    if (bgm) bgm.pause();
+    if (bgs) bgs.pause();
+  }
+
+  function enableGalgameAudioFromUserGesture() {
+    if (!state.galgameMode) return;
+    state.galgameAudioReady = true;
+    if (!shouldUseGalgameStage()) {
+      stopGalgameAmbient();
+      return;
+    }
+    startGalgameAmbient(getGalgameSceneForQuestion(getCurrentFocusItem()));
+  }
+
+  function updateGalgameStageVisibility() {
+    const stage = document.getElementById('galgame-stage');
+    const list = document.getElementById('question-list');
+    const nav = document.getElementById('focus-navigation');
+    const host = document.getElementById('galgame-question-host');
+    const shouldShow = shouldUseGalgameStage();
+    document.body.classList.toggle('galgame-immersive-active', shouldShow);
+    if (stage) stage.hidden = !shouldShow;
+    if (list) list.classList.toggle('galgame-source-list', shouldShow);
+    if (nav) nav.classList.toggle('galgame-nav', shouldShow);
+    if (!shouldShow) {
+      document.body.classList.remove('galgame-answer-open');
+      if (host) host.innerHTML = '';
+      closeGalgameNotebook();
+      stopGalgameAmbient();
+    } else {
+      resetGalgameStageScroll();
+    }
+  }
+
+  function resetGalgameStageScroll() {
+    if (!shouldUseGalgameStage()) return;
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      ['galgame-stage', 'galgame-question-shell', 'galgame-question-host'].forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.scrollTop = 0;
+        el.scrollLeft = 0;
+      });
+    });
+  }
+
+  function updateGalgameStage(event = 'intro') {
+    updateGalgameStageVisibility();
+    if (!shouldUseGalgameStage()) return;
+    const q = getCurrentFocusItem();
+    const stage = document.getElementById('galgame-stage');
+    const bg = document.getElementById('galgame-bg');
+    const character = document.getElementById('galgame-character');
+    const host = document.getElementById('galgame-question-host');
+    const progress = document.getElementById('galgame-progress');
+    const routeProgress = document.getElementById('galgame-route-progress');
+    const location = document.getElementById('galgame-location');
+    const sourceCard = document.querySelector('#question-list > .question-card') || host.querySelector('.question-card');
+    const emptyState = document.querySelector('#question-list > .empty-state');
+    if (!stage || !host) return;
+    if (!q && emptyState) {
+      host.innerHTML = '';
+      host.appendChild(emptyState);
+      setGalgameDialogue(getGalgameLine(null, 'empty'), 'sad');
+      return;
+    }
+    if (!q || !sourceCard) return;
+    const scene = getGalgameSceneForQuestion(q);
+    const bgPath = GALGAME_ASSETS.backgrounds[scene.bg] || GALGAME_ASSETS.backgrounds.duskRoom;
+    if (bg) bg.style.backgroundImage = `url("${bgPath}")`;
+    if (character && character.getAttribute('src') !== GALGAME_ASSETS.characters[scene.expression]) {
+      character.src = GALGAME_ASSETS.characters[scene.expression];
+    }
+    if (progress) progress.textContent = `第 ${state.focusIndex + 1} / ${state.filtered.length} 题`;
+    if (routeProgress) {
+      const ratio = Math.round(getGalgameProgressRatio() * 100);
+      const counts = getProgressCounts();
+      routeProgress.textContent = `掌握 ${ratio}% · 错题 ${counts.wrong}`;
+    }
+    updateGalgameAffectionDisplay();
+    if (location) location.textContent = scene.location;
+    if (!host.contains(sourceCard)) {
+      host.innerHTML = '';
+      host.appendChild(sourceCard);
+    }
+    const key = `${scene.bg}:${scene.bgm}:${q.type}:${q.id}`;
+    if (state.galgameCurrentScene !== key) {
+      state.galgameCurrentScene = key;
+      sourceCard.classList.add('galgame-card-enter');
+      setTimeout(() => sourceCard.classList.remove('galgame-card-enter'), 420);
+    }
+    setGalgameDialogue(getGalgameLine(q, event), scene.expression);
+    setGalgameStory(q, event);
+    updateGalgameNotebook(q, scene);
+    startGalgameAmbient(scene);
+  }
+
+  function openGalgameChoiceModal(triggerLabel = '隐藏路线') {
+    const modal = document.getElementById('galgame-choice-modal');
+    if (!modal) return;
+    syncGalgameEntrySettings('romance', true);
+    modal.classList.add('visible');
+    modal.setAttribute('aria-hidden', 'false');
+    showToast(`${triggerLabel}已触发`, 'success');
+  }
+
+  function closeGalgameChoiceModal() {
+    const modal = document.getElementById('galgame-choice-modal');
+    if (!modal) return;
+    modal.classList.remove('visible');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+
+  function enterGalgameMode() {
+    closeGalgameChoiceModal();
+    state.galgameMode = true;
+    state.galgameVariant = 'romance';
+    state.quizMode = 'focus';
+    state.galgameAudioReady = state.settings.galgameAudio !== false;
+    normalizeSettings();
+    saveJsonToStorage(SETTINGS_KEY, state.settings);
+    saveViewState();
+    window._goToPage('quiz');
+    applyGalgameModeClass();
+    syncUIWithState();
+    renderQuestionList();
+    updateGalgameStage('intro');
+    showGalgameEffect('affection', `${getGalgameAffectionRank().label} · 好感 ${state.galgameAffection}`);
+  }
+
+  function exitGalgameMode() {
+    state.galgameMode = false;
+    saveJsonToStorage(SETTINGS_KEY, state.settings);
+    document.body.classList.remove('galgame-mode', 'galgame-immersive-active', 'galgame-variant-romance');
+    delete document.body.dataset.galgameAffection;
+    state.quizMode = 'list';
+    saveViewState();
+    closeGalgameMenu();
+    closeGalgameNotebook();
+    stopGalgameAmbient();
+    syncUIWithState();
+    renderQuestionList();
+    updateBackToTopVisibility();
+  }
+
+  function openGalgameMenu() {
+    const menu = document.getElementById('galgame-menu');
+    if (!menu) return;
+    menu.hidden = false;
+    syncGalgameMenuSliders();
+    applyGalgameAudioVolumes();
+  }
+
+  function closeGalgameMenu() {
+    const menu = document.getElementById('galgame-menu');
+    if (!menu) return;
+    menu.hidden = true;
+  }
+
+  function initGalgameEntrances() {
+    const logo = document.querySelector('.logo');
+    let logoClicks = 0;
+    let logoTimer = null;
+    if (logo) {
+      logo.addEventListener('click', (e) => {
+        logoClicks += 1;
+        clearTimeout(logoTimer);
+        logoTimer = setTimeout(() => { logoClicks = 0; }, 1200);
+        if (logoClicks >= 6) {
+          e.preventDefault();
+          logoClicks = 0;
+          openGalgameChoiceModal('Logo 彩蛋');
+        }
+      });
+    }
+
+    const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a','b','a'];
+    let konamiIndex = 0;
+    document.addEventListener('keydown', (e) => {
+      const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if (key === konami[konamiIndex]) {
+        konamiIndex += 1;
+        if (konamiIndex === konami.length) {
+          konamiIndex = 0;
+          openGalgameChoiceModal('神秘键位');
+        }
+      } else {
+        konamiIndex = key === konami[0] ? 1 : 0;
+      }
+    });
+
+    const confirmBtn = document.getElementById('galgame-enter-confirm');
+    const cancelBtn = document.getElementById('galgame-enter-cancel');
+    const entryAudio = document.getElementById('galgame-entry-audio');
+    const entryBgm = document.getElementById('galgame-entry-bgm-volume');
+    const entrySe = document.getElementById('galgame-entry-se-volume');
+    if (entryAudio) {
+      entryAudio.addEventListener('change', () => {
+        const enabled = !!entryAudio.checked;
+        if (entryBgm) entryBgm.disabled = !enabled;
+        if (entrySe) entrySe.disabled = !enabled;
+      });
+    }
+    [entryBgm, entrySe].forEach(input => {
+      if (input) input.addEventListener('input', updateGalgameVolumeLabels);
+    });
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', () => {
+        saveGalgameEntrySettings();
+        enterGalgameMode();
+      });
+    }
+    if (cancelBtn) cancelBtn.addEventListener('click', closeGalgameChoiceModal);
+    syncGalgameEntrySettings('romance', true);
+
+    const menuOpen = document.getElementById('galgame-menu-open');
+    if (menuOpen) menuOpen.addEventListener('click', openGalgameMenu);
+    const resume = document.getElementById('galgame-menu-resume');
+    if (resume) resume.addEventListener('click', closeGalgameMenu);
+    const notebook = document.getElementById('galgame-menu-notebook');
+    if (notebook) notebook.addEventListener('click', () => {
+      closeGalgameMenu();
+      spotlightGalgameNotebook();
+    });
+    const review = document.getElementById('galgame-menu-review');
+    if (review) review.addEventListener('click', () => {
+      closeGalgameMenu();
+      window.startTodayReview();
+    });
+    const progress = document.getElementById('galgame-menu-progress');
+    if (progress) progress.addEventListener('click', () => {
+      closeGalgameMenu();
+      window._goToPage('progress');
+    });
+    const exit = document.getElementById('galgame-menu-exit');
+    if (exit) exit.addEventListener('click', exitGalgameMode);
+    const notebookClose = document.getElementById('galgame-notebook-close');
+    if (notebookClose) notebookClose.addEventListener('click', closeGalgameNotebook);
+    const notebookPopover = document.getElementById('galgame-notebook-popover');
+    if (notebookPopover) {
+      notebookPopover.addEventListener('click', (e) => {
+        if (e.target === notebookPopover) closeGalgameNotebook();
+      });
+    }
   }
 
   // ============================================================
@@ -338,6 +1381,12 @@
       const isModeActive = btn.dataset.mode === state.quizMode && !state.reviewQueueActive;
       btn.classList.toggle('active', btn.id === 'today-review' ? state.reviewQueueActive : isModeActive);
     });
+
+    const galgameAudioToggle = document.getElementById('galgame-audio-toggle');
+    if (galgameAudioToggle) {
+      galgameAudioToggle.classList.toggle('muted', state.settings.galgameAudio === false);
+      galgameAudioToggle.setAttribute('aria-pressed', state.settings.galgameAudio === false ? 'false' : 'true');
+    }
 
     updateTodayReviewButton();
   }
@@ -468,15 +1517,17 @@
       state.userProgress[key] = status;
     }
     const nextStatus = state.userProgress[key] || null;
+    const changed = previousStatus !== nextStatus;
     saveProgress();
     renderStats();
     renderDashboard();
     renderProgress();
     updateCardActions(id);
     updateTodayReviewButton();
-    if (!state.reviewQueueActive && state.currentStatus && previousStatus !== nextStatus) {
+    if (!state.reviewQueueActive && state.currentStatus && changed) {
       scheduleFilteredRefreshAfterMutation(key, options.toggle === false ? 900 : 0);
     }
+    return { previousStatus, nextStatus, changed };
   }
 
   // 更新题目卡片上的状态按钮样式
@@ -714,6 +1765,7 @@
       saveBtn.addEventListener('click', () => {
         state.settings.redoMode = inputRedoMode ? !!inputRedoMode.checked : false;
         localStorage.setItem('oop_redo_mode', state.settings.redoMode ? '1' : '0');
+        normalizeSettings();
 
         const shuffleChecked = inputShuffleMode ? !!inputShuffleMode.checked : false;
         const enteredSeed = inputSeed ? Number.parseInt(inputSeed.value, 10) : 0;
@@ -1415,6 +2467,8 @@
       if (pageEl) pageEl.classList.add('active');
 
       localStorage.setItem('oop_active_page', page);
+      updateGalgameStageVisibility();
+      updateGalgameStage();
       updateBackToTopVisibility();
 
       // 切换页面时，先暂停滚动位置保存，然后恢复该页面的滚动位置
@@ -1459,6 +2513,9 @@
           filterAndRender();
         } else {
           renderQuestionList();
+        }
+        if (state.galgameMode && nextMode === 'focus') {
+          enableGalgameAudioFromUserGesture();
         }
         updateBackToTopVisibility();
       });
@@ -1516,6 +2573,17 @@
       todayReviewBtn.addEventListener('click', () => window.startTodayReview());
     }
 
+    document.addEventListener('click', (e) => {
+      const toggle = e.target.closest('[data-answer-toggle]');
+      if (!toggle) return;
+      const id = toggle.getAttribute('data-answer-toggle');
+      if (!id) return;
+      e.preventDefault();
+      const el = document.getElementById('answer-' + id);
+      if (!el) return;
+      setAnswerVisibility(id, !el.classList.contains('visible'));
+    });
+
     // 搜索
     let searchTimer;
     document.getElementById('search-input').addEventListener('input', (e) => {
@@ -1557,14 +2625,52 @@
         if (!isInput) {
           if (e.key === 'ArrowLeft') {
             e.preventDefault();
+            playGalgameSe('cursor');
             window._prevFocusQuestion();
           } else if (e.key === 'ArrowRight') {
             e.preventDefault();
+            playGalgameSe('cursor');
             window._nextFocusQuestion();
+          } else if (state.galgameMode && (e.key === ' ' || e.key === 'Enter')) {
+            const item = getCurrentFocusItem();
+            if (!item) return;
+            e.preventDefault();
+            enableGalgameAudioFromUserGesture();
+            const uniqueId = item.type === 'programming' ? `prog-${item.id}` : `q-${item.id}`;
+            const answerEl = document.getElementById('answer-' + uniqueId);
+            if (answerEl && !answerEl.classList.contains('visible')) {
+              window._showAnswer(uniqueId);
+            } else {
+              window._nextFocusQuestion();
+            }
+          } else if (state.galgameMode && e.key === 'Escape') {
+            const item = getCurrentFocusItem();
+            if (!item) return;
+            e.preventDefault();
+            const uniqueId = item.type === 'programming' ? `prog-${item.id}` : `q-${item.id}`;
+            setAnswerVisibility(uniqueId, false);
+            playGalgameSe('cancel');
           }
         }
       }
     });
+
+    const galgameAudioToggle = document.getElementById('galgame-audio-toggle');
+    if (galgameAudioToggle) {
+      galgameAudioToggle.addEventListener('click', () => {
+        state.settings.galgameAudio = !state.settings.galgameAudio;
+        saveJsonToStorage(SETTINGS_KEY, state.settings);
+        galgameAudioToggle.classList.toggle('muted', !state.settings.galgameAudio);
+        if (state.settings.galgameAudio) {
+          enableGalgameAudioFromUserGesture();
+          playGalgameSe('decision');
+        } else {
+          stopGalgameAmbient();
+        }
+      });
+    }
+
+    document.addEventListener('pointerdown', enableGalgameAudioFromUserGesture, { passive: true });
 
     // 回到顶部按钮
     const backToTopBtn = document.getElementById('back-to-top');
@@ -1692,6 +2798,7 @@
 
   function renderQuestionList(options = {}) {
     const noScroll = options.noScroll || false;
+    const stageEvent = options.stageEvent || 'intro';
     const container = document.getElementById('question-list');
     const navContainer = document.getElementById('focus-navigation');
 
@@ -1715,11 +2822,13 @@
         </div>
       `;
       navContainer.style.display = 'none';
+      updateGalgameStage();
       return;
     }
 
     if (state.quizMode === 'list') {
       navContainer.style.display = 'none';
+      updateGalgameStageVisibility();
       const visibleCount = PAGE_SIZE * listPageCount;
       const visible = state.filtered.slice(0, visibleCount);
       let html = visible.map((q, idx) => renderQuestionCard(q, idx + 1)).join('');
@@ -1741,13 +2850,21 @@
         localStorage.setItem('oop_last_question_id', key);
       }
       container.innerHTML = renderQuestionCard(q, state.focusIndex + 1);
+      document.body.classList.remove('galgame-answer-open');
 
       // 渲染底部分页控制
-      navContainer.innerHTML = `
-        <button class="filter-btn" onclick="window._prevFocusQuestion()">← 上一题</button>
-        <span class="focus-index-info">第 ${state.focusIndex + 1} / ${state.filtered.length} 题<br><span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">← → 箭头键切换</span></span>
-        <button class="filter-btn" onclick="window._nextFocusQuestion()">下一题 →</button>
-      `;
+      const useGalgameNav = !!state.galgameMode;
+      navContainer.innerHTML = useGalgameNav
+        ? `
+          <button class="filter-btn galgame-scene-btn" onclick="window._prevFocusQuestion()">← 上一幕</button>
+          <span class="focus-index-info galgame-scene-index">Scene ${state.focusIndex + 1} / ${state.filtered.length}<br><span>← → 推进路线</span></span>
+          <button class="filter-btn galgame-scene-btn" onclick="window._nextFocusQuestion()">下一幕 →</button>
+        `
+        : `
+          <button class="filter-btn" onclick="window._prevFocusQuestion()">← 上一题</button>
+          <span class="focus-index-info">第 ${state.focusIndex + 1} / ${state.filtered.length} 题<br><span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">← → 箭头键切换</span></span>
+          <button class="filter-btn" onclick="window._nextFocusQuestion()">下一题 →</button>
+        `;
 
       // 切换焦点模式时滚动到题目区域
       if (!noScroll) {
@@ -1755,6 +2872,7 @@
       }
     }
 
+    updateGalgameStage(stageEvent);
     updateBackToTopVisibility();
   }
 
@@ -1781,13 +2899,18 @@
     const status = getQuestionStatus(getProgressKeyForItem(q));
     const uniqueId = isProgramming ? `prog-${q.id}` : `q-${q.id}`;
     const safeUniqueId = escapeAttr(uniqueId);
+    const isGalgameCard = !!state.galgameMode && state.quizMode === 'focus';
+    const openingKps = getKnowledgePointsForItem(q);
+    const galgamePlan = getGalgameKnowledgePlan(q);
+    const label = isProgramming ? `程序 ${q.id}` : `第 ${q.id} 题`;
+    const galStatusText = status === 'mastered' ? '已掌握' : status === 'review' ? '待复习' : status === 'wrong' ? '错题' : '未标记';
+    const questionTitle = isProgramming ? (q.title || label) : (q.stem || '').split(/\n|\\n/)[0] || label;
 
-    let html = `<div class="question-card" data-type="${q.type}" data-id="${safeUniqueId}"${displayIndex != null ? ` data-index="${displayIndex}"` : ''}>`;
+    let html = `<div class="question-card ${isGalgameCard ? 'galgame-task-card' : ''}" data-type="${q.type}" data-id="${safeUniqueId}"${displayIndex != null ? ` data-index="${displayIndex}"` : ''}>`;
 
     // 头部
     html += `<div class="question-header">`;
     html += `<div class="question-meta">`;
-    const label = isProgramming ? `程序 ${q.id}` : `第 ${q.id} 题`;
     html += `<span class="question-number">${escapeHtml(label)}</span>`;
     html += `<span class="badge ${typeBadge[q.type]}">${escapeHtml(typeLabel[q.type] || q.type)}</span>`;
     if (q.chapter) html += `<span class="badge badge-chapter">${escapeHtml(q.chapter)}</span>`;
@@ -1805,15 +2928,72 @@
     html += `</div></div>`;
 
     // 题目内容
+    if (isGalgameCard) {
+      html += `<div class="galgame-task-overview">`;
+      html += `<div class="galgame-task-copy">`;
+      html += `<span class="galgame-task-label">${escapeHtml(getGalgameRouteTitle(q))}</span>`;
+      html += `<strong>${escapeHtml(questionTitle)}</strong>`;
+      html += `<p>${escapeHtml(getGalgameKnowledgeSummary(q))}</p>`;
+      html += `</div>`;
+      html += `<div class="galgame-task-state">`;
+      html += `<span>${escapeHtml(galStatusText)}</span>`;
+      html += `<small>${escapeHtml(getGalgameStudyHint(q))}</small>`;
+      html += `</div>`;
+      html += `</div>`;
+    }
+
+    if (openingKps.length) {
+      if (isGalgameCard) {
+        html += `<div class="galgame-study-ribbon galgame-route-board" aria-label="本题考点">`;
+        html += `<div class="galgame-route-main">`;
+        html += `<span>攻略路线</span>`;
+        html += `<strong>${escapeHtml(galgamePlan.primary)}</strong>`;
+        html += `<p>${escapeHtml(galgamePlan.summary)}</p>`;
+        html += `</div>`;
+        html += `<div class="galgame-route-side">`;
+        html += `<small>${escapeHtml(galgamePlan.lectureHint || '讲义索引将在知识点页定位')}</small>`;
+        if (galgamePlan.count) html += `<em>${galgamePlan.count} 题相关</em>`;
+        html += `</div>`;
+        if (galgamePlan.related.length) {
+          html += `<div class="galgame-study-chips">`;
+          galgamePlan.related.forEach(kp => {
+            html += `<span>${escapeHtml(kp)}</span>`;
+          });
+          html += `</div>`;
+        }
+        html += `</div>`;
+      } else {
+        html += `<div class="galgame-study-ribbon" aria-label="本题考点">`;
+        html += `<strong>本幕考点</strong>`;
+        html += `<div class="galgame-study-chips">`;
+        openingKps.slice(0, 4).forEach(kp => {
+          html += `<span>${escapeHtml(kp)}</span>`;
+        });
+        html += `</div></div>`;
+      }
+    }
+
+    html += `<div class="galgame-reading-panel">`;
+
     if (isProgramming) {
-      html += `<div class="question-stem" style="font-weight:600;">${escapeHtml(q.title || '')}</div>`;
-      html += `<div class="question-stem" style="font-size:0.88rem;color:var(--text-secondary);">${escapeHtml(q.requirement || '').replace(/\\n/g, '<br>').replace(/\n/g, '<br>')}</div>`;
-      html += `
-        <div class="programming-input-wrapper">
-          <textarea class="programming-input" id="prog-input-${safeUniqueId}" placeholder="粘贴你的 C++ 实现，用提示词检查思路与边界..."></textarea>
-          <button class="show-answer-btn grade-btn" style="margin-top: 8px; border-color: var(--accent-warning); color: var(--accent-warning);" onclick="window._gradeProgrammingAnswer('${safeUniqueId}', this)">检查代码</button>
-        </div>
-      `;
+      html += `<div class="question-stem galgame-task-title">${escapeHtml(q.title || '')}</div>`;
+      html += `<div class="question-stem galgame-requirement">${formatStem(q.requirement || '')}</div>`;
+      const programmingDraft = `
+          <div class="programming-input-wrapper">
+            <textarea class="programming-input" id="prog-input-${safeUniqueId}" placeholder="粘贴你的 C++ 实现，用提示词检查思路与边界..."></textarea>
+            <button class="show-answer-btn grade-btn" style="margin-top: 8px; border-color: var(--accent-warning); color: var(--accent-warning);" onclick="window._gradeProgrammingAnswer('${safeUniqueId}', this)">检查代码</button>
+          </div>
+        `;
+      if (isGalgameCard) {
+        html += `
+          <details class="galgame-code-draft">
+            <summary>打开代码草稿与检查</summary>
+            ${programmingDraft}
+          </details>
+        `;
+      } else {
+        html += programmingDraft;
+      }
     } else {
       html += `<div class="question-stem">${formatStem(q.stem || '')}</div>`;
       if (q.type === 'fillin') {
@@ -1826,6 +3006,7 @@
         `;
       }
     }
+    html += `</div>`;
 
     // 选项 (选择题)
     if (q.type === 'choice' && q.options && q.options.length) {
@@ -1844,7 +3025,7 @@
     }
 
     // 知识点标签（可按知识点筛题 / 跳转知识点页）
-    const kps = getKnowledgePointsForItem(q);
+    const kps = openingKps;
     if (kps.length) {
       html += `<div class="kp-tags">`;
       kps.forEach(kp => {
@@ -1862,11 +3043,13 @@
     }
 
     // 操作按钮条
-    html += `<div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">`;
-    html += `<button class="show-answer-btn" id="toggle-answer-btn-${safeUniqueId}" onclick="window._toggleAnswer('${safeUniqueId}')">`;
-    html += `${isProgramming ? '查看参考代码' : '显示答案'}</button>`;
-    html += `<button class="show-answer-btn" id="ai-toggle-btn-${safeUniqueId}" style="border-color: var(--accent-primary); color: var(--accent-primary); background: var(--accent-primary-glow);" onclick="window._runAiAnalysis('${safeUniqueId}', this)">`;
-    html += `获取讲解提示词</button>`;
+    html += `<div class="galgame-card-actions">`;
+    html += `<button class="show-answer-btn" id="toggle-answer-btn-${safeUniqueId}" data-answer-toggle="${safeUniqueId}">`;
+    html += `${isGalgameCard ? (isProgramming ? '打开参考幕' : '打开解析幕') : (isProgramming ? '查看参考代码' : '显示答案')}</button>`;
+    if (!isGalgameCard) {
+      html += `<button class="show-answer-btn" id="ai-toggle-btn-${safeUniqueId}" style="border-color: var(--accent-primary); color: var(--accent-primary); background: var(--accent-primary-glow);" onclick="window._runAiAnalysis('${safeUniqueId}', this)">`;
+      html += `获取讲解提示词</button>`;
+    }
     html += `</div>`;
 
     // 选择/判断题：就地反馈（与填空题风格一致）
@@ -1878,10 +3061,10 @@
     html += `<div class="answer-section" id="answer-${safeUniqueId}">`;
     html += `
       <div class="answer-nav" aria-label="答案导航">
-        <span class="answer-nav-title">${escapeHtml(label)} · 解析</span>
+        <span class="answer-nav-title">${isGalgameCard ? '回想解析' : escapeHtml(label + ' · 解析')}</span>
         <div class="answer-nav-actions">
           <button class="answer-nav-btn" type="button" onclick="window._scrollToQuestion('${safeUniqueId}')">返回题目</button>
-          <button class="answer-nav-btn" type="button" onclick="window._toggleAnswer('${safeUniqueId}')">收起</button>
+          <button class="answer-nav-btn" type="button" data-answer-toggle="${safeUniqueId}">收起</button>
         </div>
       </div>
     `;
@@ -2075,13 +3258,13 @@
   window._prevFocusQuestion = function () {
     if (state.filtered.length === 0) return;
     state.focusIndex = (state.focusIndex - 1 + state.filtered.length) % state.filtered.length;
-    renderQuestionList();
+    renderQuestionList({ stageEvent: 'prev' });
   };
 
   window._nextFocusQuestion = function () {
     if (state.filtered.length === 0) return;
     state.focusIndex = (state.focusIndex + 1) % state.filtered.length;
-    renderQuestionList();
+    renderQuestionList({ stageEvent: 'next' });
   };
 
   window._jumpToQuestionInput = function () {
@@ -2236,12 +3419,30 @@
     const el = document.getElementById('answer-' + id);
     if (!el) return false;
     el.classList.toggle('visible', !!visible);
+    const card = findQuestionCard(id);
+    const isGalgameCard = !!card?.classList.contains('galgame-task-card');
+    if (card) card.classList.toggle('answer-open', !!visible);
+    document.body.classList.toggle('galgame-answer-open', !!visible && isGalgameCard && shouldUseGalgameStage());
 
     const btn = document.getElementById('toggle-answer-btn-' + id);
     if (btn) {
       const isProg = String(id).startsWith('prog-');
-      btn.textContent = visible ? `${isProg ? '隐藏参考代码' : '隐藏答案'}` : `${isProg ? '查看参考代码' : '显示答案'}`;
+      if (isGalgameCard) {
+        btn.textContent = visible ? '收起解析幕' : (isProg ? '打开参考幕' : '打开解析幕');
+      } else {
+        btn.textContent = visible ? `${isProg ? '隐藏参考代码' : '隐藏答案'}` : `${isProg ? '查看参考代码' : '显示答案'}`;
+      }
     }
+    if (visible) {
+      playGalgameSe('decision');
+      const q = getCurrentFocusItem();
+      setGalgameDialogue(getGalgameLine(q, 'answer'), 'serious');
+      setGalgameStory(q, 'answer');
+    } else {
+      playGalgameSe('cancel');
+      updateGalgameStage('intro');
+    }
+    resetGalgameStageScroll();
     return true;
   }
 
@@ -2279,6 +3480,8 @@
   }
 
   window._selectOption = function (uniqueId, selectedLetter, element) {
+    enableGalgameAudioFromUserGesture();
+    playGalgameSe('decision');
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     if (uniqueId.startsWith('prog-')) return;
 
@@ -2299,10 +3502,13 @@
       });
     }
     element.classList.add('selected');
+    setGalgameDialogue(getGalgameLine(q, 'selected', { choice: selectedLetter }), 'serious');
+    setGalgameStory(q, 'selected');
 
     if (isCorrect) {
+      playGalgameSe('success');
       if (!state.settings.redoMode) element.classList.add('correct');
-      window._setStatus(uniqueId, 'mastered', { toggle: false });
+      window._setStatus(uniqueId, 'mastered', { toggle: false, fromAttempt: true });
       recordAttempt(`q_${realId}`, 'correct');
       updateSrs(`q_${realId}`, true);
       if (feedbackEl) {
@@ -2310,9 +3516,13 @@
         feedbackEl.className = 'fillin-feedback correct';
         feedbackEl.innerHTML = '回答正确。';
       }
+      setGalgameDialogue(getGalgameLine(q, 'correct'), 'happy');
+      setGalgameStory(q, 'correct');
+      handleGalgameAttemptResult(true);
     } else {
+      playGalgameSe('wrong');
       if (!state.settings.redoMode) element.classList.add('incorrect');
-      window._setStatus(uniqueId, 'wrong', { toggle: false });
+      window._setStatus(uniqueId, 'wrong', { toggle: false, fromAttempt: true });
       recordAttempt(`q_${realId}`, 'wrong');
       updateSrs(`q_${realId}`, false);
       if (feedbackEl) {
@@ -2320,6 +3530,9 @@
         feedbackEl.className = 'fillin-feedback incorrect';
         feedbackEl.innerHTML = '回答错误。';
       }
+      setGalgameDialogue(getGalgameLine(q, 'wrong'), 'sad');
+      setGalgameStory(q, 'wrong');
+      handleGalgameAttemptResult(false);
     }
 
     if (!state.settings.redoMode) {
@@ -2335,6 +3548,8 @@
   };
 
   window._selectOptionTF = function (uniqueId, selectedValue, element) {
+    enableGalgameAudioFromUserGesture();
+    playGalgameSe('decision');
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     if (uniqueId.startsWith('prog-')) return;
 
@@ -2355,10 +3570,13 @@
       });
     }
     element.classList.add('selected');
+    setGalgameDialogue(getGalgameLine(q, 'selected', { choice: selectedValue }), 'serious');
+    setGalgameStory(q, 'selected');
 
     if (isCorrect) {
+      playGalgameSe('success');
       if (!state.settings.redoMode) element.classList.add('correct');
-      window._setStatus(uniqueId, 'mastered', { toggle: false });
+      window._setStatus(uniqueId, 'mastered', { toggle: false, fromAttempt: true });
       recordAttempt(`q_${realId}`, 'correct');
       updateSrs(`q_${realId}`, true);
       if (feedbackEl) {
@@ -2366,9 +3584,13 @@
         feedbackEl.className = 'fillin-feedback correct';
         feedbackEl.innerHTML = '回答正确。';
       }
+      setGalgameDialogue(getGalgameLine(q, 'correct'), 'happy');
+      setGalgameStory(q, 'correct');
+      handleGalgameAttemptResult(true);
     } else {
+      playGalgameSe('wrong');
       if (!state.settings.redoMode) element.classList.add('incorrect');
-      window._setStatus(uniqueId, 'wrong', { toggle: false });
+      window._setStatus(uniqueId, 'wrong', { toggle: false, fromAttempt: true });
       recordAttempt(`q_${realId}`, 'wrong');
       updateSrs(`q_${realId}`, false);
       if (feedbackEl) {
@@ -2376,6 +3598,9 @@
         feedbackEl.className = 'fillin-feedback incorrect';
         feedbackEl.innerHTML = '回答错误。';
       }
+      setGalgameDialogue(getGalgameLine(q, 'wrong'), 'sad');
+      setGalgameStory(q, 'wrong');
+      handleGalgameAttemptResult(false);
     }
 
     if (!state.settings.redoMode) {
@@ -2394,10 +3619,40 @@
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     const isProg = uniqueId.startsWith('prog-');
     const key = isProg ? `prog_${realId}` : `q_${realId}`;
-    setQuestionStatus(key, status, options);
+    const result = setQuestionStatus(key, status, options);
+    if (!result.changed) return;
+    if (options.fromAttempt) return;
+    const activeStatus = result.nextStatus;
+    if (activeStatus === 'mastered') {
+      adjustGalgameAffectionOnce(`${key}:mastered`, 4, 'mastered');
+      setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'mastered'), 'happy');
+      setGalgameStory(getCurrentFocusItem(), 'mastered');
+      triggerGalgameMilestones();
+    } else if (activeStatus === 'review') {
+      adjustGalgameAffectionOnce(`${key}:review`, 1, 'review');
+      setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'review'), 'serious');
+      setGalgameStory(getCurrentFocusItem(), 'review');
+    } else if (activeStatus === 'wrong') {
+      adjustGalgameAffectionOnce(`${key}:markedWrong`, -1, 'markedWrong');
+      setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'markedWrong'), 'sad');
+      setGalgameStory(getCurrentFocusItem(), 'markedWrong');
+    } else if (result.previousStatus === 'mastered') {
+      adjustGalgameAffection(-2, 'unmastered');
+      setGalgameDialogue('掌握印章先撤回。澪把笔帽合上，提醒你：这题要重新证明给她看。', 'serious');
+      setGalgameStory(getCurrentFocusItem(), 'review');
+    } else if (result.previousStatus === 'wrong') {
+      adjustGalgameAffection(1, 'unmarkedWrong');
+      setGalgameDialogue('错题伏笔先收起。只要你能把理由补上，这条路线还能升温。', 'smile');
+      setGalgameStory(getCurrentFocusItem(), 'review');
+    } else if (result.previousStatus === 'review') {
+      adjustGalgameAffection(-1, 'unreview');
+      setGalgameDialogue('待复习书签被撤下了。澪看了你一眼：确定不用再回看吗？', 'serious');
+      setGalgameStory(getCurrentFocusItem(), 'review');
+    }
   };
 
   window._checkFillinAnswer = function (uniqueId, inputEl) {
+    enableGalgameAudioFromUserGesture();
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     const q = state.questions.find(item => String(item.id) === realId);
     if (!q) return;
@@ -2407,6 +3662,7 @@
     const feedbackEl = document.getElementById('feedback-' + uniqueId);
 
     if (!userAns) {
+      playGalgameSe('wrong');
       feedbackEl.style.display = 'inline-block';
       feedbackEl.className = 'fillin-feedback incorrect';
       feedbackEl.innerHTML = '请先输入您的答案。';
@@ -2497,17 +3753,25 @@
     }
 
     if (isCorrect) {
+      playGalgameSe('success');
       feedbackEl.className = 'fillin-feedback correct';
       feedbackEl.innerHTML = '回答正确。';
-      window._setStatus(uniqueId, 'mastered', { toggle: false });
+      window._setStatus(uniqueId, 'mastered', { toggle: false, fromAttempt: true });
       recordAttempt(`q_${realId}`, 'correct');
       updateSrs(`q_${realId}`, true);
+      setGalgameDialogue(getGalgameLine(q, 'correct'), 'happy');
+      setGalgameStory(q, 'correct');
+      handleGalgameAttemptResult(true);
     } else {
+      playGalgameSe('wrong');
       feedbackEl.className = 'fillin-feedback incorrect';
       feedbackEl.innerHTML = `回答错误。您的答案与参考答案不匹配，建议点击“显示答案”比对。`;
-      window._setStatus(uniqueId, 'wrong', { toggle: false });
+      window._setStatus(uniqueId, 'wrong', { toggle: false, fromAttempt: true });
       recordAttempt(`q_${realId}`, 'wrong');
       updateSrs(`q_${realId}`, false);
+      setGalgameDialogue(getGalgameLine(q, 'wrong'), 'sad');
+      setGalgameStory(q, 'wrong');
+      handleGalgameAttemptResult(false);
     }
   };
 
@@ -2540,7 +3804,8 @@
   }
 
   window._toggleFavorite = function (idKey) {
-    if (state.favorites[idKey]) delete state.favorites[idKey];
+    const wasFavorite = !!state.favorites[idKey];
+    if (wasFavorite) delete state.favorites[idKey];
     else state.favorites[idKey] = true;
     saveJsonToStorage(FAVORITES_KEY, state.favorites);
     if (!state.reviewQueueActive && state.favoritesOnly) {
@@ -2549,6 +3814,17 @@
       renderQuestionList();
     }
     showToast(state.favorites[idKey] ? '已收藏' : '已取消收藏', 'info');
+    if (state.galgameMode) {
+      if (state.favorites[idKey]) {
+        adjustGalgameAffection(2, 'favorite');
+        setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'favorite'), 'happy');
+        setGalgameStory(getCurrentFocusItem(), 'favorite');
+      } else {
+        adjustGalgameAffection(-2, 'unfavorite');
+        setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'unfavorite'), 'sad');
+        setGalgameStory(getCurrentFocusItem(), 'unfavorite');
+      }
+    }
   };
 
   window._gradeProgrammingAnswer = async function (uniqueId, btnEl) {
@@ -2621,7 +3897,7 @@ ${userCode}
     }, 1800);
   }
 
-  async function copyPromptAndNotify(text) {
+  async function copyPromptAndNotify(text, successMessage = '提示词已复制到剪贴板') {
     try {
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(text);
@@ -2637,7 +3913,7 @@ ${userCode}
         document.body.removeChild(textarea);
         if (!ok) throw new Error('execCommand copy failed');
       }
-      showToast('提示词已复制到剪贴板', 'success');
+      showToast(successMessage, 'success');
       return true;
     } catch (e) {
       showToast('复制失败：请检查浏览器剪贴板权限', 'error');
@@ -3128,3 +4404,4 @@ ${userCode}
   document.addEventListener('DOMContentLoaded', loadAllData);
 
 })();
+

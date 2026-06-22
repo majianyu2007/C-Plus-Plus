@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=1.8.2">
+  <link rel="stylesheet" href="assets/style.css?v=1.8.6">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#cc785c">
   <meta name="mobile-web-app-capable" content="yes">
@@ -42,7 +42,7 @@
       if (fontMap[font]) {
         document.documentElement.style.setProperty('--font-sans', fontMap[font]);
       }
-      
+
       // 3. 字号大小初始化
       const size = localStorage.getItem('oop_font_size') || 'normal';
       const sizeMap = {
@@ -191,6 +191,60 @@
           <div class="loading"><div class="loading-spinner"></div></div>
         </div>
         <div class="focus-navigation" id="focus-navigation" style="display: none;"></div>
+        <section class="galgame-stage" id="galgame-stage" aria-label="Galgame 模式刷题舞台" hidden>
+          <div class="galgame-bg" id="galgame-bg"></div>
+          <div class="galgame-vignette"></div>
+          <div class="galgame-atmosphere"></div>
+          <div class="galgame-hud" aria-label="题目状态">
+            <div class="galgame-hud-main">
+              <span class="galgame-location" id="galgame-location">夏日复习室</span>
+              <span class="galgame-progress" id="galgame-progress">第 1 / 1 题</span>
+              <span class="galgame-route-progress" id="galgame-route-progress">掌握 0%</span>
+              <span class="galgame-affection" id="galgame-affection">好感 12 · 初遇</span>
+            </div>
+            <div class="galgame-hud-actions">
+              <button class="galgame-icon-btn" type="button" id="galgame-audio-toggle" title="音乐">♪</button>
+              <button class="galgame-icon-btn" type="button" id="galgame-menu-open" title="菜单">≡</button>
+            </div>
+          </div>
+          <img class="galgame-character" id="galgame-character" src="" alt="陪练角色" decoding="async">
+          <div class="galgame-effect-layer" id="galgame-effect-layer" aria-hidden="true"></div>
+          <div class="galgame-story-panel" id="galgame-story-panel" aria-live="polite">
+            <span class="galgame-story-kicker" id="galgame-story-kicker">Route Log</span>
+            <strong id="galgame-story-title">夏日复习线</strong>
+            <p id="galgame-story-text">新的题目事件正在载入。</p>
+          </div>
+          <aside class="galgame-route-notebook" id="galgame-route-notebook" aria-label="Galgame 路线手账">
+            <div class="galgame-notebook-kicker">Route Notebook</div>
+            <strong id="galgame-notebook-title">攻略手账</strong>
+            <p id="galgame-notebook-summary">当前路线的考点与进度会记录在这里。</p>
+            <div class="galgame-notebook-stats" id="galgame-notebook-stats"></div>
+            <div class="galgame-notebook-tags" id="galgame-notebook-tags"></div>
+          </aside>
+          <div class="galgame-notebook-popover" id="galgame-notebook-popover" hidden>
+            <div class="galgame-notebook-sheet" role="dialog" aria-modal="false" aria-labelledby="galgame-notebook-popover-title">
+              <div class="galgame-notebook-sheet-head">
+                <span>Route Notebook</span>
+                <button type="button" class="galgame-notebook-close" id="galgame-notebook-close" title="收起路线手账">×</button>
+              </div>
+              <strong id="galgame-notebook-popover-title">攻略手账</strong>
+              <p id="galgame-notebook-popover-summary">当前路线的考点与进度会记录在这里。</p>
+              <div class="galgame-notebook-stats" id="galgame-notebook-popover-stats"></div>
+              <div class="galgame-notebook-tags" id="galgame-notebook-popover-tags"></div>
+            </div>
+          </div>
+          <div class="galgame-question-shell">
+            <div class="galgame-question-host" id="galgame-question-host"></div>
+          </div>
+          <div class="galgame-dialogue">
+            <div class="galgame-nameplate" id="galgame-nameplate">澪</div>
+            <div class="galgame-dialogue-text" id="galgame-dialogue-text">今天也一起复习 C++ 吧。</div>
+            <span class="galgame-advance" aria-hidden="true"></span>
+          </div>
+          <audio id="galgame-bgm" loop preload="none"></audio>
+          <audio id="galgame-bgs" loop preload="none"></audio>
+          <audio id="galgame-se" preload="none"></audio>
+        </section>
       </div>
 
       <!-- 知识点页面 -->
@@ -369,8 +423,55 @@
     </div>
   </div>
 
+  <!-- Galgame 彩蛋入口确认 -->
+  <div class="modal-backdrop galgame-choice-backdrop" id="galgame-choice-modal" aria-hidden="true">
+    <div class="galgame-choice-modal" role="dialog" aria-modal="true" aria-labelledby="galgame-choice-title">
+      <div class="galgame-choice-kicker">隐藏路线已解锁</div>
+      <h3 id="galgame-choice-title">进入 Galgame 模式？</h3>
+      <p>保留你的刷题进度与筛选状态，把当前题目切换成全屏剧情式复习。进入前先确认氛围和音效，避免突然打扰。</p>
+      <div class="galgame-entry-settings" aria-label="Galgame 进入设置">
+        <p class="galgame-rating-note" id="galgame-rating-note">恋爱喜剧氛围：对白更贴近 Galgame 的陪伴感与距离感，但题干、解析和刷题节奏优先。</p>
+        <label class="galgame-audio-consent">
+          <input type="checkbox" id="galgame-entry-audio" checked>
+          <span>启用音乐与音效</span>
+        </label>
+        <div class="galgame-entry-sliders">
+          <label for="galgame-entry-bgm-volume">音乐 <span id="galgame-entry-bgm-value">35%</span></label>
+          <input type="range" id="galgame-entry-bgm-volume" min="0" max="100" value="35">
+          <label for="galgame-entry-se-volume">音效 <span id="galgame-entry-se-value">55%</span></label>
+          <input type="range" id="galgame-entry-se-volume" min="0" max="100" value="55">
+        </div>
+      </div>
+      <div class="galgame-choice-actions">
+        <button type="button" class="galgame-choice-btn primary" id="galgame-enter-confirm">进入 Galgame</button>
+        <button type="button" class="galgame-choice-btn ghost" id="galgame-enter-cancel">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Galgame 模式内菜单 -->
+  <div class="galgame-menu-backdrop" id="galgame-menu" hidden>
+    <div class="galgame-menu-panel" role="dialog" aria-modal="true" aria-labelledby="galgame-menu-title">
+      <div class="galgame-menu-kicker">Galgame Menu</div>
+      <h3 id="galgame-menu-title">复习菜单</h3>
+      <div class="galgame-menu-grid">
+        <button type="button" id="galgame-menu-resume">继续剧情</button>
+        <button type="button" id="galgame-menu-notebook">路线手账</button>
+        <button type="button" id="galgame-menu-review">复习队列</button>
+        <button type="button" id="galgame-menu-progress">查看进度</button>
+        <button type="button" id="galgame-menu-exit">退出 Galgame</button>
+      </div>
+      <div class="galgame-menu-sliders">
+        <label for="galgame-bgm-volume">音乐音量 <span id="galgame-bgm-volume-value">35%</span></label>
+        <input type="range" id="galgame-bgm-volume" min="0" max="100" value="35">
+        <label for="galgame-se-volume">音效音量 <span id="galgame-se-volume-value">55%</span></label>
+        <input type="range" id="galgame-se-volume" min="0" max="100" value="55">
+      </div>
+    </div>
+  </div>
+
   <script src="assets/vendor/markdown-it.min.js?v=14.2.0"></script>
   <script src="assets/vendor/purify.min.js?v=3.4.10"></script>
-  <script src="assets/app.js?v=1.8.2"></script>
+  <script src="assets/app.js?v=1.8.6"></script>
 </body>
 </html>
