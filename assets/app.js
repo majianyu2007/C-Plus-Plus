@@ -19,6 +19,12 @@
     currentStatus: null,
     searchQuery: '',
     selectedKnowledgePoint: 'all',
+    reviewQueueActive: false,
+    reviewQueueKeys: [],
+    reviewQueuePreviousMode: null,
+    reviewQueuePreviousFocusIndex: 0,
+    reviewQueuePreviousFocusKey: null,
+    pendingFocusRestore: null,
     userProgress: {},     // { questionId: 'mastered' | 'review' | 'wrong' }
     chapters: [],
     allKnowledgePoints: [],
@@ -329,8 +335,65 @@
 
     // 同步刷题模式按钮状态
     document.querySelectorAll('#mode-filters .filter-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.mode === state.quizMode);
+      const isModeActive = btn.dataset.mode === state.quizMode && !state.reviewQueueActive;
+      btn.classList.toggle('active', btn.id === 'today-review' ? state.reviewQueueActive : isModeActive);
     });
+
+    updateTodayReviewButton();
+  }
+
+  function exitReviewQueue(options = {}) {
+    if (!state.reviewQueueActive) return false;
+    const restoreFocus = options.keepFocus !== true && state.reviewQueuePreviousMode === 'focus';
+    state.reviewQueueActive = false;
+    state.reviewQueueKeys = [];
+    if (options.keepMode !== true && state.reviewQueuePreviousMode) {
+      state.quizMode = state.reviewQueuePreviousMode;
+    }
+    if (restoreFocus) {
+      state.pendingFocusRestore = {
+        key: state.reviewQueuePreviousFocusKey,
+        index: state.reviewQueuePreviousFocusIndex || 0
+      };
+    }
+    state.reviewQueuePreviousMode = null;
+    state.reviewQueuePreviousFocusIndex = 0;
+    state.reviewQueuePreviousFocusKey = null;
+    if (options.keepFocus !== true && !restoreFocus) {
+      state.focusIndex = 0;
+    }
+    syncUIWithState();
+    return true;
+  }
+
+  function restorePendingFocusIndex() {
+    const pending = state.pendingFocusRestore;
+    if (!pending || state.quizMode !== 'focus') return false;
+
+    let nextIndex = -1;
+    if (pending.key) {
+      nextIndex = state.filtered.findIndex(q => getProgressKeyForItem(q) === pending.key);
+    }
+    if (nextIndex === -1 && Number.isInteger(pending.index)) {
+      nextIndex = Math.min(Math.max(pending.index, 0), Math.max(state.filtered.length - 1, 0));
+    }
+    state.pendingFocusRestore = null;
+
+    if (state.filtered.length > 0 && nextIndex >= 0) {
+      state.focusIndex = nextIndex;
+      return true;
+    }
+    return false;
+  }
+
+  function scheduleFilteredRefreshAfterMutation(key, delay = 0) {
+    if (state.quizMode === 'focus') {
+      state.pendingFocusRestore = {
+        key: key || (state.filtered[state.focusIndex] ? getProgressKeyForItem(state.filtered[state.focusIndex]) : null),
+        index: state.focusIndex || 0
+      };
+    }
+    setTimeout(() => filterAndRender(), delay);
   }
 
   function restoreScrollOrFocusIndex() {
@@ -398,17 +461,22 @@
   function setQuestionStatus(id, status, options = {}) {
     const key = String(id);
     const shouldToggle = options.toggle !== false;
+    const previousStatus = state.userProgress[key] || null;
     if (shouldToggle && state.userProgress[key] === status) {
       delete state.userProgress[key]; // 手动再次点击同一状态时取消标记
     } else {
       state.userProgress[key] = status;
     }
+    const nextStatus = state.userProgress[key] || null;
     saveProgress();
     renderStats();
     renderDashboard();
     renderProgress();
     updateCardActions(id);
     updateTodayReviewButton();
+    if (!state.reviewQueueActive && state.currentStatus && previousStatus !== nextStatus) {
+      scheduleFilteredRefreshAfterMutation(key, options.toggle === false ? 900 : 0);
+    }
   }
 
   // 更新题目卡片上的状态按钮样式
@@ -460,6 +528,7 @@
 
   window.resetProgress = function () {
     if (confirm('确定要重置所有学习进度吗？\n\n将同时清空：已掌握/待复习/错题标记、作答记录、复习统计。\n不会清空收藏。此操作不可撤销。')) {
+      exitReviewQueue({ keepFocus: true });
       state.userProgress = {};
       saveProgress();
       state.attempts = [];
@@ -1363,6 +1432,7 @@
     // 类型筛选
     document.querySelectorAll('#type-filters .filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
+        exitReviewQueue({ keepFocus: true });
         document.querySelectorAll('#type-filters .filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         state.currentType = btn.dataset.type;
@@ -1373,12 +1443,23 @@
     // 刷题模式筛选 (列表/焦点)
     document.querySelectorAll('#mode-filters .filter-btn[data-mode]').forEach(btn => {
       btn.addEventListener('click', () => {
+        const nextMode = btn.dataset.mode;
+        const leftReviewQueue = exitReviewQueue({
+          keepMode: true,
+          keepFocus: nextMode !== 'focus'
+        });
         document.querySelectorAll('#mode-filters .filter-btn[data-mode]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        state.quizMode = btn.dataset.mode;
-        state.focusIndex = 0;
+        state.quizMode = nextMode;
+        if (!(leftReviewQueue && state.quizMode === 'focus')) {
+          state.focusIndex = 0;
+        }
         saveViewState();
-        renderQuestionList();
+        if (leftReviewQueue) {
+          filterAndRender();
+        } else {
+          renderQuestionList();
+        }
         updateBackToTopVisibility();
       });
     });
@@ -1386,6 +1467,7 @@
     // 状态筛选
     document.querySelectorAll('#status-filters .filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
+        exitReviewQueue({ keepFocus: true });
         if (btn.id === 'favorites-only') {
           state.favoritesOnly = !state.favoritesOnly;
           btn.classList.toggle('active', state.favoritesOnly);
@@ -1413,6 +1495,7 @@
       chapterSelect.appendChild(opt);
     });
     chapterSelect.addEventListener('change', () => {
+      exitReviewQueue({ keepFocus: true });
       state.currentChapter = chapterSelect.value;
       filterAndRender();
     });
@@ -1422,6 +1505,7 @@
     if (knowledgeSelect) {
       renderKnowledgeFilterOptions();
       knowledgeSelect.addEventListener('change', () => {
+        exitReviewQueue({ keepFocus: true });
         state.selectedKnowledgePoint = knowledgeSelect.value;
         filterAndRender();
       });
@@ -1438,6 +1522,7 @@
       clearTimeout(searchTimer);
       searchTimer = setTimeout(() => {
         state.searchQuery = e.target.value.trim().toLowerCase();
+        exitReviewQueue({ keepFocus: true });
         filterAndRender();
       }, 300);
     });
@@ -1505,6 +1590,29 @@
   // ============================================================
   function filterAndRender(isInitialLoad = false) {
     let items = state.allItems;
+
+    if (state.reviewQueueActive) {
+      const set = new Set(state.reviewQueueKeys || []);
+      items = items.filter(q => set.has(getProgressKeyForItem(q)));
+      state.filtered = items;
+      if (isInitialLoad) {
+        if (state.quizMode === 'focus') {
+          const savedId = localStorage.getItem('oop_last_question_id');
+          if (savedId) {
+            const idx = state.filtered.findIndex(q => getProgressKeyForItem(q) === savedId);
+            if (idx !== -1) state.focusIndex = idx;
+          }
+        }
+      } else {
+        state.focusIndex = 0;
+        listPageCount = 1;
+        localStorage.setItem('oop_scroll_y', '0');
+      }
+      syncUIWithState();
+      renderQuestionList({ noScroll: isInitialLoad });
+      updateBackToTopVisibility();
+      return;
+    }
 
     // 类型筛选
     if (state.currentType !== 'all') {
@@ -1574,6 +1682,7 @@
       localStorage.setItem('oop_scroll_y', '0');
       saveViewState();
     }
+    restorePendingFocusIndex();
     renderQuestionList({ noScroll: isInitialLoad });
     updateBackToTopVisibility();
   }
@@ -1588,6 +1697,7 @@
 
     if (state.filtered.length === 0) {
       const activeFilters = [];
+      if (state.reviewQueueActive) activeFilters.push('复习队列');
       if (state.currentType && state.currentType !== 'all') activeFilters.push(`题型: ${state.currentType}`);
       if (state.currentChapter && state.currentChapter !== 'all') activeFilters.push(`章节: ${state.currentChapter}`);
       if (state.currentStatus) activeFilters.push(`状态: ${state.currentStatus}`);
@@ -1600,6 +1710,7 @@
         <div class="empty-state">
           <div class="icon">-</div>
           <p>没有匹配的题目${filterText}</p>
+          ${state.reviewQueueActive ? '<button class="show-answer-btn" onclick="window.exitTodayReview()" style="margin-top: 12px; border-color: var(--accent-primary); color: var(--accent-primary);">退出复习队列</button>' : ''}
           ${activeFilters.length > 0 ? '<button class="show-answer-btn" onclick="window.clearAllFilters()" style="margin-top: 12px; border-color: var(--accent-primary); color: var(--accent-primary);">清除所有筛选条件</button>' : ''}
         </div>
       `;
@@ -1646,6 +1757,16 @@
 
     updateBackToTopVisibility();
   }
+
+  window.exitTodayReview = function () {
+    const leftReviewQueue = exitReviewQueue();
+    if (!leftReviewQueue) return;
+    syncUIWithState();
+    saveViewState();
+    filterAndRender();
+    showToast('已退出复习队列', 'info');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   window._loadMoreQuestions = function () {
     listPageCount++;
@@ -1886,6 +2007,7 @@
   }
 
   window._filterByKnowledgePoint = function (kp) {
+    exitReviewQueue({ keepFocus: true });
     const knowledgeSelect = document.getElementById('knowledge-filter');
     state.selectedKnowledgePoint = kp || 'all';
     if (knowledgeSelect) knowledgeSelect.value = state.selectedKnowledgePoint;
@@ -2025,6 +2147,11 @@
       showToast(`未找到题号为 "${rawVal}" 的题目`, 'warning');
       jumpInput.select();
       return;
+    }
+
+    const leftReviewQueue = !isDisplayIndexSearch && exitReviewQueue({ keepFocus: true });
+    if (leftReviewQueue) {
+      filterAndRender();
     }
 
     // Check if the targetItem is in state.filtered
@@ -2416,7 +2543,11 @@
     if (state.favorites[idKey]) delete state.favorites[idKey];
     else state.favorites[idKey] = true;
     saveJsonToStorage(FAVORITES_KEY, state.favorites);
-    renderQuestionList();
+    if (!state.reviewQueueActive && state.favoritesOnly) {
+      scheduleFilteredRefreshAfterMutation(idKey);
+    } else {
+      renderQuestionList();
+    }
     showToast(state.favorites[idKey] ? '已收藏' : '已取消收藏', 'info');
   };
 
@@ -2559,6 +2690,7 @@ ${userCode}
       return;
     }
 
+    exitReviewQueue({ keepFocus: true });
     state.currentType = 'all';
     state.currentChapter = 'all';
     state.currentStatus = null;
@@ -2567,9 +2699,7 @@ ${userCode}
     state.favoritesOnly = false;
     state.quizMode = 'focus';
 
-    document.querySelectorAll('#type-filters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.type === 'all'));
-    document.querySelectorAll('#status-filters .filter-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('#mode-filters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === 'focus'));
+    syncUIWithState();
     const knowledgeSelect = document.getElementById('knowledge-filter');
     if (knowledgeSelect) knowledgeSelect.value = 'all';
     const chapterSelect = document.getElementById('chapter-filter');
@@ -2869,6 +2999,7 @@ ${userCode}
         state.userProgress = data.progress || {};
         state.favorites = data.favorites || {};
         state.attempts = Array.isArray(data.attempts) ? data.attempts : [];
+        exitReviewQueue({ keepFocus: true });
         if (data.settings && typeof data.settings === 'object') {
           state.settings = Object.assign(state.settings, data.settings);
           normalizeSettings();
@@ -2914,32 +3045,48 @@ ${userCode}
     const btn = document.getElementById('today-review');
     if (!btn) return;
     const dueCount = getTodayReviewKeys().length;
-    btn.disabled = dueCount === 0;
-    btn.textContent = dueCount === 0 ? '复习队列（0）' : `复习队列（${dueCount}）`;
+    if (state.reviewQueueActive) {
+      document.querySelectorAll('#mode-filters .filter-btn[data-mode]').forEach(modeBtn => {
+        modeBtn.classList.remove('active');
+      });
+    }
+    btn.disabled = dueCount === 0 && !state.reviewQueueActive;
+    btn.classList.toggle('active', !!state.reviewQueueActive);
+    btn.textContent = state.reviewQueueActive
+      ? `退出复习队列（${state.filtered.length || state.reviewQueueKeys.length}）`
+      : (dueCount === 0 ? '复习队列（0）' : `复习队列（${dueCount}）`);
   }
 
   window.startTodayReview = function () {
+    if (state.reviewQueueActive) {
+      window.exitTodayReview();
+      return;
+    }
+
     const keys = getTodayReviewKeys();
     if (!keys.length) {
       showToast('当前暂无需要复习的题目', 'info');
       updateTodayReviewButton();
       return;
     }
-    const set = new Set(keys);
-    state.filtered = state.allItems.filter(q => {
-      const key = q.type === 'programming' ? `prog_${q.id}` : `q_${q.id}`;
-      return set.has(key);
-    });
+
+    state.reviewQueueActive = true;
+    state.reviewQueueKeys = keys;
+    state.reviewQueuePreviousMode = state.quizMode;
+    state.reviewQueuePreviousFocusIndex = state.focusIndex || 0;
+    const previousFocusItem = state.filtered[state.focusIndex];
+    state.reviewQueuePreviousFocusKey = previousFocusItem ? getProgressKeyForItem(previousFocusItem) : null;
     state.quizMode = 'focus';
     state.focusIndex = 0;
-    document.querySelectorAll('#mode-filters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === 'focus'));
     window._goToPage('quiz');
-    renderQuestionList();
+    filterAndRender();
+    updateTodayReviewButton();
     showToast(`复习队列：${state.filtered.length} 题`, 'success');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   window.clearAllFilters = function () {
+    exitReviewQueue({ keepFocus: true });
     state.currentType = 'all';
     state.currentChapter = 'all';
     state.currentStatus = null;

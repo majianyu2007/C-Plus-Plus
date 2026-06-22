@@ -3090,6 +3090,13 @@ h4,
   box-shadow: inset 0 -2px 0 var(--accent-primary);
 }
 
+#today-review.active {
+  background: var(--surface-card);
+  border-color: var(--hairline);
+  color: var(--text-primary);
+  box-shadow: inset 0 -2px 0 var(--accent-primary);
+}
+
 .filter-btn:disabled {
   background: var(--surface-soft);
   color: var(--muted-soft);
