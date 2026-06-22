@@ -4673,10 +4673,10 @@ body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav .galgam
    So host bottom = calc(max(20vh,174px) + 24px)                   */
 body.galgame-mode.galgame-immersive-active .galgame-question-host {
   position: absolute; z-index: 34;
-  left: calc(min(340px, 23vw) + clamp(16px, 2.5vw, 36px) + 20px); right: auto;
-  top: clamp(84px,11vh,104px);
+  left: clamp(24px, 3vw, 48px); right: auto;
+  top: clamp(270px, 36vh, 300px);
   bottom: calc(max(20vh, 174px) + 24px);
-  width: min(760px,46vw);
+  width: min(540px, 38vw);
   overflow: visible; pointer-events: auto;
   overflow-anchor: none;
 }
@@ -4756,13 +4756,13 @@ body.galgame-mode.galgame-immersive-active.galgame-answer-open .galgame-task-car
 }
 
 /* Dimmed backdrop overlay under the modal */
-body.galgame-mode.galgame-immersive-active.galgame-answer-open::before {
+body.galgame-mode.galgame-immersive-active.galgame-answer-open .galgame-stage::before {
   content: "";
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background: rgba(10, 7, 10, 0.58);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -5039,9 +5039,9 @@ body.galgame-mode[data-galgame-affection="warm"] .galgame-dialogue {
 /* ── Story panel (≥1100px only, hidden by media query below) ── */
 body.galgame-mode.galgame-immersive-active .galgame-story-panel {
   display: block; z-index: 15;
-  top: clamp(88px,13vh,132px);
-  left: clamp(16px,2.5vw,36px); right: auto;
-  width: min(340px,23vw);
+  top: clamp(80px, 10vh, 110px);
+  left: clamp(24px, 3vw, 48px); right: auto;
+  width: min(540px, 38vw);
 }
 body.galgame-mode.galgame-immersive-active .galgame-route-notebook {
   display: none !important;
@@ -5054,7 +5054,7 @@ body.galgame-mode.galgame-immersive-active .galgame-route-notebook {
 
 /* ≥1100px: host narrower, story panels visible (declared above) */
 body.galgame-mode.galgame-immersive-active .galgame-question-host {
-  width: min(720px,50vw);
+  width: min(540px, 38vw);
 }
 @media (min-width: 1280px) {
   body.galgame-mode.galgame-immersive-active .galgame-dialogue-text {
