@@ -4724,10 +4724,50 @@ body.galgame-mode.galgame-immersive-active .galgame-task-card .galgame-reading-p
   flex: 1 1 120px; min-height: 74px; overflow: auto;
 }
 body.galgame-mode.galgame-immersive-active .galgame-task-card .answer-section {
-  flex: 0 0 0; min-height: 0; max-height: 0; overflow: hidden;
+  display: none !important;
 }
 body.galgame-mode.galgame-immersive-active .galgame-task-card .answer-section.visible {
-  flex: 1 1 200px; min-height: 150px; max-height: none; overflow: auto;
+  display: flex !important;
+  flex-direction: column;
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(760px, 90vw);
+  height: auto;
+  max-height: min(78vh, 640px);
+  background: rgba(28, 20, 26, 0.98);
+  border: 1px solid rgba(255, 236, 206, 0.4);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+  border-radius: 12px;
+  padding: 24px 28px;
+  overflow-y: auto;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+/* Dim other elements inside task card when answer is open */
+body.galgame-mode.galgame-immersive-active.galgame-answer-open .galgame-task-card > *:not(.answer-section) {
+  opacity: 0.15;
+  pointer-events: none;
+  filter: blur(1.5px);
+  transition: opacity 0.25s ease, filter 0.25s ease;
+}
+
+/* Dimmed backdrop overlay under the modal */
+body.galgame-mode.galgame-immersive-active.galgame-answer-open::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 7, 10, 0.58);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 33;
+  pointer-events: auto;
 }
 body.galgame-mode.galgame-immersive-active .galgame-card-actions {
   display: grid; grid-template-columns: repeat(2, minmax(0,max-content));
@@ -4885,13 +4925,13 @@ body.galgame-mode.galgame-immersive-active .galgame-task-card .option-item:hover
 
 /* Answer section in immersive */
 body.galgame-mode.galgame-immersive-active .galgame-task-card .answer-section.visible {
-  border-top: 1px solid rgba(255,236,207,.16);
-  padding-top: 10px; overflow: auto; scrollbar-gutter: stable;
+  border-top: none;
+  scrollbar-gutter: stable;
 }
 body.galgame-mode.galgame-immersive-active .galgame-task-card .answer-nav {
-  position: sticky; top: 0; z-index: 1; margin-bottom: 8px;
-  border-color: rgba(255,236,207,.26);
-  background: rgba(15,10,15,.88); backdrop-filter: blur(8px);
+  position: sticky; top: 0; z-index: 10; margin-bottom: 16px;
+  border-bottom: 1px solid rgba(255,236,207,.26);
+  background: transparent; backdrop-filter: none;
   color: var(--gal-text);
 }
 body.galgame-mode.galgame-immersive-active .galgame-task-card .answer-box {
@@ -4935,7 +4975,7 @@ body.galgame-mode.galgame-immersive-active .galgame-code-draft .programming-inpu
 /* KP tags hidden inside galgame card (shown in route board instead) */
 body.galgame-mode.galgame-immersive-active .galgame-task-card .kp-tags { display: none; }
 
-/* ── Answer-open state: collapse overview/route/stem, expand answer ── */
+/* ── Answer-open state: collapse overview/route/stem, expand answer (Disabled for overlay modal style)
 body.galgame-mode.galgame-answer-open .galgame-task-card { gap: 8px; padding: 16px 18px; }
 body.galgame-mode.galgame-answer-open .galgame-task-card .galgame-task-overview,
 body.galgame-mode.galgame-answer-open .galgame-task-card .galgame-study-ribbon {
@@ -4956,6 +4996,7 @@ body.galgame-mode.galgame-answer-open .galgame-task-card .galgame-card-actions {
 body.galgame-mode.galgame-answer-open .galgame-task-card .answer-section.visible {
   flex: 1 1 260px; min-height: 220px; padding-top: 8px;
 }
+*/
 
 /* ── Affection-based background/dialogue tints ── */
 body.galgame-mode[data-galgame-affection="first"] .galgame-bg,
@@ -5003,13 +5044,9 @@ body.galgame-mode.galgame-immersive-active .galgame-story-panel {
   width: min(340px,23vw);
 }
 body.galgame-mode.galgame-immersive-active .galgame-route-notebook {
-  display: block; z-index: 15;
-  top: clamp(252px,35vh,286px);
-  left: clamp(16px,2.5vw,36px); right: auto;
-  width: min(340px,23vw);
-  max-height: min(268px,calc(100svh - 500px));
-  overflow: auto; scrollbar-gutter: stable;
+  display: none !important;
 }
+
 
 /* ============================================================
    Responsive breakpoints (4 tiers, single declarations)
@@ -5055,13 +5092,13 @@ body.galgame-mode.galgame-immersive-active .galgame-question-host {
     min-width: 0; width: 58px; padding: 0;
     overflow: hidden; white-space: nowrap;
   }
-  body.galgame-mode.galgame-answer-open .galgame-question-host {
+  /* body.galgame-mode.galgame-answer-open .galgame-question-host {
     bottom: calc(max(20vh,174px) + 40px);
   }
   body.galgame-mode.galgame-answer-open .galgame-task-card .galgame-reading-panel {
     flex-basis: 48px; min-height: 48px; padding: 8px 10px;
   }
-  body.galgame-mode.galgame-answer-open .galgame-task-card .answer-section.visible { min-height: 160px; }
+  body.galgame-mode.galgame-answer-open .galgame-task-card .answer-section.visible { min-height: 160px; } */
   .galgame-route-board {
     grid-template-columns: 1fr;
     grid-template-areas: "main" "side" "chips";
@@ -5107,13 +5144,13 @@ body.galgame-mode.galgame-immersive-active .galgame-question-host {
   body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav .galgame-scene-btn {
     min-width: 0; width: 58px; padding: 0; overflow: hidden; white-space: nowrap;
   }
-  body.galgame-mode.galgame-answer-open .galgame-question-host {
+  /* body.galgame-mode.galgame-answer-open .galgame-question-host {
     bottom: calc(max(20vh,172px) + 30px);
   }
   body.galgame-mode.galgame-answer-open .galgame-task-card .galgame-reading-panel {
     flex-basis: 48px; min-height: 48px; padding: 8px 10px;
   }
-  body.galgame-mode.galgame-answer-open .galgame-task-card .answer-section.visible { min-height: 160px; }
+  body.galgame-mode.galgame-answer-open .galgame-task-card .answer-section.visible { min-height: 160px; } */
 }
 
 /* <430px: compact everything */
@@ -5149,10 +5186,10 @@ body.galgame-mode.galgame-immersive-active .galgame-question-host {
   body.galgame-mode.galgame-immersive-active .galgame-study-chips span { max-width: 100%; }
   .galgame-effect-card { min-width: calc(100vw - 34px); padding: 20px 20px 22px; }
   .galgame-effect-card strong { font-size: 1.42rem; }
-  body.galgame-mode.galgame-answer-open .galgame-question-host {
+  /* body.galgame-mode.galgame-answer-open .galgame-question-host {
     bottom: calc(max(20vh,152px) + 24px);
   }
-  body.galgame-mode.galgame-answer-open .galgame-task-card .answer-section.visible { min-height: 150px; }
+  body.galgame-mode.galgame-answer-open .galgame-task-card .answer-section.visible { min-height: 150px; } */
 }
 
 /* Short viewport: hide route board, cap reading panel */

@@ -944,24 +944,28 @@
     const q = getCurrentFocusItem();
     const key = getProgressKeyForItem(q);
     if (isCorrect) {
-      adjustGalgameAffectionOnce(`${key}:correct`, 3, 'correct');
-      state.galgameStreak.correct += 1;
-      state.galgameStreak.wrong = 0;
-      if (state.galgameStreak.correct > 1 && state.galgameStreak.correct % 3 === 0) {
-        adjustGalgameAffection(2, 'streak');
-        setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'streak'), 'happy');
-        setGalgameStory(getCurrentFocusItem(), 'streak');
-        showGalgameEffect('success', `连胜 ${state.galgameStreak.correct}`);
+      const wasAdded = adjustGalgameAffectionOnce(`${key}:correct`, 3, 'correct');
+      if (wasAdded) {
+        state.galgameStreak.correct += 1;
+        state.galgameStreak.wrong = 0;
+        if (state.galgameStreak.correct > 1 && state.galgameStreak.correct % 3 === 0) {
+          adjustGalgameAffection(2, 'streak');
+          setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'streak'), 'happy');
+          setGalgameStory(getCurrentFocusItem(), 'streak');
+          showGalgameEffect('success', `连胜 ${state.galgameStreak.correct}`);
+        }
       }
     } else {
-      adjustGalgameAffectionOnce(`${key}:wrong`, -2, 'wrong');
-      state.galgameStreak.wrong += 1;
-      state.galgameStreak.correct = 0;
-      if (state.galgameStreak.wrong > 1 && state.galgameStreak.wrong % 3 === 0) {
-        adjustGalgameAffection(-3, 'slump');
-        setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'slump'), 'sad');
-        setGalgameStory(getCurrentFocusItem(), 'slump');
-        showGalgameEffect('warning', '慢读模式');
+      const wasWrongAdded = adjustGalgameAffectionOnce(`${key}:wrong`, -2, 'wrong');
+      if (wasWrongAdded) {
+        state.galgameStreak.wrong += 1;
+        state.galgameStreak.correct = 0;
+        if (state.galgameStreak.wrong > 1 && state.galgameStreak.wrong % 3 === 0) {
+          adjustGalgameAffection(-3, 'slump');
+          setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'slump'), 'sad');
+          setGalgameStory(getCurrentFocusItem(), 'slump');
+          showGalgameEffect('warning', '慢读模式');
+        }
       }
     }
     triggerGalgameMilestones();
@@ -2574,6 +2578,16 @@
     }
 
     document.addEventListener('click', (e) => {
+      // If backdrop is clicked when answer modal is open, close it
+      if (document.body.classList.contains('galgame-answer-open')) {
+        const modal = document.querySelector('.answer-section.visible');
+        if (modal && !modal.contains(e.target) && !e.target.closest('[data-answer-toggle]')) {
+          const id = modal.id.replace('answer-', '');
+          setAnswerVisibility(id, false);
+          return;
+        }
+      }
+
       const toggle = e.target.closest('[data-answer-toggle]');
       if (!toggle) return;
       const id = toggle.getAttribute('data-answer-toggle');
@@ -2797,6 +2811,10 @@
   let listPageCount = 1;
 
   function renderQuestionList(options = {}) {
+    if (window._galgameTransitionTimer) {
+      clearTimeout(window._galgameTransitionTimer);
+      window._galgameTransitionTimer = null;
+    }
     const noScroll = options.noScroll || false;
     const stageEvent = options.stageEvent || 'intro';
     const container = document.getElementById('question-list');
@@ -3487,7 +3505,10 @@
 
     // 防止重复作答
     const card = findQuestionCard(uniqueId);
-    if (card && card.querySelector('.option-item.correct, .option-item.incorrect')) return;
+    if (card) {
+      if (card.classList.contains('answered-correct')) return;
+      if (card.querySelector('.option-item.correct, .option-item.incorrect')) return;
+    }
 
     const q = state.questions.find(item => String(item.id) === realId);
     if (!q) return;
@@ -3506,6 +3527,7 @@
     setGalgameStory(q, 'selected');
 
     if (isCorrect) {
+      if (card) card.classList.add('answered-correct');
       playGalgameSe('success');
       if (!state.settings.redoMode) element.classList.add('correct');
       window._setStatus(uniqueId, 'mastered', { toggle: false, fromAttempt: true });
@@ -3535,7 +3557,12 @@
       handleGalgameAttemptResult(false);
     }
 
-    if (!state.settings.redoMode) {
+    if (state.galgameMode && isCorrect) {
+      if (window._galgameTransitionTimer) clearTimeout(window._galgameTransitionTimer);
+      window._galgameTransitionTimer = setTimeout(() => {
+        window._nextFocusQuestion();
+      }, 1800);
+    } else if (!state.settings.redoMode) {
       if (card) {
         card.querySelectorAll('.option-item').forEach(opt => {
           if (opt.getAttribute('data-letter') === answerStr) {
@@ -3555,7 +3582,10 @@
 
     // 防止重复作答
     const card = findQuestionCard(uniqueId);
-    if (card && card.querySelector('.option-item.correct, .option-item.incorrect')) return;
+    if (card) {
+      if (card.classList.contains('answered-correct')) return;
+      if (card.querySelector('.option-item.correct, .option-item.incorrect')) return;
+    }
 
     const q = state.questions.find(item => String(item.id) === realId);
     if (!q) return;
@@ -3574,6 +3604,7 @@
     setGalgameStory(q, 'selected');
 
     if (isCorrect) {
+      if (card) card.classList.add('answered-correct');
       playGalgameSe('success');
       if (!state.settings.redoMode) element.classList.add('correct');
       window._setStatus(uniqueId, 'mastered', { toggle: false, fromAttempt: true });
@@ -3603,7 +3634,12 @@
       handleGalgameAttemptResult(false);
     }
 
-    if (!state.settings.redoMode) {
+    if (state.galgameMode && isCorrect) {
+      if (window._galgameTransitionTimer) clearTimeout(window._galgameTransitionTimer);
+      window._galgameTransitionTimer = setTimeout(() => {
+        window._nextFocusQuestion();
+      }, 1800);
+    } else if (!state.settings.redoMode) {
       if (card) {
         card.querySelectorAll('.option-item').forEach(opt => {
           if (opt.getAttribute('data-val') === answerStr) {
@@ -3653,6 +3689,8 @@
 
   window._checkFillinAnswer = function (uniqueId, inputEl) {
     enableGalgameAudioFromUserGesture();
+    const card = findQuestionCard(uniqueId);
+    if (card && card.classList.contains('answered-correct')) return;
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     const q = state.questions.find(item => String(item.id) === realId);
     if (!q) return;
@@ -3753,6 +3791,7 @@
     }
 
     if (isCorrect) {
+      if (card) card.classList.add('answered-correct');
       playGalgameSe('success');
       feedbackEl.className = 'fillin-feedback correct';
       feedbackEl.innerHTML = '回答正确。';
