@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """Generate offline Galgame scenario text for the C++ practice site.
 
-Environment variables are supported for local-only use:
-OPENAI_BASE_URL / GALGAME_OPENAI_BASE_URL
-OPENAI_API_KEY / GALGAME_OPENAI_API_KEY
-OPENAI_MODEL / GALGAME_OPENAI_MODEL
-GALGAME_LIMIT, GALGAME_OFFSET
+默认走 x.ai 的 Grok 系列模型（grok-4-fast-non-reasoned）。
+需要把 API key 通过环境变量 XAI_API_KEY 传入（不硬编码）。
+
+支持的环境变量（任一都可覆盖命令行默认值）：
+  XAI_API_KEY / OPENAI_API_KEY / GALGAME_OPENAI_API_KEY   —— API key（必填）
+  OPENAI_BASE_URL / GALGAME_OPENAI_BASE_URL               —— endpoint，默认 https://api.x.ai/v1
+  OPENAI_MODEL  / GALGAME_OPENAI_MODEL                    —— 模型名，默认 grok-4-fast-non-reasoned
+  GALGAME_LIMIT / GALGAME_OFFSET                          —— 批次范围
+  GALGAME_MAX_TOKENS                                      —— 单条响应上限，默认 1800
 """
 
 from __future__ import annotations
@@ -16,10 +20,26 @@ import json
 import os
 from pathlib import Path
 import re
+import ssl
 import sys
 import time
 import urllib.error
 import urllib.request
+
+
+def build_ssl_context() -> ssl.SSLContext:
+    """构建一个能验证 TLS 证书的 SSLContext。
+
+    macOS Homebrew/官方安装器 Python 不带 CA 证书包，直连 HTTPS 会报
+    CERTIFICATE_VERIFY_FAILED。优先用 certifi 的证书；没装 certifi 则回退到
+    系统默认（OpenSSL 自带或 Keychain 派生）。
+    """
+    try:
+        import certifi
+
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        return ssl.create_default_context()
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,19 +66,42 @@ def env(name: str, fallback: str = "") -> str:
     return os.environ.get(name, fallback).strip()
 
 
+# Grok 系列默认配置（API key 仍走环境变量，不在此硬编码）。
+GROK_BASE_URL = "https://api.715654.xyz/v1"
+GROK_MODEL = "grok-4.3-fast"
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Batch-generate Galgame scenario JSON for the local site."
     )
-    parser.add_argument("--base-url", default=env("OPENAI_BASE_URL") or env("GALGAME_OPENAI_BASE_URL"))
-    parser.add_argument("--api-key", default=env("OPENAI_API_KEY") or env("GALGAME_OPENAI_API_KEY"))
-    parser.add_argument("--model", default=env("OPENAI_MODEL") or env("GALGAME_OPENAI_MODEL") or "gpt-4.1-mini")
+    parser.add_argument(
+        "--base-url",
+        default=env("OPENAI_BASE_URL") or env("GALGAME_OPENAI_BASE_URL") or GROK_BASE_URL,
+        help=f"OpenAI 兼容 endpoint（默认 {GROK_BASE_URL}）。",
+    )
+    parser.add_argument(
+        "--api-key",
+        default=env("OPENAI_API_KEY") or env("GALGAME_OPENAI_API_KEY") or env("XAI_API_KEY"),
+        help="API key；建议用环境变量 XAI_API_KEY 传入，不要写死在命令行。",
+    )
+    parser.add_argument(
+        "--model",
+        default=env("OPENAI_MODEL") or env("GALGAME_OPENAI_MODEL") or GROK_MODEL,
+        help=f"模型名（默认 {GROK_MODEL}）。",
+    )
     parser.add_argument("--limit", type=int, default=int(env("GALGAME_LIMIT", "40") or 40))
     parser.add_argument("--offset", type=int, default=int(env("GALGAME_OFFSET", "0") or 0))
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
-    parser.add_argument("--temperature", type=float, default=0.78)
-    parser.add_argument("--retries", type=int, default=2)
-    parser.add_argument("--sleep", type=float, default=0.4)
+    parser.add_argument("--temperature", type=float, default=0.62)
+    parser.add_argument("--retries", type=int, default=3)
+    parser.add_argument("--sleep", type=float, default=0.3)
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=int(env("GALGAME_MAX_TOKENS", "1800") or 1800),
+        help="单条响应 token 上限（默认 1800，避免 Grok 把题目整段重述）。",
+    )
     return parser.parse_args()
 
 
@@ -144,10 +187,18 @@ def strip_json_fence(text: str) -> str:
 
 
 def chat_completion(args: argparse.Namespace, prompt: str) -> dict:
-    endpoint = args.base_url.rstrip("/") + "/v1/chat/completions"
+    # base_url 末尾不带斜杠；若已含 /chat/completions 则直接用，否则补 /chat/completions。
+    base = args.base_url.rstrip("/")
+    if base.endswith("/chat/completions"):
+        endpoint = base
+    elif base.endswith("/v1"):
+        endpoint = base + "/chat/completions"
+    else:
+        endpoint = base + "/v1/chat/completions"
     payload = {
         "model": args.model,
         "temperature": args.temperature,
+        "max_tokens": args.max_tokens,
         "messages": [
             {"role": "system", "content": "You generate compact JSON only. No prose outside JSON."},
             {"role": "user", "content": prompt},
@@ -162,7 +213,7 @@ def chat_completion(args: argparse.Namespace, prompt: str) -> dict:
         },
         method="POST",
     )
-    with urllib.request.urlopen(req, timeout=90) as res:
+    with urllib.request.urlopen(req, timeout=90, context=build_ssl_context()) as res:
         data = json.loads(res.read().decode("utf-8"))
     content = data.get("choices", [{}])[0].get("message", {}).get("content", "")
     return json.loads(strip_json_fence(content))
