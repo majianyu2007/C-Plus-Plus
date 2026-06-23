@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Generate offline Galgame scenario text for the C++ practice site.
 
-默认走 x.ai 的 Grok 系列模型（grok-4-fast-non-reasoned）。
-需要把 API key 通过环境变量 XAI_API_KEY 传入（不硬编码）。
+默认走 OpenAI 兼容接口（当前默认 endpoint 为 https://api.715654.xyz/v1，模型为 grok-4.3-fast）。
+需要把 API key 通过环境变量传入（不硬编码）。
 
 支持的环境变量（任一都可覆盖命令行默认值）：
   XAI_API_KEY / OPENAI_API_KEY / GALGAME_OPENAI_API_KEY   —— API key（必填）
@@ -25,6 +25,11 @@ import sys
 import time
 import urllib.error
 import urllib.request
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
 
 
 def build_ssl_context() -> ssl.SSLContext:
@@ -96,6 +101,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--temperature", type=float, default=0.62)
     parser.add_argument("--retries", type=int, default=3)
     parser.add_argument("--sleep", type=float, default=0.3)
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="只打印将要处理的题目 key 和第一条 prompt 预览，不调用 API、不写输出文件。",
+    )
+    parser.add_argument(
+        "--replace-output",
+        action="store_true",
+        help="覆盖输出文件；默认会读取已有 data/galgame_scenarios.json 并按 key 合并，适合分批生成。",
+    )
     parser.add_argument(
         "--max-tokens",
         type=int,
@@ -233,12 +248,32 @@ def normalize_scenario(item: dict, scenario: dict) -> dict:
     return scenario
 
 
+def merge_existing_items(out_path: Path, new_items: list[dict], replace_output: bool = False) -> list[dict]:
+    if replace_output or not out_path.exists():
+        return new_items
+    try:
+        existing = load_json(out_path)
+    except (OSError, json.JSONDecodeError):
+        return new_items
+    source = existing.get("items") if isinstance(existing, dict) else existing
+    if not isinstance(source, list):
+        return new_items
+    merged: dict[str, dict] = {}
+    order: list[str] = []
+    for item in source + new_items:
+        if not isinstance(item, dict):
+            continue
+        key = str(item.get("key") or "").strip()
+        if not key:
+            continue
+        if key not in merged:
+            order.append(key)
+        merged[key] = item
+    return [merged[key] for key in order]
+
+
 def main() -> int:
     args = parse_args()
-    if not args.base_url or not args.api_key:
-        print("Set OPENAI_BASE_URL and OPENAI_API_KEY, or pass --base-url and --api-key.", file=sys.stderr)
-        return 2
-
     questions = load_json(ROOT / "data" / "questions.json")
     programming = load_json(ROOT / "data" / "programming.json")
     questions = [dict(item, type=item.get("type") or "choice") for item in questions]
@@ -248,6 +283,23 @@ def main() -> int:
     start = max(0, args.offset)
     limit = max(1, args.limit)
     selected = all_items[start : start + limit]
+    if args.dry_run:
+        keys = [progress_key(item) for item in selected]
+        print(f"Dry run: {len(selected)} item(s), offset={start}, limit={limit}")
+        print("Keys:", ", ".join(keys) if keys else "(none)")
+        if selected:
+            preview = build_prompt(selected[0])
+            print("\n--- Prompt preview for first item ---")
+            print(preview[:2000])
+            if len(preview) > 2000:
+                print("... (truncated)")
+        return 0
+
+    if not args.base_url or not args.api_key:
+        print("Set OPENAI_BASE_URL and OPENAI_API_KEY, or pass --base-url and --api-key.", file=sys.stderr)
+        return 2
+
+    out_path = args.out if args.out.is_absolute() else ROOT / args.out
     output = {
         "version": 2,
         "generatedAt": dt.datetime.now(dt.timezone.utc).isoformat(),
@@ -274,7 +326,7 @@ def main() -> int:
         if last_error is not None:
             print(f"[{index}/{len(selected)}] {key} failed: {last_error}", file=sys.stderr)
 
-    out_path = args.out if args.out.is_absolute() else ROOT / args.out
+    output["items"] = merge_existing_items(out_path, output["items"], args.replace_output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Wrote {len(output['items'])} scenarios to {out_path}")

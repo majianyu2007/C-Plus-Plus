@@ -5593,11 +5593,11 @@ body.galgame-mode.galgame-immersive-active .galgame-affection {
 }
 
 body.galgame-mode.galgame-immersive-active .galgame-character {
-  right: clamp(-54px, 3vw, 70px);
-  bottom: clamp(-190px, -13vh, -96px);
-  height: min(96svh, 940px);
+  right: clamp(20px, 4vw, 88px);
+  bottom: clamp(-168px, -12vh, -92px);
+  height: min(88svh, 860px);
   max-height: none;
-  z-index: 6;
+  z-index: 18;
 }
 
 body.galgame-mode.galgame-immersive-active .galgame-affection-display {
@@ -5668,9 +5668,9 @@ body.galgame-mode.galgame-immersive-active .galgame-interaction-buttons {
 
 body.galgame-mode.galgame-immersive-active .galgame-dialogue {
   left: auto;
-  right: clamp(124px, 17vw, 280px);
-  bottom: clamp(374px, calc(42svh + 34px), 500px);
-  width: min(440px, 36vw);
+  right: clamp(250px, 26vw, 460px);
+  bottom: clamp(420px, calc(42svh + 88px), 560px);
+  width: min(430px, 32vw);
   height: auto;
   min-height: auto;
   padding: 18px 20px 16px;
@@ -5701,7 +5701,7 @@ body.galgame-mode.galgame-immersive-active .galgame-advance {
 body.galgame-mode.galgame-immersive-active .galgame-question-host {
   height: clamp(320px, 42svh, 440px);
   max-height: calc(100svh - 170px);
-  padding: 28px clamp(22px, 3vw, 42px) 22px;
+  padding: 28px clamp(310px, 25vw, 430px) 22px clamp(22px, 3vw, 42px);
   gap: 8px;
 }
 
@@ -5849,6 +5849,17 @@ body.galgame-mode.galgame-immersive-active #galgame-menu-notebook {
 }
 
 body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav {
+  position: absolute;
+  top: auto;
+  right: clamp(20px, 3vw, 48px);
+  bottom: clamp(172px, 23svh, 270px);
+  z-index: 36;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border: 0;
   opacity: 0 !important;
   pointer-events: none !important;
   visibility: hidden !important;
@@ -5865,6 +5876,17 @@ body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav:hover {
 
 body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav .galgame-scene-index {
   display: none !important;
+}
+
+body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav .galgame-scene-btn {
+  min-width: 96px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(24, 18, 26, 0.72);
+  border: 1px solid rgba(255, 236, 207, 0.34);
+  color: var(--gal-text);
+  box-shadow: 0 12px 28px rgba(12, 8, 12, 0.22);
+  backdrop-filter: blur(12px);
 }
 
 @media (max-width: 900px) {
