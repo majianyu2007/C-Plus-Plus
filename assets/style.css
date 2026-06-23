@@ -6222,7 +6222,7 @@ body.galgame-mode.galgame-immersive-active .galgame-dialogue {
   border-color: var(--gal-border);
   background:
     linear-gradient(180deg, rgba(255, 251, 244, 0.16), rgba(255, 251, 244, 0.05)),
-    rgba(24, 18, 26, 0.92);
+    rgba(24, 18, 26, 0.78);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
     0 20px 60px rgba(24, 12, 18, 0.46);
@@ -6240,7 +6240,7 @@ body.galgame-mode.galgame-immersive-active .galgame-question-host {
   border-color: var(--gal-border);
   background:
     linear-gradient(180deg, rgba(255, 251, 244, 0.16), rgba(255, 251, 244, 0.05)),
-    rgba(24, 18, 26, 0.92);
+    rgba(24, 18, 26, 0.78);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
     0 20px 60px rgba(24, 12, 18, 0.46);
