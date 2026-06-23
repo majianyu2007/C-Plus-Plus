@@ -2945,57 +2945,10 @@
     html += `<button class="action-btn status-btn ${status === 'wrong' ? 'wrong' : ''}" data-status="wrong" title="错题" onclick="window._setStatus('${safeUniqueId}','wrong')">✗</button>`;
     html += `</div></div>`;
 
-    // 题目内容
-    if (isGalgameCard) {
-      html += `<div class="galgame-task-overview">`;
-      html += `<div class="galgame-task-copy">`;
-      html += `<span class="galgame-task-label">${escapeHtml(getGalgameRouteTitle(q))}</span>`;
-      html += `<strong>${escapeHtml(questionTitle)}</strong>`;
-      html += `<p>${escapeHtml(getGalgameKnowledgeSummary(q))}</p>`;
-      html += `</div>`;
-      html += `<div class="galgame-task-state">`;
-      html += `<span>${escapeHtml(galStatusText)}</span>`;
-      html += `<small>${escapeHtml(getGalgameStudyHint(q))}</small>`;
-      html += `</div>`;
-      html += `</div>`;
-    }
-
-    if (openingKps.length) {
-      if (isGalgameCard) {
-        html += `<div class="galgame-study-ribbon galgame-route-board" aria-label="本题考点">`;
-        html += `<div class="galgame-route-main">`;
-        html += `<span>攻略路线</span>`;
-        html += `<strong>${escapeHtml(galgamePlan.primary)}</strong>`;
-        html += `<p>${escapeHtml(galgamePlan.summary)}</p>`;
-        html += `</div>`;
-        html += `<div class="galgame-route-side">`;
-        html += `<small>${escapeHtml(galgamePlan.lectureHint || '讲义索引将在知识点页定位')}</small>`;
-        if (galgamePlan.count) html += `<em>${galgamePlan.count} 题相关</em>`;
-        html += `</div>`;
-        if (galgamePlan.related.length) {
-          html += `<div class="galgame-study-chips">`;
-          galgamePlan.related.forEach(kp => {
-            html += `<span>${escapeHtml(kp)}</span>`;
-          });
-          html += `</div>`;
-        }
-        html += `</div>`;
-      } else {
-        html += `<div class="galgame-study-ribbon" aria-label="本题考点">`;
-        html += `<strong>本幕考点</strong>`;
-        html += `<div class="galgame-study-chips">`;
-        openingKps.slice(0, 4).forEach(kp => {
-          html += `<span>${escapeHtml(kp)}</span>`;
-        });
-        html += `</div></div>`;
-      }
-    }
-
-    html += `<div class="galgame-reading-panel">`;
-
+    // 题目内容 (galgame: 合并到对白框)
     if (isProgramming) {
-      html += `<div class="question-stem galgame-task-title">${escapeHtml(q.title || '')}</div>`;
-      html += `<div class="question-stem galgame-requirement">${formatStem(q.requirement || '')}</div>`;
+      html += `<div class="question-stem ${isGalgameCard ? 'galgame-task-title' : ''}">${escapeHtml(q.title || '')}</div>`;
+      html += `<div class="question-stem ${isGalgameCard ? 'galgame-requirement' : ''}">${formatStem(q.requirement || '')}</div>`;
       const programmingDraft = `
           <div class="programming-input-wrapper">
             <textarea class="programming-input" id="prog-input-${safeUniqueId}" placeholder="粘贴你的 C++ 实现，用提示词检查思路与边界..."></textarea>
@@ -3024,7 +2977,6 @@
         `;
       }
     }
-    html += `</div>`;
 
     // 选项 (选择题)
     if (q.type === 'choice' && q.options && q.options.length) {
