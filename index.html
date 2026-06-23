@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=1.12.16">
+  <link rel="stylesheet" href="assets/style.css?v=1.12.18">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#cc785c">
   <meta name="mobile-web-app-capable" content="yes">
@@ -217,6 +217,7 @@
             </div>
           </div>
           <div class="galgame-interaction-buttons" id="galgame-interaction-buttons">
+            <button class="galgame-interaction-btn" id="galgame-hint-btn" title="让澪给一点读题提示">要提示</button>
             <button class="galgame-interaction-btn" id="galgame-touch-btn" title="摸妹妹的头">摸头 💕</button>
           </div>
           <div class="galgame-effect-layer" id="galgame-effect-layer" aria-hidden="true"></div>
@@ -428,7 +429,7 @@
             <label><span>待复习</span><input type="text" class="shortcut-input" data-shortcut-action="review"></label>
             <label><span>错题</span><input type="text" class="shortcut-input" data-shortcut-action="wrong"></label>
           </div>
-          <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">快捷键仅在题库普通模式生效；输入框、弹窗和 GalGame 模式不会被抢键。</p>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">快捷键仅在题库常规刷题界面生效；输入框、弹窗和沉浸式界面不会被抢键。</p>
         </div>
         <div class="form-group" style="margin-bottom: 16px;">
           <label for="setting-font-family" style="font-weight: 500; margin-bottom: 6px; display: block; font-size: 0.9rem;">界面字体</label>
@@ -495,6 +496,10 @@
         <button type="button" id="galgame-menu-exit">退出 Galgame</button>
       </div>
       <div class="galgame-menu-sliders">
+        <label class="galgame-menu-audio-toggle">
+          <input type="checkbox" id="galgame-menu-audio-enabled">
+          <span>启用音乐与音效</span>
+        </label>
         <label for="galgame-bgm-volume">音乐音量 <span id="galgame-bgm-volume-value">35%</span></label>
         <input type="range" id="galgame-bgm-volume" min="0" max="100" value="35">
         <label for="galgame-se-volume">音效音量 <span id="galgame-se-volume-value">55%</span></label>
@@ -505,6 +510,6 @@
 
   <script src="assets/vendor/markdown-it.min.js?v=14.2.0"></script>
   <script src="assets/vendor/purify.min.js?v=3.4.10"></script>
-  <script src="assets/app.js?v=1.12.16"></script>
+  <script src="assets/app.js?v=1.12.18"></script>
 </body>
 </html>

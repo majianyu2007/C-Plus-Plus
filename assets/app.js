@@ -1148,10 +1148,14 @@
   }
 
   function syncGalgameMenuSliders() {
+    const audioInput = document.getElementById('galgame-menu-audio-enabled');
     const bgmInput = document.getElementById('galgame-bgm-volume');
     const seInput = document.getElementById('galgame-se-volume');
+    if (audioInput) audioInput.checked = state.settings.galgameAudio !== false;
     if (bgmInput) bgmInput.value = state.settings.galgameBgmVolume || 35;
     if (seInput) seInput.value = state.settings.galgameSeVolume || 55;
+    if (bgmInput) bgmInput.disabled = audioInput && !audioInput.checked;
+    if (seInput) seInput.disabled = audioInput && !audioInput.checked;
     updateGalgameVolumeLabels();
   }
 
@@ -1466,6 +1470,33 @@
 
     const menuOpen = document.getElementById('galgame-menu-open');
     if (menuOpen) menuOpen.addEventListener('click', openGalgameMenu);
+    const menuAudio = document.getElementById('galgame-menu-audio-enabled');
+    const menuBgm = document.getElementById('galgame-bgm-volume');
+    const menuSe = document.getElementById('galgame-se-volume');
+    if (menuAudio) {
+      menuAudio.addEventListener('change', () => {
+        state.settings.galgameAudio = !!menuAudio.checked;
+        saveJsonToStorage(SETTINGS_KEY, state.settings);
+        syncGalgameMenuSliders();
+        if (state.settings.galgameAudio) {
+          state.galgameAudioReady = true;
+          startGalgameAmbient(getGalgameSceneForQuestion(getCurrentFocusItem()));
+          playGalgameSe('success');
+        } else {
+          stopGalgameAmbient();
+        }
+      });
+    }
+    [menuBgm, menuSe].forEach(input => {
+      if (!input) return;
+      input.addEventListener('input', () => {
+        state.settings.galgameBgmVolume = clampGalgameVolume(menuBgm?.value, state.settings.galgameBgmVolume || 35);
+        state.settings.galgameSeVolume = clampGalgameVolume(menuSe?.value, state.settings.galgameSeVolume || 55);
+        saveJsonToStorage(SETTINGS_KEY, state.settings);
+        updateGalgameVolumeLabels();
+        applyGalgameAudioVolumes();
+      });
+    });
     const resume = document.getElementById('galgame-menu-resume');
     if (resume) resume.addEventListener('click', closeGalgameMenu);
     const notebook = document.getElementById('galgame-menu-notebook');
@@ -1495,6 +1526,22 @@
     }
 
     // Character interaction buttons
+    const hintBtn = document.getElementById('galgame-hint-btn');
+    if (hintBtn) {
+      hintBtn.addEventListener('click', () => {
+        const q = getCurrentFocusItem();
+        const plan = getGalgameKnowledgePlan(q);
+        const clue = plan.primary || getKnowledgePointsForItem(q)[0] || '题干关键词';
+        const hintLines = [
+          `先盯住「${clue}」。澪把铅笔点在题干上：这题不是拼手速，是找分支条件。`,
+          `把选项当成路线分支看。先排掉和「${clue}」无关的那条，答案会自己亮出来。`,
+          `别急着点。澪把手账推过来：先说出这题考的「${clue}」，再动手。`
+        ];
+        setGalgameDialogue(pickFrom(hintLines, `hint:${getProgressKeyForItem(q)}:${Date.now()}`), 'serious');
+        showGalgameEffect('note', '读题提示');
+        adjustGalgameAffectionOnce(`${getProgressKeyForItem(q)}:hint`, 1, 'hint');
+      });
+    }
     const touchBtn = document.getElementById('galgame-touch-btn');
     if (touchBtn) {
       touchBtn.addEventListener('click', () => {
@@ -3190,6 +3237,14 @@
           <span>${safeChapter} · ${escapeHtml(galStatusText)}</span>
         </div>
       `;
+      html += `
+        <div class="galgame-task-actions" aria-label="本幕操作">
+          <button class="galgame-task-action ${isFav ? 'active' : ''}" type="button" onclick="window._toggleFavorite('${escapeAttr(favKey)}')">${isFav ? '已收藏' : '收藏'}</button>
+          <button class="galgame-task-action ${status === 'mastered' ? 'active mastered' : ''}" type="button" onclick="window._setStatus('${safeUniqueId}','mastered')">已掌握</button>
+          <button class="galgame-task-action ${status === 'review' ? 'active review' : ''}" type="button" onclick="window._setStatus('${safeUniqueId}','review')">待复习</button>
+          <button class="galgame-task-action ${status === 'wrong' ? 'active wrong' : ''}" type="button" onclick="window._setStatus('${safeUniqueId}','wrong')">错题</button>
+        </div>
+      `;
       if (relatedKps.length) {
         html += `<div class="galgame-study-chips">`;
         relatedKps.forEach(kp => {
@@ -3209,8 +3264,13 @@
       html += `<div class="question-stem ${isGalgameCard ? 'galgame-requirement' : ''}">${formatStem(q.requirement || '')}</div>`;
       const programmingDraft = `
           <div class="programming-input-wrapper">
-            <textarea class="programming-input" id="prog-input-${safeUniqueId}" placeholder="粘贴你的 C++ 实现，用提示词检查思路与边界..."></textarea>
-            <button class="show-answer-btn grade-btn" style="margin-top: 8px; border-color: var(--accent-warning); color: var(--accent-warning);" onclick="window._gradeProgrammingAnswer('${safeUniqueId}', this)">检查代码</button>
+            <div class="programming-toolbar" aria-label="代码草稿操作">
+              <span>代码草稿</span>
+              <button type="button" onclick="window._resizeProgrammingInput('${safeUniqueId}', 120)">拉长</button>
+              <button type="button" onclick="window._resizeProgrammingInput('${safeUniqueId}', -120)">缩短</button>
+            </div>
+            <textarea class="programming-input" id="prog-input-${safeUniqueId}" spellcheck="false" placeholder="粘贴或输入你的 C++ 实现。Tab 会插入制表符，用提示词检查思路与边界..."></textarea>
+            <button class="show-answer-btn grade-btn" onclick="window._gradeProgrammingAnswer('${safeUniqueId}', this)">检查代码</button>
           </div>
         `;
       if (isGalgameCard) {
@@ -3291,7 +3351,7 @@
       <div class="answer-nav" aria-label="答案导航">
         <span class="answer-nav-title">${isGalgameCard ? '回想解析' : escapeHtml(label + ' · 解析')}</span>
         <div class="answer-nav-actions">
-          <button class="answer-nav-btn" type="button" onclick="window._scrollToQuestion('${safeUniqueId}')">返回题目</button>
+          <button class="answer-nav-btn" type="button" onclick="window._returnFromAnswer('${safeUniqueId}')">返回题目</button>
           <button class="answer-nav-btn" type="button" data-answer-toggle="${safeUniqueId}">收起</button>
         </div>
       </div>
@@ -3331,7 +3391,7 @@
     html += `</div>`;
     html += `
       <div class="answer-footer-actions">
-        <button class="show-answer-btn answer-return-btn" type="button" onclick="window._scrollToQuestion('${safeUniqueId}')">返回题目</button>
+        <button class="show-answer-btn answer-return-btn" type="button" onclick="window._returnFromAnswer('${safeUniqueId}')">返回题目</button>
       </div>
     `;
     html += `</div></div>`;
@@ -3838,6 +3898,15 @@
     card._answerReturnTimer = setTimeout(() => card.classList.remove('jump-highlight'), 1400);
   };
 
+  window._returnFromAnswer = function (id) {
+    const card = findQuestionCard(id);
+    if (state.galgameMode && card?.classList.contains('galgame-task-card')) {
+      setAnswerVisibility(id, false);
+      return;
+    }
+    window._scrollToQuestion(id);
+  };
+
   window._toggleAnswer = function (id) {
     const el = document.getElementById('answer-' + id);
     if (!el) return;
@@ -3846,6 +3915,15 @@
 
   window._showAnswer = function (id) {
     setAnswerVisibility(id, true);
+  };
+
+  window._resizeProgrammingInput = function (uniqueId, delta) {
+    const textarea = document.getElementById('prog-input-' + uniqueId);
+    if (!textarea) return;
+    const current = textarea.getBoundingClientRect().height || textarea.offsetHeight || 220;
+    const next = Math.max(180, Math.min(900, current + Number(delta || 0)));
+    textarea.style.height = `${next}px`;
+    textarea.focus();
   };
 
   function normalizeChoiceAnswer(answer) {
@@ -4817,6 +4895,20 @@ ${userCode}
   // ============================================================
   // 启动
   // ============================================================
+  function handleProgrammingInputKeydown(e) {
+    const textarea = e.target;
+    if (!textarea || !textarea.classList || !textarea.classList.contains('programming-input')) return;
+    if (e.key !== 'Tab') return;
+    e.preventDefault();
+    const start = textarea.selectionStart || 0;
+    const end = textarea.selectionEnd || 0;
+    const value = textarea.value || '';
+    textarea.value = value.slice(0, start) + '\t' + value.slice(end);
+    textarea.selectionStart = textarea.selectionEnd = start + 1;
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  document.addEventListener('keydown', handleProgrammingInputKeydown);
   document.addEventListener('keydown', handleNormalKeyboardShortcut);
   document.addEventListener('DOMContentLoaded', loadAllData);
 
