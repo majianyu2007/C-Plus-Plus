@@ -5410,12 +5410,17 @@ body.galgame-mode[data-galgame-affection="warm"] .galgame-dialogue {
    Galgame entry modal & in-game menu
    ============================================================ */
 .galgame-choice-backdrop {
-  z-index: 1300;
+  z-index: 7000;
   background:
     linear-gradient(180deg, rgba(19,12,18,.46), rgba(19,12,18,.82)),
     radial-gradient(circle at 18% 12%, rgba(246,207,131,.20), transparent 30%),
     rgba(12,9,14,.72);
   backdrop-filter: blur(14px) saturate(1.12); padding: 18px;
+}
+.galgame-choice-backdrop.visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 .galgame-choice-modal {
   width: min(520px,100%); padding: 28px;

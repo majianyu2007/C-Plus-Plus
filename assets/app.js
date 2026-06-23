@@ -1288,7 +1288,7 @@
     const progress = document.getElementById('galgame-progress');
     const routeProgress = document.getElementById('galgame-route-progress');
     const location = document.getElementById('galgame-location');
-    const sourceCard = document.querySelector('#question-list > .question-card') || host.querySelector('.question-card');
+    let sourceCard = document.querySelector('#question-list > .question-card') || host.querySelector('.question-card');
     const emptyState = document.querySelector('#question-list > .empty-state');
     if (!stage || !host) return;
     if (!q && emptyState) {
@@ -1297,7 +1297,12 @@
       setGalgameDialogue(getGalgameLine(null, 'empty'), 'sad');
       return;
     }
-    if (!q || !sourceCard) return;
+    if (!q) return;
+    if (!sourceCard) {
+      host.innerHTML = renderQuestionCard(q, state.focusIndex + 1);
+      sourceCard = host.querySelector('.question-card');
+    }
+    if (!sourceCard) return;
     const scene = getGalgameSceneForQuestion(q);
     const bgPath = GALGAME_ASSETS.backgrounds[scene.bg] || GALGAME_ASSETS.backgrounds.duskRoom;
     const sceneExpression = getGalgameExpressionForAffection(scene.expression);
@@ -1317,6 +1322,7 @@
       host.innerHTML = '';
       host.appendChild(sourceCard);
     }
+    setKeyboardActiveCard(sourceCard, { scroll: false });
     const key = `${scene.bg}:${scene.bgm}:${q.type}:${q.id}`;
     if (state.galgameCurrentScene !== key) {
       state.galgameCurrentScene = key;
@@ -1332,9 +1338,15 @@
   function openGalgameChoiceModal(triggerLabel = '隐藏路线') {
     const modal = document.getElementById('galgame-choice-modal');
     if (!modal) return;
+    if (onboardingStarted) finishOnboarding();
     syncGalgameEntrySettings('romance', true);
     modal.classList.add('visible');
     modal.setAttribute('aria-hidden', 'false');
+    modal.style.setProperty('display', 'flex', 'important');
+    modal.style.setProperty('transition', 'none', 'important');
+    modal.style.setProperty('opacity', '1', 'important');
+    modal.style.setProperty('visibility', 'visible', 'important');
+    modal.style.setProperty('pointer-events', 'auto', 'important');
     showToast(`${triggerLabel}已触发`, 'success');
   }
 
@@ -1343,6 +1355,11 @@
     if (!modal) return;
     modal.classList.remove('visible');
     modal.setAttribute('aria-hidden', 'true');
+    modal.style.removeProperty('display');
+    modal.style.removeProperty('transition');
+    modal.style.removeProperty('opacity');
+    modal.style.removeProperty('visibility');
+    modal.style.removeProperty('pointer-events');
   }
 
   function enterGalgameMode() {
