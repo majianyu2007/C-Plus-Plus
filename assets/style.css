@@ -3860,6 +3860,46 @@ h4,
   height: 38px;
 }
 
+.shortcut-settings {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--surface-soft) 82%, transparent);
+}
+
+.shortcut-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 10px;
+}
+
+.shortcut-grid label {
+  display: grid;
+  grid-template-columns: minmax(70px, 1fr) 74px;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+.shortcut-input {
+  height: 34px;
+  min-width: 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.shortcut-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-primary-glow);
+}
+
 /* 设置弹窗按钮：保存为珊瑚主按钮, 其余为标准次级按钮
    （DESIGN.md: teal 仅作状态点缀, 不用于按钮） */
 .settings-btn-seed {
@@ -3901,6 +3941,17 @@ h4,
   background: var(--accent-primary-hover);
   border-color: var(--accent-primary-hover);
   color: white;
+}
+
+.question-card.keyboard-active {
+  border-color: var(--border-active);
+  box-shadow: 0 0 0 3px var(--accent-primary-glow), var(--shadow-md);
+}
+
+@media (max-width: 560px) {
+  .shortcut-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ============================================================
@@ -4917,83 +4968,6 @@ body:not(.galgame-mode) .galgame-study-chips {
   display: none !important;
 }
 
-/* Answer section typography */
-.answer-section {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 2px solid rgba(0, 0, 0, 0.08);
-}
-
-.answer-box {
-  padding: 16px;
-  background: #fafafa;
-  border-left: 4px solid #cc785c;
-  border-radius: 0 4px 4px 0;
-}
-
-.answer-text {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: #cc785c;
-  margin-bottom: 14px;
-  letter-spacing: 0.5px;
-}
-
-.explanation {
-  font-size: 1rem;
-  line-height: 1.8;
-  color: #333;
-  margin-top: 12px;
-}
-
-.explanation strong {
-  font-weight: 700;
-  color: #222;
-}
-
-.explanation ul,
-.explanation ol {
-  margin-left: 20px;
-  margin-top: 8px;
-}
-
-.explanation li {
-  margin-bottom: 8px;
-}
-
-/* Better code styling */
-.question-stem code,
-.answer-box code {
-  background: #f5f5f5;
-  color: #d63384;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border-left: 3px solid #d63384;
-  margin: 0 2px;
-}
-
-/* Better section titles */
-.answer-nav-title,
-.answer-label {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #222;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 10px;
-}
-
-/* Options styling */
-.option-item {
-  font-weight: 500;
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-
 /* ── Answer modal (centered overlay) ── */
 body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-section {
   display: none !important;
@@ -5566,5 +5540,377 @@ body.galgame-mode[data-galgame-affection="warm"] .galgame-dialogue {
 @media (max-width: 640px) {
   .galgame-route-progress, .galgame-affection {
     min-height: 30px; padding: 6px 10px; font-size: 0.72rem;
+  }
+}
+
+/* ============================================================
+   Galgame VN polish overrides
+   ============================================================ */
+body.galgame-mode.galgame-immersive-active .galgame-hud {
+  grid-template-columns: minmax(220px, 340px) auto;
+  align-items: start;
+  max-width: none;
+  pointer-events: none;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-hud-main {
+  grid-column: 1;
+  width: min(340px, calc(100vw - 116px));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-hud-actions {
+  position: static;
+  grid-column: 2;
+  justify-self: end;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-location,
+body.galgame-mode.galgame-immersive-active .galgame-progress,
+body.galgame-mode.galgame-immersive-active .galgame-route-progress,
+body.galgame-mode.galgame-immersive-active .galgame-affection {
+  justify-content: center;
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-character {
+  right: clamp(-54px, 3vw, 70px);
+  bottom: clamp(-190px, -13vh, -96px);
+  height: min(96svh, 940px);
+  max-height: none;
+  z-index: 6;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-affection-display {
+  right: clamp(76px, 13vw, 220px);
+  top: clamp(88px, 15svh, 154px);
+  width: clamp(156px, 15vw, 218px);
+  padding: 8px 10px 9px;
+  border: 1px solid rgba(255, 236, 207, 0.28);
+  border-radius: var(--radius-md);
+  background: rgba(24, 16, 22, 0.48);
+  box-shadow: 0 14px 32px rgba(12, 8, 12, 0.24);
+  backdrop-filter: blur(10px);
+}
+
+.galgame-affection-bar-container {
+  height: 18px;
+  border-radius: 999px;
+}
+
+.galgame-affection-bar-fill {
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--gal-rose), var(--gal-gold));
+}
+
+.galgame-affection-percent {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--gal-text);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.48);
+}
+
+.galgame-affection-hearts {
+  margin-top: 7px;
+}
+
+.galgame-affection-heart {
+  transform-origin: 50% 70%;
+  text-shadow: 0 4px 12px rgba(242, 158, 177, 0.44);
+}
+
+@keyframes galgame-heart-pop {
+  0% { transform: scale(0.2) rotate(-22deg); opacity: 0; }
+  62% { transform: scale(1.24) rotate(10deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-interaction-buttons {
+  right: clamp(92px, 16vw, 260px);
+  bottom: clamp(260px, 42svh, 420px);
+}
+
+.galgame-interaction-btn[hidden] {
+  display: none !important;
+}
+
+.galgame-interaction-btn {
+  border-radius: var(--radius-md);
+}
+
+.galgame-interaction-btn:hover {
+  color: var(--gal-text);
+  box-shadow: 0 0 0 3px rgba(242, 158, 177, 0.16), 0 12px 26px rgba(242, 158, 177, 0.24);
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-dialogue {
+  height: clamp(292px, 42svh, 444px);
+  min-height: 292px;
+  left: clamp(18px, 3vw, 56px);
+  right: clamp(18px, 3vw, 56px);
+  bottom: max(16px, env(safe-area-inset-bottom));
+  padding: 0;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-nameplate {
+  top: -18px;
+  left: clamp(24px, 4vw, 64px);
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-dialogue-text {
+  position: absolute;
+  left: clamp(24px, 3vw, 44px);
+  right: clamp(24px, 3vw, 44px);
+  top: 34px;
+  max-width: none;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 236, 207, 0.18);
+  font-size: 1rem;
+  line-height: 1.68;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-advance {
+  display: none;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host {
+  left: clamp(18px, 3vw, 56px);
+  right: clamp(18px, 3vw, 56px);
+  bottom: max(16px, env(safe-area-inset-bottom));
+  height: clamp(292px, 42svh, 444px);
+  max-height: none;
+  padding: 92px clamp(24px, 3vw, 46px) 22px;
+  gap: 8px;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .question-card {
+  gap: 7px;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-task-heading,
+body.galgame-mode.galgame-immersive-active .galgame-question-host .galgame-task-title {
+  color: var(--gal-gold);
+  font-size: clamp(1.1rem, 1.3vw, 1.24rem);
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .question-stem {
+  font-size: clamp(1rem, 1.1vw, 1.08rem);
+  line-height: 1.82;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-study-ribbon {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 7px 10px;
+  border: 1px solid rgba(246, 207, 131, 0.32);
+  border-radius: var(--radius-md);
+  background: rgba(246, 207, 131, 0.1);
+  color: rgba(255, 248, 241, 0.82);
+  font-size: 0.82rem;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-study-ribbon strong {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--gal-text);
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.galgame-study-kicker {
+  color: var(--gal-gold);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-study-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-study-chips button {
+  min-height: 28px;
+  padding: 4px 9px;
+  border: 1px solid rgba(255, 236, 207, 0.24);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 248, 241, 0.08);
+  color: rgba(255, 248, 241, 0.86);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .options-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 6px 0 0;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .option-item {
+  min-height: 42px;
+  padding: 8px 12px;
+  justify-content: flex-start;
+  text-align: left;
+  background: rgba(24, 16, 22, 0.58);
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .option-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 3px rgba(246, 207, 131, 0.12), 0 10px 24px rgba(12, 8, 12, 0.22);
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .galgame-card-actions {
+  margin-top: 4px;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .fillin-input-wrapper {
+  margin-top: 6px;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .fillin-input,
+body.galgame-mode.galgame-immersive-active .galgame-question-host .programming-input {
+  background: rgba(24, 16, 22, 0.72);
+  color: var(--gal-text);
+  border-color: rgba(255, 236, 207, 0.3);
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .question-stem code,
+body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-box code {
+  border-left: 3px solid var(--accent-primary);
+  background: rgba(245, 240, 232, 0.14);
+  color: var(--gal-gold);
+  font-family: var(--font-mono);
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-section.visible {
+  color: var(--gal-text);
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-box {
+  background: rgba(250, 249, 245, 0.96);
+  border-left: 4px solid var(--accent-primary);
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-label,
+body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-nav-title {
+  color: var(--accent-primary);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-text {
+  color: var(--accent-primary);
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .explanation {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.82;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-story-panel,
+body.galgame-mode.galgame-immersive-active .galgame-route-notebook,
+body.galgame-mode.galgame-immersive-active .galgame-notebook-popover,
+body.galgame-mode.galgame-immersive-active #galgame-menu-notebook {
+  display: none !important;
+}
+
+body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transition: opacity 260ms ease, transform 260ms ease, visibility 260ms ease;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-stage:hover ~ .focus-navigation.galgame-nav,
+body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav:hover {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+}
+
+body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav .galgame-scene-index {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  body.galgame-mode.galgame-immersive-active .galgame-character {
+    right: -126px;
+    height: min(76svh, 720px);
+    opacity: 0.48;
+  }
+
+  body.galgame-mode.galgame-immersive-active .galgame-affection-display {
+    right: clamp(18px, 4vw, 44px);
+    top: clamp(90px, 15svh, 138px);
+  }
+
+  body.galgame-mode.galgame-immersive-active .galgame-interaction-buttons {
+    right: clamp(18px, 4vw, 44px);
+    bottom: clamp(250px, 43svh, 390px);
+  }
+}
+
+@media (max-width: 720px) {
+  body.galgame-mode.galgame-immersive-active .galgame-hud-main {
+    width: min(300px, calc(100vw - 104px));
+  }
+
+  body.galgame-mode.galgame-immersive-active .galgame-route-progress,
+  body.galgame-mode.galgame-immersive-active .galgame-affection {
+    display: inline-flex;
+  }
+
+  body.galgame-mode.galgame-immersive-active .galgame-dialogue,
+  body.galgame-mode.galgame-immersive-active .galgame-question-host {
+    height: clamp(334px, 50svh, 460px);
+    min-height: 334px;
+  }
+
+  body.galgame-mode.galgame-immersive-active .galgame-question-host {
+    padding-top: 104px;
+  }
+
+  body.galgame-mode.galgame-immersive-active .galgame-question-host .options-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 460px) {
+  body.galgame-mode.galgame-immersive-active .galgame-hud-main {
+    grid-template-columns: 1fr;
+    width: min(172px, calc(100vw - 96px));
+  }
+
+  body.galgame-mode.galgame-immersive-active .galgame-route-progress,
+  body.galgame-mode.galgame-immersive-active .galgame-affection {
+    display: none;
+  }
+
+  body.galgame-mode.galgame-immersive-active .galgame-study-ribbon {
+    grid-template-columns: 1fr;
+    gap: 3px;
+    width: 100%;
   }
 }

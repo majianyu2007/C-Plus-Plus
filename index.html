@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=1.11.2">
+  <link rel="stylesheet" href="assets/style.css?v=1.12.0">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#cc785c">
   <meta name="mobile-web-app-capable" content="yes">
@@ -212,6 +212,7 @@
             <div class="galgame-affection-bar-container">
               <div class="galgame-affection-bar-bg"></div>
               <div class="galgame-affection-bar-fill" id="galgame-affection-bar-fill"></div>
+              <span class="galgame-affection-percent" id="galgame-affection-percent">12%</span>
               <div class="galgame-affection-hearts" id="galgame-affection-hearts"></div>
             </div>
           </div>
@@ -407,6 +408,28 @@
           </div>
           <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">设置相同种子可以使题目顺序完全一致。</p>
         </div>
+        <div class="form-group shortcut-settings" style="margin-bottom: 16px;">
+          <label style="display:flex; align-items:center; gap:10px; cursor:pointer; margin-bottom: 10px;">
+            <input type="checkbox" id="keyboard-shortcuts-enabled" style="width:auto; accent-color: var(--accent-primary);">
+            <strong>启用普通模式键盘刷题</strong>
+          </label>
+          <div class="shortcut-grid" id="shortcut-grid" aria-label="快捷键绑定">
+            <label><span>下一题</span><input type="text" class="shortcut-input" data-shortcut-action="next"></label>
+            <label><span>上一题</span><input type="text" class="shortcut-input" data-shortcut-action="prev"></label>
+            <label><span>显示答案</span><input type="text" class="shortcut-input" data-shortcut-action="showAnswer"></label>
+            <label><span>选择 A</span><input type="text" class="shortcut-input" data-shortcut-action="choiceA"></label>
+            <label><span>选择 B</span><input type="text" class="shortcut-input" data-shortcut-action="choiceB"></label>
+            <label><span>选择 C</span><input type="text" class="shortcut-input" data-shortcut-action="choiceC"></label>
+            <label><span>选择 D</span><input type="text" class="shortcut-input" data-shortcut-action="choiceD"></label>
+            <label><span>判断对</span><input type="text" class="shortcut-input" data-shortcut-action="trueAnswer"></label>
+            <label><span>判断错</span><input type="text" class="shortcut-input" data-shortcut-action="falseAnswer"></label>
+            <label><span>收藏</span><input type="text" class="shortcut-input" data-shortcut-action="favorite"></label>
+            <label><span>已掌握</span><input type="text" class="shortcut-input" data-shortcut-action="mastered"></label>
+            <label><span>待复习</span><input type="text" class="shortcut-input" data-shortcut-action="review"></label>
+            <label><span>错题</span><input type="text" class="shortcut-input" data-shortcut-action="wrong"></label>
+          </div>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">快捷键仅在题库普通模式生效；输入框、弹窗和 GalGame 模式不会被抢键。</p>
+        </div>
         <div class="form-group" style="margin-bottom: 16px;">
           <label for="setting-font-family" style="font-weight: 500; margin-bottom: 6px; display: block; font-size: 0.9rem;">界面字体</label>
           <select id="setting-font-family" class="chapter-select settings-select">
@@ -482,6 +505,6 @@
 
   <script src="assets/vendor/markdown-it.min.js?v=14.2.0"></script>
   <script src="assets/vendor/purify.min.js?v=3.4.10"></script>
-  <script src="assets/app.js?v=1.9.0"></script>
+  <script src="assets/app.js?v=1.12.0"></script>
 </body>
 </html>

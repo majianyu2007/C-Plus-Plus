@@ -41,6 +41,7 @@
     galgameAffection: 12,
     galgameAffectionEvents: {},
     galgameScenarioMap: {},
+    keyboardActiveQuestionId: null,
     isReadyForScrollSave: false
   };
 
@@ -75,10 +76,68 @@
     redoMode: localStorage.getItem('oop_redo_mode') === '1',
     shuffle: true,
     seed: null,
+    keyboardShortcuts: true,
+    shortcuts: {
+      next: 'Enter',
+      prev: '[',
+      showAnswer: 'Space',
+      choiceA: '1',
+      choiceB: '2',
+      choiceC: '3',
+      choiceD: '4',
+      trueAnswer: '1',
+      falseAnswer: '2',
+      favorite: 'v',
+      mastered: 'm',
+      review: 'r',
+      wrong: 'x'
+    },
     galgameAudio: true,
     galgameBgmVolume: 35,
     galgameSeVolume: 55
   };
+
+  const SHORTCUT_ACTION_LABELS = {
+    next: '下一题',
+    prev: '上一题',
+    showAnswer: '显示/收起答案',
+    choiceA: '选择 A / 第 1 项',
+    choiceB: '选择 B / 第 2 项',
+    choiceC: '选择 C / 第 3 项',
+    choiceD: '选择 D / 第 4 项',
+    trueAnswer: '判断题：对',
+    falseAnswer: '判断题：错',
+    favorite: '收藏/取消收藏',
+    mastered: '标记已掌握',
+    review: '标记待复习',
+    wrong: '标记错题'
+  };
+
+  function normalizeShortcutKey(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    const lower = raw.toLowerCase();
+    const alias = {
+      space: 'Space',
+      ' ': 'Space',
+      esc: 'Escape',
+      escape: 'Escape',
+      enter: 'Enter',
+      return: 'Enter',
+      tab: 'Tab',
+      up: 'ArrowUp',
+      down: 'ArrowDown',
+      left: 'ArrowLeft',
+      right: 'ArrowRight',
+      arrowup: 'ArrowUp',
+      arrowdown: 'ArrowDown',
+      arrowleft: 'ArrowLeft',
+      arrowright: 'ArrowRight'
+    };
+    if (alias[lower]) return alias[lower];
+    if (raw.length === 1) return raw.toLowerCase();
+    return raw;
+  }
 
   const GALGAME_ASSETS = {
     backgrounds: {
@@ -142,6 +201,15 @@
   function normalizeSettings() {
     state.settings.shuffle = state.settings.shuffle !== false;
     state.settings.redoMode = !!state.settings.redoMode;
+    state.settings.keyboardShortcuts = state.settings.keyboardShortcuts !== false;
+    state.settings.shortcuts = Object.assign(
+      {},
+      defaultSettings.shortcuts,
+      state.settings.shortcuts && typeof state.settings.shortcuts === 'object' ? state.settings.shortcuts : {}
+    );
+    Object.keys(state.settings.shortcuts).forEach(key => {
+      state.settings.shortcuts[key] = normalizeShortcutKey(state.settings.shortcuts[key] || defaultSettings.shortcuts[key]);
+    });
     state.settings.galgameAudio = state.settings.galgameAudio !== false;
     state.galgameVariant = 'romance';
     state.settings.galgameBgmVolume = clampGalgameVolume(state.settings.galgameBgmVolume, 35);
@@ -200,6 +268,18 @@
     return rank;
   }
 
+  function getGalgameHeartCount(value = state.galgameAffection) {
+    return Math.min(5, Math.max(0, Math.floor(clampGalgameAffection(value) / 20)));
+  }
+
+  function getGalgameExpressionForAffection(baseExpression = 'smile') {
+    const hearts = getGalgameHeartCount();
+    if (hearts >= 5) return 'happy';
+    if (hearts >= 4) return 'shy';
+    if (hearts >= 3 && baseExpression === 'sad') return 'smile';
+    return baseExpression;
+  }
+
   function updateGalgameAffectionDisplay() {
     const score = clampGalgameAffection(state.galgameAffection);
     const rank = getGalgameAffectionRank(score);
@@ -216,8 +296,11 @@
       if (barFill) {
         barFill.style.width = Math.min(score, 100) + '%';
       }
+      const percent = document.getElementById('galgame-affection-percent');
+      if (percent) percent.textContent = `${score}%`;
       // Update hearts display
       updateGalgameHearts(score);
+      updateGalgameInteractionState(score);
     } else {
       delete document.body.dataset.galgameAffection;
     }
@@ -233,7 +316,8 @@
       for (let i = currentHearts; i < heartCount; i++) {
         const heart = document.createElement('div');
         heart.className = 'galgame-affection-heart';
-        heart.textContent = '💕';
+        heart.style.animationDelay = `${(i - currentHearts) * 80}ms`;
+        heart.textContent = '❤️';
         heartsContainer.appendChild(heart);
       }
     } else if (heartCount < currentHearts) {
@@ -243,16 +327,34 @@
     }
   }
 
+  function updateGalgameInteractionState(score = state.galgameAffection) {
+    const touchBtn = document.getElementById('galgame-touch-btn');
+    if (!touchBtn) return;
+    const unlocked = clampGalgameAffection(score) >= 40;
+    touchBtn.hidden = !unlocked;
+    touchBtn.disabled = !unlocked;
+    touchBtn.setAttribute('aria-disabled', unlocked ? 'false' : 'true');
+    touchBtn.title = unlocked ? '摸摸澪的头' : '好感度达到 40% 后解锁';
+  }
+
   function triggerGalgameAffectionMilestone(previousScore, nextScore) {
     if (!state.galgameMode || nextScore <= previousScore) return false;
-    const currentRank = getGalgameAffectionRank(nextScore);
-    if (currentRank.min <= 0 || previousScore >= currentRank.min) return false;
-    const eventKey = `affection:${currentRank.key}`;
-    if (state.galgameAffectionEvents[eventKey]) return false;
-    state.galgameAffectionEvents[eventKey] = true;
+    const previousHearts = getGalgameHeartCount(previousScore);
+    const nextHearts = getGalgameHeartCount(nextScore);
+    if (nextHearts <= previousHearts) return false;
+    let newestHeart = previousHearts;
+    for (let i = previousHearts + 1; i <= nextHearts; i++) {
+      const eventKey = `affection:heart:${i}`;
+      if (!state.galgameAffectionEvents[eventKey]) {
+        state.galgameAffectionEvents[eventKey] = true;
+        newestHeart = i;
+      }
+    }
+    if (newestHeart <= previousHearts) return false;
     saveGalgameAffectionState();
-    showGalgameEffect('affection', `好感 ${nextScore} · ${currentRank.label}`);
-    setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'affectionMilestone', { rank: currentRank.label }), currentRank.min >= 58 ? 'shy' : 'happy');
+    const currentRank = getGalgameAffectionRank(nextScore);
+    showGalgameEffect('affection', `${newestHeart} 颗心 · 好感 ${nextScore}%`);
+    setGalgameDialogue(getGalgameLine(getCurrentFocusItem(), 'affectionMilestone', { rank: `${newestHeart} 颗心 · ${currentRank.label}` }), newestHeart >= 3 ? 'shy' : 'happy');
     setGalgameStory(getCurrentFocusItem(), 'affectionMilestone');
     return true;
   }
@@ -1174,9 +1276,10 @@
     if (!q || !sourceCard) return;
     const scene = getGalgameSceneForQuestion(q);
     const bgPath = GALGAME_ASSETS.backgrounds[scene.bg] || GALGAME_ASSETS.backgrounds.duskRoom;
+    const sceneExpression = getGalgameExpressionForAffection(scene.expression);
     if (bg) bg.style.backgroundImage = `url("${bgPath}")`;
-    if (character && character.getAttribute('src') !== GALGAME_ASSETS.characters[scene.expression]) {
-      character.src = GALGAME_ASSETS.characters[scene.expression];
+    if (character && character.getAttribute('src') !== GALGAME_ASSETS.characters[sceneExpression]) {
+      character.src = GALGAME_ASSETS.characters[sceneExpression];
     }
     if (progress) progress.textContent = `第 ${state.focusIndex + 1} / ${state.filtered.length} 题`;
     if (routeProgress) {
@@ -1196,7 +1299,7 @@
       sourceCard.classList.add('galgame-card-enter');
       setTimeout(() => sourceCard.classList.remove('galgame-card-enter'), 420);
     }
-    setGalgameDialogue(getGalgameLine(q, event), scene.expression);
+    setGalgameDialogue(getGalgameLine(q, event), sceneExpression);
     setGalgameStory(q, event);
     updateGalgameNotebook(q, scene);
     startGalgameAmbient(scene);
@@ -1356,14 +1459,20 @@
       touchBtn.addEventListener('click', () => {
         const affection = state.galgameAffection;
         if (affection >= 40) {
-          setGalgameDialogue('呀，你...！', 'shy');
-          showGalgameEffect('affection', '澪害羞了～');
+          const touchLines = [
+            '呀，突然摸头会让人分心的……不过，刚才那题确实答得不错。',
+            '嗯……只准一下。下一幕也要认真读题，不然我会把手账翻回来给你看。',
+            '好啦，我知道你想庆祝。那就把这份状态带到下一题吧。'
+          ];
+          setGalgameDialogue(pickFrom(touchLines, `touch:${Date.now()}:${affection}`), affection >= 78 ? 'happy' : 'shy');
+          showGalgameEffect('affection', '摸头互动 · +5');
           adjustGalgameAffection(5, 'interaction', { source: 'touch' });
         } else {
-          setGalgameDialogue('嗯？', 'surprised');
+          setGalgameDialogue('现在还太早了。等好感到 40%，我会考虑一下。', 'surprised');
         }
       });
     }
+    updateGalgameInteractionState();
   }
 
   // ============================================================
@@ -1758,6 +1867,8 @@
     const inputSeed = document.getElementById('setting-seed');
     const seedGroup = document.getElementById('seed-group');
     const regenBtn = document.getElementById('regenerate-seed');
+    const inputKeyboardShortcuts = document.getElementById('keyboard-shortcuts-enabled');
+    const shortcutInputs = Array.from(document.querySelectorAll('.shortcut-input[data-shortcut-action]'));
     const inputFontFamily = document.getElementById('setting-font-family');
     const inputFontSize = document.getElementById('setting-font-size');
     const reopenOnboardingBtn = document.getElementById('settings-reopen-onboarding');
@@ -1775,6 +1886,12 @@
       if (inputSeed) {
         inputSeed.value = state.settings.seed || '';
       }
+      if (inputKeyboardShortcuts) inputKeyboardShortcuts.checked = state.settings.keyboardShortcuts !== false;
+      shortcutInputs.forEach(input => {
+        const action = input.dataset.shortcutAction;
+        input.value = state.settings.shortcuts?.[action] || defaultSettings.shortcuts[action] || '';
+        input.title = SHORTCUT_ACTION_LABELS[action] || action;
+      });
       modal.classList.add('visible');
     };
 
@@ -1807,6 +1924,18 @@
       });
     }
 
+    shortcutInputs.forEach(input => {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') return;
+        e.preventDefault();
+        input.value = normalizeShortcutKey(e.key);
+      });
+      input.addEventListener('blur', () => {
+        const action = input.dataset.shortcutAction;
+        input.value = normalizeShortcutKey(input.value) || defaultSettings.shortcuts[action] || '';
+      });
+    });
+
     if (saveBtn) {
       saveBtn.addEventListener('click', () => {
         state.settings.redoMode = inputRedoMode ? !!inputRedoMode.checked : false;
@@ -1823,6 +1952,15 @@
           state.settings.seed = nextSeed;
           if (inputSeed) inputSeed.value = state.settings.seed;
         }
+
+        state.settings.keyboardShortcuts = inputKeyboardShortcuts ? !!inputKeyboardShortcuts.checked : true;
+        const nextShortcuts = Object.assign({}, defaultSettings.shortcuts);
+        shortcutInputs.forEach(input => {
+          const action = input.dataset.shortcutAction;
+          nextShortcuts[action] = normalizeShortcutKey(input.value) || defaultSettings.shortcuts[action] || '';
+          input.value = nextShortcuts[action];
+        });
+        state.settings.shortcuts = nextShortcuts;
 
         saveJsonToStorage(SETTINGS_KEY, state.settings);
 
@@ -2674,6 +2812,7 @@
 
     // 监听全局键盘事件用于焦点模式左右按键刷题
     document.addEventListener('keydown', (e) => {
+      if (handleNormalKeyboardShortcut(e)) return;
       if (state.quizMode === 'focus') {
         const activeEl = document.activeElement;
         // 如果用户正在搜索输入框或AI聊天框中输入，不触发切换快捷键
@@ -2896,6 +3035,16 @@
         html += `<div style="text-align:center;padding:20px;"><button class="show-answer-btn" style="border-color:var(--accent-primary);color:var(--accent-primary);" onclick="window._loadMoreQuestions()">加载更多（还有 ${state.filtered.length - visibleCount} 题）</button></div>`;
       }
       container.innerHTML = html;
+      const renderedCards = getQuestionCardsForShortcuts();
+      renderedCards.forEach(card => {
+        card.addEventListener('click', () => setKeyboardActiveCard(card, { scroll: false }));
+        card.addEventListener('focusin', () => setKeyboardActiveCard(card, { scroll: false }));
+      });
+      if (!state.keyboardActiveQuestionId || !renderedCards.some(card => card.dataset.id === state.keyboardActiveQuestionId)) {
+        setKeyboardActiveCard(renderedCards[0], { scroll: false });
+      } else {
+        getKeyboardActiveCard();
+      }
     } else {
       // 焦点刷题模式 (一页一题)
       navContainer.style.display = 'flex';
@@ -2910,6 +3059,7 @@
         localStorage.setItem('oop_last_question_id', key);
       }
       container.innerHTML = renderQuestionCard(q, state.focusIndex + 1);
+      setKeyboardActiveCard(document.querySelector('#question-list > .question-card'), { scroll: false });
       document.body.classList.remove('galgame-answer-open');
 
       // 渲染底部分页控制
@@ -2987,6 +3137,31 @@
     html += `<button class="action-btn status-btn ${status === 'wrong' ? 'wrong' : ''}" data-status="wrong" title="错题" onclick="window._setStatus('${safeUniqueId}','wrong')">✗</button>`;
     html += `</div></div>`;
 
+    if (isGalgameCard) {
+      const primaryKp = galgamePlan.primary || openingKps[0] || '题干线索';
+      const relatedKps = galgamePlan.related && galgamePlan.related.length ? galgamePlan.related.slice(0, 4) : openingKps.slice(1, 5);
+      const safePrimaryKp = escapeHtml(primaryKp);
+      const safeChapter = escapeHtml(q.chapter || '综合章节');
+      html += `
+        <div class="galgame-study-ribbon" aria-label="本幕考点">
+          <span class="galgame-study-kicker">本幕考点</span>
+          <strong>${safePrimaryKp}</strong>
+          <span>${safeChapter} · ${escapeHtml(galStatusText)}</span>
+        </div>
+      `;
+      if (relatedKps.length) {
+        html += `<div class="galgame-study-chips">`;
+        relatedKps.forEach(kp => {
+          const encKp = encodeURIComponent(kp);
+          html += `<button type="button" onclick="window._jumpToKnowledgePointEncoded('${escapeAttr(encKp)}')" title="打开讲义">${escapeHtml(kp)}</button>`;
+        });
+        html += `</div>`;
+      }
+      if (questionTitle) {
+        html += `<div class="galgame-task-heading">${escapeHtml(questionTitle)}</div>`;
+      }
+    }
+
     // 题目内容 (galgame: 合并到对白框)
     if (isProgramming) {
       html += `<div class="question-stem ${isGalgameCard ? 'galgame-task-title' : ''}">${escapeHtml(q.title || '')}</div>`;
@@ -3038,7 +3213,7 @@
 
     // 知识点标签（可按知识点筛题 / 跳转知识点页）
     const kps = openingKps;
-    if (kps.length) {
+    if (kps.length && !isGalgameCard) {
       html += `<div class="kp-tags">`;
       kps.forEach(kp => {
         const safeKp = escapeHtml(kp);
@@ -3278,6 +3453,154 @@
     state.focusIndex = (state.focusIndex + 1) % state.filtered.length;
     renderQuestionList({ stageEvent: 'next' });
   };
+
+  function getShortcutEventKey(e) {
+    return normalizeShortcutKey(e.key === ' ' ? 'Space' : e.key);
+  }
+
+  function getShortcutActionsForKey(key) {
+    const shortcuts = state.settings.shortcuts || defaultSettings.shortcuts;
+    return Object.keys(shortcuts).filter(action => normalizeShortcutKey(shortcuts[action]) === key);
+  }
+
+  function shouldIgnoreNormalShortcut(e) {
+    if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return true;
+    if (state.galgameMode || state.settings.keyboardShortcuts === false) return true;
+    const quizPage = document.getElementById('page-quiz');
+    if (!quizPage || !quizPage.classList.contains('active')) return true;
+    if (document.querySelector('.modal-backdrop.visible, .galgame-choice-backdrop.visible, .galgame-menu-backdrop:not([hidden])')) return true;
+    if (document.getElementById('onboarding')?.getAttribute('aria-hidden') === 'false') return true;
+    const target = e.target;
+    if (target && target.closest && target.closest('input, textarea, select, button, [contenteditable="true"]')) return true;
+    return false;
+  }
+
+  function getQuestionCardsForShortcuts() {
+    return Array.from(document.querySelectorAll('#question-list > .question-card'));
+  }
+
+  function focusQuestionInputIfNeeded(card, options = {}) {
+    if (!card || options.focusInput === false) return;
+    const input = card.querySelector('.fillin-input, .programming-input');
+    if (!input) return;
+    window.requestAnimationFrame(() => {
+      input.focus({ preventScroll: true });
+      if (input.classList.contains('fillin-input')) input.select();
+    });
+  }
+
+  function setKeyboardActiveCard(card, options = {}) {
+    if (!card) return null;
+    getQuestionCardsForShortcuts().forEach(item => item.classList.toggle('keyboard-active', item === card));
+    state.keyboardActiveQuestionId = card.dataset.id || null;
+    if (options.scroll !== false) {
+      card.scrollIntoView({ behavior: options.instant ? 'auto' : 'smooth', block: 'center' });
+    }
+    focusQuestionInputIfNeeded(card, options);
+    return card;
+  }
+
+  function getKeyboardActiveCard() {
+    if (state.quizMode === 'focus') {
+      return document.querySelector('#question-list > .question-card');
+    }
+    const cards = getQuestionCardsForShortcuts();
+    if (!cards.length) return null;
+    const saved = state.keyboardActiveQuestionId
+      ? cards.find(card => card.dataset.id === state.keyboardActiveQuestionId)
+      : null;
+    if (saved) return setKeyboardActiveCard(saved, { scroll: false });
+    const viewportAnchor = Math.max(80, window.innerHeight * 0.22);
+    const visible = cards.find(card => {
+      const rect = card.getBoundingClientRect();
+      return rect.bottom > viewportAnchor && rect.top < window.innerHeight - 80;
+    }) || cards[0];
+    return setKeyboardActiveCard(visible, { scroll: false });
+  }
+
+  function moveKeyboardActiveCard(delta) {
+    if (state.quizMode === 'focus') {
+      if (delta > 0) window._nextFocusQuestion();
+      else window._prevFocusQuestion();
+      return true;
+    }
+    const cards = getQuestionCardsForShortcuts();
+    if (!cards.length) return false;
+    const current = getKeyboardActiveCard();
+    const currentIndex = Math.max(0, cards.indexOf(current));
+    const nextIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + delta));
+    setKeyboardActiveCard(cards[nextIndex]);
+    return true;
+  }
+
+  function activateShortcutOption(card, action) {
+    if (!card) return false;
+    const type = card.dataset.type;
+    if (type === 'truefalse') {
+      const val = action === 'falseAnswer' || action === 'choiceB' ? '错' : '对';
+      const option = card.querySelector(`.option-item[data-val="${val}"]`);
+      if (option) {
+        option.click();
+        return true;
+      }
+      return false;
+    }
+    const optionIndex = { choiceA: 0, choiceB: 1, choiceC: 2, choiceD: 3 }[action];
+    if (type === 'choice' && optionIndex !== undefined) {
+      const option = card.querySelectorAll('.option-item')[optionIndex];
+      if (option) {
+        option.click();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function handleNormalKeyboardShortcut(e) {
+    if (shouldIgnoreNormalShortcut(e)) return false;
+    const key = getShortcutEventKey(e);
+    const actions = getShortcutActionsForKey(key);
+    if (!actions.length) return false;
+    const card = getKeyboardActiveCard();
+    const type = card?.dataset.type;
+    let handled = false;
+
+    if (actions.includes('next')) {
+      handled = moveKeyboardActiveCard(1);
+    } else if (actions.includes('prev')) {
+      handled = moveKeyboardActiveCard(-1);
+    } else if (actions.includes('showAnswer') && card) {
+      const id = card.dataset.id;
+      if (id) {
+        window._toggleAnswer(id);
+        handled = true;
+      }
+    } else if (card && type === 'truefalse' && (actions.includes('trueAnswer') || actions.includes('falseAnswer') || actions.includes('choiceA') || actions.includes('choiceB'))) {
+      handled = activateShortcutOption(card, actions.includes('falseAnswer') || actions.includes('choiceB') ? 'falseAnswer' : 'trueAnswer');
+    } else if (card && type === 'choice' && ['choiceA', 'choiceB', 'choiceC', 'choiceD'].some(action => actions.includes(action))) {
+      const choiceAction = ['choiceA', 'choiceB', 'choiceC', 'choiceD'].find(action => actions.includes(action));
+      handled = choiceAction ? activateShortcutOption(card, choiceAction) : false;
+    } else if (actions.includes('favorite') && card) {
+      const favBtn = card.querySelector('.action-btn.fav');
+      if (favBtn) {
+        favBtn.click();
+        handled = true;
+      }
+    } else if (card && (actions.includes('mastered') || actions.includes('review') || actions.includes('wrong'))) {
+      const id = card.dataset.id;
+      const status = actions.includes('mastered') ? 'mastered' : actions.includes('review') ? 'review' : 'wrong';
+      if (id) {
+        window._setStatus(id, status);
+        handled = true;
+      }
+    }
+
+    if (handled) {
+      e.preventDefault();
+      setKeyboardActiveCard(getKeyboardActiveCard(), { scroll: false });
+    }
+    return handled;
+  }
 
   window._jumpToQuestionInput = function () {
     const jumpInput = document.getElementById('jump-input');
@@ -3683,15 +4006,27 @@
 
   window._checkFillinAnswer = function (uniqueId, inputEl) {
     enableGalgameAudioFromUserGesture();
+    const blurInput = () => {
+      if (inputEl && typeof inputEl.blur === 'function') {
+        window.setTimeout(() => inputEl.blur(), 0);
+      }
+    };
     const card = findQuestionCard(uniqueId);
-    if (card && card.classList.contains('answered-correct')) return;
+    if (card && card.classList.contains('answered-correct')) {
+      blurInput();
+      return;
+    }
     const realId = uniqueId.replace(/^(q-|prog-)/, '');
     const q = state.questions.find(item => String(item.id) === realId);
-    if (!q) return;
+    if (!q) {
+      blurInput();
+      return;
+    }
 
     const userAns = inputEl.value.trim().toLowerCase();
     const correctAnsStr = (q.answer || '').trim().toLowerCase();
     const feedbackEl = document.getElementById('feedback-' + uniqueId);
+    blurInput();
 
     if (!userAns) {
       playGalgameSe('wrong');
@@ -3805,10 +4140,6 @@
       setGalgameDialogue(getGalgameLine(q, 'wrong'), 'sad');
       setGalgameStory(q, 'wrong');
       handleGalgameAttemptResult(false);
-    }
-    // Blur input after checking
-    if (inputEl && typeof inputEl.blur === 'function') {
-      setTimeout(() => inputEl.blur(), 100);
     }
   };
 
@@ -4438,6 +4769,7 @@ ${userCode}
   // ============================================================
   // 启动
   // ============================================================
+  document.addEventListener('keydown', handleNormalKeyboardShortcut);
   document.addEventListener('DOMContentLoaded', loadAllData);
 
 })();
