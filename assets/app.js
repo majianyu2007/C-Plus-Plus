@@ -1413,22 +1413,6 @@
   }
 
   function initGalgameEntrances() {
-    const logo = document.querySelector('.logo');
-    let logoClicks = 0;
-    let logoTimer = null;
-    if (logo) {
-      logo.addEventListener('click', (e) => {
-        logoClicks += 1;
-        clearTimeout(logoTimer);
-        logoTimer = setTimeout(() => { logoClicks = 0; }, 1200);
-        if (logoClicks >= 6) {
-          e.preventDefault();
-          logoClicks = 0;
-          openGalgameChoiceModal('Logo 彩蛋');
-        }
-      });
-    }
-
     const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a','b','a'];
     let konamiIndex = 0;
     document.addEventListener('keydown', (e) => {
