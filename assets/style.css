@@ -4616,14 +4616,78 @@ body.galgame-mode.galgame-immersive-active .galgame-question-shell {
   overflow-anchor: none;
 }
 
-/* ── Character (right side, dimmed) ── */
-body.galgame-mode.galgame-immersive-active .galgame-character {
-  right: clamp(2px, 4vw, 68px);
-  bottom: clamp(-260px, -20vh, -130px);
-  height: min(125svh, 1080px);
-  max-height: none;
-  opacity: 0.65;
-  filter: drop-shadow(0 26px 38px rgba(16,8,12,.48));
+
+/* ── Affection bar and hearts display ── */
+.galgame-affection-display {
+  position: absolute;
+  z-index: 25;
+  right: clamp(8px, 4vw, 72px);
+  top: clamp(100px, 14vh, 160px);
+  width: clamp(140px, 18vw, 200px);
+  pointer-events: none;
+}
+.galgame-affection-bar-container {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(242, 158, 177, 0.3);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.galgame-affection-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f29eb1, #f6cf83);
+  width: 0%;
+  transition: width 0.4s ease;
+  box-shadow: 0 0 12px rgba(242, 158, 177, 0.6);
+}
+.galgame-affection-hearts {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  min-height: 20px;
+}
+.galgame-affection-heart {
+  font-size: 1.2rem;
+  opacity: 0;
+  animation: galgame-heart-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes galgame-heart-pop {
+  0% { transform: scale(0) rotate(-10deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+/* ── Interaction buttons ── */
+.galgame-interaction-buttons {
+  position: absolute;
+  z-index: 25;
+  right: clamp(12px, 4vw, 68px);
+  bottom: clamp(160px, 20vh, 240px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: auto;
+}
+.galgame-interaction-btn {
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid rgba(242, 158, 177, 0.5);
+  border-radius: 6px;
+  background: rgba(242, 158, 177, 0.15);
+  color: #f29eb1;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(6px);
+}
+.galgame-interaction-btn:hover {
+  background: rgba(242, 158, 177, 0.28);
+  border-color: rgba(242, 158, 177, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(242, 158, 177, 0.2);
 }
 
 /* ── HUD (top-left) ── */
@@ -4771,7 +4835,7 @@ body.galgame-mode.galgame-immersive-active .galgame-question-host .action-btn:ho
   color: var(--gal-gold);
 }
 
-/* Question stem */
+/* Typography improvements */
 body.galgame-mode.galgame-immersive-active .galgame-question-host .question-stem {
   margin: 0;
   padding: 0;
@@ -4780,6 +4844,7 @@ body.galgame-mode.galgame-immersive-active .galgame-question-host .question-stem
   line-height: 1.82;
   word-break: break-word;
   font-weight: 500;
+  letter-spacing: 0.3px;
 }
 body.galgame-mode.galgame-immersive-active .galgame-question-host .question-stem code {
   color: #ffe8bd;
@@ -4846,9 +4911,8 @@ body.galgame-mode.galgame-immersive-active .galgame-question-host .show-answer-b
   border-color: rgba(246, 207, 131, 0.72);
 }
 
-/* Hide non-galgame elements */
-body.galgame-mode.galgame-immersive-active .galgame-question-host .kp-tags,
-body.galgame-mode.galgame-immersive-active .galgame-question-host .galgame-study-ribbon {
+/* Hide galgame-specific elements in normal quiz mode */
+body:not(.galgame-mode) .galgame-study-ribbon {
   display: none !important;
 }
 

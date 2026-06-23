@@ -211,8 +211,35 @@
     }
     if (state.galgameMode) {
       document.body.dataset.galgameAffection = rank.key;
+      // Update affection bar
+      const barFill = document.getElementById('galgame-affection-bar-fill');
+      if (barFill) {
+        barFill.style.width = Math.min(score, 100) + '%';
+      }
+      // Update hearts display
+      updateGalgameHearts(score);
     } else {
       delete document.body.dataset.galgameAffection;
+    }
+  }
+
+  function updateGalgameHearts(score) {
+    const heartsContainer = document.getElementById('galgame-affection-hearts');
+    if (!heartsContainer) return;
+    const heartCount = Math.floor(score / 20);
+    const currentHearts = heartsContainer.querySelectorAll('.galgame-affection-heart').length;
+
+    if (heartCount > currentHearts) {
+      for (let i = currentHearts; i < heartCount; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'galgame-affection-heart';
+        heart.textContent = '💕';
+        heartsContainer.appendChild(heart);
+      }
+    } else if (heartCount < currentHearts) {
+      for (let i = currentHearts; i > heartCount; i--) {
+        heartsContainer.removeChild(heartsContainer.lastChild);
+      }
     }
   }
 
@@ -1320,6 +1347,21 @@
     if (notebookPopover) {
       notebookPopover.addEventListener('click', (e) => {
         if (e.target === notebookPopover) closeGalgameNotebook();
+      });
+    }
+
+    // Character interaction buttons
+    const touchBtn = document.getElementById('galgame-touch-btn');
+    if (touchBtn) {
+      touchBtn.addEventListener('click', () => {
+        const affection = state.galgameAffection;
+        if (affection >= 40) {
+          setGalgameDialogue('呀，你...！', 'shy');
+          showGalgameEffect('affection', '澪害羞了～');
+          adjustGalgameAffection(5, 'interaction', { source: 'touch' });
+        } else {
+          setGalgameDialogue('嗯？', 'surprised');
+        }
       });
     }
   }
@@ -3763,6 +3805,10 @@
       setGalgameDialogue(getGalgameLine(q, 'wrong'), 'sad');
       setGalgameStory(q, 'wrong');
       handleGalgameAttemptResult(false);
+    }
+    // Blur input after checking
+    if (inputEl && typeof inputEl.blur === 'function') {
+      setTimeout(() => inputEl.blur(), 100);
     }
   };
 

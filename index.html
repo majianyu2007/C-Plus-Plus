@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=1.10.0">
+  <link rel="stylesheet" href="assets/style.css?v=1.11.0">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#cc785c">
   <meta name="mobile-web-app-capable" content="yes">
@@ -208,6 +208,16 @@
             </div>
           </div>
           <img class="galgame-character" id="galgame-character" src="" alt="陪练角色" decoding="async">
+          <div class="galgame-affection-display" id="galgame-affection-display">
+            <div class="galgame-affection-bar-container">
+              <div class="galgame-affection-bar-bg"></div>
+              <div class="galgame-affection-bar-fill" id="galgame-affection-bar-fill"></div>
+              <div class="galgame-affection-hearts" id="galgame-affection-hearts"></div>
+            </div>
+          </div>
+          <div class="galgame-interaction-buttons" id="galgame-interaction-buttons">
+            <button class="galgame-interaction-btn" id="galgame-touch-btn" title="摸妹妹的头">摸头 💕</button>
+          </div>
           <div class="galgame-effect-layer" id="galgame-effect-layer" aria-hidden="true"></div>
           <div class="galgame-story-panel" id="galgame-story-panel" aria-live="polite">
             <span class="galgame-story-kicker" id="galgame-story-kicker">Route Log</span>
