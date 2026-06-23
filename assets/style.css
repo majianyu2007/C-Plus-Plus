@@ -5843,7 +5843,8 @@ body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav {
   transition: opacity 260ms ease, transform 260ms ease, visibility 260ms ease;
 }
 
-body.galgame-mode.galgame-immersive-active .galgame-stage:hover ~ .focus-navigation.galgame-nav,
+body.galgame-mode.galgame-immersive-active .galgame-stage:hover .focus-navigation.galgame-nav,
+body.galgame-mode.galgame-immersive-active .galgame-stage.galgame-nav-visible .focus-navigation.galgame-nav,
 body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav:hover {
   opacity: 1 !important;
   pointer-events: auto !important;

@@ -1220,6 +1220,29 @@
     startGalgameAmbient(getGalgameSceneForQuestion(getCurrentFocusItem()));
   }
 
+  function syncGalgameNavigationPlacement(shouldShow) {
+    const stage = document.getElementById('galgame-stage');
+    const nav = document.getElementById('focus-navigation');
+    if (!stage || !nav || !stage.parentNode) return;
+    if (!stage.dataset.navHoverBound) {
+      stage.dataset.navHoverBound = '1';
+      stage.addEventListener('pointerenter', () => stage.classList.add('galgame-nav-visible'));
+      stage.addEventListener('pointerleave', () => stage.classList.remove('galgame-nav-visible'));
+      stage.addEventListener('focusin', () => stage.classList.add('galgame-nav-visible'));
+      stage.addEventListener('focusout', () => {
+        window.setTimeout(() => {
+          if (!stage.contains(document.activeElement)) stage.classList.remove('galgame-nav-visible');
+        }, 0);
+      });
+    }
+    if (shouldShow) {
+      if (nav.parentNode !== stage) stage.appendChild(nav);
+    } else if (nav.parentNode === stage) {
+      stage.classList.remove('galgame-nav-visible');
+      stage.parentNode.insertBefore(nav, stage);
+    }
+  }
+
   function updateGalgameStageVisibility() {
     const stage = document.getElementById('galgame-stage');
     const list = document.getElementById('question-list');
@@ -1227,6 +1250,7 @@
     const host = document.getElementById('galgame-question-host');
     const shouldShow = shouldUseGalgameStage();
     document.body.classList.toggle('galgame-immersive-active', shouldShow);
+    syncGalgameNavigationPlacement(shouldShow);
     if (stage) stage.hidden = !shouldShow;
     if (list) list.classList.toggle('galgame-source-list', shouldShow);
     if (nav) nav.classList.toggle('galgame-nav', shouldShow);
