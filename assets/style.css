@@ -6186,7 +6186,7 @@ body.galgame-mode.galgame-immersive-active .galgame-affection-bar-container {
 }
 
 body.galgame-mode.galgame-immersive-active .galgame-character {
-  right: clamp(98px, 8vw, 168px);
+  right: clamp(156px, 11vw, 232px);
   bottom: max(10px, env(safe-area-inset-bottom));
   height: min(72svh, 700px);
   z-index: 20;
@@ -6216,19 +6216,35 @@ body.galgame-mode.galgame-immersive-active .galgame-interaction-btn:hover {
 }
 
 body.galgame-mode.galgame-immersive-active .galgame-dialogue {
-  right: clamp(520px, 37vw, 700px);
-  bottom: clamp(500px, 48svh, 580px);
-  width: min(620px, 34vw);
+  right: clamp(470px, 34vw, 650px);
+  bottom: clamp(590px, 60svh, 680px);
+  width: min(640px, 36vw);
+  border-color: var(--gal-border);
+  background:
+    linear-gradient(180deg, rgba(255, 251, 244, 0.16), rgba(255, 251, 244, 0.05)),
+    rgba(24, 18, 26, 0.92);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 20px 60px rgba(24, 12, 18, 0.46);
+  backdrop-filter: blur(14px);
   z-index: 24;
 }
 
 body.galgame-mode.galgame-immersive-active .galgame-question-host {
   left: clamp(44px, 3vw, 64px);
-  right: clamp(250px, 15vw, 320px);
+  right: clamp(44px, 3vw, 64px);
   bottom: max(28px, env(safe-area-inset-bottom));
   height: clamp(360px, 49svh, 530px);
   max-height: calc(100svh - 176px);
-  padding: 34px clamp(480px, 30vw, 620px) 28px clamp(28px, 3vw, 48px);
+  padding: 34px clamp(560px, 34vw, 700px) 28px clamp(28px, 3vw, 48px);
+  border-color: var(--gal-border);
+  background:
+    linear-gradient(180deg, rgba(255, 251, 244, 0.16), rgba(255, 251, 244, 0.05)),
+    rgba(24, 18, 26, 0.92);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 20px 60px rgba(24, 12, 18, 0.46);
+  backdrop-filter: blur(14px);
   scrollbar-width: thin;
 }
 
@@ -6244,14 +6260,14 @@ body.galgame-mode.galgame-immersive-active .galgame-question-host .options-list 
 }
 
 body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav {
-  right: max(8px, env(safe-area-inset-right));
-  bottom: clamp(150px, 16svh, 196px);
+  right: clamp(76px, 6vw, 124px);
+  bottom: clamp(64px, 8svh, 104px);
   z-index: 38;
 }
 
 body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav .galgame-scene-btn {
-  min-width: 136px;
-  min-height: 64px;
+  min-width: 128px;
+  min-height: 58px;
   font-size: 1rem;
 }
 
