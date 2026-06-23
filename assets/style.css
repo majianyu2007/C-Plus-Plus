@@ -5054,7 +5054,7 @@ body.galgame-mode.galgame-immersive-active.galgame-answer-open .galgame-dialogue
   filter: blur(1.2px);
 }
 
-/* ── Scene switcher (hidden by default, visible on hover) ── */
+/* ── Scene switcher (hidden by default, visible on stage hover) ── */
 body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav {
   position: fixed;
   z-index: 24;
@@ -5068,13 +5068,16 @@ body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  opacity: 0;
+  opacity: 0 !important;
   transition: opacity 0.3s ease;
-  pointer-events: none;
+  pointer-events: none !important;
+  visibility: hidden !important;
 }
+/* Show on stage hover */
 body.galgame-mode.galgame-immersive-active .galgame-stage:hover .focus-navigation.galgame-nav {
-  opacity: 1;
-  pointer-events: auto;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
 }
 body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav .galgame-scene-index {
   display: none;
@@ -5110,8 +5113,13 @@ body.galgame-mode.galgame-immersive-active .galgame-dialogue-text {
 
 /* ── Story and notebook panels (hidden in immersive) ── */
 body.galgame-mode.galgame-immersive-active .galgame-story-panel,
-body.galgame-mode.galgame-immersive-active .galgame-route-notebook {
+body.galgame-mode.galgame-immersive-active .galgame-route-notebook,
+body.galgame-mode.galgame-immersive-active .galgame-notebook-popover {
+  position: absolute !important;
+  left: -9999px !important;
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
 /* ── Affection color tints on dialogue ── */
