@@ -3794,11 +3794,18 @@
   function setAnswerVisibility(id, visible) {
     const el = document.getElementById('answer-' + id);
     if (!el) return false;
-    el.classList.toggle('visible', !!visible);
     const card = findQuestionCard(id);
     const isGalgameCard = !!card?.classList.contains('galgame-task-card');
+    const shouldLayerGalgameAnswer = isGalgameCard && shouldUseGalgameStage();
+    if (shouldLayerGalgameAnswer && visible && el.parentElement !== document.body) {
+      document.body.appendChild(el);
+    } else if (shouldLayerGalgameAnswer && !visible && card && el.parentElement !== card) {
+      card.appendChild(el);
+    }
+    el.classList.toggle('galgame-answer-layer', !!visible && shouldLayerGalgameAnswer);
+    el.classList.toggle('visible', !!visible);
     if (card) card.classList.toggle('answer-open', !!visible);
-    document.body.classList.toggle('galgame-answer-open', !!visible && isGalgameCard && shouldUseGalgameStage());
+    document.body.classList.toggle('galgame-answer-open', !!visible && shouldLayerGalgameAnswer);
 
     const btn = document.getElementById('toggle-answer-btn-' + id);
     if (btn) {

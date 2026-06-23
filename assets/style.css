@@ -4982,42 +4982,49 @@ body:not(.galgame-mode) .galgame-study-chips {
 body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-section {
   display: none !important;
 }
-body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-section.visible {
+body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-section.visible,
+body.galgame-mode.galgame-immersive-active .answer-section.galgame-answer-layer.visible {
   display: flex !important;
   flex-direction: column;
   position: fixed;
-  z-index: 1000;
-  left: 50%;
-  top: 50%;
+  z-index: 7100;
+  left: 50vw;
+  top: 50vh;
   transform: translate(-50%, -50%);
-  width: min(880px, 92vw);
-  height: auto;
-  max-height: min(80vh, 680px);
-  background: rgba(28, 20, 26, 0.98);
-  border: 1px solid rgba(255, 236, 206, 0.4);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.88);
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  animation: none !important;
+  width: min(960px, calc(100vw - 96px));
+  height: min(76vh, 680px);
+  max-height: calc(100vh - 72px);
+  background: rgba(250, 249, 245, 0.98);
+  border: 1px solid rgba(204, 120, 92, 0.42);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.58);
   border-radius: 12px;
-  padding: 28px 32px;
+  padding: 28px 32px 30px;
   overflow-y: auto;
-  backdrop-filter: blur(16px);
+  color: var(--text-primary);
+  backdrop-filter: none;
+  scrollbar-color: rgba(204, 120, 92, 0.55) transparent;
 }
 
 /* Dim backdrop when answer is open */
 body.galgame-mode.galgame-immersive-active.galgame-answer-open .galgame-stage::before {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
-  background: rgba(8, 6, 8, 0.62);
-  backdrop-filter: blur(3px);
-  z-index: 999;
-  pointer-events: auto;
+  background: rgba(8, 7, 10, 0.56);
+  backdrop-filter: none;
+  z-index: 7000;
+  pointer-events: none;
 }
 
 /* Dim dialogue/question when answer is open */
 body.galgame-mode.galgame-immersive-active.galgame-answer-open .galgame-dialogue {
-  opacity: 0.18;
+  opacity: 0.42;
   pointer-events: none;
-  filter: blur(1.2px);
+  filter: none;
 }
 
 /* ── Scene switcher (hidden by default, visible on stage hover) ── */
@@ -5813,30 +5820,38 @@ body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-box co
   font-family: var(--font-mono);
 }
 
-body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-section.visible {
-  color: var(--gal-text);
+body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-section.visible,
+body.galgame-mode.galgame-immersive-active .answer-section.galgame-answer-layer.visible {
+  color: var(--text-primary);
 }
 
-body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-box {
-  background: rgba(250, 249, 245, 0.96);
+body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-box,
+body.galgame-mode.galgame-immersive-active .answer-section.galgame-answer-layer .answer-box {
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--text-primary);
+  border-color: rgba(204, 120, 92, 0.28);
   border-left: 4px solid var(--accent-primary);
 }
 
 body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-label,
-body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-nav-title {
+body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-nav-title,
+body.galgame-mode.galgame-immersive-active .answer-section.galgame-answer-layer .answer-label,
+body.galgame-mode.galgame-immersive-active .answer-section.galgame-answer-layer .answer-nav-title {
   color: var(--accent-primary);
   font-size: 1.05rem;
   font-weight: 700;
 }
 
-body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-text {
+body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-text,
+body.galgame-mode.galgame-immersive-active .answer-section.galgame-answer-layer .answer-text {
   color: var(--accent-primary);
   font-size: 1.08rem;
   font-weight: 700;
 }
 
-body.galgame-mode.galgame-immersive-active .galgame-question-host .explanation {
-  color: var(--text-secondary);
+body.galgame-mode.galgame-immersive-active .galgame-question-host .explanation,
+body.galgame-mode.galgame-immersive-active .answer-section.galgame-answer-layer .explanation {
+  color: var(--text-primary);
   font-size: 1rem;
   line-height: 1.82;
 }
@@ -5929,6 +5944,13 @@ body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav .galgam
 
   body.galgame-mode.galgame-immersive-active .galgame-question-host .options-list {
     grid-template-columns: 1fr;
+  }
+
+  body.galgame-mode.galgame-immersive-active .galgame-question-host .answer-section.visible,
+  body.galgame-mode.galgame-immersive-active .answer-section.galgame-answer-layer.visible {
+    width: calc(100vw - 28px);
+    height: min(78vh, 620px);
+    padding: 20px 18px 22px;
   }
 }
 
