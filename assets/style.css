@@ -6147,6 +6147,114 @@ body.galgame-mode.galgame-immersive-active .answer-section.galgame-answer-layer 
   accent-color: var(--gal-gold);
 }
 
+/* Final 16:9 composition pass: keep HUD, affection, character, actions, and nav in separate lanes. */
+body.galgame-mode.galgame-immersive-active .galgame-hud {
+  top: max(18px, env(safe-area-inset-top));
+  left: max(18px, env(safe-area-inset-left));
+  right: max(18px, env(safe-area-inset-right));
+  align-items: center;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-hud-main {
+  gap: 12px;
+  max-width: calc(100vw - 184px);
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-location,
+body.galgame-mode.galgame-immersive-active .galgame-progress,
+body.galgame-mode.galgame-immersive-active .galgame-route-progress,
+body.galgame-mode.galgame-immersive-active .galgame-affection {
+  min-width: clamp(142px, 10.5vw, 210px);
+  min-height: 46px;
+  padding: 8px 18px;
+  border-radius: 18px;
+  font-size: clamp(0.86rem, 0.9vw, 0.98rem);
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-affection-display {
+  left: max(18px, env(safe-area-inset-left));
+  top: calc(max(18px, env(safe-area-inset-top)) + 64px);
+  width: clamp(240px, 23vw, 360px);
+  padding: 8px 10px;
+  grid-template-columns: 1fr auto;
+  border-radius: 12px;
+  opacity: 0.95;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-affection-bar-container {
+  height: 16px;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-character {
+  right: clamp(98px, 8vw, 168px);
+  bottom: max(10px, env(safe-area-inset-bottom));
+  height: min(72svh, 700px);
+  z-index: 20;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-interaction-buttons {
+  right: clamp(430px, 27vw, 560px);
+  bottom: clamp(300px, 32svh, 370px);
+  flex-direction: row;
+  gap: 10px;
+  z-index: 33;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-interaction-btn {
+  min-height: 38px;
+  padding: 7px 14px;
+  background:
+    linear-gradient(135deg, rgba(255, 220, 184, 0.9), rgba(242, 158, 177, 0.88));
+  border-color: rgba(255, 236, 207, 0.48);
+  color: #7a3c4d;
+  box-shadow: 0 12px 28px rgba(242, 158, 177, 0.22);
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-interaction-btn:hover {
+  color: #4c2632;
+  transform: translateY(-2px);
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-dialogue {
+  right: clamp(520px, 37vw, 700px);
+  bottom: clamp(500px, 48svh, 580px);
+  width: min(620px, 34vw);
+  z-index: 24;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host {
+  left: clamp(44px, 3vw, 64px);
+  right: clamp(250px, 15vw, 320px);
+  bottom: max(28px, env(safe-area-inset-bottom));
+  height: clamp(360px, 49svh, 530px);
+  max-height: calc(100svh - 176px);
+  padding: 34px clamp(480px, 30vw, 620px) 28px clamp(28px, 3vw, 48px);
+  scrollbar-width: thin;
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .question-stem {
+  max-width: min(920px, calc(100vw - 760px));
+}
+
+body.galgame-mode.galgame-immersive-active .galgame-question-host .galgame-task-actions,
+body.galgame-mode.galgame-immersive-active .galgame-question-host .galgame-card-actions,
+body.galgame-mode.galgame-immersive-active .galgame-question-host .fillin-input-wrapper,
+body.galgame-mode.galgame-immersive-active .galgame-question-host .options-list {
+  max-width: min(920px, calc(100vw - 760px));
+}
+
+body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav {
+  right: max(8px, env(safe-area-inset-right));
+  bottom: clamp(150px, 16svh, 196px);
+  z-index: 38;
+}
+
+body.galgame-mode.galgame-immersive-active .focus-navigation.galgame-nav .galgame-scene-btn {
+  min-width: 136px;
+  min-height: 64px;
+  font-size: 1rem;
+}
+
 @media (max-width: 900px) {
   body.galgame-mode.galgame-immersive-active .galgame-character {
     right: -126px;
